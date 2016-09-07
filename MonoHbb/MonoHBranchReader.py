@@ -5,7 +5,7 @@ import sys, optparse
 from array import array
 import math
 ROOT.gROOT.SetBatch(True)
-
+from MonoHbbQuantities import *
 ######################################
 ## set up running mode of the code.
 ######################################
@@ -32,13 +32,13 @@ inputfilename = options.inputfile
 
 pathlist = inputfilename.split("/")
 sizeoflist = len(pathlist)
-rootfile = pathlist[7]
+rootfile='tmp'
+if sizeoflist > 6: rootfile = pathlist[7]
 textfile = rootfile+".txt"
-print textfile
-outputdir='METScanHistoFiles/'
+outputdir='MonoHSamples/'
 os.system('mkdir '+outputdir)
 
-outfilename=rootfile
+outfilename=rootfile+".root"
 outfilename =outputdir+'/'+outfilename
 
 #outfilename ='scanningHistograms_Hotline_2fbInv.root'
@@ -68,6 +68,11 @@ def AnalyzeDataSet():
     cutStatus['eleveto'] = 0
     cutStatus['muveto'] = 0
     cutStatus['tauveto'] = 0
+    
+    allquantitiesBoosted            = MonoHbbQuantities(outfilename)
+    allquantitiesBoosted.defineHisto()
+
+    
     for ievent in range(NEntries):
     #for ievent in range(101):
 
@@ -127,8 +132,7 @@ def AnalyzeDataSet():
         tauP4                      = skimmedTree.__getattr__('HPSTau_4Momentum')
         isDecayModeFinding         = skimmedTree.__getattr__('disc_decayModeFinding')
         passLooseTauIso            = skimmedTree.__getattr__('disc_byLooseIsolationMVA3oldDMwLT')
-        
-        
+        HiggsInfo_sorted           = []
         
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -399,14 +403,22 @@ def AnalyzeDataSet():
         regime = False
         if isboosted: regime = True
         if isresolved: regime = False
-        print (isboosted,isresolved, regime)
+        #print (isboosted,isresolved, regime)
+
         
-        #print run,lumi,event
+        allquantitiesBoosted.regime     = regime
+        allquantitiesBoosted.met        = pfMet
+        if regime:      allquantitiesBoosted.mass            = fatjetPRmassL2L3Corr[HIndex]
+        if not regime:  allquantitiesBoosted.mass            = HiggsInfo_sorted[0][2]
+        
+        #print (allquantitiesBoosted.regime, allquantitiesBoosted.met,allquantitiesBoosted.mass )
+        allquantitiesBoosted.FillHisto()
 
     #print cutStatus
     #print "npass = ", npass
-    print " efficiency = ", float(npass/float(NEntries))
     
+    allquantitiesBoosted.WriteHisto()
+    print " efficiency = ", float(npass/float(NEntries))
     f = open('efficiencyfiles/'+textfile, 'w')
     f.write(str(float(npass/float(NEntries))))
     f.close()
