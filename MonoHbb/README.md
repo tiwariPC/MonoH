@@ -13,3 +13,8 @@ python MonoHBranchReader.py -a -i rootfilename
 -- Run it using 
 
 python MonoHbbAllSamplesReader.py
+
+
+-- For signal region use: 
+
+python MonoHBranchReader.py  -m 100 -M 150 -i NCUGlobalTuples_1.root  -a -j 0 -J 2 -l 0 -L 1

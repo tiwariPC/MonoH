@@ -18,21 +18,37 @@ parser = optparse.OptionParser(usage)
 ## data will be true if -d is passed and will be false if -m is passed
 parser.add_option("-i", "--inputfile",  dest="inputfile")
 parser.add_option("-a", "--analyze", action="store_true",  dest="analyze")
-parser.add_option("-m", "--MLow", type=float,  dest="MLow")
-parser.add_option("-M", "--MHigh", type=float,  dest="MHigh")
 parser.add_option("-o", "--overlap", action="store_true",  dest="overlap")
 parser.add_option("-e", "--efficiency", action="store_true",  dest="efficiency")
 parser.add_option("-t", "--table", action="store_true",  dest="table")
 parser.add_option("-P", "--OtherPlots", action="store_true",  dest="OtherPlots")
 
+## cut values
+parser.add_option("-m", "--MLow", type=float,  dest="MLow")
+parser.add_option("-M", "--MHigh", type=float,  dest="MHigh")
 
+parser.add_option("-l", "--lepton", type=int, dest="lepton")
+parser.add_option("-L", "--Lepton", type=int, dest="Lepton")
 
+parser.add_option("-b", "--bjet", type=int, dest="bjet")
+
+parser.add_option("-j", "--jet", type=int, dest="jet")
+parser.add_option("-J", "--Jet", type=int, dest="Jet")
 
 (options, args) = parser.parse_args()
 
-print (options.MLow, options.MHigh)
-massCutLow = options.MLow 
-massCutHigh = options.MHigh
+massCutLow   = options.MLow 
+massCutHigh  = options.MHigh
+
+nlepton      = options.lepton
+nLepton      = options.Lepton
+
+njet        = options.jet
+nJet        = options.Jet
+
+nbjet       = options.bjet
+
+print (massCutLow,massCutHigh,nlepton,nLepton,njet,nJet)
 #print 'options = ',[options.inputfile]
 inputfilename = options.inputfile
 
@@ -258,7 +274,7 @@ def AnalyzeDataSet():
             if HThinIndex > 0:
                 mass_ = HiggsInfo_sorted[0][2]
                 pt_   = HiggsInfo_sorted[0][3]
-                if (mass_ > 100.) & (mass_ < 150.):
+                if (mass_ > massCutLow) & (mass_ < massCutHigh):
                     cutStatus['HMass'] += 1
                     if (pt_>150.): 
                         cutStatus['btag'] += 1
@@ -341,8 +357,11 @@ def AnalyzeDataSet():
             #print min(dphiVec) 
             if min(dphiVec) < 0.4 : continue 
         cutStatus['dphi'] += 1
-        if nGoodTHINJets > 1: continue 
+        
+        if not (nGoodTHINJets >= njet) : continue 
+        if not (nGoodTHINJets < nJet): continue 
         cutStatus['ThinJetVeto'] += 1
+        
         if nGoodTHINBJets > 0: continue 
         cutStatus['bVeto'] += 1
         
@@ -359,7 +378,7 @@ def AnalyzeDataSet():
             if bool(eleIsPassLoose[iele]) == False : continue
             myEles.append(iele)
 
-        if len(myEles) > 0 : continue
+        #if len(myEles) > 0 : continue
         cutStatus['eleveto'] += 1
         
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -375,7 +394,7 @@ def AnalyzeDataSet():
             relPFIso = (muChHadIso[imu]+ max(0., muNeHadIso[imu] + muGamIso[imu] - 0.5*muPUPt[imu]))/muP4[imu].Pt();
             if relPFIso>0.4 : continue
             myMuos.append(imu)
-        if len(myMuos) > 0: continue
+        #if len(myMuos) > 0: continue
         cutStatus['muveto'] += 1
         
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -392,8 +411,11 @@ def AnalyzeDataSet():
             if bool(passLooseTauIso[itau]) == False : continue
             myTaus.append(itau);
         
-        if len(myTaus)>0 : continue
+        #if len(myTaus)>0 : continue
         cutStatus['tauveto'] += 1
+        print 'before lepton veto'
+        if  ((len(myTaus) + len(myMuos) + len(myEles)) > nlepton) : continue
+        if not  ((len(myTaus) + len(myMuos) + len(myEles)) < nLepton) : continue
         
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
