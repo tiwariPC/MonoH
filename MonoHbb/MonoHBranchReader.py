@@ -261,7 +261,7 @@ def AnalyzeDataSet():
             ''' resolved Higgs boson tagging 
             '''
         ####
-        if nsubjetstatus == True : isboosted = False #; print "this is boosted"
+        if nsubjetstatus == True : isboosted = True #; print "this is boosted"
         else : isboosted = False
         isresolved = False
         if  (higgstag): isresolved = True;
