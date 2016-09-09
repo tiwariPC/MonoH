@@ -18,6 +18,8 @@ parser = optparse.OptionParser(usage)
 ## data will be true if -d is passed and will be false if -m is passed
 parser.add_option("-i", "--inputfile",  dest="inputfile")
 parser.add_option("-a", "--analyze", action="store_true",  dest="analyze")
+parser.add_option("-m", "--MLow", type=float,  dest="MLow")
+parser.add_option("-M", "--MHigh", type=float,  dest="MHigh")
 parser.add_option("-o", "--overlap", action="store_true",  dest="overlap")
 parser.add_option("-e", "--efficiency", action="store_true",  dest="efficiency")
 parser.add_option("-t", "--table", action="store_true",  dest="table")
@@ -28,6 +30,9 @@ parser.add_option("-P", "--OtherPlots", action="store_true",  dest="OtherPlots")
 
 (options, args) = parser.parse_args()
 
+print (options.MLow, options.MHigh)
+massCutLow = options.MLow 
+massCutHigh = options.MHigh
 #print 'options = ',[options.inputfile]
 inputfilename = options.inputfile
 
@@ -203,8 +208,8 @@ def AnalyzeDataSet():
     
         if HIndex > -1 :
             cutStatus['HiggsID'] += 1
-            if (fatjetPRmassL2L3Corr[HIndex] > 100.0) & ( pfMet > 200.0 ): 
-                if fatjetPRmassL2L3Corr[HIndex] < 150.0 : 
+            if (fatjetPRmassL2L3Corr[HIndex] > massCutLow) & ( pfMet > 200.0 ): 
+                if fatjetPRmassL2L3Corr[HIndex] < massCutHigh : 
                     fatJetMassStatus = True
                     cutStatus['HMass'] += 1
                     nSubBJet=0;
