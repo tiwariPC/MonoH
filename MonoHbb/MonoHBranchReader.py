@@ -216,9 +216,10 @@ def AnalyzeDataSet():
                         nsubjetstatus = True
                         cutStatus['btag'] += 1
     
-        
-#        else:   
-        if True:
+        if nsubjetstatus: 
+            print "this is boosted regime"
+        else:   
+        #if True:
             ''' resolved Higgs boson tagging 
             '''    
             HPtVec=[]
