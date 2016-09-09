@@ -1,3 +1,4 @@
+
 from ROOT import TFile, TTree, TH1F, TH1D, TH1, TCanvas, TChain,TGraphAsymmErrors, TMath, TH2D
 import ROOT as ROOT
 import os
@@ -74,7 +75,7 @@ def AnalyzeDataSet():
 
     
     for ievent in range(NEntries):
-    #for ievent in range(101):
+    #for ievent in range(501):
 
         skimmedTree.GetEntry(ievent)
         
@@ -88,8 +89,9 @@ def AnalyzeDataSet():
         run                        = skimmedTree.__getattr__('runId')
         lumi                       = skimmedTree.__getattr__('lumiSection')
         event                      = skimmedTree.__getattr__('eventId')
-        
-        #if event != 27701: continue                                
+
+        #if event != 4126: continue                                
+        #if lumi  != 42: continue                                
         #print ("run,lumi,event")
         trigName                   = skimmedTree.__getattr__('hlt_trigName')
         trigResult                 = skimmedTree.__getattr__('hlt_trigResult')
@@ -169,7 +171,7 @@ def AnalyzeDataSet():
         ## PFMET Selection
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------        
-        pfmetstatus = ( pfMet > 200.0 )
+        pfmetstatus = ( pfMet > 170.0 )
         if pfmetstatus == False : continue 
         cutStatus['pfmet'] += 1
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -201,7 +203,7 @@ def AnalyzeDataSet():
     
         if HIndex > -1 :
             cutStatus['HiggsID'] += 1
-            if fatjetPRmassL2L3Corr[HIndex] > 100.0 : 
+            if (fatjetPRmassL2L3Corr[HIndex] > 100.0) & ( pfMet > 200.0 ): 
                 if fatjetPRmassL2L3Corr[HIndex] < 150.0 : 
                     fatJetMassStatus = True
                     cutStatus['HMass'] += 1
@@ -215,7 +217,8 @@ def AnalyzeDataSet():
                         cutStatus['btag'] += 1
     
         
-        else:   
+#        else:   
+        if True:
             ''' resolved Higgs boson tagging 
             '''    
             HPtVec=[]
@@ -257,7 +260,7 @@ def AnalyzeDataSet():
             ''' resolved Higgs boson tagging 
             '''
         ####
-        if nsubjetstatus == True : isboosted = True #; print "this is boosted"
+        if nsubjetstatus == True : isboosted = False #; print "this is boosted"
         else : isboosted = False
         isresolved = False
         if  (higgstag): isresolved = True;
@@ -391,8 +394,8 @@ def AnalyzeDataSet():
         ## Photon Veto
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
         # ----to be added in future---------------------------------------------------------------------------------------------------------------------------------------
+        print (run,lumi,event)
         
-
         npass = npass +1
         
         ##-------------------------------------------------------------------------------------------------
@@ -414,7 +417,7 @@ def AnalyzeDataSet():
         #print (allquantitiesBoosted.regime, allquantitiesBoosted.met,allquantitiesBoosted.mass )
         allquantitiesBoosted.FillHisto()
 
-    #print cutStatus
+    print cutStatus
     #print "npass = ", npass
     
     allquantitiesBoosted.WriteHisto()
