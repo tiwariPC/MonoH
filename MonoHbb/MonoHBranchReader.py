@@ -1,29 +1,40 @@
-
+#!/usr/bin/env python
 from ROOT import TFile, TTree, TH1F, TH1D, TH1, TCanvas, TChain,TGraphAsymmErrors, TMath, TH2D
 import ROOT as ROOT
 import os
 import sys, optparse
 from array import array
 import math
+
 ROOT.gROOT.SetBatch(True)
 from MonoHbbQuantities import *
+from PileUpWeights import PUWeight
+
 ######################################
 ## set up running mode of the code.
 ######################################
 
+#ROOT.gROOT.ProcessLine('.L PileUpWeights.h')
 
+#print "puweight = ",PUWEIGHT(10)
 usage = "usage: %prog [options] arg1 arg2"
 parser = optparse.OptionParser(usage)
 
 ## data will be true if -d is passed and will be false if -m is passed
 parser.add_option("-i", "--inputfile",  dest="inputfile")
+parser.add_option("-o", "--outputfile", dest="outputfile")
+
 parser.add_option("-a", "--analyze", action="store_true",  dest="analyze")
-parser.add_option("-o", "--overlap", action="store_true",  dest="overlap")
+
 parser.add_option("-e", "--efficiency", action="store_true",  dest="efficiency")
+parser.add_option("-F", "--farmout", action="store_true",  dest="farmout")
 parser.add_option("-t", "--table", action="store_true",  dest="table")
 parser.add_option("-P", "--OtherPlots", action="store_true",  dest="OtherPlots")
 
-## cut values
+########################################################################################################################
+########################## cut values########################################################################
+########################################################################################################################
+
 parser.add_option("-m", "--MLow", type=float,  dest="MLow")
 parser.add_option("-M", "--MHigh", type=float,  dest="MHigh")
 
@@ -48,31 +59,49 @@ nJet        = options.Jet
 
 nbjet       = options.bjet
 
-print (massCutLow,massCutHigh,nlepton,nLepton,njet,nJet)
+
+isfarmout = options.farmout 
+print (massCutLow,massCutHigh,nlepton,nLepton,njet,nJet, options.inputfile, options.outputfile )
 #print 'options = ',[options.inputfile]
 inputfilename = options.inputfile
 
+print inputfilename
 pathlist = inputfilename.split("/")
 sizeoflist = len(pathlist)
 rootfile='tmp'
 if sizeoflist > 6: rootfile = pathlist[7]
 textfile = rootfile+".txt"
-outputdir='MonoHSamples/'
-os.system('mkdir '+outputdir)
 
+#outputdir='MonoHSamples/'
+#os.system('mkdir '+outputdir)
+
+outfilename=''
 outfilename=rootfile+".root"
-outfilename =outputdir+'/'+outfilename
+if isfarmout:
+    outfilename =options.outputfile
 
-#outfilename ='scanningHistograms_Hotline_2fbInv.root'
 
-#inputfilename = 'NCUGlobalTuples_3.root'
+skimmedTree = TChain("tree/treeMaker")
+
+print isfarmout
+if isfarmout:
+    infile = open(inputfilename)
+    for ifile in infile: 
+        skimmedTree.Add(ifile)
+
+
+if not isfarmout:
+    skimmedTree.Add(inputfilename)
+
 debug = False 
 
 def AnalyzeDataSet():
     ## Input rootfile name
-    rootfilename = inputfilename
-    f = TFile(rootfilename,'READ')
-    skimmedTree = f.Get('tree/treeMaker')
+    
+    #rootfilename = inputfilename
+    #print (rootfilename,inputfilename)
+    #f = TFile(rootfilename,'READ')
+    #skimmedTree = f.Get('tree/treeMaker')
     NEntries = skimmedTree.GetEntries()
     npass = 0
     #print [rootfilename, NEntries]
@@ -157,6 +186,28 @@ def AnalyzeDataSet():
         passLooseTauIso            = skimmedTree.__getattr__('disc_byLooseIsolationMVA3oldDMwLT')
         HiggsInfo_sorted           = []
         
+        pu_nTrueInt                = int(skimmedTree.__getattr__('pu_nTrueInt'))
+        
+        # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+        # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+        ## Pileup weight
+        # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+        # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+        allpuweights = PUWeight()
+        len_puweight = len(allpuweights)
+        puweight = 0.0
+        if pu_nTrueInt  <= len_puweight: puweight = allpuweights[pu_nTrueInt-1]
+        if pu_nTrueInt  > len_puweight : puweight = 0.0 
+        #print (len_puweight, pu_nTrueInt, puweight)
+        
+        # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+        # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+        ## BTag Scale Factor ---------------------------------------------------------------------------------------------------------------------------------------------
+        # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+        # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+        ROOT.gROOT.ProcessLine('.L BTagCalibrationStandalone.cpp+') 
+        
+        
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
         ## Trigger selection
@@ -238,7 +289,7 @@ def AnalyzeDataSet():
                         cutStatus['btag'] += 1
     
         if nsubjetstatus: 
-            print "this is boosted regime"
+            if False: print "this is boosted regime"
         else:   
         #if True:
             ''' resolved Higgs boson tagging 
@@ -413,7 +464,7 @@ def AnalyzeDataSet():
         
         #if len(myTaus)>0 : continue
         cutStatus['tauveto'] += 1
-        print 'before lepton veto'
+        #print 'before lepton veto'
         if  ((len(myTaus) + len(myMuos) + len(myEles)) > nlepton) : continue
         if not  ((len(myTaus) + len(myMuos) + len(myEles)) < nLepton) : continue
         
@@ -422,7 +473,7 @@ def AnalyzeDataSet():
         ## Photon Veto
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
         # ----to be added in future---------------------------------------------------------------------------------------------------------------------------------------
-        print (run,lumi,event)
+        #print (run,lumi,event)
         
         npass = npass +1
         
@@ -439,6 +490,7 @@ def AnalyzeDataSet():
         
         allquantitiesBoosted.regime     = regime
         allquantitiesBoosted.met        = pfMet
+        allquantitiesBoosted.totalevents = 1
         if regime:      allquantitiesBoosted.mass            = fatjetPRmassL2L3Corr[HIndex]
         if not regime:  allquantitiesBoosted.mass            = HiggsInfo_sorted[0][2]
         
@@ -448,7 +500,7 @@ def AnalyzeDataSet():
     print cutStatus
     #print "npass = ", npass
     
-    allquantitiesBoosted.WriteHisto()
+    allquantitiesBoosted.WriteHisto(NEntries)
     print " efficiency = ", float(npass/float(NEntries))
     f = open('efficiencyfiles/'+textfile, 'w')
     f.write(str(float(npass/float(NEntries))))
@@ -519,6 +571,7 @@ def Phi_mpi_pi(x):
 if __name__ == "__main__":
     ## analyze the tree and make histograms and all the 2D plots and Efficiency plots. 
     if options.analyze:
+        print "now calling analyzedataset"
         AnalyzeDataSet()
     
     
