@@ -10,6 +10,8 @@ ROOT.gROOT.SetBatch(True)
 from MonoHbbQuantities import *
 from PileUpWeights import PUWeight
 
+ROOT.gROOT.ProcessLine('.L BTagCalibrationStandalone.cpp+') 
+
 ######################################
 ## set up running mode of the code.
 ######################################
@@ -205,8 +207,35 @@ def AnalyzeDataSet():
         ## BTag Scale Factor ---------------------------------------------------------------------------------------------------------------------------------------------
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
-        ROOT.gROOT.ProcessLine('.L BTagCalibrationStandalone.cpp+') 
         
+        calib = ROOT.BTagCalibrationStandalone('csvv1', 'subjet_CSVv2_ichep.csv')
+        v_sys = getattr(ROOT, 'vector<string>')()
+        v_sys.push_back('up')
+        v_sys.push_back('down')
+
+
+        print v_sys[0], v_sys[1]
+        # make a reader instance and load the sf data
+        reader = ROOT.BTagCalibrationStandaloneReader(
+            0,              # 0 is for loose op, 1: medium, 2: tight, 3: discr. reshaping
+            "central",      # central systematic type
+            v_sys,          # vector of other sys. types
+            )    
+        
+        
+        
+        ## calib, flavor, measurement type 
+        ## flavor:  0 is for b flavour, 1: FLAV_C, 2: FLAV_UDSG
+        reader.load(calib, 0,  "lt" )  
+        
+        
+        ## central,  jet flavor, eta, pT
+        sf = reader.eval_auto_bounds('central', 0, 1.2, 31.) 
+        
+        sf_low = reader.eval_auto_bounds('down', 0, 1.2, 31.)
+        sf_up  = reader.eval_auto_bounds('up', 0, 1.2, 31.)
+        print "sf = ", sf, sf_low, sf_up
+
         
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
