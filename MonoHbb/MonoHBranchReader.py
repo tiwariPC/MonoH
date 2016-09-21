@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-from ROOT import TFile, TTree, TH1F, TH1D, TH1, TCanvas, TChain,TGraphAsymmErrors, TMath, TH2D
+from ROOT import TFile, TTree, TH1F, TH1D, TH1, TCanvas, TChain,TGraphAsymmErrors, TMath, TH2D, TLorentzVector
 import ROOT as ROOT
 import os
 import sys, optparse
@@ -40,6 +40,9 @@ parser.add_option("-P", "--OtherPlots", action="store_true",  dest="OtherPlots")
 parser.add_option("-m", "--MLow", type=float,  dest="MLow")
 parser.add_option("-M", "--MHigh", type=float,  dest="MHigh")
 
+parser.add_option( "--MLow1", type=float,  dest="MLow1")
+parser.add_option( "--MHigh1", type=float,  dest="MHigh1")
+
 parser.add_option("-l", "--lepton", type=int, dest="lepton")
 parser.add_option("-L", "--Lepton", type=int, dest="Lepton")
 
@@ -52,6 +55,9 @@ parser.add_option("-J", "--Jet", type=int, dest="Jet")
 
 massCutLow   = options.MLow 
 massCutHigh  = options.MHigh
+
+massCutLow1   = options.MLow1
+massCutHigh1  = options.MHigh1
 
 nlepton      = options.lepton
 nLepton      = options.Lepton
@@ -126,6 +132,37 @@ def AnalyzeDataSet():
     allquantitiesBoosted.defineHisto()
 
     
+    # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+    # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+    # BTag Scale Factor Initialisation--------------------------------------------------------------------------------------------------------------------------------
+    # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+    # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    ## FatJets
+    calib = ROOT.BTagCalibrationStandalone('csvv1', 'subjet_CSVv2_ichep.csv')
+    v_sys = getattr(ROOT, 'vector<string>')()
+    v_sys.push_back('up')
+    v_sys.push_back('down')
+    ### working point, central systematic type, vector of other sys. types 
+    ###  0 is for loose op, 1: medium, 2: tight, 3: discr. reshaping
+    reader = ROOT.BTagCalibrationStandaloneReader( 0, "central", v_sys )    
+    reader.load(calib, 0,  "lt" )  
+    reader.load(calib, 1,  "lt" )  
+    reader.load(calib, 2,  "incl" )  
+    
+
+
+    ## ThinJets
+    calib1 = ROOT.BTagCalibrationStandalone('csvv2', 'CSVv2_ichep.csv')
+    reader1 = ROOT.BTagCalibrationStandaloneReader( 0, "central", v_sys )    
+    reader1.load(calib1, 0,  "comb" )  
+    reader1.load(calib1, 1,  "comb" )  
+    reader1.load(calib1, 2,  "incl" )  
+    
+    h_total = TH1F('h_total','h_total',2,0,2)
+    h_total_mcweight = TH1F('h_total_mcweight','h_total_mcweight',2,0,2)
+    
+    
     for ievent in range(NEntries):
     #for ievent in range(501):
 
@@ -163,12 +200,14 @@ def AnalyzeDataSet():
         subjetSDPz                 = skimmedTree.__getattr__('FATsubjetSDPz')
         subjetSDE                  = skimmedTree.__getattr__('FATsubjetSDE')
         passFatJetTightID          = skimmedTree.__getattr__('FATjetPassIDTight')
-        
+        subjetHadronFlavor         = skimmedTree.__getattr__('FATsubjetSDHadronFlavor')
+
         nTHINJets                  = skimmedTree.__getattr__('THINnJet')
         thinjetP4                  = skimmedTree.__getattr__('THINjetP4')
         thinJetCSV                 = skimmedTree.__getattr__('THINjetCISVV2')
         passThinJetLooseID         = skimmedTree.__getattr__('THINjetPassIDLoose')
         passThinJetPUID            = skimmedTree.__getattr__('THINisPUJetID')
+        THINjetHadronFlavor        = skimmedTree.__getattr__('THINjetHadronFlavor')
         
         nEle                       = skimmedTree.__getattr__('nEle')
         eleP4                      = skimmedTree.__getattr__('eleP4')
@@ -186,9 +225,26 @@ def AnalyzeDataSet():
         tauP4                      = skimmedTree.__getattr__('HPSTau_4Momentum')
         isDecayModeFinding         = skimmedTree.__getattr__('disc_decayModeFinding')
         passLooseTauIso            = skimmedTree.__getattr__('disc_byLooseIsolationMVA3oldDMwLT')
-        HiggsInfo_sorted           = []
-        
+        isData                     = skimmedTree.__getattr__('isData')
+        mcWeight                   = skimmedTree.__getattr__('mcWeight')
         pu_nTrueInt                = int(skimmedTree.__getattr__('pu_nTrueInt'))
+        
+        HiggsInfo_sorted           = []
+        # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+        # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+        # MC Weights ----------------------------------------------------------------------------------------------------------------------------------------------------
+        # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+        # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+        mcweight = 0.0 
+        if isData==1:   mcweight =  1.0
+        if not isData :
+            if mcWeight<0:  mcweight = -1.0
+            if mcWeight>0:  mcweight =  1.0
+        
+
+        h_total.Fill(1.);
+        h_total_mcweight.Fill(1.,mcweight);
+        
         
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -198,45 +254,21 @@ def AnalyzeDataSet():
         allpuweights = PUWeight()
         len_puweight = len(allpuweights)
         puweight = 0.0
-        if pu_nTrueInt  <= len_puweight: puweight = allpuweights[pu_nTrueInt-1]
-        if pu_nTrueInt  > len_puweight : puweight = 0.0 
+        if isData: puweight = 1.0 
+        if not isData:
+            if pu_nTrueInt  <= len_puweight: puweight = allpuweights[pu_nTrueInt-1]
+            if pu_nTrueInt  > len_puweight : puweight = 0.0 
         #print (len_puweight, pu_nTrueInt, puweight)
         
-        # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
-        # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
-        ## BTag Scale Factor ---------------------------------------------------------------------------------------------------------------------------------------------
-        # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
-        # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
-        
-        calib = ROOT.BTagCalibrationStandalone('csvv1', 'subjet_CSVv2_ichep.csv')
-        v_sys = getattr(ROOT, 'vector<string>')()
-        v_sys.push_back('up')
-        v_sys.push_back('down')
 
-
-        print v_sys[0], v_sys[1]
-        # make a reader instance and load the sf data
-        reader = ROOT.BTagCalibrationStandaloneReader(
-            0,              # 0 is for loose op, 1: medium, 2: tight, 3: discr. reshaping
-            "central",      # central systematic type
-            v_sys,          # vector of other sys. types
-            )    
+        #----------------------------------------------------------------------------------------------------------------------------------------------------------------
+        #----------------------------------------------------------------------------------------------------------------------------------------------------------------
+        #All Weights ----------------------------------------------------------------------------------------------------------------------------------------------------
+        #----------------------------------------------------------------------------------------------------------------------------------------------------------------
+        #----------------------------------------------------------------------------------------------------------------------------------------------------------------
+        allweights = puweight * mcweight 
         
-        
-        
-        ## calib, flavor, measurement type 
-        ## flavor:  0 is for b flavour, 1: FLAV_C, 2: FLAV_UDSG
-        reader.load(calib, 0,  "lt" )  
-        
-        
-        ## central,  jet flavor, eta, pT
-        sf = reader.eval_auto_bounds('central', 0, 1.2, 31.) 
-        
-        sf_low = reader.eval_auto_bounds('down', 0, 1.2, 31.)
-        sf_up  = reader.eval_auto_bounds('up', 0, 1.2, 31.)
-        print "sf = ", sf, sf_low, sf_up
-
-        
+            
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
         ## Trigger selection
@@ -302,10 +334,11 @@ def AnalyzeDataSet():
                         HIndex = ifatjet 
                         break
     
+        
         if HIndex > -1 :
             cutStatus['HiggsID'] += 1
-            if (fatjetPRmassL2L3Corr[HIndex] > massCutLow) & ( pfMet > 200.0 ): 
-                if fatjetPRmassL2L3Corr[HIndex] < massCutHigh : 
+            if ((fatjetPRmassL2L3Corr[HIndex] > massCutLow) & (fatjetPRmassL2L3Corr[HIndex] < massCutHigh)) | ((fatjetPRmassL2L3Corr[HIndex] > massCutLow1) & (fatjetPRmassL2L3Corr[HIndex] < massCutHigh1)) : 
+                if pfMet > 200.0:
                     fatJetMassStatus = True
                     cutStatus['HMass'] += 1
                     nSubBJet=0;
@@ -354,7 +387,7 @@ def AnalyzeDataSet():
             if HThinIndex > 0:
                 mass_ = HiggsInfo_sorted[0][2]
                 pt_   = HiggsInfo_sorted[0][3]
-                if (mass_ > massCutLow) & (mass_ < massCutHigh):
+                if (( mass_ > massCutLow) & ( mass_ < massCutHigh)) | ((mass_ > massCutLow1) & (mass_ < massCutHigh1)) : 
                     cutStatus['HMass'] += 1
                     if (pt_>150.): 
                         cutStatus['btag'] += 1
@@ -514,7 +547,44 @@ def AnalyzeDataSet():
         regime = False
         if isboosted: regime = True
         if isresolved: regime = False
-        #print (isboosted,isresolved, regime)
+        print (isboosted,isresolved, regime)
+        
+        # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+        # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+        ## BTag Scale Factor ---------------------------------------------------------------------------------------------------------------------------------------------
+        # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+        # ----------------------------------------------------------------------------------------------------------------------------------------------------------------        
+        
+        if regime:
+                        
+            p4_1 = TLorentzVector(subjetSDPx[HIndex][0], subjetSDPy[HIndex][0], subjetSDPz[HIndex][0], subjetSDE[HIndex][0])
+            p4_2 = TLorentzVector(subjetSDPx[HIndex][1], subjetSDPy[HIndex][1], subjetSDPz[HIndex][1], subjetSDE[HIndex][1])
+            
+            flav1 = jetflav(subjetHadronFlavor[HIndex][0])
+            flav2 = jetflav(subjetHadronFlavor[HIndex][1])
+            
+            sf_boosted1 = weightbtag(reader, flav1, p4_1.Pt(), p4_1.Eta())
+            sf_boosted2 = weightbtag(reader, flav2, p4_2.Pt(), p4_2.Eta())
+            
+            print (sf_boosted1, sf_boosted2)
+            
+        
+        if not regime: 
+            
+            ij = HiggsInfo_sorted[0][0]
+            jj = HiggsInfo_sorted[0][1]
+            
+            flav1 = jetflav(THINjetHadronFlavor[ij])
+            flav2 = jetflav(THINjetHadronFlavor[jj])
+
+            print (ij, flav1, thinjetP4[ij].Pt(), thinjetP4[ij].Eta())
+            #reader1.eval_auto_bounds('central', 0, 1.2, 50.)
+            sf_resolved1 = weightbtag(reader1, flav1, thinjetP4[ij].Pt(), thinjetP4[ij].Eta())
+            sf_resolved2 = weightbtag(reader1, flav2, thinjetP4[jj].Pt(), thinjetP4[jj].Eta())
+            
+            print (sf_resolved1, sf_resolved2)
+
+        
 
         
         allquantitiesBoosted.regime     = regime
@@ -525,11 +595,12 @@ def AnalyzeDataSet():
         
         #print (allquantitiesBoosted.regime, allquantitiesBoosted.met,allquantitiesBoosted.mass )
         allquantitiesBoosted.FillHisto()
+    
 
     print cutStatus
     #print "npass = ", npass
-    
-    allquantitiesBoosted.WriteHisto(NEntries)
+    NEntries_Weight = h_total_mcweight.Integral()
+    allquantitiesBoosted.WriteHisto((NEntries,NEntries_Weight))
     print " efficiency = ", float(npass/float(NEntries))
     f = open('efficiencyfiles/'+textfile, 'w')
     f.write(str(float(npass/float(NEntries))))
@@ -597,6 +668,23 @@ def Phi_mpi_pi(x):
     while (x < -kPI): x = x + kTWOPI;
     return x;
     
+def weightbtag(reader, flav, pt, eta):
+    sf_c = reader.eval_auto_bounds('central', flav, eta, pt) 
+    sf_low = reader.eval_auto_bounds('down', flav, eta, pt)
+    sf_up  = reader.eval_auto_bounds('up', flav, eta, pt)
+    btagsf = (sf_c, sf_low, sf_up)
+    return btagsf
+
+def jetflav(flav):
+    if flav == 5: 
+        flavor = 0
+    elif flav == 4:
+        flavor = 1
+    else:
+        flavor = 2
+    return flavor
+
+
 if __name__ == "__main__":
     ## analyze the tree and make histograms and all the 2D plots and Efficiency plots. 
     if options.analyze:

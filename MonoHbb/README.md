@@ -20,5 +20,13 @@ python MonoHbbAllSamplesReader.py
 ## for commandline 
 python MonoHBranchReader.py  -m 100 -M 150 -i NCUGlobalTuples_1.root  -a -j 0 -J 2 -l 0 -L 1 
 
+## for Znunu Jets CR 
+python MonoHBranchReader.py  -m 100 -M 150 -i NCUGlobalTuples_1.root  -a -j 0 -J 2 -l 0 -L 1 
+
+
 ## for faromout 
 python MonoHBranchReader.py  -m 100 -M 150 -i NCUGlobalTuples_1.root  -a -j 0 -J 2 -l 0 -L 1 -F 
+
+
+## for DiMu CR: 
+python DiMuonControlRegion.py  -m 100 -M 150 -i NCUGlobalTuples_223.root -a -j 0 -J 2 -l 0 -L 1

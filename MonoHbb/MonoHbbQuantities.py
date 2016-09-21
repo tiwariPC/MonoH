@@ -20,8 +20,12 @@ class MonoHbbQuantities:
         self.h_csv2        =  []
         
         self.h_total   = []
+        self.h_total_weight   = []
+        
     def defineHisto(self):
         self.h_total.append(TH1F('h_total','h_total',4,0,4))
+        self.h_total_weight.append(TH1F('h_total_weight','h_total_weight',4,0,4))
+        
         for iregime in range(2):
             postname = str(iregime)
             self.h_met.append(TH1F('h_met_'+postname,  'h_met_'+postname,  100,0.,1000.))
@@ -44,11 +48,15 @@ class MonoHbbQuantities:
         self.h_csv2[type_].Fill(self.csv2)
         
         
-    def WriteHisto(self, nevts):
+    def WriteHisto(self, (nevts,nevts_weight)):
         f = TFile(self.rootfilename,'RECREATE')
         f.cd()
         self.h_total[0].SetBinContent(1,nevts)
         self.h_total[0].Write()
+        
+        self.h_total_weight[0].SetBinContent(1,nevts_weight)
+        self.h_total_weight[0].Write()
+        
         for iregime in range(2):
             self.h_met[iregime].Write()
             self.h_mass[iregime].Write()
