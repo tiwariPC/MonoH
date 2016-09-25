@@ -18,7 +18,9 @@ python MonoHbbAllSamplesReader.py
 -- For signal region use: 
 
 ## for commandline 
-python MonoHBranchReader.py  -m 100 -M 150 -i NCUGlobalTuples_1.root  -a -j 0 -J 2 -l 0 -L 1 
+python MonoHBranchReader.py  -m 100.0 -M 150.0 -i NCUGlobalTuples_1.root  -a -j 0 -J 2 -l 0 -L 1 --MLow1 100.0 --MHigh1 150.0
+
+#python MonoHBranchReader.py  -m 100 -M 150 -i NCUGlobalTuples_1.root  -a -j 0 -J 2 -l 0 -L 1 
 
 ## for Znunu Jets CR 
 python MonoHBranchReader.py  -m 100 -M 150 -i NCUGlobalTuples_1.root  -a -j 0 -J 2 -l 0 -L 1 

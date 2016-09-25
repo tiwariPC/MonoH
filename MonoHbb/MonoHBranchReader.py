@@ -92,15 +92,34 @@ if isfarmout:
 skimmedTree = TChain("tree/treeMaker")
 
 print isfarmout
+
+
+
+def WhichSample(filename):
+    samplename = 'all'
+    if filename.find('WJets')>-1:
+        samplename = 'WJETS'
+    elif filename.find('ZJets')>-1:
+        samplename = 'ZJETS'
+    elif filename.find('TT')>-1:
+        samplename  = 'TT'
+    else:
+        samplename = 'all'
+    return samplename
+    
+
+samplename = 'all'
 if isfarmout:
     infile = open(inputfilename)
     for ifile in infile: 
         skimmedTree.Add(ifile)
+        samplename = WhichSample(ifile)
 
 
 if not isfarmout:
     skimmedTree.Add(inputfilename)
-
+    samplename = WhichSample(inputfilename)
+    
 debug = False 
 
 def AnalyzeDataSet():
@@ -165,7 +184,7 @@ def AnalyzeDataSet():
     
     for ievent in range(NEntries):
     #for ievent in range(501):
-
+        print "event number = ",ievent
         skimmedTree.GetEntry(ievent)
         
         ## Get all relevant branches
@@ -229,7 +248,16 @@ def AnalyzeDataSet():
         mcWeight                   = skimmedTree.__getattr__('mcWeight')
         pu_nTrueInt                = int(skimmedTree.__getattr__('pu_nTrueInt'))
         
+        nGenPar                    = skimmedTree.__getattr__('nGenPar')
+        genParId                   = skimmedTree.__getattr__('genParId')
+        genMomParId                = skimmedTree.__getattr__('genMomParId')
+        genParSt                   = skimmedTree.__getattr__('genParSt')
+        genParP4                   = skimmedTree.__getattr__('genParP4')
+        #= skimmedTree.__getattr__('')
+        #= skimmedTree.__getattr__('')
+             
         HiggsInfo_sorted           = []
+        
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
         # MC Weights ----------------------------------------------------------------------------------------------------------------------------------------------------
@@ -245,6 +273,18 @@ def AnalyzeDataSet():
         h_total.Fill(1.);
         h_total_mcweight.Fill(1.,mcweight);
         
+        
+        
+        # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+        # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+        # EWK Reweighting And Top pT Reweighting--------------------------------------------------------------------------------------------------------------------------
+        # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+        # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+        print "samplename", samplename
+        genpTReweighting = 1.0 
+        if isData==1:   genpTReweighting  =  1.0
+        if not isData :  genpTReweighting = GenWeightProducer(samplename, nGenPar, genParId, genMomParId, genParSt,genParP4)
+        #print genpTReweighting
         
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -266,7 +306,7 @@ def AnalyzeDataSet():
         #All Weights ----------------------------------------------------------------------------------------------------------------------------------------------------
         #----------------------------------------------------------------------------------------------------------------------------------------------------------------
         #----------------------------------------------------------------------------------------------------------------------------------------------------------------
-        allweights = puweight * mcweight 
+        allweights = puweight * mcweight * genpTReweighting
         
             
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -685,6 +725,99 @@ def jetflav(flav):
     return flavor
 
 
+
+
+def GenWeightProducer(sample,nGenPar, genParId, genMomParId, genParSt,genParP4):
+    pt__=0;
+    print " inside gen weight "
+    k2=1.0
+    #################
+    # WJets
+    #################
+    if sample=="WJETS":
+        goodLepID = []
+        for ig in range(nGenPar): 
+            PID    = genParId[ig]
+            momPID = genMomParId[ig]
+            status = genParSt[ig]
+            #print "inside WJ loop pdgid", PID
+            #print ("if status =",      (abs(PID) != 11),( abs(PID) != 12),(  abs(PID) != 13 ),(  abs(PID) != 14),(  abs(PID) != 15),(  abs(PID) != 16))
+            #print "and of if status ", ( (abs(PID) != 11) & (abs(PID) != 12) &  (abs(PID) != 13) & (abs(PID) != 14) &  (abs(PID) != 15) &  (abs(PID) != 16) )
+            
+            if ( (abs(PID) != 11) & (abs(PID) != 12) &  (abs(PID) != 13) & (abs(PID) != 14) &  (abs(PID) != 15) &  (abs(PID) != 16) ): continue
+            #print "lepton found"
+            if ( ( (status != 1) & (abs(PID) != 15)) | ( (status != 2) & (abs(PID) == 15)) ): continue
+            #print "tau found"
+            if ( (abs(momPID) != 24) & (momPID != PID) ): continue
+            #print "W found"
+            #print "aftrer WJ if statement"
+            goodLepID.append(ig)
+        #print "length = ",len(goodLepID)
+        if len(goodLepID) == 2 :
+            l4_thisLep = genParP4[goodLepID[0]]
+            l4_thatLep = genParP4[goodLepID[1]]
+            l4_z = l4_thisLep + l4_thatLep
+            
+            pt = l4_z.Pt()
+            pt__ = pt
+            print " pt inside "
+            k2 = -0.830041 + 7.93714 *TMath.Power( pt - (-877.978) ,(-0.213831) ) ;
+    
+    #################        
+    #ZJets
+    #################
+    if sample == "ZJETS":
+        print " inside zjets "
+        goodLepID = []
+        for ig in range(nGenPar):
+         #   print " inside loop "
+            PID    = genParId[ig]
+            momPID = genMomParId[ig]
+            status = genParSt[ig]
+          #  print " after vars "
+
+            if ( (abs(PID) != 12) &  (abs(PID) != 14) &  (abs(PID) != 16) ) : continue
+            if ( status != 1 ) : continue 
+            if ( (momPID != 23) & (momPID != PID) ) : continue
+            goodLepID.append(ig)
+        
+        if len(goodLepID) == 2 :
+            l4_thisLep = genParP4[goodLepID[0]]
+            l4_thatLep = genParP4[goodLepID[1]]
+            l4_z = l4_thisLep + l4_thatLep
+            pt = l4_z.Pt()
+            print " pt inside "
+            k2 = -0.180805 + 6.04146 *TMath.Power( pt - (-759.098) ,(-0.242556) ) ;
+
+    #################        
+    #TTBar
+    #################        
+    if (sample=="TT"):
+        print " inside ttbar "
+        goodLepID = []
+        for ig in range(nGenPar):
+            print "inside TT loop "
+            PID    = genParId[ig]
+            momPID = genMomParId[ig]
+            status = genParSt[ig]
+            if ( abs(PID) == 6) :
+                goodLepID.append(ig)
+        if(len(goodLepID)==2):
+            l4_thisLep = genParP4[goodLepID[0]]
+            l4_thatLep = genParP4[goodLepID[1]]
+            pt1 = TMath.Min(400.0, l4_thisLep.Pt())
+            pt2 = TMath.Min(400.0, l4_thatLep.Pt())
+            
+            w1 = TMath.Exp(0.156 - 0.00137*pt1);
+            w2 = TMath.Exp(0.156 - 0.00137*pt2);
+            k2 =  1.001*TMath.Sqrt(w1*w2);
+            
+    if(sample=="all"):
+        k2 = 1.0
+        
+    return k2
+
+
 if __name__ == "__main__":
     ## analyze the tree and make histograms and all the 2D plots and Efficiency plots. 
     if options.analyze:
@@ -693,3 +826,4 @@ if __name__ == "__main__":
     
     
     
+
