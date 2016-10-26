@@ -3,9 +3,10 @@ from ROOT import TFile, TTree, TH1F, TH1D, TH1, TCanvas, TChain,TGraphAsymmError
 import ROOT as ROOT
 import os 
 
-inputfilename = os.environ['INPUT']
-outfilename   = os.environ['OUTPUT']
-
+#inputfilename = os.environ['INPUT']
+#outfilename   = os.environ['OUTPUT']
+inputfilename = 'zj100.txt'
+outfilename = 'tmp.root'
 
 tree_ = TChain("tree/treeMaker")
 infile = open(inputfilename)
@@ -22,6 +23,14 @@ thinjetcut = 'THINnJet > 1 & THINjetP4[0].Pt() > 30.0 & THINjetP4[1].Pt() > 30.0
 
 allcut = metcut + ' & (  (' + fatjetcut + ' ) | ( ' + thinjetcut + ') )'
 print allcut
-tree_.CopyTree(allcut).Write("skimmedTree")
+tree_.CopyTree(allcut).Write("treeMaker")#skimmedTree")
 
-#file_out.Close()
+h_total = TH1F('h_total','h_total',2,0,2)
+totalevents= tree_.GetEntries()
+
+h_total_w = TH1F('h_total_w','h_total_w',2,0,2)
+totalevents_w = tree_.GetEntries()
+
+h_total.SetBinContent(1,totalevents)
+h_total.Write()
+file_out.Close()

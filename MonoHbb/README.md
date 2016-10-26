@@ -32,3 +32,12 @@ python MonoHBranchReader.py  -m 100 -M 150 -i NCUGlobalTuples_1.root  -a -j 0 -J
 
 ## for DiMu CR: 
 python DiMuonControlRegion.py  -m 100 -M 150 -i NCUGlobalTuples_223.root -a -j 0 -J 2 -l 0 -L 1
+
+
+## Things to do for skimmer
+## define 50 branches
+## loop over fat jets
+## loop over thin jets
+## loop over triggers
+## loop over filters
+## write 50 branches

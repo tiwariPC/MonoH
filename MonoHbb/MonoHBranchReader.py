@@ -77,7 +77,7 @@ inputfilename = options.inputfile
 #print inputfilename
 pathlist = inputfilename.split("/")
 sizeoflist = len(pathlist)
-rootfile='tmp'
+rootfile='tmphist'
 if sizeoflist > 6: rootfile = pathlist[7]
 textfile = rootfile+".txt"
 
@@ -90,7 +90,7 @@ if isfarmout:
     outfilename =options.outputfile
 
 
-skimmedTree = TChain("tree/treeMaker")
+skimmedTree = TChain("outTree")
 
 #print isfarmout
 
@@ -109,18 +109,32 @@ def WhichSample(filename):
     return samplename
     
 
+h_t = TH1F('h_t','h_t',2,0,2)
+h_t_weight = TH1F('h_t_weight','h_t_weight',2,0,2)
+
 samplename = 'all'
 if isfarmout:
     infile = open(inputfilename)
     for ifile in infile: 
         skimmedTree.Add(ifile)
         samplename = WhichSample(ifile)
-
+        ## for histograms
+        f_tmp = TFile(ifile,'READ')
+        h_tmp = f_tmp.Get('h_total')
+        h_tmp_weight = f_tmp.Get('h_total_mcweight')
+        h_t.Add(h_tmp)
+        h_t_weight.Add(h_tmp_weight)
 
 if not isfarmout:
     skimmedTree.Add(inputfilename)
     samplename = WhichSample(inputfilename)
-    
+    ## for histograms
+    f_tmp = TFile(inputfilename,'READ')
+    h_tmp = f_tmp.Get('h_total')
+    h_tmp_weight = f_tmp.Get('h_total_mcweight')
+    h_t.Add(h_tmp)
+    h_t_weight.Add(h_tmp_weight)
+
 debug = False 
 
 def AnalyzeDataSet():
@@ -131,6 +145,7 @@ def AnalyzeDataSet():
     #f = TFile(rootfilename,'READ')
     #skimmedTree = f.Get('tree/treeMaker')
     NEntries = skimmedTree.GetEntries()
+    print ('NEntries = ',NEntries)
     npass = 0
     #print [rootfilename, NEntries]
     cutStatus={'total':NEntries}
@@ -179,8 +194,8 @@ def AnalyzeDataSet():
     reader1.load(calib1, 1,  "comb" )  
     reader1.load(calib1, 2,  "incl" )  
     
-    h_total = TH1F('h_total','h_total',2,0,2)
-    h_total_mcweight = TH1F('h_total_mcweight','h_total_mcweight',2,0,2)
+    #h_total = TH1F('h_total','h_total',2,0,2)
+    #h_total_mcweight = TH1F('h_total_mcweight','h_total_mcweight',2,0,2)
     
     
     
@@ -202,67 +217,70 @@ def AnalyzeDataSet():
         ## Extract branches
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
-        run                        = skimmedTree.__getattr__('runId')
-        lumi                       = skimmedTree.__getattr__('lumiSection')
-        event                      = skimmedTree.__getattr__('eventId')
+        run                        = skimmedTree.__getattr__('st_runId')
+        lumi                       = skimmedTree.__getattr__('st_lumiSection')
+        event                      = skimmedTree.__getattr__('st_eventId')
 
         #if event != 4126: continue                                
         #if lumi  != 42: continue                                
-        #print ("run,lumi,event")
-        trigName                   = skimmedTree.__getattr__('hlt_trigName')
-        trigResult                 = skimmedTree.__getattr__('hlt_trigResult')
-        filterName                 = skimmedTree.__getattr__('hlt_filterName')
-        filterResult               = skimmedTree.__getattr__('hlt_filterResult')
+        print ("run,lumi,event")
+        #trigName                   = skimmedTree.__getattr__('st_hlt_trigName')
+        #trigResult                 = skimmedTree.__getattr__('st_hlt_trigResult')
+        #filterName                 = skimmedTree.__getattr__('st_hlt_filterName')
+        #filterResult               = skimmedTree.__getattr__('st_hlt_filterResult')
                                    
-        pfMet                      = skimmedTree.__getattr__('pfMetCorrPt')
-        pfMetPhi                   = skimmedTree.__getattr__('pfMetCorrPhi')
+        pfMet                      = skimmedTree.__getattr__('st_pfMetCorrPt')
+        pfMetPhi                   = skimmedTree.__getattr__('st_pfMetCorrPhi')
         
-        nFATJets                   = skimmedTree.__getattr__('FATnJet')
-        fatjetP4                   = skimmedTree.__getattr__('FATjetP4')
-        fatjetPRmassL2L3Corr       = skimmedTree.__getattr__('FATjetPRmassL2L3Corr')
-        nSubSoftDropJet            = skimmedTree.__getattr__('FATnSubSDJet')
-        subjetSDCSV                = skimmedTree.__getattr__('FATsubjetSDCSV')
-        subjetSDPx                 = skimmedTree.__getattr__('FATsubjetSDPx')
-        subjetSDPy                 = skimmedTree.__getattr__('FATsubjetSDPy')
-        subjetSDPz                 = skimmedTree.__getattr__('FATsubjetSDPz')
-        subjetSDE                  = skimmedTree.__getattr__('FATsubjetSDE')
-        passFatJetTightID          = skimmedTree.__getattr__('FATjetPassIDTight')
-        subjetHadronFlavor         = skimmedTree.__getattr__('FATsubjetSDHadronFlavor')
+        nFatJets                   = skimmedTree.__getattr__('st_nFatJets')
+        fatjetP4                   = skimmedTree.__getattr__('st_FATjetP4')
+        fatjetPRmassL2L3Corr       = skimmedTree.__getattr__('st_FATjetPRmassL2L3Corr')
+        nSubSoftDropJet            = skimmedTree.__getattr__('st_FATnSubSDJet')
+        subjetSDCSV                = skimmedTree.__getattr__('st_subjetSDCSV')
+        #subjetSDPx                 = skimmedTree.__getattr__('st_FATsubjetSDPx')
+        #subjetSDPy                 = skimmedTree.__getattr__('st_FATsubjetSDPy')
+        #subjetSDPz                 = skimmedTree.__getattr__('st_FATsubjetSDPz')
+        #subjetSDE                  = skimmedTree.__getattr__('st_FATsubjetSDE')
+        subjetSDPt                  = skimmedTree.__getattr__('st_subjetPt')
+        subjetSDEta                  = skimmedTree.__getattr__('st_subjetEta')
+        #passFatJetTightID          = skimmedTree.__getattr__('st_FATjetPassIDTight')
+        subjetHadronFlavor         = skimmedTree.__getattr__('st_subjetFlav')
 
-        nTHINJets                  = skimmedTree.__getattr__('THINnJet')
-        thinjetP4                  = skimmedTree.__getattr__('THINjetP4')
-        thinJetCSV                 = skimmedTree.__getattr__('THINjetCISVV2')
-        passThinJetLooseID         = skimmedTree.__getattr__('THINjetPassIDLoose')
-        passThinJetPUID            = skimmedTree.__getattr__('THINisPUJetID')
-        THINjetHadronFlavor        = skimmedTree.__getattr__('THINjetHadronFlavor')
+        nTHINJets                  = skimmedTree.__getattr__('st_THINnJet')
+        thinjetP4                  = skimmedTree.__getattr__('st_THINjetP4')
+        thinJetCSV                 = skimmedTree.__getattr__('st_THINjetCISVV2')
+        #passThinJetLooseID         = skimmedTree.__getattr__('st_THINjetPassIDLoose')
+        #passThinJetPUID            = skimmedTree.__getattr__('st_THINisPUJetID')
+        THINjetHadronFlavor        = skimmedTree.__getattr__('st_THINjetHadronFlavor')
         
-        nEle                       = skimmedTree.__getattr__('nEle')
-        eleP4                      = skimmedTree.__getattr__('eleP4')
-        eleIsPassLoose             = skimmedTree.__getattr__('eleIsPassLoose')
+        nEle                       = skimmedTree.__getattr__('st_nEle')
+        eleP4                      = skimmedTree.__getattr__('st_eleP4')
+        #eleIsPassLoose             = skimmedTree.__getattr__('st_eleIsPassLoose')
         
-        nMu                        = skimmedTree.__getattr__('nMu')
-        muP4                       = skimmedTree.__getattr__('muP4')
-        isLooseMuon                = skimmedTree.__getattr__('isLooseMuon')
-        muChHadIso                 = skimmedTree.__getattr__('muChHadIso')
-        muNeHadIso                 = skimmedTree.__getattr__('muNeHadIso')
-        muGamIso                   = skimmedTree.__getattr__('muGamIso')
-        muPUPt                     = skimmedTree.__getattr__('muPUPt')
+        nMu                        = skimmedTree.__getattr__('st_nMu')
+        muP4                       = skimmedTree.__getattr__('st_muP4')
+        #isLooseMuon                = skimmedTree.__getattr__('st_isLooseMuon')
+        #muChHadIso                 = skimmedTree.__getattr__('st_muChHadIso')
+        #muNeHadIso                 = skimmedTree.__getattr__('st_muNeHadIso')
+        #muGamIso                   = skimmedTree.__getattr__('st_muGamIso')
+        #muPUPt                     = skimmedTree.__getattr__('st_muPUPt')
         
-        nTau                       = skimmedTree.__getattr__('HPSTau_n')
-        tauP4                      = skimmedTree.__getattr__('HPSTau_4Momentum')
-        isDecayModeFinding         = skimmedTree.__getattr__('disc_decayModeFinding')
-        passLooseTauIso            = skimmedTree.__getattr__('disc_byLooseIsolationMVA3oldDMwLT')
-        isData                     = skimmedTree.__getattr__('isData')
-        mcWeight                   = skimmedTree.__getattr__('mcWeight')
-        pu_nTrueInt                = int(skimmedTree.__getattr__('pu_nTrueInt'))
+        nTau                       = skimmedTree.__getattr__('st_HPSTau_n')
+        tauP4                      = skimmedTree.__getattr__('st_HPSTau_4Momentum')
+        #isDecayModeFinding         = skimmedTree.__getattr__('st_disc_decayModeFinding')
+        #passLooseTauIso            = skimmedTree.__getattr__('st_disc_byLooseIsolationMVA3oldDMwLT')
         
-        nGenPar                    = skimmedTree.__getattr__('nGenPar')
-        genParId                   = skimmedTree.__getattr__('genParId')
-        genMomParId                = skimmedTree.__getattr__('genMomParId')
-        genParSt                   = skimmedTree.__getattr__('genParSt')
-        genParP4                   = skimmedTree.__getattr__('genParP4')
-        #= skimmedTree.__getattr__('')
-        #= skimmedTree.__getattr__('')
+        isData                     = skimmedTree.__getattr__('st_isData')
+        mcWeight                   = skimmedTree.__getattr__('mcweight')
+        pu_nTrueInt                = int(skimmedTree.__getattr__('st_pu_nTrueInt'))
+        
+        nGenPar                    = skimmedTree.__getattr__('st_nGenPar')
+        genParId                   = skimmedTree.__getattr__('st_genParId')
+        genMomParId                = skimmedTree.__getattr__('st_genMomParId')
+        genParSt                   = skimmedTree.__getattr__('st_genParSt')
+        genParP4                   = skimmedTree.__getattr__('st_genParP4')
+        #= skimmedTree.__getattr__('st_')
+        #= skimmedTree.__getattr__('st_')
              
         HiggsInfo_sorted           = []
         
@@ -278,8 +296,8 @@ def AnalyzeDataSet():
             if mcWeight>0:  mcweight =  1.0
         
 
-        h_total.Fill(1.);
-        h_total_mcweight.Fill(1.,mcweight);
+        #h_total.Fill(1.);
+        #h_total_mcweight.Fill(1.,mcweight);
         
         
         
@@ -324,6 +342,7 @@ def AnalyzeDataSet():
         ## Trigger selection
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+        '''
         itrig_=0; trig1 = False; trig2 = False;
         trig1 = CheckFilter(trigName, trigResult, 'HLT_PFMET170_NoiseCleaned')
         trig2 = CheckFilter(trigName, trigResult, 'HLT_PFMET90_PFMHT90_')
@@ -352,7 +371,7 @@ def AnalyzeDataSet():
         filterstatus =  True
         #if filterstatus == False : continue 
         cutStatus['filter'] += 1
-
+        '''
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
         ## PFMET Selection
@@ -381,16 +400,21 @@ def AnalyzeDataSet():
         HThinIndex = -1
         nsubjetstatus = False
         higgstag = False
-        for ifatjet in range(nFATJets):
+        print ('nFATJets = ',nFatJets, ' nfatjetPRmassL2L3Corr = ', len(fatjetPRmassL2L3Corr))
+        
+        #nFATJets = st_nFatJets#len(fatjetP4)
+        for ifatjet in range(nFatJets):
             if fatjetP4[ifatjet].Pt() > 200.0  : 
                 if abs(fatjetP4[ifatjet].Eta())  < 2.4 : 
-                    if (bool(passFatJetTightID[ifatjet]) == True) : 
-                        HIndex = ifatjet 
-                        break
+                    #if (bool(passFatJetTightID[ifatjet]) == True) : 
+                    HIndex = ifatjet
+                    print 'ifatjet = ',ifatjet
+                    break
     
         
         if HIndex > -1 :
             cutStatus['HiggsID'] += 1
+            print "HIndex = ", HIndex
             if ((fatjetPRmassL2L3Corr[HIndex] > massCutLow) & (fatjetPRmassL2L3Corr[HIndex] < massCutHigh)) | ((fatjetPRmassL2L3Corr[HIndex] > massCutLow1) & (fatjetPRmassL2L3Corr[HIndex] < massCutHigh1)) : 
                 if pfMet > 200.0:
                     fatJetMassStatus = True
@@ -417,11 +441,11 @@ def AnalyzeDataSet():
             HiggsInfo=[]
             for ithinjet in range(nTHINJets):
                 j1 = thinjetP4[ithinjet]
-                if (j1.Pt() > 30.0)&(abs(j1.Eta())<2.4)&(bool(passThinJetLooseID[ithinjet])==True)&(bool(passThinJetPUID[ithinjet]) == True) & (thinJetCSV[ithinjet] > 0.8):   
+                if (j1.Pt() > 30.0)&(abs(j1.Eta())<2.4)& (thinJetCSV[ithinjet] > 0.8):   
                     for jthinjet in range(nTHINJets):
                         if (jthinjet != ithinjet ) & ( jthinjet > ithinjet ) & (jthinjet < nTHINJets) : 
                             j2 = thinjetP4[jthinjet]
-                            if (j2.Pt() > 30.0) & (abs(j2.Eta()) <2.4) & (bool(passThinJetLooseID[jthinjet]))&(bool(passThinJetPUID[jthinjet]))&(thinJetCSV[jthinjet] > 0.8) :
+                            if (j2.Pt() > 30.0) & (abs(j2.Eta()) <2.4) &(thinJetCSV[jthinjet] > 0.8) :
                                 
                                 Hpt = (j1 + j2 ).Pt()
                                 HMass = (j1 + j2 ).M()
@@ -481,8 +505,8 @@ def AnalyzeDataSet():
             #print (ijet, DeltaR(p4_j, fatjetP4[HIndex]), p4_j.Pt() , abs(p4_j.Eta()), bool(passThinJetLooseID[ijet]), bool(passThinJetPUID[ijet]), thinJetCSV[ijet])
             if p4_j.Pt() < 30 : continue
             if abs(p4_j.Eta())>4.5 : continue
-            if bool(passThinJetLooseID[ijet]) == False : continue
-            if bool(passThinJetPUID[ijet]) == False : continue 
+            #if bool(passThinJetLooseID[ijet]) == False : continue
+            #if bool(passThinJetPUID[ijet]) == False : continue 
             
             if isboosted : 
                 #print (isboosted,isresolved)
@@ -547,7 +571,7 @@ def AnalyzeDataSet():
         for iele in range(nEle):
             if eleP4[iele].Pt() < 10 : continue
             if abs(eleP4[iele].Eta()) >2.5: continue
-            if bool(eleIsPassLoose[iele]) == False : continue
+            #if bool(eleIsPassLoose[iele]) == False : continue
             myEles.append(iele)
 
         #if len(myEles) > 0 : continue
@@ -562,9 +586,9 @@ def AnalyzeDataSet():
         for imu in range(nMu):
             if muP4[imu].Pt()<10 : continue
             if abs(muP4[imu].Eta()) > 2.4  : continue
-            if  bool(isLooseMuon[imu]) == False  : continue
-            relPFIso = (muChHadIso[imu]+ max(0., muNeHadIso[imu] + muGamIso[imu] - 0.5*muPUPt[imu]))/muP4[imu].Pt();
-            if relPFIso>0.4 : continue
+            #if  bool(isLooseMuon[imu]) == False  : continue
+            #relPFIso = (muChHadIso[imu]+ max(0., muNeHadIso[imu] + muGamIso[imu] - 0.5*muPUPt[imu]))/muP4[imu].Pt();
+            #if relPFIso>0.4 : continue
             myMuos.append(imu)
         #if len(myMuos) > 0: continue
         cutStatus['muveto'] += 1
@@ -579,8 +603,8 @@ def AnalyzeDataSet():
             #print ("tau properties", tauP4[itau].Pt(), abs(tauP4[itau].Eta()), bool(isDecayModeFinding[itau]), bool(passLooseTauIso[itau]))
             if tauP4[itau].Pt()<20 : continue
             if abs(tauP4[itau].Eta())>2.3 : continue
-            if bool(isDecayModeFinding[itau]) == False : continue
-            if bool(passLooseTauIso[itau]) == False : continue
+            #if bool(isDecayModeFinding[itau]) == False : continue
+            #if bool(passLooseTauIso[itau]) == False : continue
             myTaus.append(itau);
         
         #if len(myTaus)>0 : continue
@@ -664,14 +688,19 @@ def AnalyzeDataSet():
         
         if regime:
             #print "inside regime"
-            p4_1 = TLorentzVector(subjetSDPx[HIndex][0], subjetSDPy[HIndex][0], subjetSDPz[HIndex][0], subjetSDE[HIndex][0])
-            p4_2 = TLorentzVector(subjetSDPx[HIndex][1], subjetSDPy[HIndex][1], subjetSDPz[HIndex][1], subjetSDE[HIndex][1])
+            #p4_1 = TLorentzVector(subjetSDPx[HIndex][0], subjetSDPy[HIndex][0], subjetSDPz[HIndex][0], subjetSDE[HIndex][0])
+            #p4_2 = TLorentzVector(subjetSDPx[HIndex][1], subjetSDPy[HIndex][1], subjetSDPz[HIndex][1], subjetSDE[HIndex][1])
+            
+            pt1 = subjetSDPt[HIndex][0]
+            eta1 = subjetSDEta[HIndex][0]
+            pt2 = subjetSDPt[HIndex][1]
+            eta2 = subjetSDEta[HIndex][1]
             
             flav1 = jetflav(subjetHadronFlavor[HIndex][0])
             flav2 = jetflav(subjetHadronFlavor[HIndex][1])
             
-            sf_boosted1 = weightbtag(reader, flav1, p4_1.Pt(), p4_1.Eta())
-            sf_boosted2 = weightbtag(reader, flav2, p4_2.Pt(), p4_2.Eta())
+            sf_boosted1 = weightbtag(reader, flav1, pt1, eta1)
+            sf_boosted2 = weightbtag(reader, flav2, pt2, eta2)
             
             #print (sf_boosted1, sf_boosted2)
             
@@ -736,7 +765,7 @@ def AnalyzeDataSet():
 
     #print cutStatus
     #print "npass = ", npass
-    NEntries_Weight = h_total_mcweight.Integral()
+    NEntries_Weight = h_t.Integral()
     allquantitiesBoosted.WriteHisto((NEntries,NEntries_Weight))
     #print " efficiency = ", float(npass/float(NEntries))
     f = open('efficiencyfiles/'+textfile, 'w')
