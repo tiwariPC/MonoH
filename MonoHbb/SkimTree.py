@@ -9,9 +9,12 @@ import numpy as numpy_
 
 ROOT.gROOT.LoadMacro("Loader.h+")
 
+## When not running on farmout
 #inputfilename= 'zj100.txt'
 #outfilename= 'tmp.root'
 
+
+## When running on farmout
 inputfilename = os.environ['INPUT']                                                                                                                                                 
 outfilename   = os.environ['OUTPUT']                                                                                                                                                
 

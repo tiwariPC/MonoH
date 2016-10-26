@@ -77,8 +77,9 @@ inputfilename = options.inputfile
 #print inputfilename
 pathlist = inputfilename.split("/")
 sizeoflist = len(pathlist)
+print ('sizeoflist = ',sizeoflist)
 rootfile='tmphist'
-if sizeoflist > 6: rootfile = pathlist[7]
+rootfile = pathlist[sizeoflist-1]
 textfile = rootfile+".txt"
 
 #outputdir='MonoHSamples/'
@@ -766,7 +767,8 @@ def AnalyzeDataSet():
     #print cutStatus
     #print "npass = ", npass
     NEntries_Weight = h_t.Integral()
-    allquantitiesBoosted.WriteHisto((NEntries,NEntries_Weight))
+    NEntries_total        = h_t_weight.Integral()
+    allquantitiesBoosted.WriteHisto((NEntries_total,NEntries_Weight))
     #print " efficiency = ", float(npass/float(NEntries))
     f = open('efficiencyfiles/'+textfile, 'w')
     f.write(str(float(npass/float(NEntries))))
