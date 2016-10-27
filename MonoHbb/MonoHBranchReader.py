@@ -86,7 +86,7 @@ textfile = rootfile+".txt"
 #os.system('mkdir '+outputdir)
 
 outfilename=''
-outfilename=rootfile+".root"
+outfilename=options.outputdir + "/" + rootfile
 if isfarmout:
     outfilename =options.outputfile
 
