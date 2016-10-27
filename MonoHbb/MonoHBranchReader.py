@@ -77,7 +77,7 @@ inputfilename = options.inputfile
 #print inputfilename
 pathlist = inputfilename.split("/")
 sizeoflist = len(pathlist)
-print ('sizeoflist = ',sizeoflist)
+#print ('sizeoflist = ',sizeoflist)
 rootfile='tmphist'
 rootfile = pathlist[sizeoflist-1]
 textfile = rootfile+".txt"
@@ -224,7 +224,7 @@ def AnalyzeDataSet():
 
         #if event != 4126: continue                                
         #if lumi  != 42: continue                                
-        print ("run,lumi,event")
+       # print ("run,lumi,event")
         #trigName                   = skimmedTree.__getattr__('st_hlt_trigName')
         #trigResult                 = skimmedTree.__getattr__('st_hlt_trigResult')
         #filterName                 = skimmedTree.__getattr__('st_hlt_filterName')
@@ -401,7 +401,7 @@ def AnalyzeDataSet():
         HThinIndex = -1
         nsubjetstatus = False
         higgstag = False
-        print ('nFATJets = ',nFatJets, ' nfatjetPRmassL2L3Corr = ', len(fatjetPRmassL2L3Corr))
+        #print ('nFATJets = ',nFatJets, ' nfatjetPRmassL2L3Corr = ', len(fatjetPRmassL2L3Corr))
         
         #nFATJets = st_nFatJets#len(fatjetP4)
         for ifatjet in range(nFatJets):
@@ -409,13 +409,13 @@ def AnalyzeDataSet():
                 if abs(fatjetP4[ifatjet].Eta())  < 2.4 : 
                     #if (bool(passFatJetTightID[ifatjet]) == True) : 
                     HIndex = ifatjet
-                    print 'ifatjet = ',ifatjet
+                    #print 'ifatjet = ',ifatjet
                     break
     
         
         if HIndex > -1 :
             cutStatus['HiggsID'] += 1
-            print "HIndex = ", HIndex
+            #print "HIndex = ", HIndex
             if ((fatjetPRmassL2L3Corr[HIndex] > massCutLow) & (fatjetPRmassL2L3Corr[HIndex] < massCutHigh)) | ((fatjetPRmassL2L3Corr[HIndex] > massCutLow1) & (fatjetPRmassL2L3Corr[HIndex] < massCutHigh1)) : 
                 if pfMet > 200.0:
                     fatJetMassStatus = True
@@ -888,14 +888,14 @@ def GenWeightProducer(sample,nGenPar, genParId, genMomParId, genParSt,genParP4):
             
             pt = l4_z.Pt()
             pt__ = pt
-            print " pt inside "
+            #print " pt inside "
             k2 = -0.830041 + 7.93714 *TMath.Power( pt - (-877.978) ,(-0.213831) ) ;
     
     #################        
     #ZJets
     #################
     if sample == "ZJETS":
-        print " inside zjets "
+        #print " inside zjets "
         goodLepID = []
         for ig in range(nGenPar):
          #   print " inside loop "
@@ -914,17 +914,17 @@ def GenWeightProducer(sample,nGenPar, genParId, genMomParId, genParSt,genParP4):
             l4_thatLep = genParP4[goodLepID[1]]
             l4_z = l4_thisLep + l4_thatLep
             pt = l4_z.Pt()
-            print " pt inside "
+            #print " pt inside "
             k2 = -0.180805 + 6.04146 *TMath.Power( pt - (-759.098) ,(-0.242556) ) ;
 
     #################        
     #TTBar
     #################        
     if (sample=="TT"):
-        print " inside ttbar "
+        #print " inside ttbar "
         goodLepID = []
         for ig in range(nGenPar):
-            print "inside TT loop "
+         #   print "inside TT loop "
             PID    = genParId[ig]
             momPID = genMomParId[ig]
             status = genParSt[ig]

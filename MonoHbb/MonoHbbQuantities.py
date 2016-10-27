@@ -82,7 +82,7 @@ class MonoHbbQuantities:
         if self.regime: type_ = 0
         if not self.regime: type_ = 1
         WF = self.weight
-        print "WF = ", WF
+        #print "WF = ", WF
         self.h_met        [type_].Fill(self.met,       WF)
         self.h_mass       [type_].Fill(self.mass,      WF)
         self.h_csv1       [type_].Fill(self.csv1,      WF)
