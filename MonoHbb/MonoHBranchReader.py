@@ -378,7 +378,7 @@ def AnalyzeDataSet():
         ## PFMET Selection
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------        
-        pfmetstatus = ( pfMet > 170.0 )
+        pfmetstatus = ( pfMet > 200.0 )
         if pfmetstatus == False : continue 
         cutStatus['pfmet'] += 1
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -501,6 +501,7 @@ def AnalyzeDataSet():
         jetIndex = -1
         dphiVec=[]
         
+        print (nTHINJets,nTHINJets)
         for ijet in range(nTHINJets):
             p4_j = thinjetP4[ijet]
             #print (ijet, DeltaR(p4_j, fatjetP4[HIndex]), p4_j.Pt() , abs(p4_j.Eta()), bool(passThinJetLooseID[ijet]), bool(passThinJetPUID[ijet]), thinJetCSV[ijet])

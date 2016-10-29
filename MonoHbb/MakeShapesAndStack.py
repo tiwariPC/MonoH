@@ -58,19 +58,20 @@ debug_=False
 ####################################################################################################################
 def MakeRooDataHist(phys_process, histname, fullrange_=False):
     #filedata = TFile('Histograms_CMSSW76X_BaseLine_METSys_V12/AnalysisHistograms_V0/'+Utils.samples['TT']['files'][0], 'READ')
-    filedata = TFile('Histograms_CMSSW76X_2DScanV_V1/AnalysisHistograms_V0/'+Utils.samples['TT']['files'][0], 'READ')
-    hist_met_ = filedata.Get('histfacFatJet_ZLight/h_MET0_Nominal')
+    filedata = TFile(Utils.prefix+'/'+Utils.samples['TT']['files'][0], 'READ')
+    hist_met_ = filedata.Get('h_met_0')
     hist_met_.Sumw2()
-    #print hist_met_.Integral()
+    print hist_met_.Integral()
     hist_met_.SetDirectory(0)
     TH1.AddDirectory(0)
 
     hist_met_.Scale(0.0)
     iweight = 0
     for irootfile in Utils.samples[phys_process]['files']:
-        file01 = TFile('Histograms_CMSSW76X_2DScanV_V1/AnalysisHistograms_V0/'+irootfile, 'READ')
+        file01 = TFile(Utils.prefix+'/'+irootfile, 'READ')
         hist_ = file01.Get(histname)
-        hist_.SetDirectory(0)
+        print hist_.Integral()
+        #hist_.SetDirectory(0)
         TH1.AddDirectory(0)
         
         if phys_process != 'data_obs': hist_.Scale(Utils.samples[phys_process]['weight'][iweight])
@@ -477,7 +478,7 @@ def WriteHistograms(nominalname, postfix, rootfilename, filemode='UPDATE'):
 def HistogramsOneDir(WhichRegion = 'MonoHFatJetSelection_JetAndLeptonVeto/'):
     print "--------For h_MET0_Nominal--------- "
 
-    WriteHistograms(WhichRegion+'/h_MET0_Nominal','',WhichRegion,'RECREATE')
+    WriteHistograms('h_met_0','',WhichRegion,'RECREATE')
     '''WriteHistograms(WhichRegion+'/h_MET0_muRUp','_CMS_monoHbb_scaleRUp',WhichRegion)
     WriteHistograms(WhichRegion+'/h_MET0_muRDown','_CMS_monoHbb_scaleRDown',WhichRegion)
     WriteHistograms(WhichRegion+'/h_MET0_muFUp','_CMS_monoHbb_scaleFUp',WhichRegion)
@@ -485,13 +486,15 @@ def HistogramsOneDir(WhichRegion = 'MonoHFatJetSelection_JetAndLeptonVeto/'):
     WriteHistograms(WhichRegion+'/h_MET0_EWKUp','_CMS_monoHbb_ewkUp',WhichRegion)
     WriteHistograms(WhichRegion+'/h_MET0_EWKDown','_CMS_monoHbb_ewkDown',WhichRegion)
     '''
+    ''' for PDF
     for ipdf in range(101):
         hname = 'h_MET0_'+str(ipdf)
         WriteHistograms(WhichRegion+'/'+hname, '_PDF'+str(ipdf),WhichRegion)
+    ''' 
     return 0
 
 
 print "------------For MonoHFatJetSelection_JetAndLeptonVeto--------------"
 HistogramsOneDir('MonoHFatJetSelection_JetAndLeptonVeto')
-HistogramsOneDir('histfacFatJet_ZLight')
-HistogramsOneDir('histfacFatJet_WHeavy')
+#HistogramsOneDir('histfacFatJet_ZLight')
+#HistogramsOneDir('histfacFatJet_WHeavy')

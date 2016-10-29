@@ -10,13 +10,13 @@ import numpy as numpy_
 ROOT.gROOT.LoadMacro("Loader.h+")
 
 ## When not running on farmout
-#inputfilename= 'zj100.txt'
-#outfilename= 'tmp.root'
+inputfilename= 'zj100.txt'
+outfilename= 'tmp.root'
 
 
 ## When running on farmout
-inputfilename = os.environ['INPUT']                                                                                                                                                 
-outfilename   = os.environ['OUTPUT']                                                                                                                                                
+#inputfilename = os.environ['INPUT']                                                                                                                                                 
+#outfilename   = os.environ['OUTPUT']                                                                                                                                                
 
 
 skimmedTree = TChain("tree/treeMaker")
@@ -70,7 +70,7 @@ def AnalyzeDataSet():
     
     st_THINnJet = array( 'L', [ 0 ] ) #ROOT.std.vector('int')()
     st_THINjetP4 = ROOT.std.vector('TLorentzVector')()
-    st_THINjetCISVV2 = ROOT.std.vector('std::vector<float>')()
+    st_THINjetCISVV2 = ROOT.std.vector('float')()
     st_THINjetHadronFlavor = ROOT.std.vector('int')()
     
     st_nEle= array( 'L', [ 0 ] ) #ROOT.std.vector('int')()
@@ -374,12 +374,12 @@ def AnalyzeDataSet():
             st_subjetEta.push_back(eta)
             st_subjetFlav.push_back(flav)
             
-        thinjetpassindex=[]
+        #thinjetpassindex=[]
         st_THINnJet[0] = len(thinjetpassindex)
         for ithinjet in range(len(thinjetpassindex)):
             st_THINjetP4.push_back(thinjetP4[ithinjet])
             st_THINjetCISVV2.push_back(thinJetCSV[ithinjet])
-            st_THINjetHadronFlavor.push_back(THINjetHadronFlavor[THINjetHadronFlavor])
+            st_THINjetHadronFlavor.push_back(THINjetHadronFlavor[ithinjet])
             
         st_nEle[0] = len(myEles)
         for iele in range(len(myEles)):
