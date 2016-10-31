@@ -45,10 +45,16 @@ class MonoHbbQuantities:
         self.h_HiggsPt         = []
         self.h_HiggsEta        = []
         self.h_HiggsPhi        = []
-
+        self.h_met_pdf         = []
+        self.h_met_muR         = []
+        self.h_met_muF         = []
         
         self.weight   = 1.0 
-        
+
+        self.weight_pdf   = []
+        self.weight_muR   = []
+        self.weight_muF   = []
+
         self.h_total   = []
         self.h_total_weight   = []
         
@@ -73,8 +79,22 @@ class MonoHbbQuantities:
             self.h_HiggsPt.append(TH1F('h_HiggsPt_'+postname,'h_HiggsPt_'+postname,1000,0.,1000.))
             self.h_HiggsEta.append(TH1F('h_HiggsEta_'+postname,'h_HiggsEta_'+postname,70, -3.5, 3.5))
             self.h_HiggsPhi.append(TH1F('h_HiggsPhi_'+postname,'h_HiggsPhi_'+postname,70, -3.5, 3.5))
-            
-            
+            h_met_pdf_tmp = []
+            for ipdf in range(101):
+                midname = str(ipdf)
+                h_met_pdf_tmp.append(TH1F('h_met_pdf'+'_'+midname+'_'+postname,  'h_met_pdf'+postname,  1000,0.,1000.))
+            self.h_met_pdf.append(h_met_pdf_tmp)
+            h_met_muR_tmp = []
+            for imuR in range(2):
+                midname = str(imuR)
+                h_met_muR_tmp.append(TH1F('h_met_muR'+'_'+midname+'_'+postname,  'h_met_muR'+postname,  1000,0.,1000.))
+            self.h_met_muR.append(h_met_muR_tmp)
+            h_met_muF_tmp = []
+            for imuF in range(2):
+                midname = str(imuF)
+                h_met_muF_tmp.append(TH1F('h_met_muF'+'_'+midname+'_'+postname,  'h_met_muF'+postname,  1000,0.,1000.))
+            self.h_met_muF.append(h_met_muF_tmp)
+                
         print "histo defined"
         
     def FillHisto(self):
@@ -84,6 +104,17 @@ class MonoHbbQuantities:
         WF = self.weight
         #print "WF = ", WF
         self.h_met        [type_].Fill(self.met,       WF)
+        for ipdf in range(101):
+            self.h_met_pdf        [type_][ipdf].Fill(self.met,       1.0)
+
+        for imuR in range(2):
+            self.h_met_muR        [type_][imuR].Fill(self.met,       1.0)
+            
+        for imuF in range(2):
+            self.h_met_muF        [type_][imuF].Fill(self.met,       1.0)
+        
+
+
         self.h_mass       [type_].Fill(self.mass,      WF)
         self.h_csv1       [type_].Fill(self.csv1,      WF)
         self.h_csv2       [type_].Fill(self.csv2,      WF)
@@ -110,6 +141,12 @@ class MonoHbbQuantities:
         
         for iregime in range(2):
             self.h_met[iregime].Write()
+            for ipdf in range(101):
+                self.h_met_pdf[iregime][ipdf].Write()
+            for imuR in range(2):
+                self.h_met_muR[iregime][imuR].Write()
+            for imuF in range(2):
+                self.h_met_muF[iregime][imuF].Write()
             self.h_mass[iregime].Write()
             self.h_csv1[iregime].Write()
             self.h_csv2[iregime].Write()

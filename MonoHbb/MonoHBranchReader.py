@@ -749,6 +749,7 @@ def AnalyzeDataSet():
 
         allquantitiesBoosted.weight    = allweights
         allquantitiesBoosted.totalevents = 1
+        
         if regime: 
             allquantitiesBoosted.mass            = fatjetPRmassL2L3Corr[HIndex]
             allquantitiesBoosted.HiggsPt         = fatjetP4[HIndex].Pt()
