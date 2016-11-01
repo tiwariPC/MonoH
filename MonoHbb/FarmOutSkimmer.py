@@ -1,6 +1,6 @@
 import os
 
-outputdirname="Raman/SkimmedTuples/V9/"
+outputdirname="Raman/SkimmedTuples/V10Delete/"
 
 #outputdirname="Raman/AnalysisTuples_2016DataMC_V5/TTBar/"
 inputprefix="--input-dir=root://cmsxrootd.hep.wisc.edu//store/user/khurana/"

@@ -4,12 +4,14 @@ import os
 
 mode='zj'
 #inputfilename='NCUGlobalTuples_1.root'
+#inputfilename='input.txt'
 #outfilename='out.root'
+
 inputfilename = os.environ['INPUT']
 outfilename   = os.environ['OUTPUT']
 
 if mode == 'signal':
-    os.system('./MonoHBranchReader.py  -m 100.0 -M 150.0 -i '+inputfilename+' -o '+outfilename+'  -a -j 0 -J 2 -l 0 -L 1  --MLow1 100.0 --MHigh1 150.0 -F')
+    os.system('./MonoHBranchReader.py  -m 100.0 -M 150.0 -i '+inputfilename+' -o '+outfilename+'  -a -j 0 -J 2 -l 0 -L 1  --MLow1 100.0 --MHigh1 150.0 -F ')
 
 ## Mass Sidebands
 ## inverting the mass cut

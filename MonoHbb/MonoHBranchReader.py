@@ -86,9 +86,11 @@ textfile = rootfile+".txt"
 #os.system('mkdir '+outputdir)
 
 outfilename=''
-outfilename=options.outputdir + "/" + rootfile
+if not isfarmout:
+    outfilename = options.outputdir + "/" + rootfile
+
 if isfarmout:
-    outfilename =options.outputfile
+    outfilename = options.outputfile
 
 
 skimmedTree = TChain("outTree")
@@ -117,14 +119,23 @@ samplename = 'all'
 if isfarmout:
     infile = open(inputfilename)
     for ifile in infile: 
-        skimmedTree.Add(ifile)
-        samplename = WhichSample(ifile)
+        print 'debug 1', ifile.rstrip()
+        skimmedTree.Add(ifile.rstrip())
+        print 'debug 2'
+        samplename = WhichSample(ifile.rstrip())
+        print 'debug 3'
         ## for histograms
-        f_tmp = TFile(ifile,'READ')
+        f_tmp = TFile.Open(ifile.rstrip(),'READ')
+        print 'debug 4', f_tmp.GetSize()
         h_tmp = f_tmp.Get('h_total')
+        print 'debug 5'
         h_tmp_weight = f_tmp.Get('h_total_mcweight')
+        print 'debug 6'
+        print 'integral', h_tmp_weight.Integral()
         h_t.Add(h_tmp)
+        print 'debug 7'
         h_t_weight.Add(h_tmp_weight)
+        print 'debug 8'
 
 if not isfarmout:
     skimmedTree.Add(inputfilename)
@@ -733,6 +744,7 @@ def AnalyzeDataSet():
         if not regime:
             allweights = allweights * sf_resolved1[0] * sf_resolved2[0]
         
+        if isData: allweights = 1.0 
         #print "allweights = ", allweights 
         allquantitiesBoosted.regime     = regime
         allquantitiesBoosted.met        = pfMet
