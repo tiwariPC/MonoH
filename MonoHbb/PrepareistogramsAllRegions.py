@@ -34,7 +34,23 @@ def RunOneRegion(mode,inputfilename):
         os.system('./MonoHBranchReader.py  -m 30.0 -M 250.0 -i '+inputfilename+'  -a -j 2 -J 10 -l 1 -L 2  --MLow1 30.0 --MHigh1 250.0 -D HistogramsAllRegion')
 
 
-modes = ['signal','zj','wj','tt']
+## TT+WJ
+    if mode == 'wt':
+        os.system('./MonoHBranchReader.py  -m 30.0 -M 250.0 -i '+inputfilename+'  -a -j 0 -J 10 -l 1 -L 2  --MLow1 30.0 --MHigh1 250.0 -D HistogramsAllRegion')
+
+## WJAlphaBet
+    if mode == 'wjalphabet':
+        os.system('./MonoHBranchReader.py  -m 30.0 -M 100.0 -i '+inputfilename+'  -a -j 1 -J 2 -l 1 -L 2  --MLow1 150.0 --MHigh1 250.0 -D HistogramsAllRegion')
+
+## TTAlphabet
+    if mode == 'ttalphabet':
+        os.system('./MonoHBranchReader.py  -m 30.0 -M 100.0 -i '+inputfilename+'  -a -j 2 -J 10 -l 1 -L 2  --MLow1 150.0 --MHigh1 250.0 -D HistogramsAllRegion')
+
+##WTAlphabet
+    if mode == 'wtalphabet':
+        os.system('./MonoHBranchReader.py  -m 30.0 -M 100.0 -i '+inputfilename+'  -a -j 0 -J 10 -l 1 -L 2  --MLow1 150.0 --MHigh1 250.0 -D HistogramsAllRegion')
+
+modes = ['signal','zj','wj','tt', 'wt', 'wjalphabet', 'ttalphabet', 'wtalphabet']
 
 for whichmode in modes:
     textfile = open('MergedSkimmedFiles.txt')

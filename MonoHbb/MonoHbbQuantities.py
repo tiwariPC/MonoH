@@ -9,6 +9,7 @@ class MonoHbbQuantities:
         
         self.met      =  -999.0
         self.h_met         =  []
+        #self.h_met_rebin         =  []
         
         self.mass     =  -999.0
         self.h_mass        =  []
@@ -48,7 +49,7 @@ class MonoHbbQuantities:
         self.h_met_pdf         = []
         self.h_met_muR         = []
         self.h_met_muF         = []
-        
+
         self.weight   = 1.0 
 
         self.weight_pdf   = []
@@ -65,6 +66,9 @@ class MonoHbbQuantities:
         for iregime in range(2):
             postname = str(iregime)
             self.h_met.append(TH1F('h_met_'+postname,  'h_met_'+postname,  1000,0.,1000.))
+            #metbins_ = [200,350,500,1000]
+            #self.h_met_rebin.append(TH1F('h_met_rebin_'+postname,  'h_met_rebin'+postname,  3, array(('d'),metbins_)))
+            
             self.h_mass.append(TH1F('h_mass_'+postname, 'h_mass_'+postname, 400,0.,400.))
             self.h_csv1.append(TH1F('h_csv1_'+postname, 'h_csv1_'+postname, 20,0.,1.))
             self.h_csv2.append(TH1F('h_csv2_'+postname, 'h_csv2_'+postname, 20,0.,1.))
@@ -104,6 +108,7 @@ class MonoHbbQuantities:
         WF = self.weight
         #print "WF = ", WF
         self.h_met        [type_].Fill(self.met,       WF)
+        #self.h_met_rebin        [type_].Fill(self.met,       WF)
         for ipdf in range(101):
             self.h_met_pdf        [type_][ipdf].Fill(self.met,       1.0)
 
@@ -141,6 +146,7 @@ class MonoHbbQuantities:
         
         for iregime in range(2):
             self.h_met[iregime].Write()
+            #self.h_met_rebin[iregime].Write()
             for ipdf in range(101):
                 self.h_met_pdf[iregime][ipdf].Write()
             for imuR in range(2):

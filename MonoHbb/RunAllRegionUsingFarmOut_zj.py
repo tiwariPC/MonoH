@@ -31,3 +31,19 @@ if mode == 'wj':
 ## >1 additional jets
 if mode == 'tt':
     os.system('./MonoHBranchReader.py  -m 30.0 -M 250.0 -i '+inputfilename+' -o '+outfilename+'  -a -j 2 -J 10 -l 1 -L 2  --MLow1 30.0 --MHigh1 250.0 -F')
+    
+## TT+WJ
+if mode == 'wt':
+    os.system('./MonoHBranchReader.py  -m 30.0 -M 250.0 -i '+inputfilename+' -o '+outfilename+'  -a -j 0 -J 10 -l 1 -L 2  --MLow1 30.0 --MHigh1 250.0 -F')
+
+## WJAlphaBet
+if mode == 'wjalphabet':
+    os.system('./MonoHBranchReader.py  -m 30.0 -M 100.0 -i '+inputfilename+' -o '+outfilename+'  -a -j 1 -J 2 -l 1 -L 2  --MLow1 150.0 --MHigh1 250.0 -F')
+
+## TTAlphabet
+if mode == 'ttalphabet':
+    os.system('./MonoHBranchReader.py  -m 30.0 -M 100.0 -i '+inputfilename+' -o '+outfilename+'  -a -j 2 -J 10 -l 1 -L 2  --MLow1 150.0 --MHigh1 250.0 -F')
+
+##WTAlphabet
+if mode == 'wtalphabet':
+    os.system('./MonoHBranchReader.py  -m 30.0 -M 100.0 -i '+inputfilename+' -o '+outfilename+'  -a -j 0 -J 10 -l 1 -L 2  --MLow1 150.0 --MHigh1 250.0 -F')

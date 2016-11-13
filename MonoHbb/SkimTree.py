@@ -252,7 +252,7 @@ def AnalyzeDataSet():
         filter5 = CheckFilter(filterName, filterResult, 'Flag_EcalDeadCellTriggerPrimitiveFilter')
         filter6 = True #Flag_HBHENoiseIsoFilter
         
-        filterstatus =  filter1 | filter2 & filter3 & filter4 & filter5 & filter6
+        filterstatus =  filter1 & filter2 & filter3 & filter4 & filter5 & filter6
 
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------

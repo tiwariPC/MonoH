@@ -57,9 +57,10 @@ debug_=False
 ## weighted and summed over all samples histograms for a given physics process. 
 ####################################################################################################################
 def MakeRooDataHist(phys_process, histname, fullrange_=False):
+    print "--------- inside MakeRooDataHist ------------"
     #filedata = TFile('Histograms_CMSSW76X_BaseLine_METSys_V12/AnalysisHistograms_V0/'+Utils.samples['TT']['files'][0], 'READ')
     filedata = TFile(Utils.prefix+'/'+Utils.samples['TT']['files'][0], 'READ')
-    hist_met_ = filedata.Get('h_met_0')
+    hist_met_ = filedata.Get(histname)
     hist_met_.Sumw2()
     print hist_met_.Integral()
     hist_met_.SetDirectory(0)
@@ -90,7 +91,8 @@ def MakeRooDataHist(phys_process, histname, fullrange_=False):
 ## to fix the normalisation and pdf of TT and VV and ZH
 ############################################################
 
-def WriteHistograms(nominalname, postfix, rootfilename, filemode='UPDATE'):
+def WriteHistograms(nominalname, postfix, rootfilename, rebininfo,  filemode='UPDATE'):
+    print "--------- inside MakeRooDataHist ------------"
     weights=[]
     if debug_ : print "Top"
     h_tt    = MakeRooDataHist('TT', nominalname, True) 
@@ -113,11 +115,11 @@ def WriteHistograms(nominalname, postfix, rootfilename, filemode='UPDATE'):
     
     if debug_ : print "ZNN"
     h_znn    = MakeRooDataHist('znunujets', nominalname, True) 
-    h_znn.SetNameTitle('DYJets'+postfix,'DYJets')
+    h_znn.SetNameTitle('DYJETS'+postfix,'DYJETS')
     
     if debug_ : print "WJ"
     h_wj    = MakeRooDataHist('wjets', nominalname, True) 
-    h_wj.SetNameTitle('WJets'+postfix,'WJets')
+    h_wj.SetNameTitle('WJETS'+postfix,'WJETS')
     
     if debug_ : print "ZH"
     h_zh    = MakeRooDataHist('ZH', nominalname, True) 
@@ -126,7 +128,7 @@ def WriteHistograms(nominalname, postfix, rootfilename, filemode='UPDATE'):
     if debug_ : print "signals start"
     
     ## make a stack of the backgrounds
-    if nominalname == 'MonoHFatJetSelection_JetAndLeptonVeto/h_MET0_Nominal':
+    if nominalname == 'h_met_0':
         c1 = TCanvas()
         bkgStack = THStack ("bkgStack","bkgStack")
         h_zh.SetFillColor(1)
@@ -135,6 +137,13 @@ def WriteHistograms(nominalname, postfix, rootfilename, filemode='UPDATE'):
         h_znn.SetFillColor(4)
         h_wj.SetFillColor(5)
         
+        rebin_ = 1
+        h_zh.Rebin(rebin_)
+        h_VV.Rebin(rebin_)
+        h_tt.Rebin(rebin_)
+        h_znn.Rebin(rebin_)
+        h_wj.Rebin(rebin_)
+
         bkgStack.Add(h_zh,'hist')
         bkgStack.Add(h_VV,'hist')
         bkgStack.Add(h_tt,'hist')
@@ -142,7 +151,18 @@ def WriteHistograms(nominalname, postfix, rootfilename, filemode='UPDATE'):
         bkgStack.Add(h_wj,'hist')
         
         bkgStack.Draw()
-        c1.SaveAs('trystack.png')
+        
+        h_data = TH1F()
+        if filemode == 'RECREATE':
+            if debug_ : print "data"
+            h_data = MakeRooDataHist('data_obs', nominalname, True)
+            h_data.SetNameTitle('data_obs', 'data_obs')
+            print "data integral = ",h_data.Integral()
+        #bins=[200., 350., 500., 3000.]
+        #h_data.Rebin(3,"data_obs", bins)
+        h_data.Draw('same')
+        h_data.Rebin(rebin_)
+        c1.SaveAs('METstack.pdf')
     
     
     weight_  = Utils.samples['signal600_300']['weight'][0]   ; weights.append(weight_)
@@ -404,7 +424,24 @@ def WriteHistograms(nominalname, postfix, rootfilename, filemode='UPDATE'):
         yieldfile = open(rootfilename+'.txt','w')
     ihist = 0
     for ih in h_all:
-        ih.Write()
+        
+        name = ih.GetName()
+        title = ih.GetTitle()
+        h_new = TH1F()
+        if rebininfo['rebin']: 
+            ## for fixed bin-width
+            if len(rebininfo['bins'])==1:
+                h_tmp = ih.Clone(name)
+                h_new = TH1F (h_tmp.Rebin(rebininfo['bins'][0]))
+            
+            ## for variable bin-width
+            if len(rebininfo['bins'])>1:
+                metbins_ = rebininfo['bins'] #[200.,350.,500.,1000.]
+                metbins = array('d', metbins_)
+                h_tmp = ih.Clone(name)
+                h_new = TH1F (h_tmp.Rebin(3,name , metbins))
+        
+        h_new.Write()
         error_ = 0.0
         if postfix =='': error_ = weights[ihist] * TMath.Sqrt(ih.Integral())
         if postfix =='': yieldfile.write(ih.GetName()+' '+str(ih.Integral())+' '+str(error_)+'\n')
@@ -415,70 +452,35 @@ def WriteHistograms(nominalname, postfix, rootfilename, filemode='UPDATE'):
             yieldfile.write('DATA'+' '+str(h_data.Integral())+' '+str(0)+'\n')
         yieldfile.close()
 
-    '''
-    h_tt.Write()
-    h_VV.Write()
-    h_znn.Write()
-    h_wj.Write()
-    h_zh.Write()
-    h_600_300.Write()
-    h_800_300.Write()
-    h_1000_300.Write()
-    h_1200_300.Write()
-    h_1400_300.Write()
-    h_1700_300.Write()
-    h_2000_300.Write()
-    h_2500_300.Write()
-    h_600_400.Write()
-    h_800_400.Write()
-    h_1000_400.Write()
-    #h_1200_400.Write()
-    h_1400_400.Write()
-    h_1700_400.Write()
-    h_2000_400.Write()
-    h_2500_400.Write()
-    #h_600_500.Write()
-    h_800_500.Write()
-    h_1000_500.Write()
-    h_1200_500.Write()
-    h_1400_500.Write()
-    h_1700_500.Write()
-    h_2000_500.Write()
-    h_2500_500.Write()
-    #h_600_600.Write()
-    h_800_600.Write()
-    h_1000_600.Write()
-    h_1200_600.Write()
-    #h_1400_600.Write()
-    h_1700_600.Write()
-    h_2000_600.Write()
-    h_2500_600.Write()
-    #h_600_700.Write()
-    #h_800_700.Write()
-    #h_1000_700.Write()
-    h_1200_700.Write()
-    #h_1400_700.Write()
-    h_1700_700.Write()
-    h_2000_700.Write()
-    h_2500_700.Write()
-    #h_600_800.Write()
-    #h_800_800.Write()
-    h_1000_800.Write()
-    h_1200_800.Write()
-    h_1400_800.Write()
-    h_1700_800.Write()
-    h_2000_800.Write()
-    h_2500_800.Write()
-   '''
+    
     if filemode == 'RECREATE':
-        h_data.Write()
+        name = h_data.GetName()
+        title = h_data.GetTitle()
+        metbins_ = [200.,350.,500.,1000.]
+        metbins = array('d', metbins_)
+        h_tmp = h_data.Clone(name)
+        h_new = TH1F (h_tmp.Rebin(3,name , metbins))
+        h_new.Write()
+        #h_data.Rebin(50)
+        #h_data.Write()
         #data_obs.Write()
     
 
-def HistogramsOneDir(WhichRegion = 'MonoHFatJetSelection_JetAndLeptonVeto/'):
+def HistogramsOneDir(WhichRegion):
     print "--------For h_MET0_Nominal--------- "
 
-    WriteHistograms('h_met_0','',WhichRegion,'RECREATE')
+    METReBinInfo = {'rebin':True,
+                    'range':[200.0,1000.],
+                    'bins':[200.0,350.0,500.0,1000.0]
+                    }
+    WriteHistograms('h_met_0','',WhichRegion, METReBinInfo,'RECREATE')
+    
+    MassReBinInfo = {'rebin':True,
+                     'range':[30.0,250.],
+                     'bins':[1] ## is only one number is provided then it serve as rebin factor
+                     }
+    WriteHistograms('h_mass_0','_mass',WhichRegion,MassReBinInfo)
+    
     '''WriteHistograms(WhichRegion+'/h_MET0_muRUp','_CMS_monoHbb_scaleRUp',WhichRegion)
     WriteHistograms(WhichRegion+'/h_MET0_muRDown','_CMS_monoHbb_scaleRDown',WhichRegion)
     WriteHistograms(WhichRegion+'/h_MET0_muFUp','_CMS_monoHbb_scaleFUp',WhichRegion)
@@ -494,7 +496,36 @@ def HistogramsOneDir(WhichRegion = 'MonoHFatJetSelection_JetAndLeptonVeto/'):
     return 0
 
 
-print "------------For MonoHFatJetSelection_JetAndLeptonVeto--------------"
-HistogramsOneDir('MonoHFatJetSelection_JetAndLeptonVeto')
+
+if __name__ == "__main__":
+    print ("running the models of MakeShapesAndStack.py directly to test it ")
+    print "------------For Signal Region--------------"
+    inputdir = 'AnalysisHistograms_MergedSkimmedV11_V10/'
+    Utils.prefix = inputdir+'/signal/'
+    HistogramsOneDir('signal')
+    
+    print "------------For mass sidebands Region--------------"
+    Utils.prefix = inputdir+'/zj/'
+    HistogramsOneDir('zj')
+
+
+    print "------------For wj Region--------------"
+    Utils.prefix = inputdir+'/wj/'
+    HistogramsOneDir('wj')
+
+    print "------------For tt Region--------------"
+    Utils.prefix = inputdir+'/tt/'
+    HistogramsOneDir('tt')
+
+    print "------------For wt Region--------------"
+    Utils.prefix = inputdir+'/wt/'
+    HistogramsOneDir('wt')
+
+    
+else :
+    print ("MakeShapesAndStack.py is being imported as a module......")
+
+
+
 #HistogramsOneDir('histfacFatJet_ZLight')
 #HistogramsOneDir('histfacFatJet_WHeavy')

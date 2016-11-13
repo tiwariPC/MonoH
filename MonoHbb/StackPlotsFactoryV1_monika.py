@@ -97,69 +97,69 @@ TH1F*  data_obs;
 TString filenamepath("'''+inputdirname+'''/"); 
 // DYJets 0
 //Merged_WW_TuneCUETP8M1_13TeV-pythia8-RunUsingFarmOut.rootinputdirname
-//Merged_WW_TuneCUETP8M1_13TeV-pythia8-RunAllRegionUsingFarmOut_'''+inputdirname+'''.root
-filenameString.push_back(filenamepath + "Merged_WW_TuneCUETP8M1_13TeV-pythia8-RunAllRegionUsingFarmOut_'''+inputdirname+'''.root");
+//Merged_WW_TuneCUETP8M1_13TeV-pythia8-SkimTree.root
+filenameString.push_back(filenamepath + "Merged_WW_TuneCUETP8M1_13TeV-pythia8-SkimTree.root");
 //WJets  1
-filenameString.push_back(filenamepath + "Merged_WW_TuneCUETP8M1_13TeV-pythia8-RunAllRegionUsingFarmOut_'''+inputdirname+'''.root");
+filenameString.push_back(filenamepath + "Merged_WW_TuneCUETP8M1_13TeV-pythia8-SkimTree.root");
 
 // Diboson WW WZ ZZ 2 3 4
-filenameString.push_back(filenamepath + "Merged_WW_TuneCUETP8M1_13TeV-pythia8-RunAllRegionUsingFarmOut_'''+inputdirname+'''.root");
-filenameString.push_back(filenamepath + "Merged_WZ_TuneCUETP8M1_13TeV-pythia8-RunAllRegionUsingFarmOut_'''+inputdirname+'''.root");
-filenameString.push_back(filenamepath + "Merged_ZZ_TuneCUETP8M1_13TeV-pythia8-RunAllRegionUsingFarmOut_'''+inputdirname+'''.root");
+filenameString.push_back(filenamepath + "Merged_WW_TuneCUETP8M1_13TeV-pythia8-SkimTree.root");
+filenameString.push_back(filenamepath + "Merged_WZ_TuneCUETP8M1_13TeV-pythia8-SkimTree.root");
+filenameString.push_back(filenamepath + "Merged_ZZ_TuneCUETP8M1_13TeV-pythia8-SkimTree.root");
 // TTJets 5
-filenameString.push_back(filenamepath + "Merged_TT_TuneCUETP8M1_13TeV-powheg-pythia8-RunAllRegionUsingFarmOut_'''+inputdirname+'''.root");
+filenameString.push_back(filenamepath + "Merged_TT_TuneCUETP8M1_13TeV-powheg-pythia8-SkimTree.root");
 
 //Raman ZH background 6                                                                                                                       
-filenameString.push_back(filenamepath + "Merged_ZH_HToBB_ZToNuNu_M125_13TeV_powheg_pythia8-RunAllRegionUsingFarmOut_'''+inputdirname+'''.root"); 
+filenameString.push_back(filenamepath + "Merged_ZH_HToBB_ZToNuNu_M125_13TeV_powheg_pythia8-SkimTree.root"); 
 //Raman Signal Sample 7-14
 
-filenameString.push_back(filenamepath + "Merged_ZprimeToA0hToA0chichihbb_2HDM_MZp-600_MA0-300_13TeV-madgraph-RunAllRegionUsingFarmOut_'''+inputdirname+'''.root");
-filenameString.push_back(filenamepath + "Merged_ZprimeToA0hToA0chichihbb_2HDM_MZp-800_MA0-300_13TeV-madgraph-RunAllRegionUsingFarmOut_'''+inputdirname+'''.root");  
-filenameString.push_back(filenamepath + "Merged_ZprimeToA0hToA0chichihbb_2HDM_MZp-1000_MA0-300_13TeV-madgraph-RunAllRegionUsingFarmOut_'''+inputdirname+'''.root");  
-filenameString.push_back(filenamepath + "Merged_ZprimeToA0hToA0chichihbb_2HDM_MZp-1200_MA0-300_13TeV-madgraph-RunAllRegionUsingFarmOut_'''+inputdirname+'''.root");  
-filenameString.push_back(filenamepath + "Merged_ZprimeToA0hToA0chichihbb_2HDM_MZp-1400_MA0-300_13TeV-madgraph-RunAllRegionUsingFarmOut_'''+inputdirname+'''.root");  
-//filenameString.push_back(filenamepath + "Merged_ZprimeToA0hToA0chichihbb_2HDM_MZp-1700_MA0-300_13TeV-madgraph-RunAllRegionUsingFarmOut_'''+inputdirname+'''.root");  
-//filenameString.push_back(filenamepath + "Merged_ZprimeToA0hToA0chichihbb_2HDM_MZp-2000_MA0-300_13TeV-madgraph-RunAllRegionUsingFarmOut_'''+inputdirname+'''.root");  
-//filenameString.push_back(filenamepath + "Merged_ZprimeToA0hToA0chichihbb_2HDM_MZp-2500_MA0-300_13TeV-madgraph-RunAllRegionUsingFarmOut_'''+inputdirname+'''.root");  
+filenameString.push_back(filenamepath + "Merged_ZprimeToA0hToA0chichihbb_2HDM_MZp-600_MA0-300_13TeV-madgraph-SkimTree.root");
+filenameString.push_back(filenamepath + "Merged_ZprimeToA0hToA0chichihbb_2HDM_MZp-800_MA0-300_13TeV-madgraph-SkimTree.root");  
+filenameString.push_back(filenamepath + "Merged_ZprimeToA0hToA0chichihbb_2HDM_MZp-1000_MA0-300_13TeV-madgraph-SkimTree.root");  
+filenameString.push_back(filenamepath + "Merged_ZprimeToA0hToA0chichihbb_2HDM_MZp-1200_MA0-300_13TeV-madgraph-SkimTree.root");  
+filenameString.push_back(filenamepath + "Merged_ZprimeToA0hToA0chichihbb_2HDM_MZp-1400_MA0-300_13TeV-madgraph-SkimTree.root");  
+//filenameString.push_back(filenamepath + "Merged_ZprimeToA0hToA0chichihbb_2HDM_MZp-1700_MA0-300_13TeV-madgraph-SkimTree.root");  
+//filenameString.push_back(filenamepath + "Merged_ZprimeToA0hToA0chichihbb_2HDM_MZp-2000_MA0-300_13TeV-madgraph-SkimTree.root");  
+//filenameString.push_back(filenamepath + "Merged_ZprimeToA0hToA0chichihbb_2HDM_MZp-2500_MA0-300_13TeV-madgraph-SkimTree.root");  
 
 
 //DYJets High pt DYSample 12,13,14,15,16,17,18
-filenameString.push_back(filenamepath + "Merged_ZJetsToNuNu_HT-100To200_13TeV-madgraph-RunAllRegionUsingFarmOut_'''+inputdirname+'''.root");
-filenameString.push_back(filenamepath + "Merged_ZJetsToNuNu_HT-200To400_13TeV-madgraph-RunAllRegionUsingFarmOut_'''+inputdirname+'''.root");
-filenameString.push_back(filenamepath + "Merged_ZJetsToNuNu_HT-400To600_13TeV-madgraph-RunAllRegionUsingFarmOut_'''+inputdirname+'''.root");
-filenameString.push_back(filenamepath + "Merged_ZJetsToNuNu_HT-600To800_13TeV-madgraph-RunAllRegionUsingFarmOut_'''+inputdirname+'''.root");
-filenameString.push_back(filenamepath + "Merged_ZJetsToNuNu_HT-800To1200_13TeV-madgraph-RunAllRegionUsingFarmOut_'''+inputdirname+'''.root");
-filenameString.push_back(filenamepath + "Merged_ZJetsToNuNu_HT-1200To2500_13TeV-madgraph-RunAllRegionUsingFarmOut_'''+inputdirname+'''.root");
-filenameString.push_back(filenamepath + "Merged_ZJetsToNuNu_HT-2500ToInf_13TeV-madgraph-RunAllRegionUsingFarmOut_'''+inputdirname+'''.root");
+filenameString.push_back(filenamepath + "Merged_ZJetsToNuNu_HT-100To200_13TeV-madgraph-SkimTree.root");
+filenameString.push_back(filenamepath + "Merged_ZJetsToNuNu_HT-200To400_13TeV-madgraph-SkimTree.root");
+filenameString.push_back(filenamepath + "Merged_ZJetsToNuNu_HT-400To600_13TeV-madgraph-SkimTree.root");
+filenameString.push_back(filenamepath + "Merged_ZJetsToNuNu_HT-600To800_13TeV-madgraph-SkimTree.root");
+filenameString.push_back(filenamepath + "Merged_ZJetsToNuNu_HT-800To1200_13TeV-madgraph-SkimTree.root");
+filenameString.push_back(filenamepath + "Merged_ZJetsToNuNu_HT-1200To2500_13TeV-madgraph-SkimTree.root");
+filenameString.push_back(filenamepath + "Merged_ZJetsToNuNu_HT-2500ToInf_13TeV-madgraph-SkimTree.root");
 
 
-//filenameString.push_back(filenamepath + "Merged_DYJetsToLL_M-50_HT-100to200_TuneCUETP8M1_13TeV-madgraphMLM-pythia8-RunAllRegionUsingFarmOut_'''+inputdirname+'''.root");
-//filenameString.push_back(filenamepath + "Merged_DYJetsToLL_M-50_HT-200to400_TuneCUETP8M1_13TeV-madgraphMLM-pythia8-RunAllRegionUsingFarmOut_'''+inputdirname+'''.root");
-//filenameString.push_back(filenamepath + "Merged_DYJetsToLL_M-50_HT-400to600_TuneCUETP8M1_13TeV-madgraphMLM-pythia8-RunAllRegionUsingFarmOut_'''+inputdirname+'''.root");
-//filenameString.push_back(filenamepath + "Merged_DYJetsToLL_M-50_HT-600toInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8-RunAllRegionUsingFarmOut_'''+inputdirname+'''.root");
+//filenameString.push_back(filenamepath + "Merged_DYJetsToLL_M-50_HT-100to200_TuneCUETP8M1_13TeV-madgraphMLM-pythia8-SkimTree.root");
+//filenameString.push_back(filenamepath + "Merged_DYJetsToLL_M-50_HT-200to400_TuneCUETP8M1_13TeV-madgraphMLM-pythia8-SkimTree.root");
+//filenameString.push_back(filenamepath + "Merged_DYJetsToLL_M-50_HT-400to600_TuneCUETP8M1_13TeV-madgraphMLM-pythia8-SkimTree.root");
+//filenameString.push_back(filenamepath + "Merged_DYJetsToLL_M-50_HT-600toInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8-SkimTree.root");
 
 
 // WJets in Bins  19,20,21,22,23,24,25
-filenameString.push_back(filenamepath + "Merged_WJetsToLNu_HT-100To200_TuneCUETP8M1_13TeV-madgraphMLM-pythia8-RunAllRegionUsingFarmOut_'''+inputdirname+'''.root");
-filenameString.push_back(filenamepath + "Merged_WJetsToLNu_HT-200To400_TuneCUETP8M1_13TeV-madgraphMLM-pythia8-RunAllRegionUsingFarmOut_'''+inputdirname+'''.root");
-filenameString.push_back(filenamepath + "Merged_WJetsToLNu_HT-400To600_TuneCUETP8M1_13TeV-madgraphMLM-pythia8-RunAllRegionUsingFarmOut_'''+inputdirname+'''.root");
-filenameString.push_back(filenamepath + "Merged_WJetsToLNu_HT-600To800_TuneCUETP8M1_13TeV-madgraphMLM-pythia8-RunAllRegionUsingFarmOut_'''+inputdirname+'''.root");
-filenameString.push_back(filenamepath + "Merged_WJetsToLNu_HT-800To1200_TuneCUETP8M1_13TeV-madgraphMLM-pythia8-RunAllRegionUsingFarmOut_'''+inputdirname+'''.root");
-filenameString.push_back(filenamepath + "Merged_WJetsToLNu_HT-1200To2500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8-RunAllRegionUsingFarmOut_'''+inputdirname+'''.root");
-filenameString.push_back(filenamepath + "Merged_WJetsToLNu_HT-2500ToInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8-RunAllRegionUsingFarmOut_'''+inputdirname+'''.root");
+filenameString.push_back(filenamepath + "Merged_WJetsToLNu_HT-100To200_TuneCUETP8M1_13TeV-madgraphMLM-pythia8-SkimTree.root");
+filenameString.push_back(filenamepath + "Merged_WJetsToLNu_HT-200To400_TuneCUETP8M1_13TeV-madgraphMLM-pythia8-SkimTree.root");
+filenameString.push_back(filenamepath + "Merged_WJetsToLNu_HT-400To600_TuneCUETP8M1_13TeV-madgraphMLM-pythia8-SkimTree.root");
+filenameString.push_back(filenamepath + "Merged_WJetsToLNu_HT-600To800_TuneCUETP8M1_13TeV-madgraphMLM-pythia8-SkimTree.root");
+filenameString.push_back(filenamepath + "Merged_WJetsToLNu_HT-800To1200_TuneCUETP8M1_13TeV-madgraphMLM-pythia8-SkimTree.root");
+filenameString.push_back(filenamepath + "Merged_WJetsToLNu_HT-1200To2500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8-SkimTree.root");
+filenameString.push_back(filenamepath + "Merged_WJetsToLNu_HT-2500ToInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8-SkimTree.root");
 
 // Single Top 26,27,28,29,30
-//fixme filenameString.push_back(filenamepath + "Merged_ST_t-channel_top_4f_leptonDecays_13TeV-powheg-pythia8_TuneCUETP8M1-RunAllRegionUsingFarmOut_'''+inputdirname+'''.root");
-filenameString.push_back(filenamepath + "Merged_ST_t-channel_antitop_4f_leptonDecays_13TeV-powheg-pythia8_TuneCUETP8M1-RunAllRegionUsingFarmOut_'''+inputdirname+'''.root");
-filenameString.push_back(filenamepath + "Merged_ST_t-channel_antitop_4f_leptonDecays_13TeV-powheg-pythia8_TuneCUETP8M1-RunAllRegionUsingFarmOut_'''+inputdirname+'''.root");
-filenameString.push_back(filenamepath + "Merged_ST_s-channel_4f_leptonDecays_13TeV-amcatnlo-pythia8_TuneCUETP8M1-RunAllRegionUsingFarmOut_'''+inputdirname+'''.root");
-filenameString.push_back(filenamepath + "Merged_ST_tW_top_5f_inclusiveDecays_13TeV-powheg-pythia8_TuneCUETP8M1-RunAllRegionUsingFarmOut_'''+inputdirname+'''.root");
-filenameString.push_back(filenamepath + "Merged_ST_tW_antitop_5f_inclusiveDecays_13TeV-powheg-pythia8_TuneCUETP8M1-RunAllRegionUsingFarmOut_'''+inputdirname+'''.root");
+//fixme filenameString.push_back(filenamepath + "Merged_ST_t-channel_top_4f_leptonDecays_13TeV-powheg-pythia8_TuneCUETP8M1-SkimTree.root");
+filenameString.push_back(filenamepath + "Merged_ST_t-channel_antitop_4f_leptonDecays_13TeV-powheg-pythia8_TuneCUETP8M1-SkimTree.root");
+filenameString.push_back(filenamepath + "Merged_ST_t-channel_antitop_4f_leptonDecays_13TeV-powheg-pythia8_TuneCUETP8M1-SkimTree.root");
+filenameString.push_back(filenamepath + "Merged_ST_s-channel_4f_leptonDecays_13TeV-amcatnlo-pythia8_TuneCUETP8M1-SkimTree.root");
+filenameString.push_back(filenamepath + "Merged_ST_tW_top_5f_inclusiveDecays_13TeV-powheg-pythia8_TuneCUETP8M1-SkimTree.root");
+filenameString.push_back(filenamepath + "Merged_ST_tW_antitop_5f_inclusiveDecays_13TeV-powheg-pythia8_TuneCUETP8M1-SkimTree.root");
 
 //                                                                   
 //Data Filex
-//filenameString.push_back(filenamepath + "Merged_MET-Run2015B-PromptReco-v1TotalV3-RunAllRegionUsingFarmOut_'''+inputdirname+'''.root");
-filenameString.push_back(filenamepath + "Merged_MET.root");
+//filenameString.push_back(filenamepath + "Merged_MET-Run2015B-PromptReco-v1TotalV3-SkimTree.root");
+filenameString.push_back(filenamepath + "Merged_MET-SkimTree.root");
 //histoname
 
 //const int n_integral = (int)filenameString.size();
@@ -441,7 +441,7 @@ TString latexnamepost = " (13 TeV)";
 TString latexname = latexnamemiddle+latexnamepost;
 TString histolabel;
 if("HISTPATH" == "Signal"){
-histolabel = "SR(boosted)";}
+histolabel = "Zj CR(boosted)";}
 if("HISTPATH" =="histfacFatJet_ZLight"){
 histolabel = "Zj CR(boosted)";}
 if("HISTPATH" =="histfacFatJet_WHeavy" ){
@@ -1251,26 +1251,26 @@ dirnames=['Signal']
 for dirname in dirnames:
     makeLinearplots=True;
     if makeLinearplots :
-        makeplot([dirname,'h_met_0','E_{T}^{miss}[GeV]','200','1000','4','0','1','','0','0']) ## last bin is for variable met bins  ## second last is for data option
-        makeplot([dirname,'h_met_1','E_{T}^{miss}[GeV]','170','1000','4','0','1','','0','0']) ## last bin is for variable met bins  ## second last is for data option
+        makeplot([dirname,'h_met_0','E_{T}^{miss}[GeV]','200','1000','40','0','1','','0','0']) ## last bin is for variable met bins  ## second last is for data option
+        #makeplot([dirname,'h_met_1','E_{T}^{miss}[GeV]','170','1000','40','0','1','','0','0']) ## last bin is for variable met bins  ## second last is for data option
         
-        makeplot([dirname,'h_mass_0','m_{bb}[GeV]','0','250','4','0','1','','0','0']) ## last bin is for variable met bins  ## second last is for data option
-        makeplot([dirname,'h_mass_1','m_{bb}[GeV]','0','250','4','0','1','','0','0']) ## last bin is for variable met bins  ## second last is for data option
+        makeplot([dirname,'h_mass_0','m_{bb}[GeV]','0','250','25','0','1','','0','0']) ## last bin is for variable met bins  ## second last is for data option
+        #makeplot([dirname,'h_mass_1','m_{bb}[GeV]','0','250','4','0','1','','0','0']) ## last bin is for variable met bins  ## second last is for data option
 
         makeplot([dirname,'h_dPhi_0','dPhi','0','3.0','2','0','1','','0','0']) ## last bin is for variable met bins  ## second last is for data option
-        makeplot([dirname,'h_dPhi_1','dPhi','0','3.5','2','0','1','','0','0']) ## last bin is for variable met bins  ## second last is for data option
+        #makeplot([dirname,'h_dPhi_1','dPhi','0','3.5','2','0','1','','0','0']) ## last bin is for variable met bins  ## second last is for data option
         
-        makeplot([dirname,'h_HiggsPt_0','p_{T}(H)[GeV]','200','800','2','0','1','','0','0']) ## last bin is for variable met bins  ## second last is for data option
-        makeplot([dirname,'h_HiggsPt_1','p_{T}(H)[GeV]','150','800','2','0','1','','0','0']) ## last bin is for variable met bins  ## second last is for data option
+        makeplot([dirname,'h_HiggsPt_0','p_{T}(H)[GeV]','200','800','25','0','1','','0','0']) ## last bin is for variable met bins  ## second last is for data option
+        #makeplot([dirname,'h_HiggsPt_1','p_{T}(H)[GeV]','150','800','2','0','1','','0','0']) ## last bin is for variable met bins  ## second last is for data option
         
         makeplot([dirname,'h_HiggsEta_0','#eta(H)','-3.5','3.5','4','0','1','','0','0']) ## last bin is for variable met bins  ## second last is for data option
-        makeplot([dirname,'h_HiggsEta_1','#eta(H)','-3.5','3.5','4','0','1','','0','0']) ## last bin is for variable met bins  ## second last is for data option
+        #makeplot([dirname,'h_HiggsEta_1','#eta(H)','-3.5','3.5','4','0','1','','0','0']) ## last bin is for variable met bins  ## second last is for data option
 
         makeplot([dirname,'h_HiggsPhi_0','#phi(H)','-3.5','3.5','4','0','1','','0','0']) ## last bin is for variable met bins  ## second last is for data option
-        makeplot([dirname,'h_HiggsPhi_1','#phi(H)','-3.5','3.5','4','0','1','','0','0']) ## last bin is for variable met bins  ## second last is for data option
+        #makeplot([dirname,'h_HiggsPhi_1','#phi(H)','-3.5','3.5','4','0','1','','0','0']) ## last bin is for variable met bins  ## second last is for data option
 
         makeplot([dirname,'h_N_j_0','n_j','0','4','1','0','1','','0','0']) ## last bin is for variable met bins  ## second last is for data option
-        makeplot([dirname,'h_N_j_1','n_j','0','4','1','0','1','','0','0']) ## last bin is for variable met bins  ## second last is for data option
+        #makeplot([dirname,'h_N_j_1','n_j','0','4','1','0','1','','0','0']) ## last bin is for variable met bins  ## second last is for data option
 
         '''makeplot([dirname,'h_MET0','E_{T}^{miss}[GeV]','200','1000','25','1','1','NoData','0','1']) ## last bin is for variable met bins  ## second last is for data option
 

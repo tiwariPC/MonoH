@@ -1,0 +1,5 @@
+root -l -b -q CreateBinByBinUncertainityHistograms.C\(\"DataCards_AllRegions/signal.root\"\)
+root -l -b -q CreateBinByBinUncertainityHistograms.C\(\"DataCards_AllRegions/zj.root\"\)
+root -l -b -q CreateBinByBinUncertainityHistograms.C\(\"DataCards_AllRegions/wj.root\"\)
+root -l -b -q CreateBinByBinUncertainityHistograms.C\(\"DataCards_AllRegions/tt.root\"\)
+root -l -b -q CreateBinByBinUncertainityHistograms.C\(\"DataCards_AllRegions/wt.root\"\)

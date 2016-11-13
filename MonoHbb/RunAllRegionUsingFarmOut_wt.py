@@ -2,7 +2,7 @@
 #from MonoHBranchReader import AnalyzeDataSet, CheckFilter, MakeTable, DeltaR, Phi_mpi_pi
 import os
 
-mode='wj'
+mode='wt'
 #inputfilename='NCUGlobalTuples_1.root'
 #inputfilename='input.txt'
 #outfilename='out.root'

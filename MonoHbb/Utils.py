@@ -1,9 +1,11 @@
 from ROOT import TFile, TH1F
 
 
-prefix = 'HistogramsAllRegion/'
+prefix = 'AnalysisHistograms_MergedSkimmedV11_V10/signal/'
+whichregion='sigmal'
+
 histdirname = ''
-lumi = 12900 #2263.5 #2.32*1000.
+lumi = 12900 
 
 ## We can set the efficiency for each sample here which can be used later on for the plotting which would be very easy, quick and useful. 
 samples={
