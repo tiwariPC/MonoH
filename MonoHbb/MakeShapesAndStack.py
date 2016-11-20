@@ -62,7 +62,7 @@ def MakeRooDataHist(phys_process, histname, fullrange_=False):
     filedata = TFile(Utils.prefix+'/'+Utils.samples['TT']['files'][0], 'READ')
     hist_met_ = filedata.Get(histname)
     hist_met_.Sumw2()
-    print hist_met_.Integral()
+    #print (phys_process, hist_met_.Integral())
     hist_met_.SetDirectory(0)
     TH1.AddDirectory(0)
 
@@ -71,7 +71,7 @@ def MakeRooDataHist(phys_process, histname, fullrange_=False):
     for irootfile in Utils.samples[phys_process]['files']:
         file01 = TFile(Utils.prefix+'/'+irootfile, 'READ')
         hist_ = file01.Get(histname)
-        print hist_.Integral()
+        #print hist_.Integral()
         #hist_.SetDirectory(0)
         TH1.AddDirectory(0)
         
@@ -84,6 +84,12 @@ def MakeRooDataHist(phys_process, histname, fullrange_=False):
         if debug_ :
             print "before ",hist_.Integral()
     h = hist_met_
+    
+    ## put overflow in the last bin 
+    nbins  = h.GetNbinsX()
+    print "Integral  = ", (h.Integral(), h.Integral(1,-1), h.GetBinContent(nbins+1))
+    overflow = h.GetBinContent(nbins+1)
+    h.AddBinContent(nbins, overflow) 
     return h
 
 ############################################################
@@ -439,7 +445,7 @@ def WriteHistograms(nominalname, postfix, rootfilename, rebininfo,  filemode='UP
                 metbins_ = rebininfo['bins'] #[200.,350.,500.,1000.]
                 metbins = array('d', metbins_)
                 h_tmp = ih.Clone(name)
-                h_new = TH1F (h_tmp.Rebin(3,name , metbins))
+                h_new = TH1F (h_tmp.Rebin(len(metbins_)-1,name , metbins))
         
         h_new.Write()
         error_ = 0.0
@@ -449,17 +455,17 @@ def WriteHistograms(nominalname, postfix, rootfilename, rebininfo,  filemode='UP
 
     if postfix =='': 
         if filemode == 'RECREATE': 
-            yieldfile.write('DATA'+' '+str(h_data.Integral())+' '+str(0)+'\n')
+            yieldfile.write('DATA'+' '+str(h_data.Integral(1,-1))+' '+str(0)+'\n')
         yieldfile.close()
 
     
     if filemode == 'RECREATE':
         name = h_data.GetName()
         title = h_data.GetTitle()
-        metbins_ = [200.,350.,500.,1000.]
+        metbins_ = rebininfo['bins'] #[200.,350.,500.,1000.]
         metbins = array('d', metbins_)
         h_tmp = h_data.Clone(name)
-        h_new = TH1F (h_tmp.Rebin(3,name , metbins))
+        h_new = TH1F (h_tmp.Rebin(len(metbins_)-1,name , metbins))
         h_new.Write()
         #h_data.Rebin(50)
         #h_data.Write()
@@ -471,7 +477,10 @@ def HistogramsOneDir(WhichRegion):
 
     METReBinInfo = {'rebin':True,
                     'range':[200.0,1000.],
-                    'bins':[200.0,350.0,500.0,1000.0]
+                    #'bins':[200.0,350.0,500.0,1001.0]
+                    #'bins':[200.0,250.0,350.0,500.0, 650.0, 750.0, 850.0, 1000.0] # 7 bins
+                    'bins':[200.0,250.0,350.0,450.0, 500.0, 550.0, 600., 700.0, 800, 900, 1000.0] # 10 bins
+                    
                     }
     WriteHistograms('h_met_0','',WhichRegion, METReBinInfo,'RECREATE')
     

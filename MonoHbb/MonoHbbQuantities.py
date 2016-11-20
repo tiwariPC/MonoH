@@ -108,7 +108,8 @@ class MonoHbbQuantities:
         WF = self.weight
         #print "WF = ", WF
         self.h_met        [type_].Fill(self.met,       WF)
-        #self.h_met_rebin        [type_].Fill(self.met,       WF)
+        
+        
         for ipdf in range(101):
             self.h_met_pdf        [type_][ipdf].Fill(self.met,       1.0)
 
@@ -119,6 +120,7 @@ class MonoHbbQuantities:
             self.h_met_muF        [type_][imuF].Fill(self.met,       1.0)
         
 
+        if type_ ==  0: print "inside fillhisto for boosted", WF
 
         self.h_mass       [type_].Fill(self.mass,      WF)
         self.h_csv1       [type_].Fill(self.csv1,      WF)

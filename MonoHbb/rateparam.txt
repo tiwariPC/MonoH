@@ -1,0 +1,19 @@
+#CMS_monoHbb_WJFracSR      lnN                     -             -             -          1.30           1.30           -             -             -             -             -            -           -             -             -             -             -             -           -
+#CMS_monoHbb_lepVeto      lnN                     -          -      -      1.02/0.98       1.02/0.98       -      -          -      -      1.02/0.98       1.02/0.98       -    -          -      -      1.02/0.98       1.02/0.98       -
+
+ZjHF_norm   rateParam  ZbCR DYJETS 1 [0.5,1.6]
+ZjHF_norm   rateParam  SR   DYJETS 1 [0.5,1.6]
+ZjHF_norm   rateParam  WbCR  DYJETS 1 [0.5,1.6]
+ZjHF_norm   rateParam  ttCR  DYJETS 1 [0.5,1.6]
+
+Wbj_norm   rateParam  SR  WJETS 1 [0.5,1.5]
+Wbj_norm   rateParam  ZbCR  WJETS 1 [0.5,1.5]
+Wbj_norm   rateParam  WbCR  WJETS 1 [0.5,1.5]
+Wbj_norm   rateParam  ttCR  WJETS 1 [0.5,1.5]
+
+
+tt_norm   rateParam  SR    TT 1 [0.5,1.5]
+tt_norm   rateParam  ZbCR  TT 1 [0.5,1.5]
+tt_norm   rateParam  WbCR  TT 1 [0.5,1.5]
+tt_norm   rateParam  ttCR  TT 1 [0.5,1.5]
+

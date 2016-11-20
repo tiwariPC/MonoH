@@ -745,7 +745,8 @@ def AnalyzeDataSet():
             allweights = allweights * sf_resolved1[0] * sf_resolved2[0]
         
         if isData: allweights = 1.0 
-        #print "allweights = ", allweights 
+        if regime:
+            print "allweights = ", allweights 
         allquantitiesBoosted.regime     = regime
         allquantitiesBoosted.met        = pfMet
         allquantitiesBoosted.mt         = mt_
@@ -855,6 +856,7 @@ def weightbtag(reader, flav, pt, eta):
     sf_low = reader.eval_auto_bounds('down', flav, eta, pt)
     sf_up  = reader.eval_auto_bounds('up', flav, eta, pt)
     btagsf = [sf_c, sf_low, sf_up]
+    print (pt, eta, flav, btagsf)
     return btagsf
 
 def jetflav(flav):

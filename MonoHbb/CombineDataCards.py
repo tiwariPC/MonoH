@@ -12,7 +12,7 @@ if len(sys.argv) > 1 :
 
 dirname=sys.argv[1]
 massvec=['600','800','1000','1200','1400','1700','2000','2500']
-a0massvec=['300','400','500','600','700','800']
+a0massvec=['300']#,'400','500','600','700','800']
 #os.system('mkdir -p oneplustwo')
 for imass in range(len(massvec)):
     for ia0mass in a0massvec:
@@ -26,15 +26,29 @@ for imass in range(len(massvec)):
         
         #allcards=bb+znunu+wjets+tt
         allcards=bb+znunu+wt
-
-
-        splusbFitdir = dirname
         
+        splusbFitdir = dirname
         datacardnamefit=splusbFitdir+'/DataCard_S_Plus_B_M'+(str(massvec[imass]))+'_'+ia0mass+'GeV_MonoHbb_13TeV.txt'
-       
         tmpdcard = 'tmpcard.txt'
-        os.system('combineCards.py  '+allcards+' >& '+tmpdcard)
-        os.system('cat '+tmpdcard+' '+rateparm+' >& '+  datacardnamefit)
+        if len(sys.argv) == 2 :
+            os.system('combineCards.py  '+allcards+' >& '+tmpdcard)
+            os.system('cat '+tmpdcard+' '+rateparm+' >& '+  datacardnamefit)
+            
+        if len(sys.argv) ==3 :
+            if sys.argv[2] == 'runlimit':
+                print ('combine -M Asymptotic '+datacardnamefit+' -t -1')
+                os.system('combine -M Asymptotic '+datacardnamefit+' -t -1')
+                os.system('mv higgsCombineTest.Asymptotic.mH120.root '+dirname+'/higgsCombineTest_Asymptotic_'+(str(massvec[imass]))+'_'+ia0mass+'GeV_MonoHbb_13TeV.root')
+
+        if len(sys.argv) ==4 :
+            if sys.argv[2] == 'runlimit':
+                if sys.argv[3] == 'obs':
+                    print ('combine -M Asymptotic '+datacardnamefit)
+                    os.system('combine -M Asymptotic '+datacardnamefit)
+                    os.system('mv higgsCombineTest.Asymptotic.mH120.root '+dirname+'/higgsCombineTest_Asymptotic_'+(str(massvec[imass]))+'_'+ia0mass+'GeV_MonoHbb_13TeV.root')
+
+        
+            
         '''
         tmpdcard = 'tmpcard.txt'
         dcard = open(datacardname,'r')
