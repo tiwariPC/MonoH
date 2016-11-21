@@ -10,13 +10,13 @@ import numpy as numpy_
 ROOT.gROOT.LoadMacro("Loader.h+")
 
 ## When not running on farmout
-#inputfilename= 'zj100.txt'
-#outfilename= 'tmp.root'
+inputfilename= 'zj100.txt'
+outfilename= 'tmp.root'
 
 
 ## When running on farmout
-inputfilename = os.environ['INPUT']                                                                                                                                                 
-outfilename   = os.environ['OUTPUT']                                                                                                                                                
+#inputfilename = os.environ['INPUT']                                                                                                                                                 
+#outfilename   = os.environ['OUTPUT']                                                                                                                                                
 
 
 skimmedTree = TChain("tree/treeMaker")
@@ -154,9 +154,15 @@ def AnalyzeDataSet():
         pfMet                      = skimmedTree.__getattr__('pfMetCorrPt')
         pfMetPhi                   = skimmedTree.__getattr__('pfMetCorrPhi')
         
+        ## by default 
         nFATJets                   = skimmedTree.__getattr__('FATnJet')
         fatjetP4                   = skimmedTree.__getattr__('FATjetP4')
         fatjetPRmassL2L3Corr       = skimmedTree.__getattr__('FATjetPRmassL2L3Corr')
+        tau1                       = skimmedTree.__getattr__('FATjetPuppiTau1')
+        tau2                       = skimmedTree.__getattr__('FATjetPuppiTau2')
+        tau3                       = skimmedTree.__getattr__('FATjetPuppiTau3')
+        
+        doublebtagger              = skimmedTree.__getattr__('ADDjet_DoubleSV')
         nSubSoftDropJet            = skimmedTree.__getattr__('FATnSubSDJet')
         subjetSDCSV                = skimmedTree.__getattr__('FATsubjetSDCSV')
         subjetSDPx                 = skimmedTree.__getattr__('FATsubjetSDPx')
@@ -165,12 +171,32 @@ def AnalyzeDataSet():
         subjetSDE                  = skimmedTree.__getattr__('FATsubjetSDE')
         passFatJetTightID          = skimmedTree.__getattr__('FATjetPassIDTight')
         subjetHadronFlavor         = skimmedTree.__getattr__('FATsubjetSDHadronFlavor')
+        
+        PUPPI = True
+        if PUPPI: 
+            nFATJets                   = skimmedTree.__getattr__('AK8PuppinJet')
+            fatjetP4                   = skimmedTree.__getattr__('AK8PuppijetP4')
+            fatjetPRmassL2L3Corr       = skimmedTree.__getattr__('AK8PuppijetSDmass')
+            tau1                       = skimmedTree.__getattr__('AK8PuppijetTau1')
+            tau2                       = skimmedTree.__getattr__('AK8PuppijetTau2')
+            tau3                       = skimmedTree.__getattr__('AK8PuppijetTau3')
+            
+            doublebtagger              = skimmedTree.__getattr__('AK8Puppijet_DoubleSV')
+            nSubSoftDropJet            = skimmedTree.__getattr__('AK8PuppinSubSDJet')
+            subjetSDCSV                = skimmedTree.__getattr__('AK8PuppisubjetSDCSV')
+            subjetSDPx                 = skimmedTree.__getattr__('AK8PuppisubjetSDPx')
+            subjetSDPy                 = skimmedTree.__getattr__('AK8PuppisubjetSDPy')
+            subjetSDPz                 = skimmedTree.__getattr__('AK8PuppisubjetSDPz')
+            subjetSDE                  = skimmedTree.__getattr__('AK8PuppisubjetSDE')
+            passFatJetTightID          = skimmedTree.__getattr__('AK8PuppijetPassIDTight')
+            subjetHadronFlavor         = skimmedTree.__getattr__('AK8PuppisubjetSDHadronFlavor')
+        
 
         nTHINJets                  = skimmedTree.__getattr__('THINnJet')
         thinjetP4                  = skimmedTree.__getattr__('THINjetP4')
         thinJetCSV                 = skimmedTree.__getattr__('THINjetCISVV2')
         passThinJetLooseID         = skimmedTree.__getattr__('THINjetPassIDLoose')
-        passThinJetPUID            = skimmedTree.__getattr__('THINisPUJetID')
+        #passThinJetPUID            = skimmedTree.__getattr__('THINisPUJetID')
         THINjetHadronFlavor        = skimmedTree.__getattr__('THINjetHadronFlavor')
         
         nEle                       = skimmedTree.__getattr__('nEle')
@@ -277,7 +303,8 @@ def AnalyzeDataSet():
         thinjetpassindex=[]
         for ithinjet in range(nTHINJets):
             j1 = thinjetP4[ithinjet]
-            if (j1.Pt() > 30.0)&(abs(j1.Eta())<2.4)&(bool(passThinJetLooseID[ithinjet])==True)&(bool(passThinJetPUID[ithinjet]) == True):
+            #if (j1.Pt() > 30.0)&(abs(j1.Eta())<2.4)&(bool(passThinJetLooseID[ithinjet])==True)&(bool(passThinJetPUID[ithinjet]) == True):
+            if (j1.Pt() > 30.0)&(abs(j1.Eta())<2.4)&(bool(passThinJetLooseID[ithinjet])==True):
                 thinjetpassindex.append(ithinjet)
         if len(thinjetpassindex) < 1 : continue
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
