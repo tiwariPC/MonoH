@@ -158,9 +158,9 @@ def AnalyzeDataSet():
         nFATJets                   = skimmedTree.__getattr__('FATnJet')
         fatjetP4                   = skimmedTree.__getattr__('FATjetP4')
         fatjetPRmassL2L3Corr       = skimmedTree.__getattr__('FATjetPRmassL2L3Corr')
-        tau1                       = skimmedTree.__getattr__('FATjetPuppiTau1')
-        tau2                       = skimmedTree.__getattr__('FATjetPuppiTau2')
-        tau3                       = skimmedTree.__getattr__('FATjetPuppiTau3')
+        tau1                       = skimmedTree.__getattr__('FATjetTau1')
+        tau2                       = skimmedTree.__getattr__('FATjetTau2')
+        tau3                       = skimmedTree.__getattr__('FATjetTau3')
         
         doublebtagger              = skimmedTree.__getattr__('ADDjet_DoubleSV')
         nSubSoftDropJet            = skimmedTree.__getattr__('FATnSubSDJet')
@@ -172,7 +172,7 @@ def AnalyzeDataSet():
         passFatJetTightID          = skimmedTree.__getattr__('FATjetPassIDTight')
         subjetHadronFlavor         = skimmedTree.__getattr__('FATsubjetSDHadronFlavor')
         
-        PUPPI = True
+        PUPPI = False
         if PUPPI: 
             nFATJets                   = skimmedTree.__getattr__('AK8PuppinJet')
             fatjetP4                   = skimmedTree.__getattr__('AK8PuppijetP4')
@@ -192,6 +192,9 @@ def AnalyzeDataSet():
             subjetHadronFlavor         = skimmedTree.__getattr__('AK8PuppisubjetSDHadronFlavor')
         
 
+        if len(fatjetPRmassL2L3Corr)>0: 
+            print " mass = ", fatjetPRmassL2L3Corr[0]
+        
         nTHINJets                  = skimmedTree.__getattr__('THINnJet')
         thinjetP4                  = skimmedTree.__getattr__('THINjetP4')
         thinJetCSV                 = skimmedTree.__getattr__('THINjetCISVV2')
