@@ -10,13 +10,13 @@ import numpy as numpy_
 ROOT.gROOT.LoadMacro("Loader.h+")
 
 ## When not running on farmout
-#inputfilename= 'MZp1000Ma0300.txt'
-#outfilename= 'MZp1000Ma0300_Puppi.root'
+inputfilename= 'MZp1000Ma0300.txt'
+outfilename= 'MZp1000Ma0300_Puppi.root'
 
 
 ## When running on farmout
-inputfilename = os.environ['INPUT']                                                                                                                                                 
-outfilename   = os.environ['OUTPUT']                                                                                                                                                
+#inputfilename = os.environ['INPUT']                                                                                                                                                 
+#outfilename   = os.environ['OUTPUT']                                                                                                                                                
 
 
 skimmedTree = TChain("tree/treeMaker")
@@ -101,6 +101,25 @@ def AnalyzeDataSet():
     
     outTree.Branch( 'st_nFatJets',st_nFatJets, 'st_nFatJets/L')
     outTree.Branch( 'st_FATjetP4', st_FATjetP4)
+    
+    outTree.Branch( 'st_FATjetTau1', st_FATjetTau1)
+    outTree.Branch( 'st_FATjetTau2', st_FATjetTau2)
+    outTree.Branch( 'st_FATjetTau3', st_FATjetTau3)
+    outTree.Branch( 'st_ADDjet_DoubleSV', st_ADDjet_DoubleSV)
+    #outTree.Branch( 'st_', st_)
+    #outTree.Branch( 'st_', st_)
+    #outTree.Branch( 'st_', st_)
+    #outTree.Branch( 'st_', st_)
+    #outTree.Branch( 'st_', st_)
+    #outTree.Branch( 'st_', st_)
+    #outTree.Branch( 'st_', st_)
+    #outTree.Branch( 'st_', st_)
+    #outTree.Branch( 'st_', st_)
+    #outTree.Branch( 'st_', st_)
+    #outTree.Branch( 'st_', st_)
+    #outTree.Branch( 'st_', st_)
+    #
+    
     outTree.Branch( 'st_FATjetPRmassL2L3Corr', st_FATjetPRmassL2L3Corr) 
     outTree.Branch( 'st_FATnSubSDJet',st_FATnSubSDJet)
     outTree.Branch( 'st_subjetSDCSV', st_subjetSDCSV)
@@ -172,7 +191,7 @@ def AnalyzeDataSet():
         passFatJetTightID          = skimmedTree.__getattr__('FATjetPassIDTight')
         subjetHadronFlavor         = skimmedTree.__getattr__('FATsubjetSDHadronFlavor')
         
-        PUPPI = False
+        PUPPI = True
         if PUPPI: 
             nFATJets                   = skimmedTree.__getattr__('AK8PuppinJet')
             fatjetP4                   = skimmedTree.__getattr__('AK8PuppijetP4')
@@ -360,6 +379,7 @@ def AnalyzeDataSet():
         
         st_FATnSubSDJet.clear()
         st_FATjetP4.clear()
+        
         st_subjetSDCSV.clear()
         st_FATjetPRmassL2L3Corr.clear()
         st_subjetPt.clear()

@@ -77,9 +77,9 @@ WJetsToLNu_HT-800To1200_TuneCUETP8M1_13TeV-madgraphMLM-pythia8 MonoH2016/V2_Base
 WJetsToLNu_HT-400To600_TuneCUETP8M1_13TeV-madgraphMLM-pythia8 MonoH2016/V2_Base/WJetsToLNu_HT-400To600_TuneCUETP8M1_13TeV-madgraphMLM-pythia8
 ZprimeToA0hToA0chichihbb_2HDM_MZp-2500_MA0-500_13TeV-madgraph MonoH2016/V2_Base/ZprimeToA0hToA0chichihbb_2HDM_MZp-2500_MA0-500_13TeV-madgraph
 WJetsToLNu_HT-1200To2500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8 MonoH2016/V2_Base/WJetsToLNu_HT-1200To2500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8
-MonoHbb_ZpBaryonic_MZp-200_MChi-150_13TeV-madgraph MonoH2016/V2_Base/MonoHbb_ZpBaryonic_MZp-200_MChi-150_13TeV-madgraph
-
 MET MonoH2016/V2/MET'''
+
+#MonoHbb_ZpBaryonic_MZp-200_MChi-150_13TeV-madgraph MonoH2016/V2_Base/MonoHbb_ZpBaryonic_MZp-200_MChi-150_13TeV-madgraph
 
 fout.write(samples)
 fout.close()
