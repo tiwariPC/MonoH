@@ -2,7 +2,15 @@ import os
 import sys
 
 inputdirname=sys.argv[1]
-ControlRegions=['signal','zj','wj','tt','wt']
+#ControlRegions=['signal','zj','wj','tt','wt']
+nargv = len(sys.argv) -2
+print nargv
+print sys.argv[2]
+ControlRegions=[]
+for iargv in range(0,nargv):
+    ControlRegions.append(sys.argv[iargv+2])
+
+print ControlRegions
 textFilesList=[]
 rootfilesList=[]
 

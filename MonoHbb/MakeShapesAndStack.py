@@ -29,12 +29,16 @@ import sys, optparse
 usage = "usage: %prog [options] arg1 arg2"
 parser = optparse.OptionParser(usage)
 ## data will be true if -d is passed and will be false if -m is passed
-parser.add_option("-d", "--data", action="store_true",  dest="data")
-parser.add_option("-m", "--mc", action="store_false",  dest="data")
+parser.add_option("-s", "--saveshapes", action="store_true",  dest="saveshapes")
+parser.add_option("-m", "--makecards", action="store_true",  dest="makecards")
+parser.add_option("-c", "--combinecards", action="store_true",  dest="combinecards")
+parser.add_option("-b", "--bbb", action="store_true",  dest="bbb")
+parser.add_option("-r", "--runlimit", action="store_true",  dest="runlimit")
+parser.add_option("-o", "--obs", action="store_true",  dest="obs")
 
 (options, args) = parser.parse_args()
 
-print 'options = ',[options.data]
+
 
 
 
@@ -507,12 +511,43 @@ def HistogramsOneDir(WhichRegion):
 
 
 if __name__ == "__main__":
-    print ("running the models of MakeShapesAndStack.py directly to test it ")
-    print "------------For Signal Region--------------"
-    inputdir = 'AnalysisHistograms_MergedSkimmedV11_V10/'
-    Utils.prefix = inputdir+'/signal/'
-    HistogramsOneDir('signal')
     
+    print ("running the models of MakeShapesAndStack.py directly to test it ")
+    
+    
+    inputdir = 'AnalysisHistograms_MergedSkimmedV11_V10/'
+    
+    regionstorun = ['signal', 'zj', 'wt']
+    
+    regionstorunstr = 'signal zj wt'
+
+    if options.saveshapes:
+        for iregion in regionstorun:
+            printstr = "------------For "+iregion+"  Region--------------"
+            Utils.prefix = inputdir+'/'+iregion+'/'
+            HistogramsOneDir(iregion)
+            
+    ####
+    ####
+    import os
+    if options.makecards:
+        os.system('python SelectTextFiles.py AllRegions '+regionstorunstr)
+        
+    if options.combinecards: 
+        print "combining cards"
+        os.system('python CombineDataCards.py DataCards_AllRegions '+regionstorunstr)
+        
+    if options.bbb:
+        os.system('source binbybin.sh')
+        
+    if options.runlimit:
+        os.system('python CombineDataCards.py DataCards_AllRegions runlimit')
+        
+    if bool(options.runlimit) & bool(options.obs):
+        os.system('python CombineDataCards.py DataCards_AllRegions runlimit obs')
+
+        
+    '''
     print "------------For mass sidebands Region--------------"
     Utils.prefix = inputdir+'/zj/'
     HistogramsOneDir('zj')
@@ -529,7 +564,7 @@ if __name__ == "__main__":
     print "------------For wt Region--------------"
     Utils.prefix = inputdir+'/wt/'
     HistogramsOneDir('wt')
-
+    '''
     
 else :
     print ("MakeShapesAndStack.py is being imported as a module......")
