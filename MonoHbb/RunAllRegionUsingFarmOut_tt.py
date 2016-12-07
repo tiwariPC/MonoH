@@ -13,6 +13,9 @@ outfilename   = os.environ['OUTPUT']
 if mode == 'signal':
     os.system('./MonoHBranchReader.py  -m 100.0 -M 150.0 -i '+inputfilename+' -o '+outfilename+'  -a -j 0 -J 2 -l 0 -L 1  --MLow1 100.0 --MHigh1 150.0 -F ')
 
+if mode == 'signalpSB':
+    os.system('./MonoHBranchReader.py  -m 30.0 -M 250.0 -i '+inputfilename+' -o '+outfilename+'  -a -j 0 -J 2 -l 0 -L 1  --MLow1 30.0 --MHigh1 250.0 -F ')
+
 ## Mass Sidebands
 ## inverting the mass cut
 

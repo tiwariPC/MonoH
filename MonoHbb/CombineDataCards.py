@@ -32,31 +32,36 @@ a0massvec=['300']#,'400','500','600','700','800']
 
 
 
-
 #os.system('mkdir -p oneplustwo')
 for imass in range(len(massvec)):
     for ia0mass in a0massvec:
-        
+        print "inside looping"
+
+        checkname= 'dummy'
         allregions=[]
         for iregion in regions:
+            checkname = dirname+'/'+iregion+'_DataCard_monoHbbM'+(str(massvec[imass]))+'_'+ia0mass+'GeV_MonoHbb_13TeV.txt'
+            print checkname
+            print ('checkname ', checkname, bool(os.path.exists(checkname)))
             tmpname = iregion+'='+dirname+'/'+iregion+'_DataCard_monoHbbM'+(str(massvec[imass]))+'_'+ia0mass+'GeV_MonoHbb_13TeV.txt '
             print (imass, ia0mass, tmpname)
             allregions.append(tmpname)
-#        allregions.append('rateparam.txt')
-        #bb='SR='+dirname+'/signal_DataCard_monoHbbM'+(str(massvec[imass]))+'_'+ia0mass+'GeV_MonoHbb_13TeV.txt '
-        #znunu='ZbCR='+dirname+'/zj_DataCard_monoHbbM'+(str(massvec[imass]))+'_'+ia0mass+'GeV_MonoHbb_13TeV.txt '
-        ##wjets='WbCR='+dirname+'/wj_DataCard_monoHbbM'+(str(massvec[imass]))+'_'+ia0mass+'GeV_MonoHbb_13TeV.txt '
-        ##tt='ttCR='+dirname+'/tt_DataCard_monoHbbM'+(str(massvec[imass]))+'_'+ia0mass+'GeV_MonoHbb_13TeV.txt '
-        #wt='wtCR='+dirname+'/wt_DataCard_monoHbbM'+(str(massvec[imass]))+'_'+ia0mass+'GeV_MonoHbb_13TeV.txt '
+            print 'inside inner loop'
         rateparm='rateparam.txt'
-        
+
+        if len(regions)>0:
+            if not bool(os.path.exists(checkname)): continue 
+
+        splusbFitdir = dirname
+        datacardnamefit=splusbFitdir+'/DataCard_S_Plus_B_M'+(str(massvec[imass]))+'_'+ia0mass+'GeV_MonoHbb_13TeV.txt'
+        tmpdcard = 'tmpcard.txt'
+        if len(regions)==0:
+            if not bool(os.path.exists(datacardnamefit)): continue
+
         #allcards=bb+znunu+wjets+tt
         #allcards=bb+znunu+wt
         allcards = ''.join(allregions)
         print allcards
-        splusbFitdir = dirname
-        datacardnamefit=splusbFitdir+'/DataCard_S_Plus_B_M'+(str(massvec[imass]))+'_'+ia0mass+'GeV_MonoHbb_13TeV.txt'
-        tmpdcard = 'tmpcard.txt'
         if (len(sys.argv) >= 2) & (not ('runlimit' in sys.argv )) :
             os.system('combineCards.py  '+allcards+' >& '+tmpdcard)
             os.system('cat '+tmpdcard+' '+rateparm+' >& '+  datacardnamefit)

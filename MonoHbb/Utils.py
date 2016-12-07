@@ -1,8 +1,8 @@
 from ROOT import TFile, TH1F
 
 
-prefix = 'AnalysisHistograms_MergedSkimmedV11_V10/signal/'
-whichregion='sigmal'
+prefix = 'dummy_to_be_changed_in_the_main_script'
+whichregion='signal'
 
 histdirname = ''
 lumi = 12900 
@@ -40,11 +40,10 @@ samples={
         },
     
     ## Z ->nunu + Jets
-    ## Fixme: last 4 cross-sections are wrong at this moment. 
     'znunujets' : {
         'order' : 0,
         'files' : ['Merged_ZJetsToNuNu_HT-100To200_13TeV-madgraph-SkimTree.root','Merged_ZJetsToNuNu_HT-200To400_13TeV-madgraph-SkimTree.root','Merged_ZJetsToNuNu_HT-400To600_13TeV-madgraph-SkimTree.root','Merged_ZJetsToNuNu_HT-600To800_13TeV-madgraph-SkimTree.root','Merged_ZJetsToNuNu_HT-800To1200_13TeV-madgraph-SkimTree.root','Merged_ZJetsToNuNu_HT-1200To2500_13TeV-madgraph-SkimTree.root','Merged_ZJetsToNuNu_HT-2500ToInf_13TeV-madgraph-SkimTree.root'],
-        'xsec'      : [1.626*280.47, 1.617*78.36, 1.459*10.94, 1.391*4.203, 1.391*4.203, 1.391*4.203, 1.391*4.203],
+        'xsec'      : [1.626*280.35, 1.617*77.67, 1.459*10.73, 1.391*2.559, 1.391*1.1796, 1.391*0.28833, 1.391*0.006945],                                                                   # 'xsec'      : [1.626*280.47, 1.617*78.36, 1.459*10.94, 1.391*4.203, 1.391*4.203, 1.391*4.203, 1.391*4.203],
         'fillcolor' : 2,
         'fillstyle' : 1,
         'linecolor' : 1,
@@ -776,6 +775,82 @@ samples={
         'plot': True,
         },
 
+    ## ZPrime Baryonic Model
+    ## Signal
+    'signalMZp_500_Mdm_1' : {
+        'order' : 0,
+        'files' : ['Merged_MonoHbb_ZpBaryonic_MZp-500_MChi-1_13TeV-madgraph-SkimTree.root'],
+        'xsec'      : [0.577],
+        'fillcolor' : 2,
+        'fillstyle' : 1,
+        'linecolor' : 1,
+        'linewidth' : 2,
+        'linestyle' : 1,
+        'label' : "",
+        'weight': [1.],
+        'plot': True,
+        },
+
+    ## Signal
+    'signalMZp_500_Mdm_150' : {
+        'order' : 0,
+        'files' : ['Merged_MonoHbb_ZpBaryonic_MZp-500_MChi-150_13TeV-madgraph-SkimTree.root'],
+        'xsec'      : [0.577],
+        'fillcolor' : 2,
+        'fillstyle' : 1,
+        'linecolor' : 1,
+        'linewidth' : 2,
+        'linestyle' : 1,
+        'label' : "",
+        'weight': [1.],
+        'plot': True,
+        },
+
+    ## Signal
+    'signalMZp_500_Mdm_500' : {
+        'order' : 0,
+        'files' : ['Merged_MonoHbb_ZpBaryonic_MZp-500_MChi-500_13TeV-madgraph-SkimTree.root'],
+        'xsec'      : [0.577],
+        'fillcolor' : 2,
+        'fillstyle' : 1,
+        'linecolor' : 1,
+        'linewidth' : 2,
+        'linestyle' : 1,
+        'label' : "",
+        'weight': [1.],
+        'plot': True,
+        },
+
+    ## Signal
+    'signalMZp_1000_Mdm_1' : {
+        'order' : 0,
+        'files' : ['Merged_MonoHbb_ZpBaryonic_MZp-1000_MChi-1_13TeV-madgraph-SkimTree.root'],
+        'xsec'      : [0.577],
+        'fillcolor' : 2,
+        'fillstyle' : 1,
+        'linecolor' : 1,
+        'linewidth' : 2,
+        'linestyle' : 1,
+        'label' : "",
+        'weight': [1.],
+        'plot': True,
+        },
+
+    ## Signal
+    'signalMZp_1000_Mdm_150' : {
+        'order' : 0,
+        'files' : ['Merged_MonoHbb_ZpBaryonic_MZp-1000_MChi-150_13TeV-madgraph-SkimTree.root'],
+        'xsec'      : [0.577],
+        'fillcolor' : 2,
+        'fillstyle' : 1,
+        'linecolor' : 1,
+        'linewidth' : 2,
+        'linestyle' : 1,
+        'label' : "",
+        'weight': [1.],
+        'plot': True,
+        },
+
     }
 
 
@@ -786,6 +861,7 @@ def FindIntegral(filename):
     histname = 'h_met_0'
     h_mJ = infile_.Get(histname)
     h_total = infile_.Get('h_total_weight')
+    print filename, h_total.Integral()
     return [h_mJ.Integral(),h_total.Integral()]
 
     
@@ -800,6 +876,7 @@ def setweights():
             #print ifile 
             integral_ =  FindIntegral(ifile)
             weight = samples[isample]['xsec'][ixsec] * lumi  / integral_[1]
+            print (ifile,samples[isample]['xsec'][ixsec], lumi, integral_[1], weight)
             #print "ifile = ", ifile
             if samples[isample] != 'data_obs': samples[isample]['weight'][ixsec] = weight
             if samples[isample] == 'data_obs': samples[isample]['weight'][ixsec] = 1.0
@@ -813,7 +890,7 @@ def setweights():
 if __name__ == "__main__":
     print ("running the models of Util.py directly to test them. ")
     setweights()
-    print "samples = ",samples
+    #print "samples = ",samples
 else :
     print ("Utils.py is being imported as a module......")
         

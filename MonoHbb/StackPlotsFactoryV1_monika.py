@@ -1,14 +1,6 @@
 import os
 import sys
 import datetime
-## Ratio is added Data/MC 
-## Template macro is fed to a python variable
-## 1.)  is created on DateBase 
-## 2.) Starting Extension of your Dir..Like 
-## in a day you want 2 directories jsut
-## change the DirPreName
-## Monika Mittal Khuarana
-## Raman Khurana
 
 
 if len(sys.argv) < 2 : 
@@ -18,6 +10,10 @@ if len(sys.argv) ==2 :
     print "plotting from directory ",sys.argv[1]
     inputdirname = sys.argv[1]
 
+
+pathsplit = inputdirname.split('/')
+size_ = len(pathsplit)
+inputdirname_ = pathsplit[size_-1]
 
 datestr = datetime.date.today().strftime("%d%m%Y")
 
@@ -1115,21 +1111,26 @@ tableout << a <<"  "<< b <<"  " << diboson_ <<"  " << zh <<"  "<< dyjets<<std::e
 tableout<<" total_bkg "<<a + b + diboson_ + zh + dyjets<<std::endl;
 tableout<< " "<<std::endl;
 }
+
  
  c12->Draw();
 if(!ISLOG){
- c12->SaveAs(DirPreName+dirpathname +"/MonoHPdf/'''+inputdirname+'''_HISTNAME.pdf");
- c12->SaveAs(DirPreName+dirpathname +"/MonoHPng/'''+inputdirname+'''_HISTNAME.png");
- c12->SaveAs(DirPreName+dirpathname +"/MonoHROOT/'''+inputdirname+'''_HISTNAME.root");                                                                         
+
+ c12->SaveAs(DirPreName+dirpathname +"/MonoHPdf/'''+inputdirname_+'''_HISTNAME.pdf");
+ c12->SaveAs(DirPreName+dirpathname +"/MonoHPng/'''+inputdirname_+'''_HISTNAME.png");
+ c12->SaveAs(DirPreName+dirpathname +"/MonoHROOT/'''+inputdirname_+'''_HISTNAME.root");                                                                         
  rout<<"<hr/>"<<std::endl;
  rout<<"<table class=\\"\\"> <tr><td><img src=\\""<<"DYPng/HISTPATH_HISTNAME.png\\" height=\\"400\\" width=\\"400\\"></td>   </tr> </table>"<<std::endl;
 
 }
  
 if(ISLOG){
- c12->SaveAs(DirPreName+dirpathname +"/MonoHPdf/HISTPATH_HISTNAME_log.pdf");
- c12->SaveAs(DirPreName+dirpathname +"/MonoHPng/HISTPATH_HISTNAME_log.png");
- c12->SaveAs(DirPreName+dirpathname +"/MonoHROOT/HISTPATH_HISTNAME_log.root");                                                                        
+ c12->SaveAs(DirPreName+dirpathname +"/MonoHPdf/'''+inputdirname_+'''_HISTNAME_log.pdf");
+ c12->SaveAs(DirPreName+dirpathname +"/MonoHPng/'''+inputdirname_+'''_HISTNAME_log.png");
+ c12->SaveAs(DirPreName+dirpathname +"/MonoHROOT/'''+inputdirname_+'''_HISTNAME_log.root");                                                                         
+// c12->SaveAs(DirPreName+dirpathname +"/MonoHPdf/HISTPATH_HISTNAME_log.pdf");
+ //c12->SaveAs(DirPreName+dirpathname +"/MonoHPng/HISTPATH_HISTNAME_log.png");
+ //c12->SaveAs(DirPreName+dirpathname +"/MonoHROOT/HISTPATH_HISTNAME_log.root");                                                                        
 }
 
 

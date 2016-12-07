@@ -18,8 +18,12 @@ if len(sys.argv) ==2 :
     print "plotting from directory ",sys.argv[1]
     inputdirname = sys.argv[1]
 
+pathsplit = inputdirname.split('/')
+size_ = len(pathsplit)
+inputdirname_ = pathsplit[size_-1]
 
 datestr = datetime.date.today().strftime("%d%m%Y")
+
 
 macro='''{
 #include <ctime>
@@ -96,66 +100,66 @@ TH1F*  data_obs;
 
 TString filenamepath("'''+inputdirname+'''/"); 
 // DYJets 0
-filenameString.push_back(filenamepath + "Merged_WW_TuneCUETP8M1_13TeV-pythia8-RunAllRegionUsingFarmOut_'''+inputdirname+'''.root");
+filenameString.push_back(filenamepath + "Merged_WW_TuneCUETP8M1_13TeV-pythia8-SkimTree.root");
 //WJets  1
-filenameString.push_back(filenamepath + "Merged_WW_TuneCUETP8M1_13TeV-pythia8-RunAllRegionUsingFarmOut_'''+inputdirname+'''.root");
+filenameString.push_back(filenamepath + "Merged_WW_TuneCUETP8M1_13TeV-pythia8-SkimTree.root");
 
 // Diboson WW WZ ZZ 2 3 4
-filenameString.push_back(filenamepath + "Merged_WW_TuneCUETP8M1_13TeV-pythia8-RunAllRegionUsingFarmOut_'''+inputdirname+'''.root");
-filenameString.push_back(filenamepath + "Merged_WZ_TuneCUETP8M1_13TeV-pythia8-RunAllRegionUsingFarmOut_'''+inputdirname+'''.root");
-filenameString.push_back(filenamepath + "Merged_ZZ_TuneCUETP8M1_13TeV-pythia8-RunAllRegionUsingFarmOut_'''+inputdirname+'''.root");
+filenameString.push_back(filenamepath + "Merged_WW_TuneCUETP8M1_13TeV-pythia8-SkimTree.root");
+filenameString.push_back(filenamepath + "Merged_WZ_TuneCUETP8M1_13TeV-pythia8-SkimTree.root");
+filenameString.push_back(filenamepath + "Merged_ZZ_TuneCUETP8M1_13TeV-pythia8-SkimTree.root");
 
 // TTJets 5
-filenameString.push_back(filenamepath + "Merged_TT_TuneCUETP8M1_13TeV-powheg-pythia8-RunAllRegionUsingFarmOut_'''+inputdirname+'''.root");
+filenameString.push_back(filenamepath + "Merged_TT_TuneCUETP8M1_13TeV-powheg-pythia8-SkimTree.root");
 
 //Raman ZH background 6                                                                                                                       
-filenameString.push_back(filenamepath + "Merged_ZH_HToBB_ZToNuNu_M125_13TeV_powheg_pythia8-RunAllRegionUsingFarmOut_'''+inputdirname+'''.root"); 
+filenameString.push_back(filenamepath + "Merged_ZH_HToBB_ZToNuNu_M125_13TeV_powheg_pythia8-SkimTree.root"); 
 
 //Raman Signal Sample 7-11
 
-filenameString.push_back(filenamepath + "Merged_ZprimeToA0hToA0chichihbb_2HDM_MZp-600_MA0-300_13TeV-madgraph-RunAllRegionUsingFarmOut_'''+inputdirname+'''.root");
-filenameString.push_back(filenamepath + "Merged_ZprimeToA0hToA0chichihbb_2HDM_MZp-800_MA0-300_13TeV-madgraph-RunAllRegionUsingFarmOut_'''+inputdirname+'''.root");  
-filenameString.push_back(filenamepath + "Merged_ZprimeToA0hToA0chichihbb_2HDM_MZp-1000_MA0-300_13TeV-madgraph-RunAllRegionUsingFarmOut_'''+inputdirname+'''.root");  
-filenameString.push_back(filenamepath + "Merged_ZprimeToA0hToA0chichihbb_2HDM_MZp-1200_MA0-300_13TeV-madgraph-RunAllRegionUsingFarmOut_'''+inputdirname+'''.root");  
-filenameString.push_back(filenamepath + "Merged_ZprimeToA0hToA0chichihbb_2HDM_MZp-1400_MA0-300_13TeV-madgraph-RunAllRegionUsingFarmOut_'''+inputdirname+'''.root");  
+filenameString.push_back(filenamepath + "Merged_ZprimeToA0hToA0chichihbb_2HDM_MZp-600_MA0-300_13TeV-madgraph-SkimTree.root");
+filenameString.push_back(filenamepath + "Merged_ZprimeToA0hToA0chichihbb_2HDM_MZp-800_MA0-300_13TeV-madgraph-SkimTree.root");  
+filenameString.push_back(filenamepath + "Merged_ZprimeToA0hToA0chichihbb_2HDM_MZp-1000_MA0-300_13TeV-madgraph-SkimTree.root");  
+filenameString.push_back(filenamepath + "Merged_ZprimeToA0hToA0chichihbb_2HDM_MZp-1200_MA0-300_13TeV-madgraph-SkimTree.root");  
+filenameString.push_back(filenamepath + "Merged_ZprimeToA0hToA0chichihbb_2HDM_MZp-1400_MA0-300_13TeV-madgraph-SkimTree.root");  
 //comment out
-//filenameString.push_back(filenamepath + "Merged_ZprimeToA0hToA0chichihbb_2HDM_MZp-1700_MA0-300_13TeV-madgraph-RunAllRegionUsingFarmOut_'''+inputdirname+'''.root");  
-//filenameString.push_back(filenamepath + "Merged_ZprimeToA0hToA0chichihbb_2HDM_MZp-2000_MA0-300_13TeV-madgraph-RunAllRegionUsingFarmOut_'''+inputdirname+'''.root");  
-//filenameString.push_back(filenamepath + "Merged_ZprimeToA0hToA0chichihbb_2HDM_MZp-2500_MA0-300_13TeV-madgraph-RunAllRegionUsingFarmOut_'''+inputdirname+'''.root");  
+//filenameString.push_back(filenamepath + "Merged_ZprimeToA0hToA0chichihbb_2HDM_MZp-1700_MA0-300_13TeV-madgraph-SkimTree.root");  
+//filenameString.push_back(filenamepath + "Merged_ZprimeToA0hToA0chichihbb_2HDM_MZp-2000_MA0-300_13TeV-madgraph-SkimTree.root");  
+//filenameString.push_back(filenamepath + "Merged_ZprimeToA0hToA0chichihbb_2HDM_MZp-2500_MA0-300_13TeV-madgraph-SkimTree.root");  
 
 
 //DYJets High pt DYSample 12,13,14,15,16,17,18
-filenameString.push_back(filenamepath + "Merged_ZJetsToNuNu_HT-100To200_13TeV-madgraph-RunAllRegionUsingFarmOut_'''+inputdirname+'''.root");
-filenameString.push_back(filenamepath + "Merged_ZJetsToNuNu_HT-200To400_13TeV-madgraph-RunAllRegionUsingFarmOut_'''+inputdirname+'''.root");
-filenameString.push_back(filenamepath + "Merged_ZJetsToNuNu_HT-400To600_13TeV-madgraph-RunAllRegionUsingFarmOut_'''+inputdirname+'''.root");
-filenameString.push_back(filenamepath + "Merged_ZJetsToNuNu_HT-600To800_13TeV-madgraph-RunAllRegionUsingFarmOut_'''+inputdirname+'''.root");
-filenameString.push_back(filenamepath + "Merged_ZJetsToNuNu_HT-800To1200_13TeV-madgraph-RunAllRegionUsingFarmOut_'''+inputdirname+'''.root");
-filenameString.push_back(filenamepath + "Merged_ZJetsToNuNu_HT-1200To2500_13TeV-madgraph-RunAllRegionUsingFarmOut_'''+inputdirname+'''.root");
-filenameString.push_back(filenamepath + "Merged_ZJetsToNuNu_HT-2500ToInf_13TeV-madgraph-RunAllRegionUsingFarmOut_'''+inputdirname+'''.root");
+filenameString.push_back(filenamepath + "Merged_ZJetsToNuNu_HT-100To200_13TeV-madgraph-SkimTree.root");
+filenameString.push_back(filenamepath + "Merged_ZJetsToNuNu_HT-200To400_13TeV-madgraph-SkimTree.root");
+filenameString.push_back(filenamepath + "Merged_ZJetsToNuNu_HT-400To600_13TeV-madgraph-SkimTree.root");
+filenameString.push_back(filenamepath + "Merged_ZJetsToNuNu_HT-600To800_13TeV-madgraph-SkimTree.root");
+filenameString.push_back(filenamepath + "Merged_ZJetsToNuNu_HT-800To1200_13TeV-madgraph-SkimTree.root");
+filenameString.push_back(filenamepath + "Merged_ZJetsToNuNu_HT-1200To2500_13TeV-madgraph-SkimTree.root");
+filenameString.push_back(filenamepath + "Merged_ZJetsToNuNu_HT-2500ToInf_13TeV-madgraph-SkimTree.root");
 
 
 
 // WJets in Bins  19,20,21,22,23,24,25
-filenameString.push_back(filenamepath + "Merged_WJetsToLNu_HT-100To200_TuneCUETP8M1_13TeV-madgraphMLM-pythia8-RunAllRegionUsingFarmOut_'''+inputdirname+'''.root");
-filenameString.push_back(filenamepath + "Merged_WJetsToLNu_HT-200To400_TuneCUETP8M1_13TeV-madgraphMLM-pythia8-RunAllRegionUsingFarmOut_'''+inputdirname+'''.root");
-filenameString.push_back(filenamepath + "Merged_WJetsToLNu_HT-400To600_TuneCUETP8M1_13TeV-madgraphMLM-pythia8-RunAllRegionUsingFarmOut_'''+inputdirname+'''.root");
-filenameString.push_back(filenamepath + "Merged_WJetsToLNu_HT-600To800_TuneCUETP8M1_13TeV-madgraphMLM-pythia8-RunAllRegionUsingFarmOut_'''+inputdirname+'''.root");
-filenameString.push_back(filenamepath + "Merged_WJetsToLNu_HT-800To1200_TuneCUETP8M1_13TeV-madgraphMLM-pythia8-RunAllRegionUsingFarmOut_'''+inputdirname+'''.root");
-filenameString.push_back(filenamepath + "Merged_WJetsToLNu_HT-1200To2500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8-RunAllRegionUsingFarmOut_'''+inputdirname+'''.root");
-filenameString.push_back(filenamepath + "Merged_WJetsToLNu_HT-2500ToInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8-RunAllRegionUsingFarmOut_'''+inputdirname+'''.root");
+filenameString.push_back(filenamepath + "Merged_WJetsToLNu_HT-100To200_TuneCUETP8M1_13TeV-madgraphMLM-pythia8-SkimTree.root");
+filenameString.push_back(filenamepath + "Merged_WJetsToLNu_HT-200To400_TuneCUETP8M1_13TeV-madgraphMLM-pythia8-SkimTree.root");
+filenameString.push_back(filenamepath + "Merged_WJetsToLNu_HT-400To600_TuneCUETP8M1_13TeV-madgraphMLM-pythia8-SkimTree.root");
+filenameString.push_back(filenamepath + "Merged_WJetsToLNu_HT-600To800_TuneCUETP8M1_13TeV-madgraphMLM-pythia8-SkimTree.root");
+filenameString.push_back(filenamepath + "Merged_WJetsToLNu_HT-800To1200_TuneCUETP8M1_13TeV-madgraphMLM-pythia8-SkimTree.root");
+filenameString.push_back(filenamepath + "Merged_WJetsToLNu_HT-1200To2500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8-SkimTree.root");
+filenameString.push_back(filenamepath + "Merged_WJetsToLNu_HT-2500ToInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8-SkimTree.root");
 
 // Single Top 26,27,28,29,30
-//fixme filenameString.push_back(filenamepath + "Merged_ST_t-channel_top_4f_leptonDecays_13TeV-powheg-pythia8_TuneCUETP8M1-RunAllRegionUsingFarmOut_'''+inputdirname+'''.root");
-filenameString.push_back(filenamepath + "Merged_ST_t-channel_antitop_4f_leptonDecays_13TeV-powheg-pythia8_TuneCUETP8M1-RunAllRegionUsingFarmOut_'''+inputdirname+'''.root");
-filenameString.push_back(filenamepath + "Merged_ST_t-channel_antitop_4f_leptonDecays_13TeV-powheg-pythia8_TuneCUETP8M1-RunAllRegionUsingFarmOut_'''+inputdirname+'''.root");
-filenameString.push_back(filenamepath + "Merged_ST_s-channel_4f_leptonDecays_13TeV-amcatnlo-pythia8_TuneCUETP8M1-RunAllRegionUsingFarmOut_'''+inputdirname+'''.root");
-filenameString.push_back(filenamepath + "Merged_ST_tW_top_5f_inclusiveDecays_13TeV-powheg-pythia8_TuneCUETP8M1-RunAllRegionUsingFarmOut_'''+inputdirname+'''.root");
-filenameString.push_back(filenamepath + "Merged_ST_tW_antitop_5f_inclusiveDecays_13TeV-powheg-pythia8_TuneCUETP8M1-RunAllRegionUsingFarmOut_'''+inputdirname+'''.root");
+//fixme filenameString.push_back(filenamepath + "Merged_ST_t-channel_top_4f_leptonDecays_13TeV-powheg-pythia8_TuneCUETP8M1-SkimTree.root");
+filenameString.push_back(filenamepath + "Merged_ST_t-channel_antitop_4f_leptonDecays_13TeV-powheg-pythia8_TuneCUETP8M1-SkimTree.root");
+filenameString.push_back(filenamepath + "Merged_ST_t-channel_antitop_4f_leptonDecays_13TeV-powheg-pythia8_TuneCUETP8M1-SkimTree.root");
+filenameString.push_back(filenamepath + "Merged_ST_s-channel_4f_leptonDecays_13TeV-amcatnlo-pythia8_TuneCUETP8M1-SkimTree.root");
+filenameString.push_back(filenamepath + "Merged_ST_tW_top_5f_inclusiveDecays_13TeV-powheg-pythia8_TuneCUETP8M1-SkimTree.root");
+filenameString.push_back(filenamepath + "Merged_ST_tW_antitop_5f_inclusiveDecays_13TeV-powheg-pythia8_TuneCUETP8M1-SkimTree.root");
 
 //                                                                   
 //Data Filex
 
-filenameString.push_back(filenamepath + "Merged_MET.root");
+filenameString.push_back(filenamepath + "Merged_MET-SkimTree.root");
 
 //histoname
 
@@ -250,6 +254,9 @@ Xsec[11] = scalexs * 0.034536; //1400
 
 float Sznunu = 1.;
 //float Sznunu = 0.77;
+'xsec'      : [1.626*280.35, 1.617*77.67, 1.459*10.73, 1.391*2.559, 1.391*1.1796, 1.391*0.28833, 1.391*0.006945],
+
+
 Xsec[12] = Sznunu * 1.626*280.47; // Znunu HT
 Xsec[13] = Sznunu * 1.617*78.36; // Znunu HT
 Xsec[14] = Sznunu * 1.459*10.94; // Znunu HT
@@ -311,8 +318,8 @@ h_temp->Rebin(3,"hnew",metbins);
 h_mc[i]= (TH1F*)hnew->Clone();
 }else{
 h_mc[i] = (TH1F*) fIn->Get(histnameString);
-h_mc_both[i] = (TH1F*) fIn->Get(new_name);
-h_mc[i]->Add(h_mc_both[i]);
+//h_mc_both[i] = (TH1F*) fIn->Get(new_name);
+//h_mc[i]->Add(h_mc_both[i]);
 h_mc[i]->Rebin(REBIN); 
 h_mc[i]->Sumw2();
 }
@@ -333,6 +340,7 @@ h_mc[i]->Sumw2();
  if(Integral[i]>0) Integral_Error[i] = TMath::Sqrt(Integral[i]) * normalization[i];
  h_mc[i]->Scale(normalization[i]);  
 
+std::cout<<" file = "<<filenameString[i]<<"   "<<" integral = "<<h_mc[i]->Integral()<<std::endl;
 //std::cout<<i <<"       integral = "<<Integral[i]
 //      <<" Integral_Error[i]"<<Integral_Error[i]<<"  normalization[i] = "<<normalization[i]<<" mul = "<<TMath::Sqrt(Integral[i]) * normalization[i]<<std::endl;
 // mout << filenameString[i] <<  "  &  " << Xsec[i] <<"  &  " << std::endl; 
@@ -345,12 +353,15 @@ if(VARIABLEBINS){
 h_temp =(TH1F*) fIn->Get(histnameString);
 h_temp->Rebin(3,"hnew",metbins);
 h_data= (TH1F*)hnew->Clone();
+std::cout<<" Number of events in data histogram = "<<h_data->Integral()<<std::endl;
 }else{
 h_data = (TH1F*) fIn->Get(histnameString);
-TH1F *h_data_new = (TH1F*) fIn->Get(new_name);
+//TH1F *h_data_new = (TH1F*) fIn->Get(new_name);
 
-h_data->Add(h_data_new);
+//h_data->Add(h_data_new);
 h_data->Rebin(REBIN);
+std::cout<<" Number of events in data histogram = "<<h_data->Integral()<<" file name = "<<filenameString[i]<<std::endl;                                                                                                  
+
 h_data->Sumw2();
 }
 
@@ -1008,7 +1019,7 @@ if(TEXTINFILE){
  Int_t binxmin = xaxis->FindBin(XMIN);
  Int_t binxmax = xaxis->FindBin(XMAX);
       
-float dyjets = h_mc[15]->Integral()+h_mc[16]->Integral()+h_mc[17]->Integral()+h_mc[18]->Integral(); 
+float dyjets = h_mc[12]->Integral() + h_mc[13]->Integral() + h_mc[14]->Integral() + h_mc[15]->Integral()+h_mc[16]->Integral()+h_mc[17]->Integral()+h_mc[18]->Integral(); 
 float dyjets_error = TMath::Sqrt(pow(Integral_Error[15],2) + pow(Integral_Error[16],2) + pow(Integral_Error[17],2) + pow(Integral_Error[18],2) );
 
 float diboson_ = h_mc[2]->Integral() + h_mc[3]->Integral() + h_mc[4]->Integral();
@@ -1133,9 +1144,9 @@ tableout<< " "<<std::endl;
  
  c12->Draw();
 if(!ISLOG){
- c12->SaveAs(DirPreName+dirpathname +"/MonoHPdf/'''+inputdirname+'''_HISTNAME.pdf");
- c12->SaveAs(DirPreName+dirpathname +"/MonoHPng/'''+inputdirname+'''_HISTNAME.png");
- c12->SaveAs(DirPreName+dirpathname +"/MonoHROOT/'''+inputdirname+'''_HISTNAME.root");                                                                         
+ c12->SaveAs(DirPreName+dirpathname +"/MonoHPdf/'''+inputdirname_+'''_HISTNAME.pdf");
+ c12->SaveAs(DirPreName+dirpathname +"/MonoHPng/'''+inputdirname_+'''_HISTNAME.png");
+ c12->SaveAs(DirPreName+dirpathname +"/MonoHROOT/'''+inputdirname_+'''_HISTNAME.root");                                                                         
  rout<<"<hr/>"<<std::endl;
  rout<<"<table class=\\"\\"> <tr><td><img src=\\""<<"DYPng/HISTPATH_HISTNAME.png\\" height=\\"400\\" width=\\"400\\"></td>   </tr> </table>"<<std::endl;
 
@@ -1266,27 +1277,28 @@ dirnames=['Signal']
 for dirname in dirnames:
     makeLinearplots=True;
     if makeLinearplots :
-        makeplot([dirname,'h_met_0','E_{T}^{miss}[GeV]','200','1000','4','0','1','','0','0']) ## last bin is for variable met bins  ## second last is for data option
-        makeplot([dirname,'h_met_1','E_{T}^{miss}[GeV]','170','1000','4','0','1','','0','0']) ## last bin is for variable met bins  ## second last is for data option
-        
-        makeplot([dirname,'h_mass_0','m_{bb}[GeV]','0','250','4','0','1','','0','0']) ## last bin is for variable met bins  ## second last is for data option
-        makeplot([dirname,'h_mass_1','m_{bb}[GeV]','0','250','4','0','1','','0','0']) ## last bin is for variable met bins  ## second last is for data option
+        makeplot([dirname,'h_met_0','E_{T}^{miss}[GeV]','200','1000','25','0','1','','0','0']) ## last bin is for variable met bins  ## second last is for data option
+        #makeplot([dirname,'h_met_1','E_{T}^{miss}[GeV]','170','1000','25','0','1','','0','0']) ## last bin is for variable met bins  ## second last is for data option
+        '''
+        makeplot([dirname,'h_mass_0','m_{bb}[GeV]','0','250','10','0','1','','0','0']) ## last bin is for variable met bins  ## second last is for data option
+        #makeplot([dirname,'h_mass_1','m_{bb}[GeV]','0','250','10','0','1','','0','0']) ## last bin is for variable met bins  ## second last is for data option
 
         makeplot([dirname,'h_dPhi_0','dPhi','0','3.0','2','0','1','','0','0']) ## last bin is for variable met bins  ## second last is for data option
-        makeplot([dirname,'h_dPhi_1','dPhi','0','3.5','2','0','1','','0','0']) ## last bin is for variable met bins  ## second last is for data option
+        #makeplot([dirname,'h_dPhi_1','dPhi','0','3.5','2','0','1','','0','0']) ## last bin is for variable met bins  ## second last is for data option
         
         makeplot([dirname,'h_HiggsPt_0','p_{T}(H)[GeV]','200','800','2','0','1','','0','0']) ## last bin is for variable met bins  ## second last is for data option
-        makeplot([dirname,'h_HiggsPt_1','p_{T}(H)[GeV]','150','800','2','0','1','','0','0']) ## last bin is for variable met bins  ## second last is for data option
+        #makeplot([dirname,'h_HiggsPt_1','p_{T}(H)[GeV]','150','800','2','0','1','','0','0']) ## last bin is for variable met bins  ## second last is for data option
         
         makeplot([dirname,'h_HiggsEta_0','#eta(H)','-3.5','3.5','4','0','1','','0','0']) ## last bin is for variable met bins  ## second last is for data option
-        makeplot([dirname,'h_HiggsEta_1','#eta(H)','-3.5','3.5','4','0','1','','0','0']) ## last bin is for variable met bins  ## second last is for data option
+        #makeplot([dirname,'h_HiggsEta_1','#eta(H)','-3.5','3.5','4','0','1','','0','0']) ## last bin is for variable met bins  ## second last is for data option
 
         makeplot([dirname,'h_HiggsPhi_0','#phi(H)','-3.5','3.5','4','0','1','','0','0']) ## last bin is for variable met bins  ## second last is for data option
-        makeplot([dirname,'h_HiggsPhi_1','#phi(H)','-3.5','3.5','4','0','1','','0','0']) ## last bin is for variable met bins  ## second last is for data option
+        #makeplot([dirname,'h_HiggsPhi_1','#phi(H)','-3.5','3.5','4','0','1','','0','0']) ## last bin is for variable met bins  ## second last is for data option
 
         makeplot([dirname,'h_N_j_0','n_j','0','4','1','0','1','','0','0']) ## last bin is for variable met bins  ## second last is for data option
-        makeplot([dirname,'h_N_j_1','n_j','0','4','1','0','1','','0','0']) ## last bin is for variable met bins  ## second last is for data option
-
+        #makeplot([dirname,'h_N_j_1','n_j','0','4','1','0','1','','0','0']) ## last bin is for variable met bins  ## second last is for data option
+        '''
+        #h_csv1_0, h_csv2_0, h_mt_0, h_N_e_0, h_N_mu_0, h_N_tau_0, h_N_b_0, h_N_j_0, 
         '''makeplot([dirname,'h_MET0','E_{T}^{miss}[GeV]','200','1000','25','1','1','NoData','0','1']) ## last bin is for variable met bins  ## second last is for data option
 
         #makeplot([dirname,'h_MET0','MET','200','1000','25','1','1','NoData','1','0']) ## last bin is for variable met bins  ## second last is for data option

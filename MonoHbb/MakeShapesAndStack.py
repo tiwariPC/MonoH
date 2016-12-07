@@ -18,6 +18,7 @@ from ROOT import gROOT, gSystem, gStyle, gRandom
 from ROOT import TFile, TChain, TTree, TCut, TH1F, TH2F, THStack, TGraph, TGaxis
 from ROOT import TStyle, TCanvas, TPad, TLegend, TLatex, TText
 import ROOT
+import os
 
 ROOT.gROOT.SetBatch(True)
 
@@ -51,7 +52,6 @@ from ROOT import *
 #
 #########################################
 
-Utils.setweights()
 debug_=False
 
 
@@ -82,6 +82,7 @@ def MakeRooDataHist(phys_process, histname, fullrange_=False):
         if phys_process != 'data_obs': hist_.Scale(Utils.samples[phys_process]['weight'][iweight])
         if phys_process == 'data_obs': hist_.Scale(1)
         
+        print (Utils.prefix+'/'+irootfile, hist_.Integral(1,-1))
         hist_met_.Add(hist_)
         iweight = iweight + 1
         
@@ -91,7 +92,7 @@ def MakeRooDataHist(phys_process, histname, fullrange_=False):
     
     ## put overflow in the last bin 
     nbins  = h.GetNbinsX()
-    print "Integral  = ", (h.Integral(), h.Integral(1,-1), h.GetBinContent(nbins+1))
+    #print "Integral  = ", (h.Integral(), h.Integral(1,-1), h.GetBinContent(nbins+1), Utils.prefix+'/'+irootfile)
     overflow = h.GetBinContent(nbins+1)
     h.AddBinContent(nbins, overflow) 
     return h
@@ -107,7 +108,8 @@ def WriteHistograms(nominalname, postfix, rootfilename, rebininfo,  filemode='UP
     if debug_ : print "Top"
     h_tt    = MakeRooDataHist('TT', nominalname, True) 
     h_st    = MakeRooDataHist('ST', nominalname, True) 
-    
+    print " h_tt = ",h_tt.Integral(1,-1)
+    print "h_st = ",h_st.Integral(1,-1)
     
     weight_  = Utils.samples['TT']['weight'][0]         ;  weights.append(weight_)
     weight_  = Utils.samples['VV']['weight'][0]         ;  weights.append(weight_)
@@ -174,6 +176,7 @@ def WriteHistograms(nominalname, postfix, rootfilename, rebininfo,  filemode='UP
         h_data.Rebin(rebin_)
         c1.SaveAs('METstack.pdf')
     
+    ## Stack macro ends here
     
     weight_  = Utils.samples['signal600_300']['weight'][0]   ; weights.append(weight_)
     weight_  = Utils.samples['signal800_300']['weight'][0]   ; weights.append(weight_)
@@ -363,8 +366,70 @@ def WriteHistograms(nominalname, postfix, rootfilename, rebininfo,  filemode='UP
 
     h_2500_800 = MakeRooDataHist('signal2500_800', nominalname, True)
     h_2500_800.SetNameTitle('monoHbbM2500_800'+postfix,'monoHbbM2500_800')
+    
+    
 
-
+    ## Adding Histograms for the Baryonic Model
+    ZpB_NameList = ['signalMZp_500_Mdm_1',
+                    'signalMZp_500_Mdm_150',
+                    'signalMZp_500_Mdm_500',
+                    
+                    'signalMZp_1000_Mdm_1',
+                    'signalMZp_1000_Mdm_150',
+                    
+                    ##'signalMZp_995_Mdm_500'
+                    ###'signalMZp_1000_Mdm_1000',
+                    ##
+                    ##'signalMZp_10000_Mdm_1',
+                    ##'signalMZp_10000_Mdm_10',
+                    ##'signalMZp_10000_Mdm_50',
+                    ##'signalMZp_10000_Mdm_150',
+                    ##'signalMZp_10000_Mdm_500',
+                    ##'signalMZp_10000_Mdm_1000',
+                    ##
+                    ###'signalMZp_10_Mdm_1',
+                    ##'signalMZp_10_Mdm_10',
+                    ##'signalMZp_10_Mdm_50',
+                    ##'signalMZp_10_Mdm_150',
+                    ##'signalMZp_10_Mdm_500',
+                    ##'signalMZp_10_Mdm_1000',
+                    ##
+                    ##'signalMZp_15_Mdm_10',
+                    ##
+                    ##'signalMZp_1995_Mdm_1000',
+                    ##'signalMZp_2000_Mdm_1',
+                    ##'signalMZp_2000_Mdm_500',
+                    ##
+                    ##'signalMZp_200_Mdm_1',
+                    ##'signalMZp_200_Mdm_50',
+                    ##'signalMZp_200_Mdm_150',
+                    ##
+                    ##'signalMZp_20_Mdm_1',
+                    ##
+                    ##'signalMZp_300_Mdm_1',
+                    ###'signalMZp_300_Mdm_50',
+                    ##'signalMZp_295_Mdm_150',
+                    ##
+                    ##
+                    ##'signalMZp_50_Mdm_1',
+                    ##'signalMZp_50_Mdm_10',
+                    ##'signalMZp_50_Mdm_50',
+                    ]
+    
+    
+    weightZpB = []
+    h_ZpB = []
+    for samplename in ZpB_NameList:
+        weightZpB_  = Utils.samples[samplename]['weight'][0]  
+        
+        weightZpB.append(weightZpB_)
+        weights.append(weightZpB_)
+        h_tmp = MakeRooDataHist(samplename, nominalname, True)
+        h_tmp.SetNameTitle(samplename+postfix,samplename)
+        h_ZpB.append(h_tmp)
+        
+    print h_ZpB
+        
     if debug_ : print "signal end"
     h_data = TH1F()
     if filemode == 'RECREATE':
@@ -428,13 +493,20 @@ def WriteHistograms(nominalname, postfix, rootfilename, rebininfo,  filemode='UP
     h_all.append(h_1700_800)
     h_all.append(h_2000_800)
     h_all.append(h_2500_800)
-
+    
+    ## add all the ZpB histograms
+    
+    for ihistogram in h_ZpB:
+        h_all.append(ihistogram)
+    
     
     if postfix =='':
         yieldfile = open(rootfilename+'.txt','w')
     ihist = 0
+    
+    print 'text file created'
     for ih in h_all:
-        
+        print ('writing in text file for', ih)
         name = ih.GetName()
         title = ih.GetTitle()
         h_new = TH1F()
@@ -486,6 +558,7 @@ def HistogramsOneDir(WhichRegion):
                     'bins':[200.0,250.0,350.0,450.0, 500.0, 550.0, 600., 700.0, 800, 900, 1000.0] # 10 bins
                     
                     }
+    #WriteHistograms(nominalname, postfix, rootfilename, rebininfo,  filemode='UPDATE'):
     WriteHistograms('h_met_0','',WhichRegion, METReBinInfo,'RECREATE')
     
     MassReBinInfo = {'rebin':True,
@@ -515,36 +588,50 @@ if __name__ == "__main__":
     print ("running the models of MakeShapesAndStack.py directly to test it ")
     
     
-    inputdir = 'AnalysisHistograms_MergedSkimmedV11_V10/'
     
-    regionstorun = ['signal', 'zj', 'wt']
-    
-    regionstorunstr = 'signal zj wt'
+    inputdir = 'AnalysisHistograms_MergedSkimmedV12_Puppi_V7/'
+    #inputdir = 'AnalysisHistograms_MergedSkimmedV12_PuppiCA15_V2/'
+    mainoutdir = inputdir+ '/AllRegions' 
+    datacardsdir = inputdir+ '/DataCards_AllRegions'
 
+    os.system('mkdir '+mainoutdir)
+    os.system('mkdir '+datacardsdir)
+    regionstorun = ['signal', 'zj', 'wt']
+    regionstorunstr = 'signal zj wt'
+    print options.saveshapes
+    print regionstorun
+    
     if options.saveshapes:
         for iregion in regionstorun:
             printstr = "------------For "+iregion+"  Region--------------"
+            print printstr
             Utils.prefix = inputdir+'/'+iregion+'/'
+            Utils.setweights() ## weight should be set after writing the prefix value otherwise it will take the default value and it would not be correct. 
             HistogramsOneDir(iregion)
+            os.system('mv '+iregion+'.txt '+mainoutdir)
+            os.system('mv '+iregion+'.root '+mainoutdir)
             
     ####
     ####
-    import os
+
     if options.makecards:
-        os.system('python SelectTextFiles.py AllRegions '+regionstorunstr)
+        os.system('python SelectTextFiles.py '+mainoutdir+' '+regionstorunstr)
         
     if options.combinecards: 
         print "combining cards"
-        os.system('python CombineDataCards.py DataCards_AllRegions '+regionstorunstr)
+        os.system('python CombineDataCardsZpB.py '+datacardsdir+' '+regionstorunstr)
+        os.system('python CombineDataCards.py '+datacardsdir+' '+regionstorunstr)
         
     if options.bbb:
         os.system('source binbybin.sh')
         
     if options.runlimit:
-        os.system('python CombineDataCards.py DataCards_AllRegions runlimit')
+        os.system('python CombineDataCardsZpB.py '+datacardsdir+' runlimit')
+        os.system('python CombineDataCards.py '+datacardsdir+' runlimit')
         
     if bool(options.runlimit) & bool(options.obs):
-        os.system('python CombineDataCards.py DataCards_AllRegions runlimit obs')
+        os.system('python CombineDataCardsZpB.py '+datacardsdir+' runlimit obs')
+        os.system('python CombineDataCards.py '+datacardsdir+' runlimit obs')
 
         
     '''

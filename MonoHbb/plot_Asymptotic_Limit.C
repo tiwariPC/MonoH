@@ -224,26 +224,36 @@ void plot_Asymptotic_Limit(string outputdir, string mode, string postfix_)
     /// This is the part where we multiply the limits in terms of signal strength
     /// by the cross-section, in order to have limits in picobarns.
     //std::cerr << mass[nMassEff] << ":" << v_obs.at(im) << std::endl;
-      obs_lim_cls[nMassEff] = v_obs.at(im) * fl_xs;
- 
-      
-      medianD[nMassEff] = v_median.at(im) * fl_xs;
-      up68err[nMassEff] = (v_68h.at(im) - v_median.at(im)) * fl_xs;
-      down68err[nMassEff] = (v_median.at(im) - v_68l.at(im)) * fl_xs;
+      obs_lim_cls[nMassEff] = v_obs.at(im);
+      medianD[nMassEff] = v_median.at(im) ;
+      up68err[nMassEff] = (v_68h.at(im) - v_median.at(im)) ;
+      down68err[nMassEff] = (v_median.at(im) - v_68l.at(im));
+
+      //obs_lim_cls[nMassEff] = v_obs.at(im) * fl_xs;
+      //medianD[nMassEff] = v_median.at(im) * fl_xs;
+      //up68err[nMassEff] = (v_68h.at(im) - v_median.at(im)) * fl_xs;
+      //down68err[nMassEff] = (v_median.at(im) - v_68l.at(im)) * fl_xs;
 
       //scale factor 100 for making the xsect visible
       xs[nMassEff] = fl_xs; //*100.0;
       xs_atlas[nMassEff] = fl_xs10;
       
-      xs_uperr[nMassEff] = double(v_toterrh.at(im)) * xs[nMassEff] - xs[nMassEff];
-      xs_downerr[nMassEff] =  xs[nMassEff] - double(v_toterrl.at(im)) * xs[nMassEff];
+      xs_uperr[nMassEff] = double(v_toterrh.at(im))  - xs[nMassEff];
+      xs_downerr[nMassEff] =  xs[nMassEff] - double(v_toterrl.at(im)) ;
+      //xs_uperr[nMassEff] = double(v_toterrh.at(im)) * xs[nMassEff] - xs[nMassEff];
+      //xs_downerr[nMassEff] =  xs[nMassEff] - double(v_toterrl.at(im)) * xs[nMassEff];
 
       xs10[nMassEff] = fl_xs10; //*100.0;
-      xs10_uperr[nMassEff] = double(v_toterrh.at(im)) * xs10[nMassEff] - xs10[nMassEff];
-      xs10_downerr[nMassEff] =  xs10[nMassEff] - double(v_toterrl.at(im)) * xs10[nMassEff];
-     
-      up95err[nMassEff] = (v_95h.at(im) - v_median.at(im)) * fl_xs;
-      down95err[nMassEff] = (v_median.at(im) - v_95l.at(im)) * fl_xs;
+      xs10_uperr[nMassEff] = double(v_toterrh.at(im)) - xs10[nMassEff];
+      xs10_downerr[nMassEff] =  xs10[nMassEff] - double(v_toterrl.at(im));
+
+      //xs10_uperr[nMassEff] = double(v_toterrh.at(im)) * xs10[nMassEff] - xs10[nMassEff];
+      //xs10_downerr[nMassEff] =  xs10[nMassEff] - double(v_toterrl.at(im)) * xs10[nMassEff];
+
+      up95err[nMassEff] = (v_95h.at(im) - v_median.at(im)) ;
+      down95err[nMassEff] = (v_median.at(im) - v_95l.at(im));
+      //up95err[nMassEff] = (v_95h.at(im) - v_median.at(im)) * fl_xs;
+      //down95err[nMassEff] = (v_median.at(im) - v_95l.at(im)) * fl_xs;
     
       cout<<"fl_xs:"<<fl_xs<<" v_obs: "<<v_obs.at(im)<<" obs_lim_cls: "<<obs_lim_cls[nMassEff]  <<medianD[nMassEff] <<" mass: "<<mass[nMassEff]
 	  <<" exp: "<<v_median.at(im)<<" exp x th: "<<medianD[nMassEff]<<endl;
@@ -267,7 +277,7 @@ void plot_Asymptotic_Limit(string outputdir, string mode, string postfix_)
   TGraphAsymmErrors *gr95_cls = new TGraphAsymmErrors(nMassEff, mass, medianD, 0, 0, down95err, up95err);
   gr95_cls->SetName("Limit95CLs");
 
-  // TGraphAsymmErrors *grthSM=new TGraphAsymmErrors(nMassEff1,mass1,xs,0,0,0,0);//xs_downerr,xs_uperr);
+  //   TGraphAsymmErrors *grthSM=new TGraphAsymmErrors(nMassEff1,mass1,xs,0,0,0,0);//xs_downerr,xs_uperr);
   TGraph *grthSM=new TGraph(nMassEff,mass,xs);//xs_downerr,xs_uperr);
   grthSM->SetName("SMXSection");
 
@@ -380,7 +390,7 @@ void plot_Asymptotic_Limit(string outputdir, string mode, string postfix_)
   tgC->Draw("L3");
   */
   std::cout<<" working upto this point 3"<<std::endl;
-  //if(drawth)   grthSM->Draw("L3");
+  if(drawth)   grthSM->Draw("L3");
   grmedian_cls->Draw("L");
   //if(mode=="comb") grthSM10->Draw("L3");
 
@@ -493,13 +503,14 @@ void plot_Asymptotic_Limit(string outputdir, string mode, string postfix_)
   leg->SetTextSize(0.03);
   //   leg->SetBorderMode(0);
   leg->AddEntry(grmedian_cls,"Expected","L");
-  leg->AddEntry(grobslim_cls, "Observed", "L");
+  leg->AddEntry(grobslim_cls, "Observed Asimov", "L");
   leg->AddEntry(gr68_cls, "Expected #pm 1#sigma", "LF");
   leg->AddEntry(gr95_cls, "Expected #pm 2#sigma", "LF");
   if(mode!= "comb") leg->AddEntry(grthSM, "#sigma_{TH} ", "L");
   
   if(mode=="comb"){
-    leg->AddEntry(grthSM10, "#sigma_{TH}, g_{Z'}<= 0.03#times#frac{g_{W}}{cos#theta_{W}#timessin^{2}#beta}#times #frac{#sqrt{m_{Z'}^{2}-m_{Z}^{2}}}{m_{Z}}", "L");
+    //leg->AddEntry(grthSM10, "#sigma_{TH}, g_{Z'}<= 0.03#times#frac{g_{W}}{cos#theta_{W}#timessin^{2}#beta}#times #frac{#sqrt{m_{Z'}^{2}-m_{Z}^{2}}}{m_{Z}}", "L");
+    leg->AddEntry(grthSM10, "#sigma_{TH}, g_{Z'}= 0.8", "L");
     leg->AddEntry(grthSM, "#sigma_{TH}, g_{Z'} = 0.8", "L");
   }
 //    leg->AddEntry(grthSM, "#sigma_{TH} x BR(Z' #rightarrow " + VV + "), #tilde{k}=0.50", "L"); // #rightarrow 2l2q
@@ -518,7 +529,8 @@ void plot_Asymptotic_Limit(string outputdir, string mode, string postfix_)
     latex->DrawLatex(0.18,0.88, "Z'#rightarrow DM+H(b#bar{b}) (2HDM)");
     latex->DrawLatex(0.18,0.84, "m_{A0} = 300 GeV, m_{#chi} = 100 GeV");
     if(mode == "atlas")latex->DrawLatex(0.18,0.765, "g_{Z'} = 0.8, tan#beta = 1");
-    if(mode == "cms") latex->DrawLatex(0.18,0.755, "g_{Z'}<= 0.03#times#frac{g_{W}}{cos#theta_{W}#timessin^{2}#beta}#times #frac{#sqrt{m_{Z'}^{2}-m_{Z}^{2}}}{m_{Z}}");
+    //if(mode == "cms") latex->DrawLatex(0.18,0.755, "g_{Z'}<= 0.03#times#frac{g_{W}}{cos#theta_{W}#timessin^{2}#beta}#times #frac{#sqrt{m_{Z'}^{2}-m_{Z}^{2}}}{m_{Z}}");
+    if(mode == "cms") latex->DrawLatex(0.18,0.755, "g_{Z'} = 0.08");
     if(mode == "cms") latex->DrawLatex(0.18,0.69, "tan#beta = 1");
     if(mode == "one") latex->DrawLatex(0.18,0.765, "tan#beta = 1");
   // cMCMC->RedrawAxis("");

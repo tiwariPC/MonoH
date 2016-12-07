@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-from ROOT import TFile, TTree, TH1F, TH1D, TH1, TCanvas, TChain,TGraphAsymmErrors, TMath, TH2D, TLorentzVector
+from ROOT import TFile, TTree, TH1F, TH1D, TH1, TCanvas, TChain,TGraphAsymmErrors, TMath, TH2D, TLorentzVector, TF1
 import ROOT as ROOT
 import os
 import sys, optparse
@@ -11,6 +11,8 @@ from MonoHbbQuantities import *
 from PileUpWeights import PUWeight
 
 ROOT.gROOT.ProcessLine('.L BTagCalibrationStandalone.cpp+') 
+
+#ROOT.gROOT.ProcessLine('.L TheaCorrection.cpp+') 
 
 ######################################
 ## set up running mode of the code.
@@ -51,6 +53,12 @@ parser.add_option("-b", "--bjet", type=int, dest="bjet")
 
 parser.add_option("-j", "--jet", type=int, dest="jet")
 parser.add_option("-J", "--Jet", type=int, dest="Jet")
+
+
+parser.add_option("--dbt", action="store_true",  dest="dbt")
+parser.add_option( "--dbtcut", type=float,  dest="dbtcut")
+
+parser.add_option("--theac", action="store_true",  dest="theac")
 
 (options, args) = parser.parse_args()
 
@@ -112,6 +120,50 @@ def WhichSample(filename):
     return samplename
     
 
+
+def TheaCorrection(puppipt=200.0,  puppieta=0.0):
+    puppisd_corrGEN      = TF1("puppisd_corrGEN","[0]+[1]*pow(x*[2],-[3])");
+    puppisd_corrGEN.SetParameters(
+        1.00626,
+        -1.06161,
+        0.07999,
+        1.20454
+        )
+    puppisd_corrRECO_cen =  TF1("puppisd_corrRECO_cen","[0]+[1]*x+[2]*pow(x,2)+[3]*pow(x,3)+[4]*pow(x,4)+[5]*pow(x,5)");
+    puppisd_corrRECO_cen.SetParameters(
+        1.05807,
+        -5.91971e-05,
+        2.296e-07,
+        -1.98795e-10,
+        6.67382e-14,
+        -7.80604e-18
+        )
+    
+    puppisd_corrRECO_for = TF1("puppisd_corrRECO_for","[0]+[1]*x+[2]*pow(x,2)+[3]*pow(x,3)+[4]*pow(x,4)+[5]*pow(x,5)");
+    puppisd_corrRECO_for.SetParameters(
+        1.26638,
+        -0.000658496,
+        9.73779e-07,
+        -5.93843e-10,
+        1.61619e-13,
+        -1.6272e-17)
+    
+    genCorr  = 1.
+    recoCorr = 1.
+    totalWeight = 1.
+    
+    genCorr =  puppisd_corrGEN.Eval( puppipt )
+    if ( abs(puppieta)  <= 1.3 ) :
+        recoCorr = puppisd_corrRECO_cen.Eval( puppipt )
+    elif( abs(puppieta) > 1.3 ) :
+        recoCorr = puppisd_corrRECO_for.Eval( puppipt )
+        
+    totalWeight = genCorr * recoCorr
+    return totalWeight
+    
+
+
+
 h_t = TH1F('h_t','h_t',2,0,2)
 h_t_weight = TH1F('h_t_weight','h_t_weight',2,0,2)
 
@@ -119,23 +171,14 @@ samplename = 'all'
 if isfarmout:
     infile = open(inputfilename)
     for ifile in infile: 
-        print 'debug 1', ifile.rstrip()
         skimmedTree.Add(ifile.rstrip())
-        print 'debug 2'
         samplename = WhichSample(ifile.rstrip())
-        print 'debug 3'
         ## for histograms
         f_tmp = TFile.Open(ifile.rstrip(),'READ')
-        print 'debug 4', f_tmp.GetSize()
         h_tmp = f_tmp.Get('h_total')
-        print 'debug 5'
         h_tmp_weight = f_tmp.Get('h_total_mcweight')
-        print 'debug 6'
-        print 'integral', h_tmp_weight.Integral()
         h_t.Add(h_tmp)
-        print 'debug 7'
         h_t_weight.Add(h_tmp_weight)
-        print 'debug 8'
 
 if not isfarmout:
     skimmedTree.Add(inputfilename)
@@ -235,7 +278,7 @@ def AnalyzeDataSet():
 
         #if event != 4126: continue                                
         #if lumi  != 42: continue                                
-       # print ("run,lumi,event")
+        if event%100==0: print (event)
         #trigName                   = skimmedTree.__getattr__('st_hlt_trigName')
         #trigResult                 = skimmedTree.__getattr__('st_hlt_trigResult')
         #filterName                 = skimmedTree.__getattr__('st_hlt_filterName')
@@ -247,8 +290,12 @@ def AnalyzeDataSet():
         nFatJets                   = skimmedTree.__getattr__('st_nFatJets')
         fatjetP4                   = skimmedTree.__getattr__('st_FATjetP4')
         fatjetPRmassL2L3Corr       = skimmedTree.__getattr__('st_FATjetPRmassL2L3Corr')
+                
         nSubSoftDropJet            = skimmedTree.__getattr__('st_FATnSubSDJet')
         subjetSDCSV                = skimmedTree.__getattr__('st_subjetSDCSV')
+        
+
+        
         #subjetSDPx                 = skimmedTree.__getattr__('st_FATsubjetSDPx')
         #subjetSDPy                 = skimmedTree.__getattr__('st_FATsubjetSDPy')
         #subjetSDPz                 = skimmedTree.__getattr__('st_FATsubjetSDPz')
@@ -257,7 +304,12 @@ def AnalyzeDataSet():
         subjetSDEta                  = skimmedTree.__getattr__('st_subjetEta')
         #passFatJetTightID          = skimmedTree.__getattr__('st_FATjetPassIDTight')
         subjetHadronFlavor         = skimmedTree.__getattr__('st_subjetFlav')
-
+        
+        doublebtagger              = skimmedTree.__getattr__('st_ADDjet_DoubleSV')
+        tau2                       = skimmedTree.__getattr__('st_FATjetTau2')
+        tau1                       = skimmedTree.__getattr__('st_FATjetTau1')
+        
+        
         nTHINJets                  = skimmedTree.__getattr__('st_THINnJet')
         thinjetP4                  = skimmedTree.__getattr__('st_THINjetP4')
         thinJetCSV                 = skimmedTree.__getattr__('st_THINjetCISVV2')
@@ -291,10 +343,9 @@ def AnalyzeDataSet():
         genMomParId                = skimmedTree.__getattr__('st_genMomParId')
         genParSt                   = skimmedTree.__getattr__('st_genParSt')
         genParP4                   = skimmedTree.__getattr__('st_genParP4')
-        #= skimmedTree.__getattr__('st_')
-        #= skimmedTree.__getattr__('st_')
              
         HiggsInfo_sorted           = []
+        
         
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -308,82 +359,7 @@ def AnalyzeDataSet():
             if mcWeight>0:  mcweight =  1.0
         
 
-        #h_total.Fill(1.);
-        #h_total_mcweight.Fill(1.,mcweight);
-        
-        
-        
-        '''
-        # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
-        # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
-        # EWK Reweighting And Top pT Reweighting--------------------------------------------------------------------------------------------------------------------------
-        # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
-        # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
-        #print "samplename", samplename
-        genpTReweighting = 1.0 
-        if isData==1:   genpTReweighting  =  1.0
-        if not isData :  genpTReweighting = GenWeightProducer(samplename, nGenPar, genParId, genMomParId, genParSt,genParP4)
-        #print genpTReweighting
-        
-        # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
-        # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
-        ## Pileup weight
-        # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
-        # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
-        allpuweights = PUWeight()
-        len_puweight = len(allpuweights)
-        puweight = 0.0
-        if isData: puweight = 1.0 
-        if not isData:
-            if pu_nTrueInt  <= len_puweight: puweight = allpuweights[pu_nTrueInt-1]
-            if pu_nTrueInt  > len_puweight : puweight = 0.0 
-        #print (len_puweight, pu_nTrueInt, puweight)
-        
 
-        #----------------------------------------------------------------------------------------------------------------------------------------------------------------
-        #----------------------------------------------------------------------------------------------------------------------------------------------------------------
-        #All Weights ----------------------------------------------------------------------------------------------------------------------------------------------------
-        #----------------------------------------------------------------------------------------------------------------------------------------------------------------
-        #----------------------------------------------------------------------------------------------------------------------------------------------------------------
-        #allweights = puweight * mcweight * genpTReweighting
-        allweights = mcweight * genpTReweighting 
-        
-        '''            
-        # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
-        # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
-        ## Trigger selection
-        # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
-        # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
-        '''
-        itrig_=0; trig1 = False; trig2 = False;
-        trig1 = CheckFilter(trigName, trigResult, 'HLT_PFMET170_NoiseCleaned')
-        trig2 = CheckFilter(trigName, trigResult, 'HLT_PFMET90_PFMHT90_')
-        #trigstatus =  trig1 | trig2
-        if not isData:
-            trigstatus  = True
-        if isData:
-            trigstatus =  trig1 | trig2
-        
-        if trigstatus == False : continue
-        cutStatus['trigger'] += 1
-            
-        # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
-        # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
-        ## Filter selection
-        # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
-        # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
-        filterstatus = False
-        filter1 = False; filter2 = False;filter3 = False;filter4 = False
-        ifilter_=0
-        filter1 = CheckFilter(filterName, filterResult, 'Flag_CSCTightHaloFilter')
-        filter2 = CheckFilter(filterName, filterResult, 'Flag_CSCTightHaloFilter')
-        filter3 = CheckFilter(filterName, filterResult, 'Flag_CSCTightHaloFilter')
-        filter4 = CheckFilter(filterName, filterResult, 'Flag_CSCTightHaloFilter')
-        #filterstatus =  filter1 | filter2 & filter3 & filter4
-        filterstatus =  True
-        #if filterstatus == False : continue 
-        cutStatus['filter'] += 1
-        '''
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
         ## PFMET Selection
@@ -399,12 +375,7 @@ def AnalyzeDataSet():
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
         
-        '''
-        if nFATJets>0 :
-            print nFATJets, fatjetPRmassL2L3Corr[0], nSubSoftDropJet[0],  bool(passFatJetTightID[0]), fatjetP4[0].Pt(), fatjetP4[0].M()
-            if nSubSoftDropJet > 0:
-                print subjetSDE[0][0], subjetSDCSV[0][0], subjetSDPx[0][0], subjetSDPy[0][0], subjetSDPz[0][0]
-        '''
+
         ## list comprehensation
         ## y = [s for s in x if len(s) == 2]
         #''' boosted higgs tagging 
@@ -426,16 +397,23 @@ def AnalyzeDataSet():
         
         if HIndex > -1 :
             cutStatus['HiggsID'] += 1
-            #print "HIndex = ", HIndex
+            
+            TheaCorrection_ = TheaCorrection(fatjetP4[ifatjet].Pt(), fatjetP4[ifatjet].Eta() )
+            if options.theac:
+                fatjetPRmassL2L3Corr[HIndex] = fatjetPRmassL2L3Corr[HIndex] * TheaCorrection_ 
             if ((fatjetPRmassL2L3Corr[HIndex] > massCutLow) & (fatjetPRmassL2L3Corr[HIndex] < massCutHigh)) | ((fatjetPRmassL2L3Corr[HIndex] > massCutLow1) & (fatjetPRmassL2L3Corr[HIndex] < massCutHigh1)) : 
                 if pfMet > 200.0:
                     fatJetMassStatus = True
                     cutStatus['HMass'] += 1
                     nSubBJet=0;
-                    for isj in range(nSubSoftDropJet[HIndex]):
-                        if subjetSDCSV[HIndex][isj] > 0.46 : 
-                            nSubBJet = nSubBJet + 1
+                    if not options.dbt: 
+                        for isj in range(nSubSoftDropJet[HIndex]):
+                            if subjetSDCSV[HIndex][isj] > 0.46 : 
+                                nSubBJet = nSubBJet + 1
         
+                    if options.dbt: 
+                        if doublebtagger[HIndex] > options.dbtcut:
+                            nSubBJet = 2
                     if nSubBJet>1 : 
                         nsubjetstatus = True
                         cutStatus['btag'] += 1
@@ -497,10 +475,6 @@ def AnalyzeDataSet():
         else : isresolved = False
         
         if ( isboosted | isresolved ) == False: continue 
-        #if ( isresolved ) == False: continue 
-        
-        #if (nsubjetstatus == False) & (HThinIndex < 1) : continue 
-        #if  (HThinIndex < 1) : continue 
         
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -512,17 +486,13 @@ def AnalyzeDataSet():
         jetIndex = -1
         dphiVec=[]
         
-        print (nTHINJets,nTHINJets)
+
         for ijet in range(nTHINJets):
             p4_j = thinjetP4[ijet]
-            #print (ijet, DeltaR(p4_j, fatjetP4[HIndex]), p4_j.Pt() , abs(p4_j.Eta()), bool(passThinJetLooseID[ijet]), bool(passThinJetPUID[ijet]), thinJetCSV[ijet])
             if p4_j.Pt() < 30 : continue
             if abs(p4_j.Eta())>4.5 : continue
-            #if bool(passThinJetLooseID[ijet]) == False : continue
-            #if bool(passThinJetPUID[ijet]) == False : continue 
-            
+                        
             if isboosted : 
-                #print (isboosted,isresolved)
                 if DeltaR(p4_j, fatjetP4[HIndex])  > 0.8:
                     nGoodTHINJets += 1
                     jetIndex=ijet
@@ -533,12 +503,12 @@ def AnalyzeDataSet():
                     if DeltaR(p4_j, thinjetP4[jet2])  > 0.4:
                         nGoodTHINJets += 1
                         jetIndex=ijet
-            #print "nGoodTHINJets = ",nGoodTHINJets
-            #print ((p4_j.Eta()>2.4), thinJetCSV[ijet]<0.46 )
+
+
             
             if abs(p4_j.Eta())>2.4 : continue
             dphi = Phi_mpi_pi(pfMetPhi - p4_j.Phi())
-            #print dphi
+            
             dphiVec.append(abs(dphi))
             
             if thinJetCSV[ijet]<0.46 : continue
@@ -546,7 +516,7 @@ def AnalyzeDataSet():
                 if DeltaR(p4_j, fatjetP4[HIndex])  > 0.8:
                     nGoodTHINBJets = nGoodTHINBJets + 1
             if isresolved : 
-                #print "jet number", ijet
+            
                 jet1 = HiggsInfo_sorted[0][0]
                 jet2 = HiggsInfo_sorted[0][1]
                 if DeltaR(p4_j, thinjetP4[jet1])  > 0.4:
@@ -577,52 +547,32 @@ def AnalyzeDataSet():
         
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
-        ## Electron Veto
+        ## Leptons Info
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
         myEles=[]
         for iele in range(nEle):
             if eleP4[iele].Pt() < 10 : continue
             if abs(eleP4[iele].Eta()) >2.5: continue
-            #if bool(eleIsPassLoose[iele]) == False : continue
             myEles.append(iele)
-
-        #if len(myEles) > 0 : continue
-        cutStatus['eleveto'] += 1
         
-        # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
-        # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
-        ## Muon Veto
-        # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
-        # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
         myMuos = []
         for imu in range(nMu):
             if muP4[imu].Pt()<10 : continue
             if abs(muP4[imu].Eta()) > 2.4  : continue
-            #if  bool(isLooseMuon[imu]) == False  : continue
-            #relPFIso = (muChHadIso[imu]+ max(0., muNeHadIso[imu] + muGamIso[imu] - 0.5*muPUPt[imu]))/muP4[imu].Pt();
-            #if relPFIso>0.4 : continue
             myMuos.append(imu)
-        #if len(myMuos) > 0: continue
-        cutStatus['muveto'] += 1
-        
-        # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
-        # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
-        ## Tau Veto
-        # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
-        # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
         myTaus=[]
         for itau in range(nTau):
-            #print ("tau properties", tauP4[itau].Pt(), abs(tauP4[itau].Eta()), bool(isDecayModeFinding[itau]), bool(passLooseTauIso[itau]))
             if tauP4[itau].Pt()<20 : continue
             if abs(tauP4[itau].Eta())>2.3 : continue
-            #if bool(isDecayModeFinding[itau]) == False : continue
-            #if bool(passLooseTauIso[itau]) == False : continue
             myTaus.append(itau);
         
-        #if len(myTaus)>0 : continue
-        cutStatus['tauveto'] += 1
-        #print 'before lepton veto'
+        # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+        # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+        ## Lepton Veto
+        # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+        # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
         nleptons_ = (len(myTaus) + len(myMuos) + len(myEles))
         
         if not (nleptons_ >= nlepton) : continue 
@@ -631,7 +581,7 @@ def AnalyzeDataSet():
         regime = False
         if isboosted: regime = True
         if isresolved: regime = False
-        #print (isboosted,isresolved, regime)
+        
         
         if regime: 
             mt_ = MT(fatjetP4[HIndex].Pt(), pfMet, Phi_mpi_pi(pfMetPhi-fatjetP4[HIndex].Phi()) )
@@ -645,7 +595,7 @@ def AnalyzeDataSet():
         ## Photon Veto
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
         # ----to be added in future---------------------------------------------------------------------------------------------------------------------------------------
-        #print (run,lumi,event)
+        
         
         npass = npass +1
         
@@ -654,11 +604,10 @@ def AnalyzeDataSet():
         # EWK Reweighting And Top pT Reweighting--------------------------------------------------------------------------------------------------------------------------
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
-        #print "samplename", samplename
         genpTReweighting = 1.0 
         if isData==1:   genpTReweighting  =  1.0
         if not isData :  genpTReweighting = GenWeightProducer(samplename, nGenPar, genParId, genMomParId, genParSt,genParP4)
-        #print genpTReweighting
+        
         
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -682,9 +631,7 @@ def AnalyzeDataSet():
         #----------------------------------------------------------------------------------------------------------------------------------------------------------------
         #allweights = puweight * mcweight * genpTReweighting
         allweights = mcweight * genpTReweighting 
-        
-
-        
+                
         
         ##-------------------------------------------------------------------------------------------------
         ##-------------------------------------------------------------------------------------------------
@@ -715,6 +662,9 @@ def AnalyzeDataSet():
             sf_boosted1 = weightbtag(reader, flav1, pt1, eta1)
             sf_boosted2 = weightbtag(reader, flav2, pt2, eta2)
             
+            if options.dbt:
+                sf_boosted1 = [1.0,1.0,1.0]
+                sf_boosted2 = [1.0,1.0,1.0] 
             #print (sf_boosted1, sf_boosted2)
             
         
@@ -745,8 +695,6 @@ def AnalyzeDataSet():
             allweights = allweights * sf_resolved1[0] * sf_resolved2[0]
         
         if isData: allweights = 1.0 
-        if regime:
-            print "allweights = ", allweights 
         allquantitiesBoosted.regime     = regime
         allquantitiesBoosted.met        = pfMet
         allquantitiesBoosted.mt         = mt_
@@ -856,7 +804,6 @@ def weightbtag(reader, flav, pt, eta):
     sf_low = reader.eval_auto_bounds('down', flav, eta, pt)
     sf_up  = reader.eval_auto_bounds('up', flav, eta, pt)
     btagsf = [sf_c, sf_low, sf_up]
-    print (pt, eta, flav, btagsf)
     return btagsf
 
 def jetflav(flav):
@@ -884,19 +831,11 @@ def GenWeightProducer(sample,nGenPar, genParId, genMomParId, genParSt,genParP4):
             PID    = genParId[ig]
             momPID = genMomParId[ig]
             status = genParSt[ig]
-            #print "inside WJ loop pdgid", PID
-            #print ("if status =",      (abs(PID) != 11),( abs(PID) != 12),(  abs(PID) != 13 ),(  abs(PID) != 14),(  abs(PID) != 15),(  abs(PID) != 16))
-            #print "and of if status ", ( (abs(PID) != 11) & (abs(PID) != 12) &  (abs(PID) != 13) & (abs(PID) != 14) &  (abs(PID) != 15) &  (abs(PID) != 16) )
-            
             if ( (abs(PID) != 11) & (abs(PID) != 12) &  (abs(PID) != 13) & (abs(PID) != 14) &  (abs(PID) != 15) &  (abs(PID) != 16) ): continue
-            #print "lepton found"
             if ( ( (status != 1) & (abs(PID) != 15)) | ( (status != 2) & (abs(PID) == 15)) ): continue
-            #print "tau found"
             if ( (abs(momPID) != 24) & (momPID != PID) ): continue
-            #print "W found"
-            #print "aftrer WJ if statement"
             goodLepID.append(ig)
-        #print "length = ",len(goodLepID)
+
         if len(goodLepID) == 2 :
             l4_thisLep = genParP4[goodLepID[0]]
             l4_thatLep = genParP4[goodLepID[1]]
@@ -904,21 +843,19 @@ def GenWeightProducer(sample,nGenPar, genParId, genMomParId, genParSt,genParP4):
             
             pt = l4_z.Pt()
             pt__ = pt
-            #print " pt inside "
+
             k2 = -0.830041 + 7.93714 *TMath.Power( pt - (-877.978) ,(-0.213831) ) ;
     
     #################        
     #ZJets
     #################
     if sample == "ZJETS":
-        #print " inside zjets "
         goodLepID = []
         for ig in range(nGenPar):
-         #   print " inside loop "
             PID    = genParId[ig]
             momPID = genMomParId[ig]
             status = genParSt[ig]
-          #  print " after vars "
+
 
             if ( (abs(PID) != 12) &  (abs(PID) != 14) &  (abs(PID) != 16) ) : continue
             if ( status != 1 ) : continue 
@@ -930,17 +867,14 @@ def GenWeightProducer(sample,nGenPar, genParId, genMomParId, genParSt,genParP4):
             l4_thatLep = genParP4[goodLepID[1]]
             l4_z = l4_thisLep + l4_thatLep
             pt = l4_z.Pt()
-            #print " pt inside "
             k2 = -0.180805 + 6.04146 *TMath.Power( pt - (-759.098) ,(-0.242556) ) ;
 
     #################        
     #TTBar
     #################        
     if (sample=="TT"):
-        #print " inside ttbar "
         goodLepID = []
         for ig in range(nGenPar):
-         #   print "inside TT loop "
             PID    = genParId[ig]
             momPID = genMomParId[ig]
             status = genParSt[ig]

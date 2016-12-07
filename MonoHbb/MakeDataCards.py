@@ -224,9 +224,13 @@ signalnameinnumber=[ 'monoHbbM600_300',
                      'monoHbbM1400_800',
                      'monoHbbM1700_800',
                      'monoHbbM2000_800',
-                     'monoHbbM2500_800'
+                     'monoHbbM2500_800',
                      
-                     
+                     'signalMZp_500_Mdm_1',
+                     'signalMZp_500_Mdm_150',
+                     'signalMZp_500_Mdm_500',
+                     'signalMZp_1000_Mdm_1',
+                     'signalMZp_1000_Mdm_150',
                      ]
 
 
@@ -296,7 +300,7 @@ for iline in numbers:
 #print scaledsig
 
 
-def MakeDataCard(masspoint, a0massvalue):
+def MakeDataCard(masspoint):
     datacard = open('DataCard_MXXXGeV.txt','r')
     newdatacardname = dirtosave+'/'+datacrdPrefix+'_DataCard_'+masspoint+'GeV_MonoHbb_13TeV.txt'
     os.system('rm '+newdatacardname)
@@ -323,7 +327,7 @@ def MakeDataCard(masspoint, a0massvalue):
 
 ## for A0 = 300 GeV
 for imasspoint in range(len(signalnameinnumber)):
-    MakeDataCard(signalnameinnumber[imasspoint], "_300")
+    MakeDataCard(signalnameinnumber[imasspoint])
 
 
 print "datacards produced"

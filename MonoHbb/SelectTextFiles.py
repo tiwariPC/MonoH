@@ -2,11 +2,11 @@ import os
 import sys
 
 inputdirname=sys.argv[1]
-#ControlRegions=['signal','zj','wj','tt','wt']
 nargv = len(sys.argv) -2
 print nargv
 print sys.argv[2]
 ControlRegions=[]
+
 for iargv in range(0,nargv):
     ControlRegions.append(sys.argv[iargv+2])
 
@@ -31,15 +31,12 @@ for whichCR in ControlRegions:
 
 
 print rootfilesList
-datacardsdir='DataCards_'+inputdirname
+datacardsdir = inputdirname.replace('AllRegions', 'DataCards_AllRegions')
+
 os.system('rm -rf '+datacardsdir)
 os.system(' mkdir -p '+datacardsdir)
 
 for itextfiles in range(len(textFilesList)):
-    #os.system ('python MakeDataCards.py '+inputdirname+'/'+textFilesList[itextfiles]+' '+inputdirname+'/'+ControlRegions[itextfiles] +' '+rootfilesList[itextfiles])
-    #os.system ('python MakeDataCards.py '+inputdirname+'/'+textFilesList[itextfiles]+' '+inputdirname +' '+rootfilesList[itextfiles])
-    #os.system(' mv '+inputdirname+'/'+ControlRegions[itextfiles]+' '+datacardsdir)
-
     for whichCR in ControlRegions:
         if whichCR in textFilesList[itextfiles]:
             print (whichCR, textFilesList[itextfiles])

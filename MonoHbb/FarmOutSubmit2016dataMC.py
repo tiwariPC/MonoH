@@ -1,8 +1,9 @@
 import os
 
-outputdirname="Raman/AnalysisHistograms_MergedSkimmedV9_V12/"
-#regions=['signal', 'wj', 'tt','zj','wt', 'wjalphabet', 'ttalphabet', 'wtalphabet']
-regions=['wt']
+#outputdirname="Raman/AnalysisHistograms_MergedSkimmedV12_PuppiCA15_V2/"
+outputdirname="Raman/AnalysisHistograms_MergedSkimmedV12_Puppi_V7/"
+regions=['signal', 'wt', 'zj', 'signalpSB']#, 'wj', 'tt', 'wjalphabet', 'ttalphabet', 'wtalphabet','signalpSB']
+#regions=['signalpSB']
 
 #outputdirname="Raman/AnalysisTuples_2016DataMC_V5/TTBar/"
 inputprefix="--input-dir=root://cmsxrootd.hep.wisc.edu//store/user/khurana/Raman/Merged_Skimmed/"
@@ -11,9 +12,10 @@ exepath="/afs/hep.wisc.edu/cms/khurana/MonoH2016MCProduction/MonoHEfficiency/CMS
 
 fout = open("samplestorun.txt","w")
 
-## 76 samples 
 
-samples = '''V9 V9'''
+#samples = '''V12_PuppiCA15_V1 V12_PuppiCA15_V1'''
+#samples = '''V12_Puppi_V1 V12_Puppi_V1'''
+samples = '''V12_Puppi_V3 V12_Puppi_V3'''
 
 fout.write(samples)
 fout.close()

@@ -3,22 +3,10 @@
 
 ZjHF_norm   rateParam  zj DYJETS 1 [0.5,1.6]
 ZjHF_norm   rateParam  signal   DYJETS 1 [0.5,1.6]
-#ZjHF_norm   rateParam  wt  DYJETS 1 [0.5,1.6]
-ZjHF_norm   rateParam  ttCR  DYJETS 1 [0.5,1.6]
 
 Wbj_norm   rateParam  signal  WJETS 1 [0.5,1.5]
 Wbj_norm   rateParam  signal  TT 1 [0.5,1.5]
 Wbj_norm   rateParam  zj  WJETS 1 [0.5,1.5]
 Wbj_norm   rateParam  zj  TT 1 [0.5,1.5]
-Wbj_norm   rateParam  wj  WJETS 1 [0.5,1.5]
-Wbj_norm   rateParam  wj  TT 1 [0.5,1.5]
-
-#Wbj_norm   rateParam  wt  WJETS 1 [0.5,1.5]
-#Wbj_norm   rateParam  ttCR  WJETS 1 [0.5,1.5]
-
-
-#tt_norm   rateParam  signal    TT 1 [0.5,1.5]
-#tt_norm   rateParam  zj  TT 1 [0.5,1.5]
-#tt_norm   rateParam  wt  TT 1 [0.5,1.5]
-#tt_norm   rateParam  ttCR  TT 1 [0.5,1.5]
-
+Wbj_norm   rateParam  wt  WJETS 1 [0.5,1.5]
+Wbj_norm   rateParam  wt  TT 1 [0.5,1.5]
