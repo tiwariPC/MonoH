@@ -1,6 +1,6 @@
 import os
 
-outputdirname="Raman/SkimmedTuples/V12_Puppi_V3/"
+outputdirname="Raman/SkimmedTuples/V12_Puppi_V3_NoTriggerOnData/"
 
 #outputdirname="Raman/AnalysisTuples_2016DataMC_V5/TTBar/"
 inputprefix="--input-dir=root://cmsxrootd.hep.wisc.edu//store/user/khurana/"
@@ -11,7 +11,7 @@ fout = open("samplestorun.txt","w")
 
 ## 76 samples 
 
-samples='''ZprimeToA0hToA0chichihbb_2HDM_MZp-600_MA0-300_13TeV-madgraph MonoH2016/V4_CA15/ZprimeToA0hToA0chichihbb_2HDM_MZp-600_MA0-300_13TeV-madgraph
+samples1='''ZprimeToA0hToA0chichihbb_2HDM_MZp-600_MA0-300_13TeV-madgraph MonoH2016/V4_CA15/ZprimeToA0hToA0chichihbb_2HDM_MZp-600_MA0-300_13TeV-madgraph
 ZprimeToA0hToA0chichihbb_2HDM_MZp-1000_MA0-300_13TeV-madgraph MonoH2016/V4_CA15/ZprimeToA0hToA0chichihbb_2HDM_MZp-1000_MA0-300_13TeV-madgraph
 ZprimeToA0hToA0chichihbb_2HDM_MZp-1200_MA0-300_13TeV-madgraph MonoH2016/V4_CA15/ZprimeToA0hToA0chichihbb_2HDM_MZp-1200_MA0-300_13TeV-madgraph
 ZprimeToA0hToA0chichihbb_2HDM_MZp-1400_MA0-300_13TeV-madgraph MonoH2016/V4_CA15/ZprimeToA0hToA0chichihbb_2HDM_MZp-1400_MA0-300_13TeV-madgraph
@@ -108,8 +108,9 @@ MonoHbb_ZpBaryonic_MZp-500_MChi-500_13TeV-madgraph MonoH2016/V4_CA15/MonoHbb_ZpB
 MonoHbb_ZpBaryonic_MZp-50_MChi-10_13TeV-madgraph MonoH2016/V4_CA15/MonoHbb_ZpBaryonic_MZp-50_MChi-10_13TeV-madgraph
 MonoHbb_ZpBaryonic_MZp-50_MChi-1_13TeV-madgraph MonoH2016/V4_CA15/MonoHbb_ZpBaryonic_MZp-50_MChi-1_13TeV-madgraph
 MonoHbb_ZpBaryonic_MZp-50_MChi-50_13TeV-madgraph MonoH2016/V4_CA15/MonoHbb_ZpBaryonic_MZp-50_MChi-50_13TeV-madgraph
-MonoHbb_ZpBaryonic_MZp-995_MChi-500_13TeV-madgraph MonoH2016/V4_CA15/MonoHbb_ZpBaryonic_MZp-995_MChi-500_13TeV-madgraph
-crab_MET_Run2016B_ReReco23Sept_v320160822 MonoH2016/V4_CA15/MET//crab_MET_Run2016B_ReReco23Sept_v320160822
+MonoHbb_ZpBaryonic_MZp-995_MChi-500_13TeV-madgraph MonoH2016/V4_CA15/MonoHbb_ZpBaryonic_MZp-995_MChi-500_13TeV-madgraph'''
+
+samples='''crab_MET_Run2016B_ReReco23Sept_v320160822 MonoH2016/V4_CA15/MET//crab_MET_Run2016B_ReReco23Sept_v320160822
 crab_MET_Run2016C_ReReco23Sept_v120160822 MonoH2016/V4_CA15/MET/crab_MET_Run2016C_ReReco23Sept_v120160822
 crab_MET_Run2016D_ReReco23Sept_v120160822 MonoH2016/V4_CA15/MET/crab_MET_Run2016D_ReReco23Sept_v120160822
 crab_MET_Run2016E_ReReco23Sept_v120160822 MonoH2016/V4_CA15/MET/crab_MET_Run2016E_ReReco23Sept_v120160822

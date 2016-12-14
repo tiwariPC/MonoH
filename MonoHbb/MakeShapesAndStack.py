@@ -377,43 +377,43 @@ def WriteHistograms(nominalname, postfix, rootfilename, rebininfo,  filemode='UP
                     'signalMZp_1000_Mdm_1',
                     'signalMZp_1000_Mdm_150',
                     
-                    ##'signalMZp_995_Mdm_500'
-                    ###'signalMZp_1000_Mdm_1000',
-                    ##
-                    ##'signalMZp_10000_Mdm_1',
-                    ##'signalMZp_10000_Mdm_10',
-                    ##'signalMZp_10000_Mdm_50',
-                    ##'signalMZp_10000_Mdm_150',
-                    ##'signalMZp_10000_Mdm_500',
-                    ##'signalMZp_10000_Mdm_1000',
-                    ##
-                    ###'signalMZp_10_Mdm_1',
-                    ##'signalMZp_10_Mdm_10',
-                    ##'signalMZp_10_Mdm_50',
-                    ##'signalMZp_10_Mdm_150',
-                    ##'signalMZp_10_Mdm_500',
-                    ##'signalMZp_10_Mdm_1000',
-                    ##
-                    ##'signalMZp_15_Mdm_10',
-                    ##
-                    ##'signalMZp_1995_Mdm_1000',
-                    ##'signalMZp_2000_Mdm_1',
-                    ##'signalMZp_2000_Mdm_500',
-                    ##
-                    ##'signalMZp_200_Mdm_1',
-                    ##'signalMZp_200_Mdm_50',
-                    ##'signalMZp_200_Mdm_150',
-                    ##
-                    ##'signalMZp_20_Mdm_1',
-                    ##
-                    ##'signalMZp_300_Mdm_1',
-                    ###'signalMZp_300_Mdm_50',
-                    ##'signalMZp_295_Mdm_150',
-                    ##
-                    ##
-                    ##'signalMZp_50_Mdm_1',
-                    ##'signalMZp_50_Mdm_10',
-                    ##'signalMZp_50_Mdm_50',
+                    'signalMZp_995_Mdm_500',
+                    #'signalMZp_1000_Mdm_1000',
+                    
+                    'signalMZp_10000_Mdm_1',
+                    'signalMZp_10000_Mdm_10',
+                    'signalMZp_10000_Mdm_50',
+                    'signalMZp_10000_Mdm_150',
+                    'signalMZp_10000_Mdm_500',
+                    'signalMZp_10000_Mdm_1000',
+                    
+                    #'signalMZp_10_Mdm_1',
+                    'signalMZp_10_Mdm_10',
+                    'signalMZp_10_Mdm_50',
+                    'signalMZp_10_Mdm_150',
+                    'signalMZp_10_Mdm_500',
+                    'signalMZp_10_Mdm_1000',
+                    
+                    'signalMZp_15_Mdm_10',
+                    
+                    'signalMZp_1995_Mdm_1000',
+                    'signalMZp_2000_Mdm_1',
+                    'signalMZp_2000_Mdm_500',
+                    
+                    'signalMZp_200_Mdm_1',
+                    'signalMZp_200_Mdm_50',
+                    'signalMZp_200_Mdm_150',
+                    
+                    'signalMZp_20_Mdm_1',
+                    
+                    'signalMZp_300_Mdm_1',
+                    #'signalMZp_300_Mdm_50',
+                    'signalMZp_295_Mdm_150',
+                    
+                    
+                    'signalMZp_50_Mdm_1',
+                    'signalMZp_50_Mdm_10',
+                    'signalMZp_50_Mdm_50',
                     ]
     
     
@@ -589,7 +589,8 @@ if __name__ == "__main__":
     
     
     
-    inputdir = 'AnalysisHistograms_MergedSkimmedV12_Puppi_V7/'
+    #inputdir = 'AnalysisHistograms_MergedSkimmedV12_Puppi_V7/'
+    inputdir = 'AnalysisHistograms_MergedSkimmedV12_Puppi_V8/'
     #inputdir = 'AnalysisHistograms_MergedSkimmedV12_PuppiCA15_V2/'
     mainoutdir = inputdir+ '/AllRegions' 
     datacardsdir = inputdir+ '/DataCards_AllRegions'
@@ -598,6 +599,8 @@ if __name__ == "__main__":
     os.system('mkdir '+datacardsdir)
     regionstorun = ['signal', 'zj', 'wt']
     regionstorunstr = 'signal zj wt'
+
+
     print options.saveshapes
     print regionstorun
     

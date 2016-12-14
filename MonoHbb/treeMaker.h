@@ -1,8 +1,8 @@
 //////////////////////////////////////////////////////////
 // This class has been automatically generated on
-// Mon Nov 21 07:18:42 2016 by ROOT version 5.34/36
+// Tue Dec 13 05:29:04 2016 by ROOT version 6.06/01
 // from TTree treeMaker/tree
-// found on file: /hdfs/store/user/khurana/MonoH2016/V2_Base/MonoHbb_ZpBaryonic_MZp-200_MChi-50_13TeV-madgraph/crab_MonoHbb_ZpBaryonic_MZp-200_MChi-50_13TeV-madgraph/161120_050615/0000/NCUGlobalTuples_1.root
+// found on file: /hdfs/store/user/khurana/MonoH2016//V4_CA15/MonoHbb_ZpBaryonic_MZp-100_MChi-1_13TeV-madgraph/crab_MonoHbb_ZpBaryonic_MZp-100_MChi-1_13TeV-madgraph/161202_125142/0000/NCUGlobalTuples_1.root
 //////////////////////////////////////////////////////////
 
 #ifndef treeMaker_h
@@ -13,18 +13,20 @@
 #include <TFile.h>
 
 // Header file for the classes stored in the TTree if any.
-#include <TClonesArray.h>
-#include <vector>
-#include <vector>
-#include <vector>
-#include <vector>
-
-// Fixed size dimensions of array or collections stored in the TTree if any.
+#include "TClonesArray.h"
+#include "vector"
+#include "vector"
+#include "vector"
+#include "vector"
+#include "vector"
+#include "vector"
 
 class treeMaker {
 public :
    TTree          *fChain;   //!pointer to the analyzed TTree or TChain
    Int_t           fCurrent; //!current Tree number in a TChain
+
+// Fixed size dimensions of array or collections stored in the TTree if any.
 
    // Declaration of leaf types
    Float_t         pu_nTrueInt;
@@ -481,6 +483,63 @@ public :
    vector<float>   *AK8Puppijet_DoubleSV;
    vector<int>     *AK8Puppijet_nSV;
    vector<vector<float> > *AK8Puppijet_SVMass;
+   Int_t           CA15PuppinJet;
+   TClonesArray    *CA15PuppijetP4;
+   Float_t         CA15PuppijetRho;
+   Int_t           CA15PuppijetNPV;
+   TClonesArray    *CA15PuppigenjetP4;
+   vector<float>   *CA15PuppigenjetEM;
+   vector<float>   *CA15PuppigenjetHAD;
+   vector<float>   *CA15PuppigenjetINV;
+   vector<float>   *CA15PuppigenjetAUX;
+   vector<float>   *CA15PuppimatchedDR;
+   vector<float>   *CA15PuppijetRawFactor;
+   TClonesArray    *CA15PuppiunCorrJetP4;
+   vector<float>   *CA15PuppijetArea;
+   vector<float>   *CA15PuppijetCorrUncUp;
+   vector<float>   *CA15PuppijetCorrUncDown;
+   vector<int>     *CA15PuppijetCharge;
+   vector<int>     *CA15PuppijetPartonFlavor;
+   vector<int>     *CA15PuppijetHadronFlavor;
+   vector<bool>    *CA15PuppijetPassIDLoose;
+   vector<bool>    *CA15PuppijetPassIDTight;
+   vector<float>   *CA15PuppijetCEmEF;
+   vector<float>   *CA15PuppijetCHadEF;
+   vector<float>   *CA15PuppijetPhoEF;
+   vector<float>   *CA15PuppijetNEmEF;
+   vector<float>   *CA15PuppijetNHadEF;
+   vector<float>   *CA15PuppijetEleEF;
+   vector<float>   *CA15PuppijetMuoEF;
+   vector<int>     *CA15PuppijetCMulti;
+   vector<int>     *CA15PuppijetEleMulti;
+   vector<int>     *CA15PuppijetMuoMulti;
+   vector<float>   *CA15PuppijetSSV;
+   vector<float>   *CA15PuppijetCSV;
+   vector<float>   *CA15PuppijetSSVHE;
+   vector<float>   *CA15PuppijetCISVV2;
+   vector<float>   *CA15PuppijetTCHP;
+   vector<float>   *CA15PuppijetTCHE;
+   vector<float>   *CA15PuppijetJP;
+   vector<float>   *CA15PuppijetJBP;
+   vector<float>   *CA15PuppijetTau1;
+   vector<float>   *CA15PuppijetTau2;
+   vector<float>   *CA15PuppijetTau3;
+   vector<float>   *CA15PuppijetTau21;
+   vector<float>   *CA15PuppijetSDmass;
+   vector<float>   *CA15PuppijetGenSDmass;
+   vector<int>     *CA15PuppinSubSDJet;
+   vector<vector<int> > *CA15PuppisubjetSDFatJetIndex;
+   vector<vector<float> > *CA15PuppisubjetSDPx;
+   vector<vector<float> > *CA15PuppisubjetSDPy;
+   vector<vector<float> > *CA15PuppisubjetSDPz;
+   vector<vector<float> > *CA15PuppisubjetSDE;
+   vector<vector<float> > *CA15PuppisubjetSDRawFactor;
+   vector<vector<int> > *CA15PuppisubjetSDPartonFlavor;
+   vector<vector<int> > *CA15PuppisubjetSDHadronFlavor;
+   vector<vector<float> > *CA15PuppisubjetSDCSV;
+   vector<float>   *CA15Puppijet_DoubleSV;
+   vector<int>     *CA15Puppijet_nSV;
+   vector<vector<float> > *CA15Puppijet_SVMass;
 
    // List of branches
    TBranch        *b_pu_nTrueInt;   //!
@@ -937,6 +996,63 @@ public :
    TBranch        *b_AK8Puppijet_DoubleSV;   //!
    TBranch        *b_AK8Puppijet_nSV;   //!
    TBranch        *b_AK8Puppijet_SVMass;   //!
+   TBranch        *b_CA15PuppinJet;   //!
+   TBranch        *b_CA15PuppijetP4;   //!
+   TBranch        *b_CA15PuppijetRho;   //!
+   TBranch        *b_CA15PuppijetNPV;   //!
+   TBranch        *b_CA15PuppigenjetP4;   //!
+   TBranch        *b_CA15PuppigenjetEM;   //!
+   TBranch        *b_CA15PuppigenjetHAD;   //!
+   TBranch        *b_CA15PuppigenjetINV;   //!
+   TBranch        *b_CA15PuppigenjetAUX;   //!
+   TBranch        *b_CA15PuppimatchedDR;   //!
+   TBranch        *b_CA15PuppijetRawFactor;   //!
+   TBranch        *b_CA15PuppiunCorrJetP4;   //!
+   TBranch        *b_CA15PuppijetArea;   //!
+   TBranch        *b_CA15PuppijetCorrUncUp;   //!
+   TBranch        *b_CA15PuppijetCorrUncDown;   //!
+   TBranch        *b_CA15PuppijetCharge;   //!
+   TBranch        *b_CA15PuppijetPartonFlavor;   //!
+   TBranch        *b_CA15PuppijetHadronFlavor;   //!
+   TBranch        *b_CA15PuppijetPassIDLoose;   //!
+   TBranch        *b_CA15PuppijetPassIDTight;   //!
+   TBranch        *b_CA15PuppijetCEmEF;   //!
+   TBranch        *b_CA15PuppijetCHadEF;   //!
+   TBranch        *b_CA15PuppijetPhoEF;   //!
+   TBranch        *b_CA15PuppijetNEmEF;   //!
+   TBranch        *b_CA15PuppijetNHadEF;   //!
+   TBranch        *b_CA15PuppijetEleEF;   //!
+   TBranch        *b_CA15PuppijetMuoEF;   //!
+   TBranch        *b_CA15PuppijetCMulti;   //!
+   TBranch        *b_CA15PuppijetEleMulti;   //!
+   TBranch        *b_CA15PuppijetMuoMulti;   //!
+   TBranch        *b_CA15PuppijetSSV;   //!
+   TBranch        *b_CA15PuppijetCSV;   //!
+   TBranch        *b_CA15PuppijetSSVHE;   //!
+   TBranch        *b_CA15PuppijetCISVV2;   //!
+   TBranch        *b_CA15PuppijetTCHP;   //!
+   TBranch        *b_CA15PuppijetTCHE;   //!
+   TBranch        *b_CA15PuppijetJP;   //!
+   TBranch        *b_CA15PuppijetJBP;   //!
+   TBranch        *b_CA15PuppijetTau1;   //!
+   TBranch        *b_CA15PuppijetTau2;   //!
+   TBranch        *b_CA15PuppijetTau3;   //!
+   TBranch        *b_CA15PuppijetTau21;   //!
+   TBranch        *b_CA15PuppijetSDmass;   //!
+   TBranch        *b_CA15PuppijetGenSDmass;   //!
+   TBranch        *b_CA15PuppinSubSDJet;   //!
+   TBranch        *b_CA15PuppisubjetSDFatJetIndex;   //!
+   TBranch        *b_CA15PuppisubjetSDPx;   //!
+   TBranch        *b_CA15PuppisubjetSDPy;   //!
+   TBranch        *b_CA15PuppisubjetSDPz;   //!
+   TBranch        *b_CA15PuppisubjetSDE;   //!
+   TBranch        *b_CA15PuppisubjetSDRawFactor;   //!
+   TBranch        *b_CA15PuppisubjetSDPartonFlavor;   //!
+   TBranch        *b_CA15PuppisubjetSDHadronFlavor;   //!
+   TBranch        *b_CA15PuppisubjetSDCSV;   //!
+   TBranch        *b_CA15Puppijet_DoubleSV;   //!
+   TBranch        *b_CA15Puppijet_nSV;   //!
+   TBranch        *b_CA15Puppijet_SVMass;   //!
 
    treeMaker(TTree *tree=0);
    virtual ~treeMaker();
@@ -957,11 +1073,11 @@ treeMaker::treeMaker(TTree *tree) : fChain(0)
 // if parameter tree is not specified (or zero), connect the file
 // used to generate this class and read the Tree.
    if (tree == 0) {
-      TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("/hdfs/store/user/khurana/MonoH2016/V2_Base/MonoHbb_ZpBaryonic_MZp-200_MChi-50_13TeV-madgraph/crab_MonoHbb_ZpBaryonic_MZp-200_MChi-50_13TeV-madgraph/161120_050615/0000/NCUGlobalTuples_1.root");
+      TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("/hdfs/store/user/khurana/MonoH2016//V4_CA15/MonoHbb_ZpBaryonic_MZp-100_MChi-1_13TeV-madgraph/crab_MonoHbb_ZpBaryonic_MZp-100_MChi-1_13TeV-madgraph/161202_125142/0000/NCUGlobalTuples_1.root");
       if (!f || !f->IsOpen()) {
-         f = new TFile("/hdfs/store/user/khurana/MonoH2016/V2_Base/MonoHbb_ZpBaryonic_MZp-200_MChi-50_13TeV-madgraph/crab_MonoHbb_ZpBaryonic_MZp-200_MChi-50_13TeV-madgraph/161120_050615/0000/NCUGlobalTuples_1.root");
+         f = new TFile("/hdfs/store/user/khurana/MonoH2016//V4_CA15/MonoHbb_ZpBaryonic_MZp-100_MChi-1_13TeV-madgraph/crab_MonoHbb_ZpBaryonic_MZp-100_MChi-1_13TeV-madgraph/161202_125142/0000/NCUGlobalTuples_1.root");
       }
-      TDirectory * dir = (TDirectory*)f->Get("/hdfs/store/user/khurana/MonoH2016/V2_Base/MonoHbb_ZpBaryonic_MZp-200_MChi-50_13TeV-madgraph/crab_MonoHbb_ZpBaryonic_MZp-200_MChi-50_13TeV-madgraph/161120_050615/0000/NCUGlobalTuples_1.root:/tree");
+      TDirectory * dir = (TDirectory*)f->Get("/hdfs/store/user/khurana/MonoH2016//V4_CA15/MonoHbb_ZpBaryonic_MZp-100_MChi-1_13TeV-madgraph/crab_MonoHbb_ZpBaryonic_MZp-100_MChi-1_13TeV-madgraph/161202_125142/0000/NCUGlobalTuples_1.root:/tree");
       dir->GetObject("treeMaker",tree);
 
    }
@@ -1401,6 +1517,60 @@ void treeMaker::Init(TTree *tree)
    AK8Puppijet_DoubleSV = 0;
    AK8Puppijet_nSV = 0;
    AK8Puppijet_SVMass = 0;
+   CA15PuppijetP4 = 0;
+   CA15PuppigenjetP4 = 0;
+   CA15PuppigenjetEM = 0;
+   CA15PuppigenjetHAD = 0;
+   CA15PuppigenjetINV = 0;
+   CA15PuppigenjetAUX = 0;
+   CA15PuppimatchedDR = 0;
+   CA15PuppijetRawFactor = 0;
+   CA15PuppiunCorrJetP4 = 0;
+   CA15PuppijetArea = 0;
+   CA15PuppijetCorrUncUp = 0;
+   CA15PuppijetCorrUncDown = 0;
+   CA15PuppijetCharge = 0;
+   CA15PuppijetPartonFlavor = 0;
+   CA15PuppijetHadronFlavor = 0;
+   CA15PuppijetPassIDLoose = 0;
+   CA15PuppijetPassIDTight = 0;
+   CA15PuppijetCEmEF = 0;
+   CA15PuppijetCHadEF = 0;
+   CA15PuppijetPhoEF = 0;
+   CA15PuppijetNEmEF = 0;
+   CA15PuppijetNHadEF = 0;
+   CA15PuppijetEleEF = 0;
+   CA15PuppijetMuoEF = 0;
+   CA15PuppijetCMulti = 0;
+   CA15PuppijetEleMulti = 0;
+   CA15PuppijetMuoMulti = 0;
+   CA15PuppijetSSV = 0;
+   CA15PuppijetCSV = 0;
+   CA15PuppijetSSVHE = 0;
+   CA15PuppijetCISVV2 = 0;
+   CA15PuppijetTCHP = 0;
+   CA15PuppijetTCHE = 0;
+   CA15PuppijetJP = 0;
+   CA15PuppijetJBP = 0;
+   CA15PuppijetTau1 = 0;
+   CA15PuppijetTau2 = 0;
+   CA15PuppijetTau3 = 0;
+   CA15PuppijetTau21 = 0;
+   CA15PuppijetSDmass = 0;
+   CA15PuppijetGenSDmass = 0;
+   CA15PuppinSubSDJet = 0;
+   CA15PuppisubjetSDFatJetIndex = 0;
+   CA15PuppisubjetSDPx = 0;
+   CA15PuppisubjetSDPy = 0;
+   CA15PuppisubjetSDPz = 0;
+   CA15PuppisubjetSDE = 0;
+   CA15PuppisubjetSDRawFactor = 0;
+   CA15PuppisubjetSDPartonFlavor = 0;
+   CA15PuppisubjetSDHadronFlavor = 0;
+   CA15PuppisubjetSDCSV = 0;
+   CA15Puppijet_DoubleSV = 0;
+   CA15Puppijet_nSV = 0;
+   CA15Puppijet_SVMass = 0;
    // Set branch addresses and branch pointers
    if (!tree) return;
    fChain = tree;
@@ -1861,6 +2031,63 @@ void treeMaker::Init(TTree *tree)
    fChain->SetBranchAddress("AK8Puppijet_DoubleSV", &AK8Puppijet_DoubleSV, &b_AK8Puppijet_DoubleSV);
    fChain->SetBranchAddress("AK8Puppijet_nSV", &AK8Puppijet_nSV, &b_AK8Puppijet_nSV);
    fChain->SetBranchAddress("AK8Puppijet_SVMass", &AK8Puppijet_SVMass, &b_AK8Puppijet_SVMass);
+   fChain->SetBranchAddress("CA15PuppinJet", &CA15PuppinJet, &b_CA15PuppinJet);
+   fChain->SetBranchAddress("CA15PuppijetP4", &CA15PuppijetP4, &b_CA15PuppijetP4);
+   fChain->SetBranchAddress("CA15PuppijetRho", &CA15PuppijetRho, &b_CA15PuppijetRho);
+   fChain->SetBranchAddress("CA15PuppijetNPV", &CA15PuppijetNPV, &b_CA15PuppijetNPV);
+   fChain->SetBranchAddress("CA15PuppigenjetP4", &CA15PuppigenjetP4, &b_CA15PuppigenjetP4);
+   fChain->SetBranchAddress("CA15PuppigenjetEM", &CA15PuppigenjetEM, &b_CA15PuppigenjetEM);
+   fChain->SetBranchAddress("CA15PuppigenjetHAD", &CA15PuppigenjetHAD, &b_CA15PuppigenjetHAD);
+   fChain->SetBranchAddress("CA15PuppigenjetINV", &CA15PuppigenjetINV, &b_CA15PuppigenjetINV);
+   fChain->SetBranchAddress("CA15PuppigenjetAUX", &CA15PuppigenjetAUX, &b_CA15PuppigenjetAUX);
+   fChain->SetBranchAddress("CA15PuppimatchedDR", &CA15PuppimatchedDR, &b_CA15PuppimatchedDR);
+   fChain->SetBranchAddress("CA15PuppijetRawFactor", &CA15PuppijetRawFactor, &b_CA15PuppijetRawFactor);
+   fChain->SetBranchAddress("CA15PuppiunCorrJetP4", &CA15PuppiunCorrJetP4, &b_CA15PuppiunCorrJetP4);
+   fChain->SetBranchAddress("CA15PuppijetArea", &CA15PuppijetArea, &b_CA15PuppijetArea);
+   fChain->SetBranchAddress("CA15PuppijetCorrUncUp", &CA15PuppijetCorrUncUp, &b_CA15PuppijetCorrUncUp);
+   fChain->SetBranchAddress("CA15PuppijetCorrUncDown", &CA15PuppijetCorrUncDown, &b_CA15PuppijetCorrUncDown);
+   fChain->SetBranchAddress("CA15PuppijetCharge", &CA15PuppijetCharge, &b_CA15PuppijetCharge);
+   fChain->SetBranchAddress("CA15PuppijetPartonFlavor", &CA15PuppijetPartonFlavor, &b_CA15PuppijetPartonFlavor);
+   fChain->SetBranchAddress("CA15PuppijetHadronFlavor", &CA15PuppijetHadronFlavor, &b_CA15PuppijetHadronFlavor);
+   fChain->SetBranchAddress("CA15PuppijetPassIDLoose", &CA15PuppijetPassIDLoose, &b_CA15PuppijetPassIDLoose);
+   fChain->SetBranchAddress("CA15PuppijetPassIDTight", &CA15PuppijetPassIDTight, &b_CA15PuppijetPassIDTight);
+   fChain->SetBranchAddress("CA15PuppijetCEmEF", &CA15PuppijetCEmEF, &b_CA15PuppijetCEmEF);
+   fChain->SetBranchAddress("CA15PuppijetCHadEF", &CA15PuppijetCHadEF, &b_CA15PuppijetCHadEF);
+   fChain->SetBranchAddress("CA15PuppijetPhoEF", &CA15PuppijetPhoEF, &b_CA15PuppijetPhoEF);
+   fChain->SetBranchAddress("CA15PuppijetNEmEF", &CA15PuppijetNEmEF, &b_CA15PuppijetNEmEF);
+   fChain->SetBranchAddress("CA15PuppijetNHadEF", &CA15PuppijetNHadEF, &b_CA15PuppijetNHadEF);
+   fChain->SetBranchAddress("CA15PuppijetEleEF", &CA15PuppijetEleEF, &b_CA15PuppijetEleEF);
+   fChain->SetBranchAddress("CA15PuppijetMuoEF", &CA15PuppijetMuoEF, &b_CA15PuppijetMuoEF);
+   fChain->SetBranchAddress("CA15PuppijetCMulti", &CA15PuppijetCMulti, &b_CA15PuppijetCMulti);
+   fChain->SetBranchAddress("CA15PuppijetEleMulti", &CA15PuppijetEleMulti, &b_CA15PuppijetEleMulti);
+   fChain->SetBranchAddress("CA15PuppijetMuoMulti", &CA15PuppijetMuoMulti, &b_CA15PuppijetMuoMulti);
+   fChain->SetBranchAddress("CA15PuppijetSSV", &CA15PuppijetSSV, &b_CA15PuppijetSSV);
+   fChain->SetBranchAddress("CA15PuppijetCSV", &CA15PuppijetCSV, &b_CA15PuppijetCSV);
+   fChain->SetBranchAddress("CA15PuppijetSSVHE", &CA15PuppijetSSVHE, &b_CA15PuppijetSSVHE);
+   fChain->SetBranchAddress("CA15PuppijetCISVV2", &CA15PuppijetCISVV2, &b_CA15PuppijetCISVV2);
+   fChain->SetBranchAddress("CA15PuppijetTCHP", &CA15PuppijetTCHP, &b_CA15PuppijetTCHP);
+   fChain->SetBranchAddress("CA15PuppijetTCHE", &CA15PuppijetTCHE, &b_CA15PuppijetTCHE);
+   fChain->SetBranchAddress("CA15PuppijetJP", &CA15PuppijetJP, &b_CA15PuppijetJP);
+   fChain->SetBranchAddress("CA15PuppijetJBP", &CA15PuppijetJBP, &b_CA15PuppijetJBP);
+   fChain->SetBranchAddress("CA15PuppijetTau1", &CA15PuppijetTau1, &b_CA15PuppijetTau1);
+   fChain->SetBranchAddress("CA15PuppijetTau2", &CA15PuppijetTau2, &b_CA15PuppijetTau2);
+   fChain->SetBranchAddress("CA15PuppijetTau3", &CA15PuppijetTau3, &b_CA15PuppijetTau3);
+   fChain->SetBranchAddress("CA15PuppijetTau21", &CA15PuppijetTau21, &b_CA15PuppijetTau21);
+   fChain->SetBranchAddress("CA15PuppijetSDmass", &CA15PuppijetSDmass, &b_CA15PuppijetSDmass);
+   fChain->SetBranchAddress("CA15PuppijetGenSDmass", &CA15PuppijetGenSDmass, &b_CA15PuppijetGenSDmass);
+   fChain->SetBranchAddress("CA15PuppinSubSDJet", &CA15PuppinSubSDJet, &b_CA15PuppinSubSDJet);
+   fChain->SetBranchAddress("CA15PuppisubjetSDFatJetIndex", &CA15PuppisubjetSDFatJetIndex, &b_CA15PuppisubjetSDFatJetIndex);
+   fChain->SetBranchAddress("CA15PuppisubjetSDPx", &CA15PuppisubjetSDPx, &b_CA15PuppisubjetSDPx);
+   fChain->SetBranchAddress("CA15PuppisubjetSDPy", &CA15PuppisubjetSDPy, &b_CA15PuppisubjetSDPy);
+   fChain->SetBranchAddress("CA15PuppisubjetSDPz", &CA15PuppisubjetSDPz, &b_CA15PuppisubjetSDPz);
+   fChain->SetBranchAddress("CA15PuppisubjetSDE", &CA15PuppisubjetSDE, &b_CA15PuppisubjetSDE);
+   fChain->SetBranchAddress("CA15PuppisubjetSDRawFactor", &CA15PuppisubjetSDRawFactor, &b_CA15PuppisubjetSDRawFactor);
+   fChain->SetBranchAddress("CA15PuppisubjetSDPartonFlavor", &CA15PuppisubjetSDPartonFlavor, &b_CA15PuppisubjetSDPartonFlavor);
+   fChain->SetBranchAddress("CA15PuppisubjetSDHadronFlavor", &CA15PuppisubjetSDHadronFlavor, &b_CA15PuppisubjetSDHadronFlavor);
+   fChain->SetBranchAddress("CA15PuppisubjetSDCSV", &CA15PuppisubjetSDCSV, &b_CA15PuppisubjetSDCSV);
+   fChain->SetBranchAddress("CA15Puppijet_DoubleSV", &CA15Puppijet_DoubleSV, &b_CA15Puppijet_DoubleSV);
+   fChain->SetBranchAddress("CA15Puppijet_nSV", &CA15Puppijet_nSV, &b_CA15Puppijet_nSV);
+   fChain->SetBranchAddress("CA15Puppijet_SVMass", &CA15Puppijet_SVMass, &b_CA15Puppijet_SVMass);
    Notify();
 }
 

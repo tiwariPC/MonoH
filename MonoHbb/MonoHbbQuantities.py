@@ -1,4 +1,4 @@
-from ROOT import TFile, TTree, TH1F, TH1D, TH1, TCanvas, TChain,TGraphAsymmErrors, TMath, TH2D
+from ROOT import TFile, TTree, TH1F, TH1D, TH1, TCanvas, TChain,TGraphAsymmErrors, TMath, TH2D, TH2F
 import ROOT as ROOT
 class MonoHbbQuantities:
 
@@ -49,7 +49,10 @@ class MonoHbbQuantities:
         self.h_met_pdf         = []
         self.h_met_muR         = []
         self.h_met_muF         = []
-
+        
+        ## 2d histograms 
+        self.h_met_vs_mass     = []
+        
         self.weight   = 1.0 
 
         self.weight_pdf   = []
@@ -66,10 +69,15 @@ class MonoHbbQuantities:
         for iregime in range(2):
             postname = str(iregime)
             self.h_met.append(TH1F('h_met_'+postname,  'h_met_'+postname,  1000,0.,1000.))
+            
+            
             #metbins_ = [200,350,500,1000]
             #self.h_met_rebin.append(TH1F('h_met_rebin_'+postname,  'h_met_rebin'+postname,  3, array(('d'),metbins_)))
             
             self.h_mass.append(TH1F('h_mass_'+postname, 'h_mass_'+postname, 400,0.,400.))
+            
+            self.h_met_vs_mass.append(TH2F('h_met_vs_mass_'+postname, 'h_met_vs_mass_'+postname, 1000, 0., 1000., 250, 0, 250.))
+
             self.h_csv1.append(TH1F('h_csv1_'+postname, 'h_csv1_'+postname, 20,0.,1.))
             self.h_csv2.append(TH1F('h_csv2_'+postname, 'h_csv2_'+postname, 20,0.,1.))
             self.h_mt.append(TH1F('h_mt_'+postname,'h_mt_'+postname,100,400.,1400.))
@@ -120,7 +128,7 @@ class MonoHbbQuantities:
             self.h_met_muF        [type_][imuF].Fill(self.met,       1.0)
         
 
-
+        self.h_met_vs_mass [type_].Fill(self.met, self.mass, WF)
 
         self.h_mass       [type_].Fill(self.mass,      WF)
         self.h_csv1       [type_].Fill(self.csv1,      WF)
@@ -155,6 +163,9 @@ class MonoHbbQuantities:
                 self.h_met_muR[iregime][imuR].Write()
             for imuF in range(2):
                 self.h_met_muF[iregime][imuF].Write()
+
+            self.h_met_vs_mass[iregime].Write()
+
             self.h_mass[iregime].Write()
             self.h_csv1[iregime].Write()
             self.h_csv2[iregime].Write()

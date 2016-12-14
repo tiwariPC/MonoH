@@ -10,14 +10,14 @@ import numpy as numpy_
 ROOT.gROOT.LoadMacro("Loader.h+")
 
 ## When not running on farmout
-#inputfilename= 'MZp1700Ma0300.txt'
-#outfilename= 'tmp.root'
+inputfilename= 'MZp1700Ma0300.txt'
+outfilename= 'tmp.root'
 PUPPI = True
 CA15  = False
 
 ## When running on farmout
-inputfilename = os.environ['INPUT']                                                                                                                                                 
-outfilename   = os.environ['OUTPUT']                                                                                                                                                
+#inputfilename = os.environ['INPUT']                                                                                                                                                 
+#outfilename   = os.environ['OUTPUT']                                                                                                                                                
 
 
 skimmedTree = TChain("tree/treeMaker")
@@ -101,17 +101,7 @@ def AnalyzeDataSet():
     outTree.Branch( 'st_ADDjet_DoubleSV', st_ADDjet_DoubleSV)
     #outTree.Branch( 'st_', st_)
     #outTree.Branch( 'st_', st_)
-    #outTree.Branch( 'st_', st_)
-    #outTree.Branch( 'st_', st_)
-    #outTree.Branch( 'st_', st_)
-    #outTree.Branch( 'st_', st_)
-    #outTree.Branch( 'st_', st_)
-    #outTree.Branch( 'st_', st_)
-    #outTree.Branch( 'st_', st_)
-    #outTree.Branch( 'st_', st_)
-    #outTree.Branch( 'st_', st_)
-    #outTree.Branch( 'st_', st_)
-    #
+
     
     outTree.Branch( 'st_FATjetPRmassL2L3Corr', st_FATjetPRmassL2L3Corr) 
     outTree.Branch( 'st_FATnSubSDJet',st_FATnSubSDJet)
@@ -233,6 +223,7 @@ def AnalyzeDataSet():
         nEle                       = skimmedTree.__getattr__('nEle')
         eleP4                      = skimmedTree.__getattr__('eleP4')
         eleIsPassLoose             = skimmedTree.__getattr__('eleIsPassLoose')
+        eleCharge                  = skimmedTree.__getattr__('eleCharge')
         
         nMu                        = skimmedTree.__getattr__('nMu')
         muP4                       = skimmedTree.__getattr__('muP4')
@@ -241,6 +232,7 @@ def AnalyzeDataSet():
         muNeHadIso                 = skimmedTree.__getattr__('muNeHadIso')
         muGamIso                   = skimmedTree.__getattr__('muGamIso')
         muPUPt                     = skimmedTree.__getattr__('muPUPt')
+        muCharge                   = skimmedTree.__getattr__('muCharge')
         
         nTau                       = skimmedTree.__getattr__('HPSTau_n')
         tauP4                      = skimmedTree.__getattr__('HPSTau_4Momentum')
@@ -288,7 +280,7 @@ def AnalyzeDataSet():
         if not isData:
             trigstatus  = True
         if isData:
-            trigstatus =  trig1 | trig2
+            trigstatus =  True #trig1 | trig2
         
         if trigstatus == False : continue
             
@@ -481,25 +473,54 @@ def AnalyzeDataSet():
             #for isj in range(nSubSoftDropJet[ifatjet]):
                 
         
+        ## Fill variables for the CRs. 
+        WenuRecoil = 0.0
+        WmunuRecoil = 0.0
+        
+        ZeeMass = 0.0
+        ZeeRecoil = .0
+        
+        ZmumuMass = 0.0
+        ZmumuRecoil = 0.0
+        
+        ## for dielectron 
+        if len(myEles) ==2:
+            ele1 = myEles[0]
+            ele2 = myEles[1]
+            p4_ele1 = eleP4[ele1]
+            p4_ele2 = eleP4[ele2]
+            
+            mass = ( p4_ele1 + p4_ele2 ).M()
+            
+            if not  ( (mass > 60.0 ) & (mass < 120.0) ): continue
+            eleCharge[ele1] * eleCharge[ele2] > 0 continue
+            
+            zeeRecoilPx = -( pfMet*math.acos(pfMetPhi)  - p4_ele1.Px() - p4_ele2.Px())
+            zeeRecoilPy = -( pfMet*math.asin(pfMetPhi) - p4_ele1.Py() - p4_ele2.Py())
+            ZeeRecoil =  math.sqrt(zeeRecoilPx * zeeRecoilPx  +  zeeRecoilPy*zeeRecoilPy)
+            ZeeMass = mass
+
+        
+        ## for dimu
+        if len(myMuos) ==2:
+            mu1 = myMuos[0]
+            mu2 = myMuos[1]
+            p4_mu1 = muP4[mu1]
+            p4_mu2 = muP4[mu2]
+            
+            mass = ( p4_mu1 + p4_mu2 ).M()
+            
+            if not  ( (mass > 60.0 ) & (mass < 120.0) ): continue
+            muCharge[mu1] * muCharge[mu2] > 0 continue
+            
+            zmumuRecoilPx = -( pfMet*math.acos(pfMetPhi)  - p4_mu1.Px() - p4_ele2.Px())
+            zmumuRecoilPy = -( pfMet*math.asin(pfMetPhi)  - p4_mu1.Py() - p4_mu2.Py())
+            ZmumuRecoil =  math.sqrt(zmumuRecoilPx * zmumuRecoilPx  +  zmumuRecoilPy*zmumuRecoilPy)
+            ZmumuMass = mass
+
+        
         outTree.Fill()
-        '''
-        for ifatjet in range(len(jetpassindex)):
-            skimTree.st_fatjetP4.append(fatjetP4[ifatjet])
-            skimTree.st_fatjetPRmassL2L3Corr.append(fatjetPRmassL2L3Corr[ifatjet])
-            for isj in range(nSubSoftDropJet[ifatjet]):
-                sjSDCSV.append(subjetSDCSV[ifatjet][isj])
-                sjSDPx.append(subjetSDPx[ifatjet][isj])
-                sjSDPy.append(subjetSDPy[ifatjet][isj])
-                sjSDPz.append(subjetSDPz[ifatjet][isj])
-                sjSDE.append(subjetSDE[ifatjet][isj])
-                sjHadronFlavor.append(subjetHadronFlavor[ifatjet][isj])
-            skimTree.st_sjSDCSV.append(sjSDCSV)
-            skimTree.st_sjSDPx.append(sjSDPx)
-            skimTree.st_sjSDPy.append(sjSDPy)
-            skimTree.st_sjSDPz.append(sjSDPz)
-            skimTree.st_sjSDE.append(sjSDE)
-            skimTree.st_sjHadronFlavor.append(sjHadronFlavor)
-        '''
+
     h_total_mcweight.Write()
     h_total.Write()
     outfile.Write()

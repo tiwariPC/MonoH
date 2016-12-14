@@ -1,7 +1,7 @@
 import os
 
 #outputdirname="Raman/AnalysisHistograms_MergedSkimmedV12_PuppiCA15_V2/"
-outputdirname="Raman/AnalysisHistograms_MergedSkimmedV12_Puppi_V7/"
+outputdirname="Raman/AnalysisHistograms_MergedSkimmedV12_Puppi_V8/"
 regions=['signal', 'wt', 'zj', 'signalpSB']#, 'wj', 'tt', 'wjalphabet', 'ttalphabet', 'wtalphabet','signalpSB']
 #regions=['signalpSB']
 

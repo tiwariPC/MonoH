@@ -17,7 +17,7 @@
 #include "TPaveText.h"
 #define nXm 8
 
-const float intLumi = 12.9;
+const float intLumi = 36.6;
 const string dirXSect = "./";
 
 void plot_Asymptotic_Limit();
@@ -77,6 +77,7 @@ void plot_Asymptotic_Limit(string outputdir, string mode, string postfix_)
 {
   
   bool drawth = true;
+  bool obs_   = false;
   TString outfilename = TString(outputdir.c_str())+"/SPlusBFit.root";
   TFile *fout = new TFile(outfilename,"RECREATE");
   bool useNewStyle = true;
@@ -305,8 +306,8 @@ void plot_Asymptotic_Limit(string outputdir, string mode, string postfix_)
   hr->SetYTitle("#sigma_{95% CL}[pb]"); // #rightarrow 2l2q
   //hr->SetYTitle("95% CLs on #sigma(Z`#rightarrow#chi#bar{#chi}H)[pb]"); // #rightarrow 2l2q
 
-  hr->SetMinimum(0.001);
-  hr->SetMaximum(1000);
+  hr->SetMinimum(0.0001);
+  hr->SetMaximum(100);
   if(mode == "one") hr->SetMinimum(0.1);
 
 
@@ -395,7 +396,7 @@ void plot_Asymptotic_Limit(string outputdir, string mode, string postfix_)
   //if(mode=="comb") grthSM10->Draw("L3");
 
   // observed limit
-  grobslim_cls->Draw("L");
+  if (obs_) grobslim_cls->Draw("L");
   
   
   

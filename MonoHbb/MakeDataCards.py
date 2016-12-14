@@ -231,6 +231,44 @@ signalnameinnumber=[ 'monoHbbM600_300',
                      'signalMZp_500_Mdm_500',
                      'signalMZp_1000_Mdm_1',
                      'signalMZp_1000_Mdm_150',
+                     'signalMZp_995_Mdm_500',
+                     #'signalMZp_1000_Mdm_1000',                                                                                                                                      
+
+                    'signalMZp_10000_Mdm_1',
+                    'signalMZp_10000_Mdm_10',
+                    'signalMZp_10000_Mdm_50',
+                    'signalMZp_10000_Mdm_150',
+                    'signalMZp_10000_Mdm_500',
+                    'signalMZp_10000_Mdm_1000',
+
+                    #'signalMZp_10_Mdm_1',                                                                                                                                           
+                    'signalMZp_10_Mdm_10',
+                    'signalMZp_10_Mdm_50',
+                    'signalMZp_10_Mdm_150',
+                    'signalMZp_10_Mdm_500',
+                    'signalMZp_10_Mdm_1000',
+
+                    'signalMZp_15_Mdm_10',
+
+                    'signalMZp_1995_Mdm_1000',
+                    'signalMZp_2000_Mdm_1',
+                    'signalMZp_2000_Mdm_500',
+
+                    'signalMZp_200_Mdm_1',
+                    'signalMZp_200_Mdm_50',
+                    'signalMZp_200_Mdm_150',
+
+                    'signalMZp_20_Mdm_1',
+
+                    'signalMZp_300_Mdm_1',
+                    #'signalMZp_300_Mdm_50',                                                                                                                                         
+                    'signalMZp_295_Mdm_150',
+
+
+                    'signalMZp_50_Mdm_1',
+                    'signalMZp_50_Mdm_10',
+                    'signalMZp_50_Mdm_50',
+
                      ]
 
 
