@@ -7,6 +7,104 @@ whichregion='signal'
 histdirname = ''
 lumi = 36000
 
+## Adding Histograms for the 2HDM
+Zp2HDM_names  = ['signal600_300',
+                 'signal800_300',
+                 'signal1000_300',
+                 'signal1200_300',
+                 'signal1400_300',
+                 'signal1700_300',
+                 'signal2000_300',
+                 'signal2500_300',
+                 
+                 'signal600_400',
+                 'signal800_400',
+                 'signal1000_400',
+                 'signal1200_400',
+                 'signal1400_400',
+                 'signal1700_400',
+                 'signal2000_400',
+                 'signal2500_400',
+                 
+                 'signal800_500',
+                 'signal1000_500',
+                 'signal1200_500',
+                 'signal1400_500',
+                 'signal1700_500',
+                 'signal2000_500',
+                 'signal2500_500',
+                 
+                 'signal800_600',
+                 'signal1000_600',
+                 'signal1200_600',
+                 'signal1400_600',
+                 'signal1700_600',
+                 'signal2000_600',
+                 'signal2500_600',
+                 
+                 'signal1000_700',
+                 'signal1200_700',
+                 'signal1400_700',
+                 'signal1700_700',
+                 'signal2000_700',
+                 'signal2500_700',
+                 
+                 'signal1000_800',
+                 'signal1200_800',
+                 'signal1400_800',
+                       'signal1700_800',
+                 'signal2000_800',
+                 'signal2500_800'
+                 ]
+
+## Z prime Baryonic samples
+
+ZpB_Names = ['signalMZp_500_Mdm_1',
+             'signalMZp_500_Mdm_150',
+             'signalMZp_500_Mdm_500',
+             
+             'signalMZp_1000_Mdm_1',
+             'signalMZp_1000_Mdm_150',
+             
+             'signalMZp_995_Mdm_500',
+             #'signalMZp_1000_Mdm_1000',
+             
+             'signalMZp_10000_Mdm_1',
+             'signalMZp_10000_Mdm_10',
+             'signalMZp_10000_Mdm_50',
+             'signalMZp_10000_Mdm_150',
+             'signalMZp_10000_Mdm_500',
+             'signalMZp_10000_Mdm_1000',
+             
+             #'signalMZp_10_Mdm_1',
+             'signalMZp_10_Mdm_10',
+             'signalMZp_10_Mdm_50',
+             'signalMZp_10_Mdm_150',
+             'signalMZp_10_Mdm_500',
+             'signalMZp_10_Mdm_1000',
+             
+             'signalMZp_15_Mdm_10',
+             
+             'signalMZp_1995_Mdm_1000',
+             'signalMZp_2000_Mdm_1',
+             'signalMZp_2000_Mdm_500',
+             
+             'signalMZp_200_Mdm_1',
+             'signalMZp_200_Mdm_50',
+             'signalMZp_200_Mdm_150',
+             
+             'signalMZp_20_Mdm_1',
+             
+             'signalMZp_300_Mdm_1',
+             #'signalMZp_300_Mdm_50',
+             'signalMZp_295_Mdm_150',
+             
+                    
+             'signalMZp_50_Mdm_1',
+             'signalMZp_50_Mdm_10',
+             'signalMZp_50_Mdm_50',
+             ]
+
 ## We can set the efficiency for each sample here which can be used later on for the plotting which would be very easy, quick and useful. 
 samples={
     ## data 
@@ -592,19 +690,19 @@ samples={
     ## Sigmal for 2D Scan
 
     ## Sigmal
-    #'signal1000_700' : {
-    #    'order' : 0,
-    #    'files' : ['Merged_ZprimeToA0hToA0chichihbb_2HDM_MZp-1000_MA0-700_13TeV-madgraph-SkimTree.root'],
-    #    'xsec'      : [0.577],
-    #    'fillcolor' : 2,
-    #    'fillstyle' : 1,
-    #    'linecolor' : 1,
-    #    'linewidth' : 2,
-    #    'linestyle' : 1,
-    #    'label' : "",
-    #    'weight': [1.],
-    #    'plot': True,
-    #    },
+    'signal1000_700' : {
+        'order' : 0,
+        'files' : ['Merged_ZprimeToA0hToA0chichihbb_2HDM_MZp-1000_MA0-700_13TeV-madgraph-SkimTree.root'],
+        'xsec'      : [0.577],
+        'fillcolor' : 2,
+        'fillstyle' : 1,
+        'linecolor' : 1,
+        'linewidth' : 2,
+        'linestyle' : 1,
+        'label' : "",
+        'weight': [1.],
+        'plot': True,
+        },
 
     ## Sigmal
     'signal1200_700' : {

@@ -55,7 +55,7 @@ from ROOT import *
 debug_=False
 
 
-
+ROOT.gROOT.ProcessLine('.L BinUnroller.C+')
 
 ####################################################################################################################
 ## weighted and summed over all samples histograms for a given physics process. 
@@ -69,6 +69,7 @@ def MakeRooDataHist(phys_process, histname, fullrange_=False):
     #print (phys_process, hist_met_.Integral())
     hist_met_.SetDirectory(0)
     TH1.AddDirectory(0)
+    TH2.AddDirectory(0)
 
     hist_met_.Scale(0.0)
     iweight = 0
@@ -78,11 +79,12 @@ def MakeRooDataHist(phys_process, histname, fullrange_=False):
         #print hist_.Integral()
         #hist_.SetDirectory(0)
         TH1.AddDirectory(0)
+        TH2.AddDirectory(0)
         
         if phys_process != 'data_obs': hist_.Scale(Utils.samples[phys_process]['weight'][iweight])
         if phys_process == 'data_obs': hist_.Scale(1)
         
-        print (Utils.prefix+'/'+irootfile, hist_.Integral(1,-1))
+        #print (Utils.prefix+'/'+irootfile, hist_.Integral(1,-1))
         hist_met_.Add(hist_)
         iweight = iweight + 1
         
@@ -108,8 +110,8 @@ def WriteHistograms(nominalname, postfix, rootfilename, rebininfo,  filemode='UP
     if debug_ : print "Top"
     h_tt    = MakeRooDataHist('TT', nominalname, True) 
     h_st    = MakeRooDataHist('ST', nominalname, True) 
-    print " h_tt = ",h_tt.Integral(1,-1)
-    print "h_st = ",h_st.Integral(1,-1)
+    #print " h_tt = ",h_tt.Integral(1,-1)
+    #print "h_st = ",h_st.Integral(1,-1)
     
     weight_  = Utils.samples['TT']['weight'][0]         ;  weights.append(weight_)
     weight_  = Utils.samples['VV']['weight'][0]         ;  weights.append(weight_)
@@ -149,272 +151,50 @@ def WriteHistograms(nominalname, postfix, rootfilename, rebininfo,  filemode='UP
         h_znn.SetFillColor(4)
         h_wj.SetFillColor(5)
         
-        rebin_ = 1
-        h_zh.Rebin(rebin_)
-        h_VV.Rebin(rebin_)
-        h_tt.Rebin(rebin_)
-        h_znn.Rebin(rebin_)
-        h_wj.Rebin(rebin_)
+        if type(h_zh) is TH1F:
+            rebin_ = 1
+            h_zh.Rebin(rebin_)
+            h_VV.Rebin(rebin_)
+            h_tt.Rebin(rebin_)
+            h_znn.Rebin(rebin_)
+            h_wj.Rebin(rebin_)
 
         bkgStack.Add(h_zh,'hist')
         bkgStack.Add(h_VV,'hist')
         bkgStack.Add(h_tt,'hist')
         bkgStack.Add(h_znn,'hist')
         bkgStack.Add(h_wj,'hist')
-        
+            
         bkgStack.Draw()
         
-        h_data = TH1F()
-        if filemode == 'RECREATE':
-            if debug_ : print "data"
-            h_data = MakeRooDataHist('data_obs', nominalname, True)
-            h_data.SetNameTitle('data_obs', 'data_obs')
-            print "data integral = ",h_data.Integral()
+        h_data = []#TH1F()
+        #if filemode =='RECREATE':
+        if debug_ : print "data"
+        h_data = MakeRooDataHist('data_obs', nominalname, True)
+        h_data.SetNameTitle('data_obs', 'data_obs')
+        #print "data integral = ",h_data.Integral()
         #bins=[200., 350., 500., 3000.]
         #h_data.Rebin(3,"data_obs", bins)
         h_data.Draw('same')
-        h_data.Rebin(rebin_)
+        if type(h_data) is TH1F:
+            h_data.Rebin(rebin_)
         c1.SaveAs('METstack.pdf')
     
     ## Stack macro ends here
-    
-    weight_  = Utils.samples['signal600_300']['weight'][0]   ; weights.append(weight_)
-    weight_  = Utils.samples['signal800_300']['weight'][0]   ; weights.append(weight_)
-    weight_  = Utils.samples['signal1000_300']['weight'][0]  ;  weights.append(weight_)
-    weight_  = Utils.samples['signal1200_300']['weight'][0]  ;  weights.append(weight_)
-    weight_  = Utils.samples['signal1400_300']['weight'][0]  ;  weights.append(weight_)
-    weight_  = Utils.samples['signal1700_300']['weight'][0]  ;  weights.append(weight_)
-    weight_  = Utils.samples['signal2000_300']['weight'][0]  ;  weights.append(weight_)
-    weight_  = Utils.samples['signal2500_300']['weight'][0]  ;  weights.append(weight_)
-    
-    h_600_300 = MakeRooDataHist('signal600_300', nominalname, True)
-    h_600_300.SetNameTitle('monoHbbM600_300'+postfix,'monoHbbM600_300')
-    
-    h_800_300 = MakeRooDataHist('signal800_300', nominalname, True)
-    h_800_300.SetNameTitle('monoHbbM800_300'+postfix,'monoHbbM800_300')
-    
-    h_1000_300 = MakeRooDataHist('signal1000_300', nominalname, True)
-    h_1000_300.SetNameTitle('monoHbbM1000_300'+postfix,'monoHbbM1000_300')
-
-    h_1200_300 = MakeRooDataHist('signal1200_300', nominalname, True)
-    h_1200_300.SetNameTitle('monoHbbM1200_300'+postfix,'monoHbbM1200_300')
-    
-    h_1400_300 = MakeRooDataHist('signal1400_300', nominalname, True)
-    h_1400_300.SetNameTitle('monoHbbM1400_300'+postfix,'monoHbbM1400_300')
-
-    h_1700_300 = MakeRooDataHist('signal1700_300', nominalname, True)
-    h_1700_300.SetNameTitle('monoHbbM1700_300'+postfix,'monoHbbM1700_300')
-    
-    h_2000_300 = MakeRooDataHist('signal2000_300', nominalname, True)
-    h_2000_300.SetNameTitle('monoHbbM2000_300'+postfix,'monoHbbM2000_300')
-
-    h_2500_300 = MakeRooDataHist('signal2500_300', nominalname, True)
-    h_2500_300.SetNameTitle('monoHbbM2500_300'+postfix,'monoHbbM2500_300')
-
-    
-    weight_  = Utils.samples['signal600_400']['weight'][0]  ;   weights.append(weight_)
-    weight_  = Utils.samples['signal800_400']['weight'][0]  ;  weights.append(weight_)
-    weight_  = Utils.samples['signal1000_400']['weight'][0] ;   weights.append(weight_)
-    weight_  = Utils.samples['signal1200_400']['weight'][0];    weights.append(weight_)
-    weight_  = Utils.samples['signal1400_400']['weight'][0] ;   weights.append(weight_)
-    weight_  = Utils.samples['signal1700_400']['weight'][0] ;   weights.append(weight_)
-    weight_  = Utils.samples['signal2000_400']['weight'][0] ;   weights.append(weight_)
-    weight_  = Utils.samples['signal2500_400']['weight'][0] ;   weights.append(weight_)
-    
-    h_600_400 = MakeRooDataHist('signal600_400', nominalname, True)
-    h_600_400.SetNameTitle('monoHbbM600_400'+postfix,'monoHbbM600_400')
-
-    h_800_400 = MakeRooDataHist('signal800_400', nominalname, True)
-    h_800_400.SetNameTitle('monoHbbM800_400'+postfix,'monoHbbM800_400')
-
-    h_1000_400 = MakeRooDataHist('signal1000_400', nominalname, True)
-    h_1000_400.SetNameTitle('monoHbbM1000_400'+postfix,'monoHbbM1000_400')
-
-    h_1200_400 = MakeRooDataHist('signal1200_400', nominalname, True)
-    h_1200_400.SetNameTitle('monoHbbM1200_400'+postfix,'monoHbbM1200_400')
-
-    h_1400_400 = MakeRooDataHist('signal1400_400', nominalname, True)
-    h_1400_400.SetNameTitle('monoHbbM1400_400'+postfix,'monoHbbM1400_400')
-
-    h_1700_400 = MakeRooDataHist('signal1700_400', nominalname, True)
-    h_1700_400.SetNameTitle('monoHbbM1700_400'+postfix,'monoHbbM1700_400')
-
-    h_2000_400 = MakeRooDataHist('signal2000_400', nominalname, True)
-    h_2000_400.SetNameTitle('monoHbbM2000_400'+postfix,'monoHbbM2000_400')
-
-    h_2500_400 = MakeRooDataHist('signal2500_400', nominalname, True)
-    h_2500_400.SetNameTitle('monoHbbM2500_400'+postfix,'monoHbbM2500_400')
-    
-    
-    weight_  = Utils.samples['signal800_500']['weight'][0]   ; weights.append(weight_)
-    weight_  = Utils.samples['signal1000_500']['weight'][0]  ;  weights.append(weight_)
-    weight_  = Utils.samples['signal1200_500']['weight'][0]  ;  weights.append(weight_)
-    weight_  = Utils.samples['signal1400_500']['weight'][0]  ;  weights.append(weight_)
-    weight_  = Utils.samples['signal1700_500']['weight'][0]  ;  weights.append(weight_)
-    weight_  = Utils.samples['signal2000_500']['weight'][0]  ;  weights.append(weight_)
-    weight_  = Utils.samples['signal2500_500']['weight'][0]  ;  weights.append(weight_)
-    
-    h_800_500 = MakeRooDataHist('signal800_500', nominalname, True)
-    h_800_500.SetNameTitle('monoHbbM800_500'+postfix,'monoHbbM800_500')
-
-    h_1000_500 = MakeRooDataHist('signal1000_500', nominalname, True)
-    h_1000_500.SetNameTitle('monoHbbM1000_500'+postfix,'monoHbbM1000_500')
-
-    h_1200_500 = MakeRooDataHist('signal1200_500', nominalname, True)
-    h_1200_500.SetNameTitle('monoHbbM1200_500'+postfix,'monoHbbM1200_500')
-
-    h_1400_500 = MakeRooDataHist('signal1400_500', nominalname, True)
-    h_1400_500.SetNameTitle('monoHbbM1400_500'+postfix,'monoHbbM1400_500')
-
-    h_1700_500 = MakeRooDataHist('signal1700_500', nominalname, True)
-    h_1700_500.SetNameTitle('monoHbbM1700_500'+postfix,'monoHbbM1700_500')
-
-    h_2000_500 = MakeRooDataHist('signal2000_500', nominalname, True)
-    h_2000_500.SetNameTitle('monoHbbM2000_500'+postfix,'monoHbbM2000_500')
-
-    h_2500_500 = MakeRooDataHist('signal2500_500', nominalname, True)
-    h_2500_500.SetNameTitle('monoHbbM2500_500'+postfix,'monoHbbM2500_500')
-
-    
-    weight_  = Utils.samples['signal800_600']['weight'][0]  ;  weights.append(weight_)
-    weight_  = Utils.samples['signal1000_600']['weight'][0] ;   weights.append(weight_)
-    weight_  = Utils.samples['signal1200_600']['weight'][0] ;   weights.append(weight_)
-    weight_  = Utils.samples['signal1400_600']['weight'][0];    weights.append(weight_)
-    weight_  = Utils.samples['signal1700_600']['weight'][0] ;   weights.append(weight_)
-    weight_  = Utils.samples['signal2000_600']['weight'][0] ;   weights.append(weight_)
-    weight_  = Utils.samples['signal2500_600']['weight'][0] ;   weights.append(weight_)
-    
-    
-    h_800_600 = MakeRooDataHist('signal800_600', nominalname, True)
-    h_800_600.SetNameTitle('monoHbbM800_600'+postfix,'monoHbbM800_600')
-
-    h_1000_600 = MakeRooDataHist('signal1000_600', nominalname, True)
-    h_1000_600.SetNameTitle('monoHbbM1000_600'+postfix,'monoHbbM1000_600')
-
-    h_1200_600 = MakeRooDataHist('signal1200_600', nominalname, True)
-    h_1200_600.SetNameTitle('monoHbbM1200_600'+postfix,'monoHbbM1200_600')
-
-    h_1400_600 = MakeRooDataHist('signal1400_600', nominalname, True)
-    h_1400_600.SetNameTitle('monoHbbM1400_600'+postfix,'monoHbbM1400_600')
-
-    h_1700_600 = MakeRooDataHist('signal1700_600', nominalname, True)
-    h_1700_600.SetNameTitle('monoHbbM1700_600'+postfix,'monoHbbM1700_600')
-
-    h_2000_600 = MakeRooDataHist('signal2000_600', nominalname, True)
-    h_2000_600.SetNameTitle('monoHbbM2000_600'+postfix,'monoHbbM2000_600')
-
-    h_2500_600 = MakeRooDataHist('signal2500_600', nominalname, True)
-    h_2500_600.SetNameTitle('monoHbbM2500_600'+postfix,'monoHbbM2500_600')
-
-
-    #weight_  = Utils.samples['signal800_700']['weight'][0]  ;  weights.append(weight_)
-    #weight_  = Utils.samples['signal1000_700']['weight'][0] ;   weights.append(weight_)
-    weight_  = Utils.samples['signal1200_700']['weight'][0]  ;  weights.append(weight_)
-    weight_  = Utils.samples['signal1400_700']['weight'][0] ;   weights.append(weight_)
-    weight_  = Utils.samples['signal1700_700']['weight'][0]  ;  weights.append(weight_)
-    weight_  = Utils.samples['signal2000_700']['weight'][0]  ;  weights.append(weight_)
-    weight_  = Utils.samples['signal2500_700']['weight'][0]  ;  weights.append(weight_)
-    
-    #h_600_700 = MakeRooDataHist('signal600_700', nominalname, True)
-    #h_600_700.SetNameTitle('monoHbbM600_700'+postfix,'monoHbbM600_700')
-
-    #h_800_700 = MakeRooDataHist('signal800_700', nominalname, True)
-    #h_800_700.SetNameTitle('monoHbbM800_700'+postfix,'monoHbbM800_700')
-
-    #h_1000_700 = MakeRooDataHist('signal1000_700', nominalname, True)
-    #h_1000_700.SetNameTitle('monoHbbM1000_700'+postfix,'monoHbbM1000_700')
-
-    h_1200_700 = MakeRooDataHist('signal1200_700', nominalname, True)
-    h_1200_700.SetNameTitle('monoHbbM1200_700'+postfix,'monoHbbM1200_700')
-
-    h_1400_700 = MakeRooDataHist('signal1400_700', nominalname, True)
-    h_1400_700.SetNameTitle('monoHbbM1400_700'+postfix,'monoHbbM1400_700')
-
-    h_1700_700 = MakeRooDataHist('signal1700_700', nominalname, True)
-    h_1700_700.SetNameTitle('monoHbbM1700_700'+postfix,'monoHbbM1700_700')
-
-    h_2000_700 = MakeRooDataHist('signal2000_700', nominalname, True)
-    h_2000_700.SetNameTitle('monoHbbM2000_700'+postfix,'monoHbbM2000_700')
-
-    h_2500_700 = MakeRooDataHist('signal2500_700', nominalname, True)
-    h_2500_700.SetNameTitle('monoHbbM2500_700'+postfix,'monoHbbM2500_700')
-
-    
-    weight_  = Utils.samples['signal1000_800']['weight'][0]  ;  weights.append(weight_)
-    weight_  = Utils.samples['signal1200_800']['weight'][0]  ;  weights.append(weight_)
-    weight_  = Utils.samples['signal1400_800']['weight'][0]  ;  weights.append(weight_)
-    weight_  = Utils.samples['signal1700_800']['weight'][0]  ;  weights.append(weight_)
-    weight_  = Utils.samples['signal2000_800']['weight'][0]  ;  weights.append(weight_)
-    weight_  = Utils.samples['signal2500_800']['weight'][0]  ;  weights.append(weight_)
-    weights.append(1)
-    if debug_: print weights
-    
-    h_1000_800 = MakeRooDataHist('signal1000_800', nominalname, True)
-    h_1000_800.SetNameTitle('monoHbbM1000_800'+postfix,'monoHbbM1000_800')
-
-    h_1200_800 = MakeRooDataHist('signal1200_800', nominalname, True)
-    h_1200_800.SetNameTitle('monoHbbM1200_800'+postfix,'monoHbbM1200_800')
-
-    h_1400_800 = MakeRooDataHist('signal1400_800', nominalname, True)
-    h_1400_800.SetNameTitle('monoHbbM1400_800'+postfix,'monoHbbM1400_800')
-
-    h_1700_800 = MakeRooDataHist('signal1700_800', nominalname, True)
-    h_1700_800.SetNameTitle('monoHbbM1700_800'+postfix,'monoHbbM1700_800')
-
-    h_2000_800 = MakeRooDataHist('signal2000_800', nominalname, True)
-    h_2000_800.SetNameTitle('monoHbbM2000_800'+postfix,'monoHbbM2000_800')
-
-    h_2500_800 = MakeRooDataHist('signal2500_800', nominalname, True)
-    h_2500_800.SetNameTitle('monoHbbM2500_800'+postfix,'monoHbbM2500_800')
-    
+   
+    ## 2HDM mass points.
+    Zp2HDM_namelist = Utils.Zp2HDM_names
+    h_Zp2HDM = []
+    for iZp2HDM_name in Zp2HDM_namelist:
+        weights.append(Utils.samples[iZp2HDM_name]['weight'][0])
+        h_tmp = MakeRooDataHist(iZp2HDM_name, nominalname, True)
+        iZp2HDM_name = iZp2HDM_name.replace('signal','monoHbbM')
+        h_tmp.SetNameTitle(iZp2HDM_name+postfix,iZp2HDM_name)
+        h_Zp2HDM.append(h_tmp)
     
 
-    ## Adding Histograms for the Baryonic Model
-    ZpB_NameList = ['signalMZp_500_Mdm_1',
-                    'signalMZp_500_Mdm_150',
-                    'signalMZp_500_Mdm_500',
-                    
-                    'signalMZp_1000_Mdm_1',
-                    'signalMZp_1000_Mdm_150',
-                    
-                    'signalMZp_995_Mdm_500',
-                    #'signalMZp_1000_Mdm_1000',
-                    
-                    'signalMZp_10000_Mdm_1',
-                    'signalMZp_10000_Mdm_10',
-                    'signalMZp_10000_Mdm_50',
-                    'signalMZp_10000_Mdm_150',
-                    'signalMZp_10000_Mdm_500',
-                    'signalMZp_10000_Mdm_1000',
-                    
-                    #'signalMZp_10_Mdm_1',
-                    'signalMZp_10_Mdm_10',
-                    'signalMZp_10_Mdm_50',
-                    'signalMZp_10_Mdm_150',
-                    'signalMZp_10_Mdm_500',
-                    'signalMZp_10_Mdm_1000',
-                    
-                    'signalMZp_15_Mdm_10',
-                    
-                    'signalMZp_1995_Mdm_1000',
-                    'signalMZp_2000_Mdm_1',
-                    'signalMZp_2000_Mdm_500',
-                    
-                    'signalMZp_200_Mdm_1',
-                    'signalMZp_200_Mdm_50',
-                    'signalMZp_200_Mdm_150',
-                    
-                    'signalMZp_20_Mdm_1',
-                    
-                    'signalMZp_300_Mdm_1',
-                    #'signalMZp_300_Mdm_50',
-                    'signalMZp_295_Mdm_150',
-                    
-                    
-                    'signalMZp_50_Mdm_1',
-                    'signalMZp_50_Mdm_10',
-                    'signalMZp_50_Mdm_50',
-                    ]
+    
+    ZpB_NameList = Utils.ZpB_Names
     
     
     weightZpB = []
@@ -428,17 +208,18 @@ def WriteHistograms(nominalname, postfix, rootfilename, rebininfo,  filemode='UP
         h_tmp.SetNameTitle(samplename+postfix,samplename)
         h_ZpB.append(h_tmp)
         
-    print h_ZpB
+    #print h_ZpB
         
     if debug_ : print "signal end"
-    h_data = TH1F()
-    if filemode == 'RECREATE':
-        if debug_ : print "data"
+    
+    h_data = []#TH1F()
+    #if filemode == 'RECREATE':
+    if debug_ : print "data"
         #newname = nominalname.replace("_Nominal","")
         #if debug_ : print "-- newname = ", newname
-        h_data = MakeRooDataHist('data_obs', nominalname, True)
-        h_data.SetNameTitle('data_obs', 'data_obs')
-        print "data integral = ",h_data.Integral()
+    h_data = MakeRooDataHist('data_obs', nominalname, True)
+    h_data.SetNameTitle('data_obs', 'data_obs')
+        #print "data integral = ",h_data.Integral()
         #bins=[200., 350., 500., 3000.]
         #h_data.Rebin(3,"data_obs", bins)
         
@@ -452,101 +233,77 @@ def WriteHistograms(nominalname, postfix, rootfilename, rebininfo,  filemode='UP
     h_all.append(h_znn)
     h_all.append(h_wj)
     h_all.append(h_zh)
-    h_all.append(h_600_300)
-    h_all.append(h_800_300)
-    h_all.append(h_1000_300)
-    h_all.append(h_1200_300)
-    h_all.append(h_1400_300)
-    h_all.append(h_1700_300)
-    h_all.append(h_2000_300)
-    h_all.append(h_2500_300)
-    h_all.append(h_600_400)
-    h_all.append(h_800_400)
-    h_all.append(h_1000_400)
-    h_all.append(h_1200_400)
-    h_all.append(h_1400_400)
-    h_all.append(h_1700_400)
-    h_all.append(h_2000_400)
-    h_all.append(h_2500_400)
-    h_all.append(h_800_500)
-    h_all.append(h_1000_500)
-    h_all.append(h_1200_500)
-    h_all.append(h_1400_500)
-    h_all.append(h_1700_500)
-    h_all.append(h_2000_500)
-    h_all.append(h_2500_500)
-    h_all.append(h_800_600)
-    h_all.append(h_1000_600)
-    h_all.append(h_1200_600)
-    h_all.append(h_1400_600)
-    h_all.append(h_1700_600)
-    h_all.append(h_2000_600)
-    h_all.append(h_2500_600)
-    h_all.append(h_1200_700)
-    h_all.append(h_1400_700)
-    h_all.append(h_1700_700)
-    h_all.append(h_2000_700)
-    h_all.append(h_2500_700)
-    h_all.append(h_1000_800)
-    h_all.append(h_1200_800)
-    h_all.append(h_1400_800)
-    h_all.append(h_1700_800)
-    h_all.append(h_2000_800)
-    h_all.append(h_2500_800)
     
+    for ihistogram in h_Zp2HDM:
+        h_all.append(ihistogram)
     ## add all the ZpB histograms
     
     for ihistogram in h_ZpB:
         h_all.append(ihistogram)
+    
+    ## add data histogram at last
+    weights.append(1.0)
+    h_all.append(h_data)
     
     
     if postfix =='':
         yieldfile = open(rootfilename+'.txt','w')
     ihist = 0
     
-    print 'text file created'
+    
     for ih in h_all:
-        print ('writing in text file for', ih)
         name = ih.GetName()
         title = ih.GetTitle()
-        h_new = TH1F()
+        h_new = []#TH1F()
+
         if rebininfo['rebin']: 
             ## for fixed bin-width
             if len(rebininfo['bins'])==1:
                 h_tmp = ih.Clone(name)
-                h_new = TH1F (h_tmp.Rebin(rebininfo['bins'][0]))
+                if type(h_tmp) is TH1F:
+                    h_new = TH1F (h_tmp.Rebin(rebininfo['bins'][0]))
+                if type(h_tmp) is TH2F:
+                    h_new = h_tmp
             
             ## for variable bin-width
             if len(rebininfo['bins'])>1:
                 metbins_ = rebininfo['bins'] #[200.,350.,500.,1000.]
                 metbins = array('d', metbins_)
                 h_tmp = ih.Clone(name)
-                h_new = TH1F (h_tmp.Rebin(len(metbins_)-1,name , metbins))
+                if type(h_tmp) is TH1F:
+                    h_new = TH1F (h_tmp.Rebin(len(metbins_)-1,name , metbins))
+                if type(h_tmp) is TH2F:
+                    h_new = h_tmp
+
         
         h_new.Write()
+        h_new_unrolled=[]
+        if type (h_new) is TH2F:
+            print "This is 2D histogram"
+            h_new_unrolled  = ROOT.BinUnroller(h_new)
+            print (" type of h_new_unrolled = ", type(h_new_unrolled)) 
+            name_ = h_new.GetName()
+            #name_ = name_.replace('_2d','_unroll')
+            name_ = name_.replace('_2d','')
+            h_new_unrolled.SetName(name_)
+            h_new_unrolled.Write()
+        
+        if type (h_new) is TH1F:
+            h_new_unrolled = h_new
+            
         error_ = 0.0
-        if postfix =='': error_ = weights[ihist] * TMath.Sqrt(ih.Integral())
-        if postfix =='': yieldfile.write(ih.GetName()+' '+str(ih.Integral())+' '+str(error_)+'\n')
+        #if postfix =='_2d': error_ = weights[ihist] * TMath.Sqrt(ih.Integral())
+        #if postfix =='_2d': yieldfile.write(ih.GetName()+' '+str(ih.Integral())+' '+str(error_)+'\n')
+        #if postfix =='_2d': yieldfile.close()
+        print "ihist = ", (ihist, len(h_all))
+        if postfix =='': error_ = weights[ihist] * TMath.Sqrt(h_new_unrolled.Integral())
+        if postfix =='': 
+            line_ = h_new_unrolled.GetName()+' '+str(h_new_unrolled.Integral())+' '+str(error_)+'\n'
+            line_ = line_.replace('data_obs','DATA')
+            yieldfile.write(line_)
         ihist = ihist+1
 
-    if postfix =='': 
-        if filemode == 'RECREATE': 
-            yieldfile.write('DATA'+' '+str(h_data.Integral(1,-1))+' '+str(0)+'\n')
-        yieldfile.close()
 
-    
-    if filemode == 'RECREATE':
-        name = h_data.GetName()
-        title = h_data.GetTitle()
-        metbins_ = rebininfo['bins'] #[200.,350.,500.,1000.]
-        metbins = array('d', metbins_)
-        h_tmp = h_data.Clone(name)
-        h_new = TH1F (h_tmp.Rebin(len(metbins_)-1,name , metbins))
-        h_new.Write()
-        #h_data.Rebin(50)
-        #h_data.Write()
-        #data_obs.Write()
-    
 
 def HistogramsOneDir(WhichRegion):
     print "--------For h_MET0_Nominal--------- "
@@ -565,7 +322,13 @@ def HistogramsOneDir(WhichRegion):
                      'range':[30.0,250.],
                      'bins':[1] ## is only one number is provided then it serve as rebin factor
                      }
-    WriteHistograms('h_mass_0','_mass',WhichRegion,MassReBinInfo)
+    #WriteHistograms('h_mass_0','_mass',WhichRegion,MassReBinInfo)
+    
+    MassReBinInfo = {'rebin':True,
+                     'range':[-99999., 99999.],
+                     'bins':[1] ## is only one number is provided then it serve as rebin factor
+                     }
+    #WriteHistograms('h_met_vs_mass_0','_2d',WhichRegion,MassReBinInfo)
     
     '''WriteHistograms(WhichRegion+'/h_MET0_muRUp','_CMS_monoHbb_scaleRUp',WhichRegion)
     WriteHistograms(WhichRegion+'/h_MET0_muRDown','_CMS_monoHbb_scaleRDown',WhichRegion)
@@ -597,8 +360,12 @@ if __name__ == "__main__":
 
     os.system('mkdir '+mainoutdir)
     os.system('mkdir '+datacardsdir)
-    regionstorun = ['signal', 'zj', 'wt']
-    regionstorunstr = 'signal zj wt'
+
+    regionstorun = ['wt', 'signalpSB']
+    regionstorunstr = 'wt signalpSB'
+
+    #regionstorun = ['signal', 'zj', 'wt', 'signalpSB']
+    #regionstorunstr = 'signal zj wt signalpSB'
 
 
     print options.saveshapes
@@ -637,29 +404,7 @@ if __name__ == "__main__":
         os.system('python CombineDataCards.py '+datacardsdir+' runlimit obs')
 
         
-    '''
-    print "------------For mass sidebands Region--------------"
-    Utils.prefix = inputdir+'/zj/'
-    HistogramsOneDir('zj')
-
-
-    print "------------For wj Region--------------"
-    Utils.prefix = inputdir+'/wj/'
-    HistogramsOneDir('wj')
-
-    print "------------For tt Region--------------"
-    Utils.prefix = inputdir+'/tt/'
-    HistogramsOneDir('tt')
-
-    print "------------For wt Region--------------"
-    Utils.prefix = inputdir+'/wt/'
-    HistogramsOneDir('wt')
-    '''
     
 else :
     print ("MakeShapesAndStack.py is being imported as a module......")
 
-
-
-#HistogramsOneDir('histfacFatJet_ZLight')
-#HistogramsOneDir('histfacFatJet_WHeavy')

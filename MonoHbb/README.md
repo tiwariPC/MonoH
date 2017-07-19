@@ -52,6 +52,5 @@ AnalysisHistograms_MergedSkimmedV12_PuppiCA15_V1: CA15 Puppi jets with subjet b-
 AnalysisHistograms_MergedSkimmedV12_PuppiCA15_V1: CA15 Puppi jets with subjet b-tagger  and Thea correction on the mass. 
 
 
-
 ## Version number of the directory of Skimmer 
 V12_PuppiCA15_V1: First version with CA15 jets. 

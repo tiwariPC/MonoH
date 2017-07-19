@@ -1,6 +1,7 @@
 import os
 
-outputdirname="Raman/SkimmedTuples/V12_Puppi_V3_NoTriggerOnData/"
+#outputdirname="Raman/SkimmedTuples/V12_Puppi_V3_NoTriggerOnData/"
+outputdirname="Raman/SkimmedTuples/testing"
 
 #outputdirname="Raman/AnalysisTuples_2016DataMC_V5/TTBar/"
 inputprefix="--input-dir=root://cmsxrootd.hep.wisc.edu//store/user/khurana/"
@@ -110,7 +111,7 @@ MonoHbb_ZpBaryonic_MZp-50_MChi-1_13TeV-madgraph MonoH2016/V4_CA15/MonoHbb_ZpBary
 MonoHbb_ZpBaryonic_MZp-50_MChi-50_13TeV-madgraph MonoH2016/V4_CA15/MonoHbb_ZpBaryonic_MZp-50_MChi-50_13TeV-madgraph
 MonoHbb_ZpBaryonic_MZp-995_MChi-500_13TeV-madgraph MonoH2016/V4_CA15/MonoHbb_ZpBaryonic_MZp-995_MChi-500_13TeV-madgraph'''
 
-samples='''crab_MET_Run2016B_ReReco23Sept_v320160822 MonoH2016/V4_CA15/MET//crab_MET_Run2016B_ReReco23Sept_v320160822
+samples1='''crab_MET_Run2016B_ReReco23Sept_v320160822 MonoH2016/V4_CA15/MET//crab_MET_Run2016B_ReReco23Sept_v320160822
 crab_MET_Run2016C_ReReco23Sept_v120160822 MonoH2016/V4_CA15/MET/crab_MET_Run2016C_ReReco23Sept_v120160822
 crab_MET_Run2016D_ReReco23Sept_v120160822 MonoH2016/V4_CA15/MET/crab_MET_Run2016D_ReReco23Sept_v120160822
 crab_MET_Run2016E_ReReco23Sept_v120160822 MonoH2016/V4_CA15/MET/crab_MET_Run2016E_ReReco23Sept_v120160822
@@ -119,6 +120,8 @@ crab_MET_Run2016G_ReReco23Sept_v120160822 MonoH2016/V4_CA15/MET/crab_MET_Run2016
 crab_MET_Run2016H_PromptReco_v220160822 MonoH2016/V4_CA15/MET/crab_MET_Run2016H_PromptReco_v220160822
 crab_MET_Run2016H_PromptReco_v320160822 MonoH2016/V4_CA15/MET/crab_MET_Run2016H_PromptReco_v320160822
 '''
+
+samples='''crab_MET_Run2016B_ReReco23Sept_v320160822 MonoH2016/V4_CA15/MET//crab_MET_Run2016B_ReReco23Sept_v320160822'''
 
 #MonoHbb_ZpBaryonic_MZp-200_MChi-150_13TeV-madgraph MonoH2016/V4_CA15/MonoHbb_ZpBaryonic_MZp-200_MChi-150_13TeV-madgraph
 
