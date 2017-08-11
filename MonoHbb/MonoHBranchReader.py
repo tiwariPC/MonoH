@@ -40,21 +40,6 @@ parser.add_option("-P", "--OtherPlots", action="store_true",  dest="OtherPlots")
 ########################## cut values########################################################################
 ########################################################################################################################
 
-parser.add_option("-m", "--MLow", type=float,  dest="MLow")
-parser.add_option("-M", "--MHigh", type=float,  dest="MHigh")
-
-parser.add_option( "--MLow1", type=float,  dest="MLow1")
-parser.add_option( "--MHigh1", type=float,  dest="MHigh1")
-
-parser.add_option("-l", "--lepton", type=int, dest="lepton")
-parser.add_option("-L", "--Lepton", type=int, dest="Lepton")
-
-parser.add_option("-b", "--bjet", type=int, dest="bjet")
-
-parser.add_option("-j", "--jet", type=int, dest="jet")
-parser.add_option("-J", "--Jet", type=int, dest="Jet")
-
-
 parser.add_option("--dbt", action="store_true",  dest="dbt")
 parser.add_option( "--dbtcut", type=float,  dest="dbtcut")
 
@@ -62,23 +47,11 @@ parser.add_option("--theac", action="store_true",  dest="theac")
 
 (options, args) = parser.parse_args()
 
-massCutLow   = options.MLow 
-massCutHigh  = options.MHigh
 
-massCutLow1   = options.MLow1
-massCutHigh1  = options.MHigh1
-
-nlepton      = options.lepton
-nLepton      = options.Lepton
-
-njet        = options.jet
-nJet        = options.Jet
-
-nbjet       = options.bjet
 
 
 isfarmout = options.farmout 
-print (massCutLow,massCutHigh,nlepton,nLepton,njet,nJet, options.inputfile, options.outputfile )
+print (options.inputfile, options.outputfile )
 #print 'options = ',[options.inputfile]
 inputfilename = options.inputfile
 
@@ -208,8 +181,13 @@ def AnalyzeDataSet():
     cutStatus['trigger'] = 0
     cutStatus['filter'] = 0
     cutStatus['pfmet'] =  0
-    cutStatus['HiggsID'] = 0
-    cutStatus['HMass'] = 0
+    cutStatus['njetSR1']=  0
+    cutStatus['njet1SR1'] = 0
+    cutStatus['njet2SR1'] = 0
+    cutStatus['njetSR2'] = 0
+    cutStatus['njet1SR2'] = 0
+    cutStatus['njet2SR2'] = 0
+    cutStatus['njet2SR2'] = 0
     cutStatus['btag'] = 0
     cutStatus['dphi'] = 0
     cutStatus['ThinJetVeto'] = 0
@@ -218,8 +196,8 @@ def AnalyzeDataSet():
     cutStatus['muveto'] = 0
     cutStatus['tauveto'] = 0
     
-    allquantitiesBoosted            = MonoHbbQuantities(outfilename)
-    allquantitiesBoosted.defineHisto()
+    allquantities = MonoHbbQuantities(outfilename)
+    allquantities.defineHisto()
 
     
     # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -344,9 +322,8 @@ def AnalyzeDataSet():
         genParSt                   = skimmedTree.__getattr__('st_genParSt')
         genParP4                   = skimmedTree.__getattr__('st_genParP4')
              
-        HiggsInfo_sorted           = []
-        
-        
+        jetSR1Info           = []
+        jetSR2Info           = []
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
         # MC Weights ----------------------------------------------------------------------------------------------------------------------------------------------------
@@ -369,161 +346,82 @@ def AnalyzeDataSet():
         if pfmetstatus == False : continue 
         cutStatus['pfmet'] += 1
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
-        # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
-        ## Fat-Jet Selection
-        ## Higgs Tagging
-        # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
-        # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+        #----------------------------------------------------------------------------------------------------------------------------------------------------------------
         
 
         ## list comprehensation
-        ## y = [s for s in x if len(s) == 2]
-        #''' boosted higgs tagging 
-        HIndex = -1
-        HThinIndex = -1
-        nsubjetstatus = False
-        higgstag = False
-        #print ('nFATJets = ',nFatJets, ' nfatjetPRmassL2L3Corr = ', len(fatjetPRmassL2L3Corr))
-        
-        #nFATJets = st_nFatJets#len(fatjetP4)
-        for ifatjet in range(nFatJets):
-            if fatjetP4[ifatjet].Pt() > 200.0  : 
-                if abs(fatjetP4[ifatjet].Eta())  < 2.4 : 
-                    #if (bool(passFatJetTightID[ifatjet]) == True) : 
-                    HIndex = ifatjet
-                    #print 'ifatjet = ',ifatjet
-                    break
-    
-        
-        if HIndex > -1 :
-            cutStatus['HiggsID'] += 1
-            
-            TheaCorrection_ = TheaCorrection(fatjetP4[ifatjet].Pt(), fatjetP4[ifatjet].Eta() )
-            if options.theac:
-                fatjetPRmassL2L3Corr[HIndex] = fatjetPRmassL2L3Corr[HIndex] * TheaCorrection_ 
-            if ((fatjetPRmassL2L3Corr[HIndex] > massCutLow) & (fatjetPRmassL2L3Corr[HIndex] < massCutHigh)) | ((fatjetPRmassL2L3Corr[HIndex] > massCutLow1) & (fatjetPRmassL2L3Corr[HIndex] < massCutHigh1)) : 
-                if pfMet > 200.0:
-                    fatJetMassStatus = True
-                    cutStatus['HMass'] += 1
-                    nSubBJet=0;
-                    if not options.dbt: 
-                        for isj in range(nSubSoftDropJet[HIndex]):
-                            if subjetSDCSV[HIndex][isj] > 0.46 : 
-                                nSubBJet = nSubBJet + 1
-        
-                    if options.dbt: 
-                        if doublebtagger[HIndex] > options.dbtcut:
-                            nSubBJet = 2
-                    if nSubBJet>1 : 
-                        nsubjetstatus = True
-                        cutStatus['btag'] += 1
-    
-        if nsubjetstatus: 
-            if False: print "this is boosted regime"
-        else:   
-        #if True:
-            ''' resolved Higgs boson tagging 
-            '''    
-            HPtVec=[]
-            HMassVec=[]
-            HPhiVec=[]
-            pairindex=[]
-            HiggsInfo=[]
-            for ithinjet in range(nTHINJets):
-                j1 = thinjetP4[ithinjet]
-                if (j1.Pt() > 30.0)&(abs(j1.Eta())<2.4)& (thinJetCSV[ithinjet] > 0.8):   
-                    for jthinjet in range(nTHINJets):
-                        if (jthinjet != ithinjet ) & ( jthinjet > ithinjet ) & (jthinjet < nTHINJets) : 
-                            j2 = thinjetP4[jthinjet]
-                            if (j2.Pt() > 30.0) & (abs(j2.Eta()) <2.4) &(thinJetCSV[jthinjet] > 0.8) :
-                                
-                                Hpt = (j1 + j2 ).Pt()
-                                HMass = (j1 + j2 ).M()
-                                HPhi  = (j1 + j2 ).Phi()
-                                HEta  = (j1 + j2 ).Eta()
-                                
-                                HPtVec.append(Hpt)
-                                HMassVec.append(HMass)
-                                HPhiVec.append(HPhi)
-                                
-                                pair=[]
-                                pair.append(ithinjet); pair.append(jthinjet)
-                                pairindex.append(pair)
-                                p =[ithinjet, jthinjet, HMass, Hpt, HPhi, HEta]
-                                HiggsInfo.append(p)
-
-            HiggsInfo_sorted = sorted (HiggsInfo, key=lambda student: student[3], reverse=True)   
-            if len(HiggsInfo_sorted) > 0: HThinIndex = len(HiggsInfo_sorted) 
-            #print "student=",HiggsInfo_sorted
-            
-
-            if HThinIndex > 0:
-                mass_ = HiggsInfo_sorted[0][2]
-                pt_   = HiggsInfo_sorted[0][3]
-                if (( mass_ > massCutLow) & ( mass_ < massCutHigh)) | ((mass_ > massCutLow1) & (mass_ < massCutHigh1)) : 
-                    cutStatus['HMass'] += 1
-                    if (pt_>150.): 
-                        cutStatus['btag'] += 1
-                        higgstag = True
-            ''' resolved Higgs boson tagging 
-            '''
-        ####
-        if nsubjetstatus == True : isboosted = True #; print "this is boosted"
-        else : isboosted = False
-        isresolved = False
-        if  (higgstag): isresolved = True;
-        else : isresolved = False
-        
-        if ( isboosted | isresolved ) == False: continue 
-        
-        # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
-        # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
-        ## Delta Phi
-        # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
-        # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
-        nGoodTHINJets = 0
-        nGoodTHINBJets = 0
-        jetIndex = -1
-        dphiVec=[]
-        
-
-        for ijet in range(nTHINJets):
-            p4_j = thinjetP4[ijet]
-            if p4_j.Pt() < 30 : continue
-            if abs(p4_j.Eta())>4.5 : continue
+        ## list comprehensation
+        ## for SR1
+         # 2 jets and 1 btagged 
+         
+         
+        nJetsr1 = (len(THINnJets) <= 2)
+        if nJetsr1 == False  : continue
+        cutStatus['njetSR1'] += 1
+        for ithinjet in range(THINnJets):
+           j1 = thinjetP4[ithinjet]
+           if (j1.Pt() > 30.0) & (DeltaPhi(j1.Phi(),pfpuppiMETPhi) > 0.5):
+               njet1SR1index = ithinjet
+               h_jet1_pT_sr1.Fill(j1.Pt())
+               h_jet1_eta_sr1.Fill(j1.Eta())
+               h_jet1_phi_sr1.Fill(j1.Phi())
+               for jthinjet in range(THINnJets):
+                    if (jthinjet != ithinjet ) & ( jthinjet > ithinjet ) & (jthinjet < nTHINJets) : 
+                        j2 = thinjetP4[jthinjet]
+                        if (j2.Pt() < 50.0) : continue
+                        if (DeltaPhi(j1.Phi,pfpuppiMETPhi) < 0.5) :continue
+                        if (THINjetCISVV2[jthinjet] < 0.8): continue 
+                        if thinjetnhadef[jthinjet] > 0.8 : continue
+                        if THINjetCHadEF[jthinjet]< 0.1: continue
+                        njet1SR1index = jthinjet
+                        h_jet2_pT_sr1.Fill(j2.Pt())
+                        h_jet2_eta_sr1.Fill(j2.Eta())
+                        h_jet2_phi_sr1.Fill(j2.Phi())
+                        pair.append(j1); pair.append(j2)
+                        jetSR1Info.append(pair)
                         
-            if isboosted : 
-                if DeltaR(p4_j, fatjetP4[HIndex])  > 0.8:
-                    nGoodTHINJets += 1
-                    jetIndex=ijet
-            if isresolved :
-                jet1 = HiggsInfo_sorted[0][0]
-                jet2 = HiggsInfo_sorted[0][1]
-                if DeltaR(p4_j, thinjetP4[jet1])  > 0.4:
-                    if DeltaR(p4_j, thinjetP4[jet2])  > 0.4:
-                        nGoodTHINJets += 1
-                        jetIndex=ijet
-
-
-            
-            if abs(p4_j.Eta())>2.4 : continue
-            dphi = Phi_mpi_pi(pfMetPhi - p4_j.Phi())
-            
-            dphiVec.append(abs(dphi))
-            
-            if thinJetCSV[ijet]<0.46 : continue
-            if isboosted :
-                if DeltaR(p4_j, fatjetP4[HIndex])  > 0.8:
-                    nGoodTHINBJets = nGoodTHINBJets + 1
-            if isresolved : 
-            
-                jet1 = HiggsInfo_sorted[0][0]
-                jet2 = HiggsInfo_sorted[0][1]
-                if DeltaR(p4_j, thinjetP4[jet1])  > 0.4:
-                    if DeltaR(p4_j, thinjetP4[jet2])  > 0.4:
-                        nGoodTHINBJets = nGoodTHINBJets + 1
-            
-            
+        if njet1SR1index > -1 :
+           cutStatus['njet1SR1'] += 1
+        if njet1SR1index > -1 :
+           cutStatus['njet2SR1'] += 1
+     
+     ## for SR2
+        # 3 jets and 2 btagged 
+        
+        nJetsr2 = (len(THINnJets) <= 3)
+        if nJetsr2 == False : continue
+        cutStatus['njetSR2'] += 1
+        for ithinjet in range(THINnJets):
+            j1 = thinjetP4[ithinjet]
+            if (j1.Pt() > 30.0) & (DeltaPhi(j1.Phi(),pfpuppiMETPhi) > 0.5):
+               njet1SR2index = ithinjet
+               for jthinjet in range(THINnJets):
+                  if (jthinjet != ithinjet ) & ( jthinjet > ithinjet ) & (jthinjet < nTHINJets) : 
+                     j2 = thinjetP4[jthinjet]
+                     if (j2.Pt() < 50.0) : continue
+                     if (DeltaPhi(j2.Phi,pfpuppiMETPhi) < 0.5) :continue
+                     if (THINjetCISVV2[jthinjet] < 0.8): continue 
+                     if thinjetnhadef[jthinjet] > 0.8 : continue
+                     if THINjetCHadEF[jthinjet]< 0.1: continue
+                     njet2SR2index = jthinjet
+                     for kthinjet in range(THINnJets):
+                        if (kthinjet != ithinjet ) & ( kthinjet > ithinjet ) & (kthinjet < nTHINJets) & (kthinjet != jthinjet ) & ( kthinjet > jthinjet ) : 
+                           j3 = thinjetP4[kthinjet]
+                           if (j3.Pt() < 50.0) : continue
+                           if (DeltaPhi(j3.Phi,pfpuppiMETPhi) < 0.5) :continue
+                           if (THINjetCISVV2[kthinjet] < 0.8): continue 
+                           if thinjetnhadef[kthinjet] > 0.8 : continue
+                           if THINjetCHadEF[kthinjet]< 0.1: continue
+                           njet3SR2index = jthinjet
+                           pair.append(j1); pair.append(j2); pair.append(j3)
+                           jetSR2Info.append(pair)
+        if njet1SR2index > -1 :
+         cutStatus['njet1SR2'] += 1
+        if njet2SR2index > -1 :
+         cutStatus['njet2SR2'] += 1
+        if njet3SR2index > -1 :
+          cutStatus['njet2SR2'] += 1
+        
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
         ## min DPhi
@@ -531,19 +429,6 @@ def AnalyzeDataSet():
         ## b-jet Veto
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-        if len(dphiVec) > 0:  
-            #print min(dphiVec) 
-            if min(dphiVec) < 0.4 : continue 
-        cutStatus['dphi'] += 1
-        
-        if not (nGoodTHINJets >= njet) : continue 
-        if not (nGoodTHINJets < nJet): continue 
-        cutStatus['ThinJetVeto'] += 1
-        
-        if nGoodTHINBJets > 0: continue 
-        cutStatus['bVeto'] += 1
-        
         
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -578,17 +463,17 @@ def AnalyzeDataSet():
         if not (nleptons_ >= nlepton) : continue 
         if not (nleptons_ < nLepton) : continue  
         
-        regime = False
-        if isboosted: regime = True
-        if isresolved: regime = False
+        #regime = False
+        #if isboosted: regime = True
+        #if isresolved: regime = False
         
         
-        if regime: 
-            mt_ = MT(fatjetP4[HIndex].Pt(), pfMet, Phi_mpi_pi(pfMetPhi-fatjetP4[HIndex].Phi()) )
-        if not regime: 
-            mt_ = MT(HiggsInfo[0][3], pfMet, Phi_mpi_pi(pfMetPhi-HiggsInfo[0][4]) )
+        #if regime: 
+         #   mt_ = MT(fatjetP4[HIndex].Pt(), pfMet, Phi_mpi_pi(pfMetPhi-fatjetP4[HIndex].Phi()) )
+        #if not regime: 
+         #   mt_ = MT(HiggsInfo[0][3], pfMet, Phi_mpi_pi(pfMetPhi-HiggsInfo[0][4]) )
         
-        if mt_ < 450.0: continue 
+        #if mt_ < 450.0: continue 
         
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -646,41 +531,41 @@ def AnalyzeDataSet():
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------        
         
-        if regime:
+        #if regime:
             #print "inside regime"
             #p4_1 = TLorentzVector(subjetSDPx[HIndex][0], subjetSDPy[HIndex][0], subjetSDPz[HIndex][0], subjetSDE[HIndex][0])
             #p4_2 = TLorentzVector(subjetSDPx[HIndex][1], subjetSDPy[HIndex][1], subjetSDPz[HIndex][1], subjetSDE[HIndex][1])
             
-            pt1 = subjetSDPt[HIndex][0]
-            eta1 = subjetSDEta[HIndex][0]
-            pt2 = subjetSDPt[HIndex][1]
-            eta2 = subjetSDEta[HIndex][1]
+         #   pt1 = subjetSDPt[HIndex][0]
+         #   eta1 = subjetSDEta[HIndex][0]
+         #   pt2 = subjetSDPt[HIndex][1]
+         #   eta2 = subjetSDEta[HIndex][1]
             
-            flav1 = jetflav(subjetHadronFlavor[HIndex][0])
-            flav2 = jetflav(subjetHadronFlavor[HIndex][1])
+         #   flav1 = jetflav(subjetHadronFlavor[HIndex][0])
+         #   flav2 = jetflav(subjetHadronFlavor[HIndex][1])
             
-            sf_boosted1 = weightbtag(reader, flav1, pt1, eta1)
-            sf_boosted2 = weightbtag(reader, flav2, pt2, eta2)
+         #   sf_boosted1 = weightbtag(reader, flav1, pt1, eta1)
+         #   sf_boosted2 = weightbtag(reader, flav2, pt2, eta2)
             
-            if options.dbt:
-                sf_boosted1 = [1.0,1.0,1.0]
-                sf_boosted2 = [1.0,1.0,1.0] 
+         #   if options.dbt:
+         #       sf_boosted1 = [1.0,1.0,1.0]
+         #       sf_boosted2 = [1.0,1.0,1.0] 
             #print (sf_boosted1, sf_boosted2)
             
         
-        if not regime: 
+        #if not regime: 
             
             #print "inside not regime"
-            ij = HiggsInfo_sorted[0][0]
-            jj = HiggsInfo_sorted[0][1]
+           # ij = HiggsInfo_sorted[0][0]
+           # jj = HiggsInfo_sorted[0][1]
             
-            flav1 = jetflav(THINjetHadronFlavor[ij])
-            flav2 = jetflav(THINjetHadronFlavor[jj])
+          #  flav1 = jetflav(THINjetHadronFlavor[ij])
+          #  flav2 = jetflav(THINjetHadronFlavor[jj])
 
             #print ("ij, flav, pt, eta, ",ij, flav1, thinjetP4[ij].Pt(), thinjetP4[ij].Eta())
             #reader1.eval_auto_bounds('central', 0, 1.2, 50.)
-            sf_resolved1 = weightbtag(reader1, flav1, thinjetP4[ij].Pt(), thinjetP4[ij].Eta())
-            sf_resolved2 = weightbtag(reader1, flav2, thinjetP4[jj].Pt(), thinjetP4[jj].Eta())
+          #  sf_resolved1 = weightbtag(reader1, flav1, thinjetP4[ij].Pt(), thinjetP4[ij].Eta())
+         #   sf_resolved2 = weightbtag(reader1, flav2, thinjetP4[jj].Pt(), thinjetP4[jj].Eta())
             
             #print (sf_resolved1, sf_resolved2)
 
@@ -689,49 +574,61 @@ def AnalyzeDataSet():
         ## Regime Loop ends here
         #########################################
         #print (sf_resolved1, sf_resolved2,sf_boosted1, sf_boosted2)
-        if regime: 
-            allweights = allweights * sf_boosted1[0] * sf_boosted2[0]
-        if not regime:
-            allweights = allweights * sf_resolved1[0] * sf_resolved2[0]
+       # if regime: 
+       #     allweights = allweights * sf_boosted1[0] * sf_boosted2[0]
+       # if not regime:
+       #     allweights = allweights * sf_resolved1[0] * sf_resolved2[0]
         
         if isData: allweights = 1.0 
-        allquantitiesBoosted.regime     = regime
-        allquantitiesBoosted.met        = pfMet
-        allquantitiesBoosted.mt         = mt_
+        #allquantities.regime     = regime
+        allquantities.met        = pfMet
+        allquantities.mt         = mt_
         if not  ((len(myTaus) + len(myMuos) + len(myEles)) < nLepton) : continue
 
-        if len(dphiVec)>0: allquantitiesBoosted.dPhi            = min(dphiVec)
-        allquantitiesBoosted.N_e             = len(myEles)
-        allquantitiesBoosted.N_mu            = len(myMuos)
-        allquantitiesBoosted.N_tau           = len(myTaus)
-        allquantitiesBoosted.N_Pho           = 0
-        allquantitiesBoosted.N_b             = nGoodTHINBJets
-        allquantitiesBoosted.N_j             = nGoodTHINJets
+        #if len(dphiVec)>0: allquantities.dPhi            = min(dphiVec)
+        allquantities.N_e             = len(myEles)
+        allquantities.N_mu            = len(myMuos)
+        allquantities.N_tau           = len(myTaus)
+        allquantities.N_Pho           = 0
+        #allquantities.N_b             = nGoodTHINBJets
+        #allquantities.N_j             = nGoodTHINJets
 
-        allquantitiesBoosted.weight    = allweights
-        allquantitiesBoosted.totalevents = 1
+        allquantities.weight    = allweights
+        allquantities.totalevents = 1
         
-        if regime: 
-            allquantitiesBoosted.mass            = fatjetPRmassL2L3Corr[HIndex]
-            allquantitiesBoosted.HiggsPt         = fatjetP4[HIndex].Pt()
-            allquantitiesBoosted.HiggsEta        = fatjetP4[HIndex].Eta()
-            allquantitiesBoosted.HiggsPhi        = fatjetP4[HIndex].Phi()
+        #if regime: 
+         #allquantities.mass            = fatjetPRmassL2L3Corr[HIndex]
+         #allquantities.HiggsPt         = fatjetP4[HIndex].Pt()
+         #allquantities.HiggsEta        = fatjetP4[HIndex].Eta()
+         #allquantities.HiggsPhi        = fatjetP4[HIndex].Phi()
             
-        if not regime:  
-            allquantitiesBoosted.mass            = HiggsInfo_sorted[0][2]
-            allquantitiesBoosted.HiggsPt         = HiggsInfo_sorted[0][3]
-            allquantitiesBoosted.HiggsEta        = HiggsInfo_sorted[0][5]
-            allquantitiesBoosted.HiggsPhi        = HiggsInfo_sorted[0][4]
+        #if not regime:  
+         #allquantities.mass            = HiggsInfo_sorted[0][2]
+        allquantities.jet1_pT_sr1     = jetSR1Info[0][0].Pt()
+        allquantities.jet1_eta_sr1    = jetSR1Info[0][0].Eta()
+        allquantities.jet1_phi_sr1    = jetSR1Info[0][0].Phi()
+        allquantities.jet2_pT_sr1     = jetSR1Info[0][1].Pt()
+        allquantities.jet2_eta_sr1    = jetSR1Info[0][1].Eta()
+        allquantities.jet2_phi_sr1    = jetSR1Info[0][1].Phi()
+        allquantities.jet1_pT_sr2     = jetSR2Info[0][0].Pt()
+        allquantities.jet1_eta_sr2    = jetSR2Info[0][0].Eta()
+        allquantities.jet1_phi_sr2    = jetSR2Info[0][0].Phi()
+        allquantities.jet2_pT_sr1     = jetSR2Info[0][1].Pt()
+        allquantities.jet2_eta_sr1    = jetSR2Info[0][1].Eta()
+        allquantities.jet2_phi_sr1    = jetSR2Info[0][1].Phi()
+        allquantities.jet3_pT_sr1     = jetSR2Info[0][2].Pt()
+        allquantities.jet3_eta_sr1    = jetSR2Info[0][2].Eta()
+        allquantities.jet3_phi_sr1    = jetSR2Info[0][2].Phi()
             
-        #print (allquantitiesBoosted.regime, allquantitiesBoosted.met,allquantitiesBoosted.mass )
-        allquantitiesBoosted.FillHisto()
+        #print (allquantities.regime, allquantities.met,allquantities.mass )
+        allquantities.FillHisto()
     
 
     #print cutStatus
     #print "npass = ", npass
     NEntries_Weight = h_t.Integral()
     NEntries_total        = h_t_weight.Integral()
-    allquantitiesBoosted.WriteHisto((NEntries_total,NEntries_Weight))
+    allquantities.WriteHisto((NEntries_total,NEntries_Weight))
     #print " efficiency = ", float(npass/float(NEntries))
     f = open('efficiencyfiles/'+textfile, 'w')
     f.write(str(float(npass/float(NEntries))))
@@ -790,6 +687,12 @@ def DeltaR(p4_1, p4_2):
     phi_2 = phi * phi
 
     return math.sqrt(eta_2 + phi_2)
+    
+def DeltaPhi(phi1,phi2):
+   phi = Phi_mpi_pi(phi1-phi2)
+   
+   return phi
+   
     
 def Phi_mpi_pi(x):
     kPI = 3.14159265358979323846

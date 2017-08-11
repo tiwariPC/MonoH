@@ -1,0 +1,293 @@
+Info in <TUnixSystem::ACLiC>: creating shared library /home/ptiwari/cernbox/DMAnaRun2/analysis_code/MonoH/test_1/./BTagCalibrationStandalone_cpp.so
+Error: Symbol {} is not defined in current scope  BTagCalibrationStandalone.h:161:
+Error: Symbol {} is not defined in current scope  BTagCalibrationStandalone.h:161:
+Error: No matching constructor for explicit conversion vector<string,allocator<string> >({}) BTagCalibrationStandalone.h:161:
+Error: Symbol shared_ptr is not defined in current scope  BTagCalibrationStandalone.h:183:
+Error: Symbol BTagCalibrationStandaloneReaderImpl is not defined in current scope  BTagCalibrationStandalone.h:183:
+Error: Symbol pimpl is not defined in current scope  BTagCalibrationStandalone.h:183:
+Error: Symbol {} is not defined in current scope  BTagCalibrationStandalone.cpp:387:
+Error: Symbol {} is not defined in current scope  BTagCalibrationStandalone.cpp:387:
+Error: No matching constructor for explicit conversion vector<string,allocator<string> >({}) BTagCalibrationStandalone.cpp:387:
+Error: Symbol shared_ptr is not defined in current scope  /usr/local/lib/root/cint/cint/lib/prec_stl/utility:19:
+Error: Symbol BTagCalibrationStandaloneReaderImpl is not defined in current scope  /usr/local/lib/root/cint/cint/lib/prec_stl/utility:19:
+Error: Symbol second is not defined in current scope  /usr/local/lib/root/cint/cint/lib/prec_stl/utility:19:
+Error: no such template shared_ptr<BTagCalibrationStandaloneReaderImpl> /usr/local/lib/root/cint/cint/lib/prec_stl/map:66:
+Error: Symbol shared_ptr is not defined in current scope  /usr/local/lib/root/cint/cint/lib/prec_stl/utility:19:
+Error: Symbol BTagCalibrationStandaloneReaderImpl is not defined in current scope  /usr/local/lib/root/cint/cint/lib/prec_stl/utility:19:
+Error: Symbol second is not defined in current scope  /usr/local/lib/root/cint/cint/lib/prec_stl/utility:19:
+Warning: Error occurred during reading source files
+Warning: Error occurred during dictionary source generation
+!!!Removing /home/ptiwari/cernbox/DMAnaRun2/analysis_code/MonoH/test_1/BTagCalibrationStandalone_cpp_ACLiC_dict.cxx /home/ptiwari/cernbox/DMAnaRun2/analysis_code/MonoH/test_1/BTagCalibrationStandalone_cpp_ACLiC_dict.h !!!
+Error: /usr/local/lib/root/bin/rootcint: error loading headers...
+Error in <ACLiC>: Dictionary generation failed!
+Info in <ACLiC>: Invoking compiler to check macro's validity
+In file included from /home/ptiwari/cernbox/DMAnaRun2/analysis_code/MonoH/test_1/./BTagCalibrationStandalone.cpp:1:0:
+/home/ptiwari/cernbox/DMAnaRun2/analysis_code/MonoH/test_1/./BTagCalibrationStandalone.h:183:8: error: ‘shared_ptr’ in namespace ‘std’ does not name a template type
+   std::shared_ptr<BTagCalibrationStandaloneReaderImpl> pimpl;
+        ^
+/home/ptiwari/cernbox/DMAnaRun2/analysis_code/MonoH/test_1/./BTagCalibrationStandalone.h:161:73: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11
+                         const std::vector<std::string> & otherSysTypes={});
+                                                                         ^
+/home/ptiwari/cernbox/DMAnaRun2/analysis_code/MonoH/test_1/./BTagCalibrationStandalone.h:161:73: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11
+/home/ptiwari/cernbox/DMAnaRun2/analysis_code/MonoH/test_1/./BTagCalibrationStandalone.cpp: In constructor ‘BTagEntry::BTagEntry(const string&)’:
+/home/ptiwari/cernbox/DMAnaRun2/analysis_code/MonoH/test_1/./BTagCalibrationStandalone.cpp:76:28: error: ‘stoi’ was not declared in this scope
+   unsigned op = stoi(vec[0]);
+                            ^
+/home/ptiwari/cernbox/DMAnaRun2/analysis_code/MonoH/test_1/./BTagCalibrationStandalone.cpp:95:16: error: ‘stof’ was not declared in this scope
+     stof(vec[4]),
+                ^
+/home/ptiwari/cernbox/DMAnaRun2/analysis_code/MonoH/test_1/./BTagCalibrationStandalone.cpp: In constructor ‘BTagCalibrationStandalone::BTagCalibrationStandalone(const string&, const string&)’:
+/home/ptiwari/cernbox/DMAnaRun2/analysis_code/MonoH/test_1/./BTagCalibrationStandalone.cpp:283:29: error: no matching function for call to ‘std::basic_ifstream<char>::basic_ifstream(const string&)’
+   std::ifstream ifs(filename);
+                             ^
+In file included from /home/ptiwari/cernbox/DMAnaRun2/analysis_code/MonoH/test_1/./BTagCalibrationStandalone.cpp:270:0:
+/usr/include/c++/5/fstream:495:7: note: candidate: std::basic_ifstream<_CharT, _Traits>::basic_ifstream(const char*, std::ios_base::openmode) [with _CharT = char; _Traits = std::char_traits<char>; std::ios_base::openmode = std::_Ios_Openmode]
+       basic_ifstream(const char* __s, ios_base::openmode __mode = ios_base::in)
+       ^
+/usr/include/c++/5/fstream:495:7: note:   no known conversion for argument 1 from ‘const string {aka const std::__cxx11::basic_string<char>}’ to ‘const char*’
+/usr/include/c++/5/fstream:481:7: note: candidate: std::basic_ifstream<_CharT, _Traits>::basic_ifstream() [with _CharT = char; _Traits = std::char_traits<char>]
+       basic_ifstream() : __istream_type(), _M_filebuf()
+       ^
+/usr/include/c++/5/fstream:481:7: note:   candidate expects 0 arguments, 1 provided
+/usr/include/c++/5/fstream:455:11: note: candidate: std::basic_ifstream<char>::basic_ifstream(const std::basic_ifstream<char>&)
+     class basic_ifstream : public basic_istream<_CharT, _Traits>
+           ^
+/usr/include/c++/5/fstream:455:11: note:   no known conversion for argument 1 from ‘const string {aka const std::__cxx11::basic_string<char>}’ to ‘const std::basic_ifstream<char>&’
+/home/ptiwari/cernbox/DMAnaRun2/analysis_code/MonoH/test_1/./BTagCalibrationStandalone.cpp: In member function ‘void BTagCalibrationStandalone::makeCSV(std::ostream&) const’:
+/home/ptiwari/cernbox/DMAnaRun2/analysis_code/MonoH/test_1/./BTagCalibrationStandalone.cpp:341:20: error: ‘const class std::map<std::__cxx11::basic_string<char>, std::vector<BTagEntry> >’ has no member named ‘cbegin’
+            = data_.cbegin(); i != data_.cend(); ++i) {
+                    ^
+/home/ptiwari/cernbox/DMAnaRun2/analysis_code/MonoH/test_1/./BTagCalibrationStandalone.cpp:341:41: error: ‘const class std::map<std::__cxx11::basic_string<char>, std::vector<BTagEntry> >’ has no member named ‘cend’
+            = data_.cbegin(); i != data_.cend(); ++i) {
+                                         ^
+/home/ptiwari/cernbox/DMAnaRun2/analysis_code/MonoH/test_1/./BTagCalibrationStandalone.cpp:344:20: error: ‘const class std::vector<BTagEntry>’ has no member named ‘cbegin’
+              = vec.cbegin(); j != vec.cend(); ++j) {
+                    ^
+/home/ptiwari/cernbox/DMAnaRun2/analysis_code/MonoH/test_1/./BTagCalibrationStandalone.cpp:344:39: error: ‘const class std::vector<BTagEntry>’ has no member named ‘cend’
+              = vec.cbegin(); j != vec.cend(); ++j) {
+                                       ^
+/home/ptiwari/cernbox/DMAnaRun2/analysis_code/MonoH/test_1/./BTagCalibrationStandalone.cpp: At global scope:
+/home/ptiwari/cernbox/DMAnaRun2/analysis_code/MonoH/test_1/./BTagCalibrationStandalone.cpp:412:25: error: ‘shared_ptr’ is not a member of ‘std’
+   std::map<std::string, std::shared_ptr<BTagCalibrationStandaloneReaderImpl>> otherSysTypeReaders_;
+                         ^
+/home/ptiwari/cernbox/DMAnaRun2/analysis_code/MonoH/test_1/./BTagCalibrationStandalone.cpp:412:25: error: ‘shared_ptr’ is not a member of ‘std’
+/home/ptiwari/cernbox/DMAnaRun2/analysis_code/MonoH/test_1/./BTagCalibrationStandalone.cpp:412:79: error: ‘otherSysTypeReaders_’ was not declared in this scope
+   std::map<std::string, std::shared_ptr<BTagCalibrationStandaloneReaderImpl>> otherSysTypeReaders_;
+                                                                               ^
+/home/ptiwari/cernbox/DMAnaRun2/analysis_code/MonoH/test_1/./BTagCalibrationStandalone.cpp:412:79: error: template argument 2 is invalid
+/home/ptiwari/cernbox/DMAnaRun2/analysis_code/MonoH/test_1/./BTagCalibrationStandalone.cpp:412:79: error: template argument 4 is invalid
+/home/ptiwari/cernbox/DMAnaRun2/analysis_code/MonoH/test_1/./BTagCalibrationStandalone.cpp:387:77: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11
+                             const std::vector<std::string> & otherSysTypes={});
+                                                                             ^
+/home/ptiwari/cernbox/DMAnaRun2/analysis_code/MonoH/test_1/./BTagCalibrationStandalone.cpp:387:77: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11
+/home/ptiwari/cernbox/DMAnaRun2/analysis_code/MonoH/test_1/./BTagCalibrationStandalone.cpp: In constructor ‘BTagCalibrationStandaloneReader::BTagCalibrationStandaloneReaderImpl::BTagCalibrationStandaloneReaderImpl(BTagEntry::OperatingPoint, const string&, const std::vector<std::__cxx11::basic_string<char> >&)’:
+/home/ptiwari/cernbox/DMAnaRun2/analysis_code/MonoH/test_1/./BTagCalibrationStandalone.cpp:425:34: warning: range-based ‘for’ loops only available with -std=c++11 or -std=gnu++11
+   for (const std::string & ost : otherSysTypes) {
+                                  ^
+/home/ptiwari/cernbox/DMAnaRun2/analysis_code/MonoH/test_1/./BTagCalibrationStandalone.cpp:426:9: error: ‘otherSysTypeReaders_’ was not declared in this scope
+     if (otherSysTypeReaders_.count(ost)) {
+         ^
+/home/ptiwari/cernbox/DMAnaRun2/analysis_code/MonoH/test_1/./BTagCalibrationStandalone.cpp:432:5: error: ‘otherSysTypeReaders_’ was not declared in this scope
+     otherSysTypeReaders_[ost] = std::auto_ptr<BTagCalibrationStandaloneReaderImpl>(
+     ^
+/home/ptiwari/cernbox/DMAnaRun2/analysis_code/MonoH/test_1/./BTagCalibrationStandalone.cpp:433:56: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11
+         new BTagCalibrationStandaloneReaderImpl(op, ost)
+                                                        ^
+/home/ptiwari/cernbox/DMAnaRun2/analysis_code/MonoH/test_1/./BTagCalibrationStandalone.cpp:416:1: note: in passing argument 3 of ‘BTagCalibrationStandaloneReader::BTagCalibrationStandaloneReaderImpl::BTagCalibrationStandaloneReaderImpl(BTagEntry::OperatingPoint, const string&, const std::vector<std::__cxx11::basic_string<char> >&)’
+ BTagCalibrationStandaloneReader::BTagCalibrationStandaloneReaderImpl::BTagCalibrationStandaloneReaderImpl(
+ ^
+/home/ptiwari/cernbox/DMAnaRun2/analysis_code/MonoH/test_1/./BTagCalibrationStandalone.cpp: In member function ‘void BTagCalibrationStandaloneReader::BTagCalibrationStandaloneReaderImpl::load(const BTagCalibrationStandalone&, BTagEntry::JetFlavor, std::__cxx11::string)’:
+/home/ptiwari/cernbox/DMAnaRun2/analysis_code/MonoH/test_1/./BTagCalibrationStandalone.cpp:453:20: error: ISO C++ forbids declaration of ‘be’ with no type [-fpermissive]
+   for (const auto &be : entries) {
+                    ^
+/home/ptiwari/cernbox/DMAnaRun2/analysis_code/MonoH/test_1/./BTagCalibrationStandalone.cpp:453:25: warning: range-based ‘for’ loops only available with -std=c++11 or -std=gnu++11
+   for (const auto &be : entries) {
+                         ^
+/home/ptiwari/cernbox/DMAnaRun2/analysis_code/MonoH/test_1/./BTagCalibrationStandalone.cpp:454:12: error: request for member ‘params’ in ‘be’, which is of non-class type ‘const int’
+     if (be.params.jetFlavor != jf) {
+            ^
+/home/ptiwari/cernbox/DMAnaRun2/analysis_code/MonoH/test_1/./BTagCalibrationStandalone.cpp:459:20: error: request for member ‘params’ in ‘be’, which is of non-class type ‘const int’
+     te.etaMin = be.params.etaMin;
+                    ^
+/home/ptiwari/cernbox/DMAnaRun2/analysis_code/MonoH/test_1/./BTagCalibrationStandalone.cpp:460:20: error: request for member ‘params’ in ‘be’, which is of non-class type ‘const int’
+     te.etaMax = be.params.etaMax;
+                    ^
+/home/ptiwari/cernbox/DMAnaRun2/analysis_code/MonoH/test_1/./BTagCalibrationStandalone.cpp:461:19: error: request for member ‘params’ in ‘be’, which is of non-class type ‘const int’
+     te.ptMin = be.params.ptMin;
+                   ^
+/home/ptiwari/cernbox/DMAnaRun2/analysis_code/MonoH/test_1/./BTagCalibrationStandalone.cpp:462:19: error: request for member ‘params’ in ‘be’, which is of non-class type ‘const int’
+     te.ptMax = be.params.ptMax;
+                   ^
+/home/ptiwari/cernbox/DMAnaRun2/analysis_code/MonoH/test_1/./BTagCalibrationStandalone.cpp:463:22: error: request for member ‘params’ in ‘be’, which is of non-class type ‘const int’
+     te.discrMin = be.params.discrMin;
+                      ^
+/home/ptiwari/cernbox/DMAnaRun2/analysis_code/MonoH/test_1/./BTagCalibrationStandalone.cpp:464:22: error: request for member ‘params’ in ‘be’, which is of non-class type ‘const int’
+     te.discrMax = be.params.discrMax;
+                      ^
+/home/ptiwari/cernbox/DMAnaRun2/analysis_code/MonoH/test_1/./BTagCalibrationStandalone.cpp:467:28: error: request for member ‘formula’ in ‘be’, which is of non-class type ‘const int’
+       te.func = TF1("", be.formula.c_str(),
+                            ^
+/home/ptiwari/cernbox/DMAnaRun2/analysis_code/MonoH/test_1/./BTagCalibrationStandalone.cpp:468:24: error: request for member ‘params’ in ‘be’, which is of non-class type ‘const int’
+                     be.params.discrMin, be.params.discrMax);
+                        ^
+/home/ptiwari/cernbox/DMAnaRun2/analysis_code/MonoH/test_1/./BTagCalibrationStandalone.cpp:468:44: error: request for member ‘params’ in ‘be’, which is of non-class type ‘const int’
+                     be.params.discrMin, be.params.discrMax);
+                                            ^
+/home/ptiwari/cernbox/DMAnaRun2/analysis_code/MonoH/test_1/./BTagCalibrationStandalone.cpp:470:28: error: request for member ‘formula’ in ‘be’, which is of non-class type ‘const int’
+       te.func = TF1("", be.formula.c_str(),
+                            ^
+/home/ptiwari/cernbox/DMAnaRun2/analysis_code/MonoH/test_1/./BTagCalibrationStandalone.cpp:471:24: error: request for member ‘params’ in ‘be’, which is of non-class type ‘const int’
+                     be.params.ptMin, be.params.ptMax);
+                        ^
+/home/ptiwari/cernbox/DMAnaRun2/analysis_code/MonoH/test_1/./BTagCalibrationStandalone.cpp:471:41: error: request for member ‘params’ in ‘be’, which is of non-class type ‘const int’
+                     be.params.ptMin, be.params.ptMax);
+                                         ^
+/home/ptiwari/cernbox/DMAnaRun2/analysis_code/MonoH/test_1/./BTagCalibrationStandalone.cpp:474:17: error: request for member ‘params’ in ‘be’, which is of non-class type ‘const int’
+     tmpData_[be.params.jetFlavor].push_back(te);
+                 ^
+/home/ptiwari/cernbox/DMAnaRun2/analysis_code/MonoH/test_1/./BTagCalibrationStandalone.cpp:476:21: error: request for member ‘params’ in ‘be’, which is of non-class type ‘const int’
+       useAbsEta_[be.params.jetFlavor] = false;
+                     ^
+/home/ptiwari/cernbox/DMAnaRun2/analysis_code/MonoH/test_1/./BTagCalibrationStandalone.cpp:480:15: error: ISO C++ forbids declaration of ‘p’ with no type [-fpermissive]
+   for (auto & p : otherSysTypeReaders_) {
+               ^
+/home/ptiwari/cernbox/DMAnaRun2/analysis_code/MonoH/test_1/./BTagCalibrationStandalone.cpp:480:19: warning: range-based ‘for’ loops only available with -std=c++11 or -std=gnu++11
+   for (auto & p : otherSysTypeReaders_) {
+                   ^
+/home/ptiwari/cernbox/DMAnaRun2/analysis_code/MonoH/test_1/./BTagCalibrationStandalone.cpp:480:19: error: ‘otherSysTypeReaders_’ was not declared in this scope
+/home/ptiwari/cernbox/DMAnaRun2/analysis_code/MonoH/test_1/./BTagCalibrationStandalone.cpp:481:7: error: request for member ‘second’ in ‘p’, which is of non-class type ‘int’
+     p.second->load(c, jf, measurementType);
+       ^
+/home/ptiwari/cernbox/DMAnaRun2/analysis_code/MonoH/test_1/./BTagCalibrationStandalone.cpp: In member function ‘double BTagCalibrationStandaloneReader::BTagCalibrationStandaloneReaderImpl::eval(BTagEntry::JetFlavor, float, float, float) const’:
+/home/ptiwari/cernbox/DMAnaRun2/analysis_code/MonoH/test_1/./BTagCalibrationStandalone.cpp:498:15: error: ISO C++ forbids declaration of ‘entries’ with no type [-fpermissive]
+   const auto &entries = tmpData_.at(jf);
+               ^
+/home/ptiwari/cernbox/DMAnaRun2/analysis_code/MonoH/test_1/./BTagCalibrationStandalone.cpp:498:36: error: invalid initialization of reference of type ‘const int&’ from expression of type ‘const std::vector<BTagCalibrationStandaloneReader::BTagCalibrationStandaloneReaderImpl::TmpEntry>’
+   const auto &entries = tmpData_.at(jf);
+                                    ^
+/home/ptiwari/cernbox/DMAnaRun2/analysis_code/MonoH/test_1/./BTagCalibrationStandalone.cpp:499:32: error: request for member ‘size’ in ‘entries’, which is of non-class type ‘const int’
+   for (unsigned i=0; i<entries.size(); ++i) {
+                                ^
+/home/ptiwari/cernbox/DMAnaRun2/analysis_code/MonoH/test_1/./BTagCalibrationStandalone.cpp:500:17: error: ISO C++ forbids declaration of ‘e’ with no type [-fpermissive]
+     const auto &e = entries.at(i);
+                 ^
+/home/ptiwari/cernbox/DMAnaRun2/analysis_code/MonoH/test_1/./BTagCalibrationStandalone.cpp:500:29: error: request for member ‘at’ in ‘entries’, which is of non-class type ‘const int’
+     const auto &e = entries.at(i);
+                             ^
+/home/ptiwari/cernbox/DMAnaRun2/analysis_code/MonoH/test_1/./BTagCalibrationStandalone.cpp:502:9: error: request for member ‘etaMin’ in ‘e’, which is of non-class type ‘const int’
+       e.etaMin <= eta && eta < e.etaMax                   // find eta
+         ^
+/home/ptiwari/cernbox/DMAnaRun2/analysis_code/MonoH/test_1/./BTagCalibrationStandalone.cpp:502:34: error: request for member ‘etaMax’ in ‘e’, which is of non-class type ‘const int’
+       e.etaMin <= eta && eta < e.etaMax                   // find eta
+                                  ^
+/home/ptiwari/cernbox/DMAnaRun2/analysis_code/MonoH/test_1/./BTagCalibrationStandalone.cpp:503:12: error: request for member ‘ptMin’ in ‘e’, which is of non-class type ‘const int’
+       && e.ptMin < pt && pt <= e.ptMax                    // check pt
+            ^
+/home/ptiwari/cernbox/DMAnaRun2/analysis_code/MonoH/test_1/./BTagCalibrationStandalone.cpp:503:34: error: request for member ‘ptMax’ in ‘e’, which is of non-class type ‘const int’
+       && e.ptMin < pt && pt <= e.ptMax                    // check pt
+                                  ^
+/home/ptiwari/cernbox/DMAnaRun2/analysis_code/MonoH/test_1/./BTagCalibrationStandalone.cpp:506:15: error: request for member ‘discrMin’ in ‘e’, which is of non-class type ‘const int’
+         if (e.discrMin <= discr && discr < e.discrMax) {  // check discr
+               ^
+/home/ptiwari/cernbox/DMAnaRun2/analysis_code/MonoH/test_1/./BTagCalibrationStandalone.cpp:506:46: error: request for member ‘discrMax’ in ‘e’, which is of non-class type ‘const int’
+         if (e.discrMin <= discr && discr < e.discrMax) {  // check discr
+                                              ^
+/home/ptiwari/cernbox/DMAnaRun2/analysis_code/MonoH/test_1/./BTagCalibrationStandalone.cpp:507:20: error: request for member ‘func’ in ‘e’, which is of non-class type ‘const int’
+           return e.func.Eval(discr);
+                    ^
+/home/ptiwari/cernbox/DMAnaRun2/analysis_code/MonoH/test_1/./BTagCalibrationStandalone.cpp:510:18: error: request for member ‘func’ in ‘e’, which is of non-class type ‘const int’
+         return e.func.Eval(pt);
+                  ^
+/home/ptiwari/cernbox/DMAnaRun2/analysis_code/MonoH/test_1/./BTagCalibrationStandalone.cpp: In member function ‘double BTagCalibrationStandaloneReader::BTagCalibrationStandaloneReaderImpl::eval_auto_bounds(const string&, BTagEntry::JetFlavor, float, float, float) const’:
+/home/ptiwari/cernbox/DMAnaRun2/analysis_code/MonoH/test_1/./BTagCalibrationStandalone.cpp:525:8: error: ‘sf_bounds’ does not name a type
+   auto sf_bounds = min_max_pt(jf, eta, discr);
+        ^
+/home/ptiwari/cernbox/DMAnaRun2/analysis_code/MonoH/test_1/./BTagCalibrationStandalone.cpp:529:12: error: ‘sf_bounds’ was not declared in this scope
+   if (pt < sf_bounds.first) {
+            ^
+/home/ptiwari/cernbox/DMAnaRun2/analysis_code/MonoH/test_1/./BTagCalibrationStandalone.cpp:544:8: error: ‘otherSysTypeReaders_’ was not declared in this scope
+   if (!otherSysTypeReaders_.count(sys)) {
+        ^
+/home/ptiwari/cernbox/DMAnaRun2/analysis_code/MonoH/test_1/./BTagCalibrationStandalone.cpp:550:19: error: ‘otherSysTypeReaders_’ was not declared in this scope
+   double sf_err = otherSysTypeReaders_.at(sys)->eval(jf, eta, pt_for_eval, discr);
+                   ^
+/home/ptiwari/cernbox/DMAnaRun2/analysis_code/MonoH/test_1/./BTagCalibrationStandalone.cpp: In member function ‘std::pair<float, float> BTagCalibrationStandaloneReader::BTagCalibrationStandaloneReaderImpl::min_max_pt(BTagEntry::JetFlavor, float, float) const’:
+/home/ptiwari/cernbox/DMAnaRun2/analysis_code/MonoH/test_1/./BTagCalibrationStandalone.cpp:570:15: error: ISO C++ forbids declaration of ‘entries’ with no type [-fpermissive]
+   const auto &entries = tmpData_.at(jf);
+               ^
+/home/ptiwari/cernbox/DMAnaRun2/analysis_code/MonoH/test_1/./BTagCalibrationStandalone.cpp:570:36: error: invalid initialization of reference of type ‘const int&’ from expression of type ‘const std::vector<BTagCalibrationStandaloneReader::BTagCalibrationStandaloneReaderImpl::TmpEntry>’
+   const auto &entries = tmpData_.at(jf);
+                                    ^
+/home/ptiwari/cernbox/DMAnaRun2/analysis_code/MonoH/test_1/./BTagCalibrationStandalone.cpp:572:21: error: ISO C++ forbids declaration of ‘e’ with no type [-fpermissive]
+   for (const auto & e: entries) {
+                     ^
+/home/ptiwari/cernbox/DMAnaRun2/analysis_code/MonoH/test_1/./BTagCalibrationStandalone.cpp:572:24: warning: range-based ‘for’ loops only available with -std=c++11 or -std=gnu++11
+   for (const auto & e: entries) {
+                        ^
+/home/ptiwari/cernbox/DMAnaRun2/analysis_code/MonoH/test_1/./BTagCalibrationStandalone.cpp:574:9: error: request for member ‘etaMin’ in ‘e’, which is of non-class type ‘const int’
+       e.etaMin <= eta && eta < e.etaMax                   // find eta
+         ^
+/home/ptiwari/cernbox/DMAnaRun2/analysis_code/MonoH/test_1/./BTagCalibrationStandalone.cpp:574:34: error: request for member ‘etaMax’ in ‘e’, which is of non-class type ‘const int’
+       e.etaMin <= eta && eta < e.etaMax                   // find eta
+                                  ^
+/home/ptiwari/cernbox/DMAnaRun2/analysis_code/MonoH/test_1/./BTagCalibrationStandalone.cpp:577:20: error: request for member ‘ptMin’ in ‘e’, which is of non-class type ‘const int’
+         min_pt = e.ptMin;
+                    ^
+/home/ptiwari/cernbox/DMAnaRun2/analysis_code/MonoH/test_1/./BTagCalibrationStandalone.cpp:578:20: error: request for member ‘ptMax’ in ‘e’, which is of non-class type ‘const int’
+         max_pt = e.ptMax;
+                    ^
+/home/ptiwari/cernbox/DMAnaRun2/analysis_code/MonoH/test_1/./BTagCalibrationStandalone.cpp:583:15: error: request for member ‘discrMin’ in ‘e’, which is of non-class type ‘const int’
+         if (e.discrMin <= discr && discr < e.discrMax) {  // check discr
+               ^
+/home/ptiwari/cernbox/DMAnaRun2/analysis_code/MonoH/test_1/./BTagCalibrationStandalone.cpp:583:46: error: request for member ‘discrMax’ in ‘e’, which is of non-class type ‘const int’
+         if (e.discrMin <= discr && discr < e.discrMax) {  // check discr
+                                              ^
+/home/ptiwari/cernbox/DMAnaRun2/analysis_code/MonoH/test_1/./BTagCalibrationStandalone.cpp:584:31: error: request for member ‘ptMin’ in ‘e’, which is of non-class type ‘const int’
+           min_pt = min_pt < e.ptMin ? min_pt : e.ptMin;
+                               ^
+/home/ptiwari/cernbox/DMAnaRun2/analysis_code/MonoH/test_1/./BTagCalibrationStandalone.cpp:584:50: error: request for member ‘ptMin’ in ‘e’, which is of non-class type ‘const int’
+           min_pt = min_pt < e.ptMin ? min_pt : e.ptMin;
+                                                  ^
+/home/ptiwari/cernbox/DMAnaRun2/analysis_code/MonoH/test_1/./BTagCalibrationStandalone.cpp:585:31: error: request for member ‘ptMax’ in ‘e’, which is of non-class type ‘const int’
+           max_pt = max_pt > e.ptMax ? max_pt : e.ptMax;
+                               ^
+/home/ptiwari/cernbox/DMAnaRun2/analysis_code/MonoH/test_1/./BTagCalibrationStandalone.cpp:585:50: error: request for member ‘ptMax’ in ‘e’, which is of non-class type ‘const int’
+           max_pt = max_pt > e.ptMax ? max_pt : e.ptMax;
+                                                  ^
+/home/ptiwari/cernbox/DMAnaRun2/analysis_code/MonoH/test_1/./BTagCalibrationStandalone.cpp:588:29: error: request for member ‘ptMin’ in ‘e’, which is of non-class type ‘const int’
+         min_pt = min_pt < e.ptMin ? min_pt : e.ptMin;
+                             ^
+/home/ptiwari/cernbox/DMAnaRun2/analysis_code/MonoH/test_1/./BTagCalibrationStandalone.cpp:588:48: error: request for member ‘ptMin’ in ‘e’, which is of non-class type ‘const int’
+         min_pt = min_pt < e.ptMin ? min_pt : e.ptMin;
+                                                ^
+/home/ptiwari/cernbox/DMAnaRun2/analysis_code/MonoH/test_1/./BTagCalibrationStandalone.cpp:589:29: error: request for member ‘ptMax’ in ‘e’, which is of non-class type ‘const int’
+         max_pt = max_pt > e.ptMax ? max_pt : e.ptMax;
+                             ^
+/home/ptiwari/cernbox/DMAnaRun2/analysis_code/MonoH/test_1/./BTagCalibrationStandalone.cpp:589:48: error: request for member ‘ptMax’ in ‘e’, which is of non-class type ‘const int’
+         max_pt = max_pt > e.ptMax ? max_pt : e.ptMax;
+                                                ^
+/home/ptiwari/cernbox/DMAnaRun2/analysis_code/MonoH/test_1/./BTagCalibrationStandalone.cpp: In constructor ‘BTagCalibrationStandaloneReader::BTagCalibrationStandaloneReader(BTagEntry::OperatingPoint, const string&, const std::vector<std::__cxx11::basic_string<char> >&)’:
+/home/ptiwari/cernbox/DMAnaRun2/analysis_code/MonoH/test_1/./BTagCalibrationStandalone.cpp:601:3: error: class ‘BTagCalibrationStandaloneReader’ does not have any field named ‘pimpl’
+   pimpl(new BTagCalibrationStandaloneReaderImpl(op, sysType, otherSysTypes)) {}
+   ^
+/home/ptiwari/cernbox/DMAnaRun2/analysis_code/MonoH/test_1/./BTagCalibrationStandalone.cpp: In member function ‘void BTagCalibrationStandaloneReader::load(const BTagCalibrationStandalone&, BTagEntry::JetFlavor, const string&)’:
+/home/ptiwari/cernbox/DMAnaRun2/analysis_code/MonoH/test_1/./BTagCalibrationStandalone.cpp:607:3: error: ‘pimpl’ was not declared in this scope
+   pimpl->load(c, jf, measurementType);
+   ^
+/home/ptiwari/cernbox/DMAnaRun2/analysis_code/MonoH/test_1/./BTagCalibrationStandalone.cpp: In member function ‘double BTagCalibrationStandaloneReader::eval(BTagEntry::JetFlavor, float, float, float) const’:
+/home/ptiwari/cernbox/DMAnaRun2/analysis_code/MonoH/test_1/./BTagCalibrationStandalone.cpp:615:10: error: ‘pimpl’ was not declared in this scope
+   return pimpl->eval(jf, eta, pt, discr);
+          ^
+/home/ptiwari/cernbox/DMAnaRun2/analysis_code/MonoH/test_1/./BTagCalibrationStandalone.cpp: In member function ‘double BTagCalibrationStandaloneReader::eval_auto_bounds(const string&, BTagEntry::JetFlavor, float, float, float) const’:
+/home/ptiwari/cernbox/DMAnaRun2/analysis_code/MonoH/test_1/./BTagCalibrationStandalone.cpp:624:10: error: ‘pimpl’ was not declared in this scope
+   return pimpl->eval_auto_bounds(sys, jf, eta, pt, discr);
+          ^
+/home/ptiwari/cernbox/DMAnaRun2/analysis_code/MonoH/test_1/./BTagCalibrationStandalone.cpp: In member function ‘std::pair<float, float> BTagCalibrationStandaloneReader::min_max_pt(BTagEntry::JetFlavor, float, float) const’:
+/home/ptiwari/cernbox/DMAnaRun2/analysis_code/MonoH/test_1/./BTagCalibrationStandalone.cpp:631:10: error: ‘pimpl’ was not declared in this scope
+   return pimpl->min_max_pt(jf, eta, discr);
+          ^
+('NCUGlobalTuples_1.root', None)
+Traceback (most recent call last):
+  File "MonoHBranchReader.py", line 71, in <module>
+    outfilename = options.outputdir + "/" + rootfile
+TypeError: unsupported operand type(s) for +: 'NoneType' and 'str'
