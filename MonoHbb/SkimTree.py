@@ -460,8 +460,8 @@ def AnalyzeDataSet():
             st_THINjetP4.push_back(thinjetP4[ithinjet])
             st_THINjetCISVV2.push_back(thinJetCSV[ithinjet])
             st_THINjetHadronFlavor.push_back(THINjetHadronFlavor[ithinjet])
-            st_THINjetNHadEF.push_back(THINjetNHadEF[ithinjet])
-            st_THINjetCHadEF.push_back(THINjetCHadEF[ithinjet])
+            st_THINjetNHadEF.push_back(thinjetNhadEF[ithinjet])
+            st_THINjetCHadEF.push_back(thinjetChadEF[ithinjet])
             
         st_nEle[0] = len(myEles)
         for iele in range(len(myEles)):
