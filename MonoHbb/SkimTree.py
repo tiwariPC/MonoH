@@ -508,7 +508,7 @@ def AnalyzeDataSet():
             mass = ( p4_ele1 + p4_ele2 ).M()
             
             if not  ( (mass > 60.0 ) & (mass < 120.0) ): continue
-            eleCharge[ele1] * eleCharge[ele2] > 0 continue
+            if ( eleCharge[ele1] * eleCharge[ele2] > 0 ) : continue
             
             zeeRecoilPx = -( pfMet*math.acos(pfMetPhi)  - p4_ele1.Px() - p4_ele2.Px())
             zeeRecoilPy = -( pfMet*math.asin(pfMetPhi) - p4_ele1.Py() - p4_ele2.Py())
@@ -526,7 +526,7 @@ def AnalyzeDataSet():
             mass = ( p4_mu1 + p4_mu2 ).M()
             
             if not  ( (mass > 60.0 ) & (mass < 120.0) ): continue
-            muCharge[mu1] * muCharge[mu2] > 0 continue
+            if ( muCharge[mu1] * muCharge[mu2] > 0 ) : continue
             
             zmumuRecoilPx = -( pfMet*math.acos(pfMetPhi)  - p4_mu1.Px() - p4_ele2.Px())
             zmumuRecoilPy = -( pfMet*math.asin(pfMetPhi)  - p4_mu1.Py() - p4_mu2.Py())
