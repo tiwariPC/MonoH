@@ -42,29 +42,32 @@ def AnalyzeDataSet():
     st_pfMetCorrPt      = array( 'f', [ 0. ] )
     st_pfMetCorrPhi     = array( 'f', [ 0. ] )
     st_isData           = array( 'b', [ False ] )
-    st_nFatJets         = array( 'L', [ 0 ] )
+    #st_nFatJets         = array( 'L', [ 0 ] )
     
         
     
     maxn = 10
-    st_FATjetP4 = ROOT.std.vector('TLorentzVector')()
-    st_FATjetTau1 = ROOT.std.vector('float')()
-    st_FATjetTau2 = ROOT.std.vector('float')()
-    st_FATjetTau3 = ROOT.std.vector('float')()
-    st_ADDjet_DoubleSV = ROOT.std.vector('float')()
+    #st_FATjetP4 = ROOT.std.vector('TLorentzVector')()
+    #st_FATjetTau1 = ROOT.std.vector('float')()
+    #st_FATjetTau2 = ROOT.std.vector('float')()
+    #st_FATjetTau3 = ROOT.std.vector('float')()
+    #st_ADDjet_DoubleSV = ROOT.std.vector('float')()
     
-    st_FATjetPRmassL2L3Corr = ROOT.std.vector('float')()
-    st_FATnSubSDJet = ROOT.std.vector('int')()
-    st_subjetSDCSV  = ROOT.std.vector('std::vector<float>')() 
-    st_subjetPt     = ROOT.std.vector('std::vector<float>')()
-    st_subjetEta    = ROOT.std.vector('std::vector<float>')()
-    st_subjetFlav   = ROOT.std.vector('std::vector<float>')()
+    #st_FATjetPRmassL2L3Corr = ROOT.std.vector('float')()
+    #st_FATnSubSDJet = ROOT.std.vector('int')()
+    #st_subjetSDCSV  = ROOT.std.vector('std::vector<float>')() 
+    #st_subjetPt     = ROOT.std.vector('std::vector<float>')()
+    #st_subjetEta    = ROOT.std.vector('std::vector<float>')()
+    #st_subjetFlav   = ROOT.std.vector('std::vector<float>')()
     
     
     st_THINnJet            = array( 'L', [ 0 ] ) #ROOT.std.vector('int')()
     st_THINjetP4           = ROOT.std.vector('TLorentzVector')()
     st_THINjetCISVV2       = ROOT.std.vector('float')()
     st_THINjetHadronFlavor = ROOT.std.vector('int')()
+    st_THINjetNHadEF       = ROOT.std.vector('float')()
+    st_THINjetCHadEF       = ROOT.std.vector('float')()
+    
     
     st_nEle                = array( 'L', [ 0 ] ) #ROOT.std.vector('int')()
     st_eleP4               = ROOT.std.vector('TLorentzVector')()
@@ -92,28 +95,30 @@ def AnalyzeDataSet():
     outTree.Branch( 'st_pfMetCorrPhi', st_pfMetCorrPhi , 'st_pfMetCorrPhi/F')
     outTree.Branch( 'st_isData', st_isData , 'st_isData/O')
     
-    outTree.Branch( 'st_nFatJets',st_nFatJets, 'st_nFatJets/L')
-    outTree.Branch( 'st_FATjetP4', st_FATjetP4)
+    #outTree.Branch( 'st_nFatJets',st_nFatJets, 'st_nFatJets/L')
+    #outTree.Branch( 'st_FATjetP4', st_FATjetP4)
     
-    outTree.Branch( 'st_FATjetTau1', st_FATjetTau1)
-    outTree.Branch( 'st_FATjetTau2', st_FATjetTau2)
-    outTree.Branch( 'st_FATjetTau3', st_FATjetTau3)
-    outTree.Branch( 'st_ADDjet_DoubleSV', st_ADDjet_DoubleSV)
+    #outTree.Branch( 'st_FATjetTau1', st_FATjetTau1)
+    #outTree.Branch( 'st_FATjetTau2', st_FATjetTau2)
+    #outTree.Branch( 'st_FATjetTau3', st_FATjetTau3)
+    #outTree.Branch( 'st_ADDjet_DoubleSV', st_ADDjet_DoubleSV)
     #outTree.Branch( 'st_', st_)
     #outTree.Branch( 'st_', st_)
 
     
-    outTree.Branch( 'st_FATjetPRmassL2L3Corr', st_FATjetPRmassL2L3Corr) 
-    outTree.Branch( 'st_FATnSubSDJet',st_FATnSubSDJet)
-    outTree.Branch( 'st_subjetSDCSV', st_subjetSDCSV)
-    outTree.Branch( 'st_subjetPt', st_subjetPt)
-    outTree.Branch( 'st_subjetEta', st_subjetEta)
-    outTree.Branch( 'st_subjetFlav', st_subjetFlav)
+    #outTree.Branch( 'st_FATjetPRmassL2L3Corr', st_FATjetPRmassL2L3Corr) 
+    #outTree.Branch( 'st_FATnSubSDJet',st_FATnSubSDJet)
+    #outTree.Branch( 'st_subjetSDCSV', st_subjetSDCSV)
+    #outTree.Branch( 'st_subjetPt', st_subjetPt)
+    #utTree.Branch( 'st_subjetEta', st_subjetEta)
+    #utTree.Branch( 'st_subjetFlav', st_subjetFlav)
     
     outTree.Branch( 'st_THINnJet',st_THINnJet, 'st_THINnJet/L' ) 
     outTree.Branch( 'st_THINjetP4',st_THINjetP4 ) 
     outTree.Branch( 'st_THINjetCISVV2',st_THINjetCISVV2 ) 
     outTree.Branch( 'st_THINjetHadronFlavor',st_THINjetHadronFlavor ) 
+    outTree.Branch( 'st_THINjetNHadEF',st_THINjetNHadEF )
+    outTree.Branch( 'st_THINjetCHadEF',st_THINjetCHadEF )
     
     outTree.Branch( 'st_nEle',st_nEle , 'st_nEle/L') 
     outTree.Branch( 'st_eleP4',st_eleP4 ) 
@@ -157,68 +162,71 @@ def AnalyzeDataSet():
         pfMetPhi                   = skimmedTree.__getattr__('pfMetCorrPhi')
         
         ## by default 
-        nFATJets                   = skimmedTree.__getattr__('FATnJet')
-        fatjetP4                   = skimmedTree.__getattr__('FATjetP4')
-        fatjetPRmassL2L3Corr       = skimmedTree.__getattr__('FATjetPRmassL2L3Corr')
-        tau1                       = skimmedTree.__getattr__('FATjetTau1')
-        tau2                       = skimmedTree.__getattr__('FATjetTau2')
-        tau3                       = skimmedTree.__getattr__('FATjetTau3')
+        #nFATJets                   = skimmedTree.__getattr__('FATnJet')
+        #fatjetP4                   = skimmedTree.__getattr__('FATjetP4')
+        #fatjetPRmassL2L3Corr       = skimmedTree.__getattr__('FATjetPRmassL2L3Corr')
+        #tau1                       = skimmedTree.__getattr__('FATjetTau1')
+        #tau2                       = skimmedTree.__getattr__('FATjetTau2')
+        #tau3                       = skimmedTree.__getattr__('FATjetTau3')
         
-        doublebtagger              = skimmedTree.__getattr__('ADDjet_DoubleSV')
-        nSubSoftDropJet            = skimmedTree.__getattr__('FATnSubSDJet')
-        subjetSDCSV                = skimmedTree.__getattr__('FATsubjetSDCSV')
-        subjetSDPx                 = skimmedTree.__getattr__('FATsubjetSDPx')
-        subjetSDPy                 = skimmedTree.__getattr__('FATsubjetSDPy')
-        subjetSDPz                 = skimmedTree.__getattr__('FATsubjetSDPz')
-        subjetSDE                  = skimmedTree.__getattr__('FATsubjetSDE')
-        passFatJetTightID          = skimmedTree.__getattr__('FATjetPassIDTight')
-        subjetHadronFlavor         = skimmedTree.__getattr__('FATsubjetSDHadronFlavor')
+        #doublebtagger              = skimmedTree.__getattr__('ADDjet_DoubleSV')
+        #nSubSoftDropJet            = skimmedTree.__getattr__('FATnSubSDJet')
+        #subjetSDCSV                = skimmedTree.__getattr__('FATsubjetSDCSV')
+        #subjetSDPx                 = skimmedTree.__getattr__('FATsubjetSDPx')
+        #subjetSDPy                 = skimmedTree.__getattr__('FATsubjetSDPy')
+        #subjetSDPz                 = skimmedTree.__getattr__('FATsubjetSDPz')
+        #subjetSDE                  = skimmedTree.__getattr__('FATsubjetSDE')
+        #passFatJetTightID          = skimmedTree.__getattr__('FATjetPassIDTight')
+        #subjetHadronFlavor         = skimmedTree.__getattr__('FATsubjetSDHadronFlavor')
         
-        if PUPPI: 
-            nFATJets                   = skimmedTree.__getattr__('AK8PuppinJet')
-            fatjetP4                   = skimmedTree.__getattr__('AK8PuppijetP4')
-            fatjetPRmassL2L3Corr       = skimmedTree.__getattr__('AK8PuppijetSDmass')
-            tau1                       = skimmedTree.__getattr__('AK8PuppijetTau1')
-            tau2                       = skimmedTree.__getattr__('AK8PuppijetTau2')
-            tau3                       = skimmedTree.__getattr__('AK8PuppijetTau3')
-            
-            doublebtagger              = skimmedTree.__getattr__('AK8Puppijet_DoubleSV')
-            nSubSoftDropJet            = skimmedTree.__getattr__('AK8PuppinSubSDJet')
-            subjetSDCSV                = skimmedTree.__getattr__('AK8PuppisubjetSDCSV')
-            subjetSDPx                 = skimmedTree.__getattr__('AK8PuppisubjetSDPx')
-            subjetSDPy                 = skimmedTree.__getattr__('AK8PuppisubjetSDPy')
-            subjetSDPz                 = skimmedTree.__getattr__('AK8PuppisubjetSDPz')
-            subjetSDE                  = skimmedTree.__getattr__('AK8PuppisubjetSDE')
-            passFatJetTightID          = skimmedTree.__getattr__('AK8PuppijetPassIDTight')
-            subjetHadronFlavor         = skimmedTree.__getattr__('AK8PuppisubjetSDHadronFlavor')
+        #if PUPPI: 
+        #    nFATJets                   = skimmedTree.__getattr__('AK8PuppinJet')
+        #    fatjetP4                   = skimmedTree.__getattr__('AK8PuppijetP4')
+        #    fatjetPRmassL2L3Corr       = skimmedTree.__getattr__('AK8PuppijetSDmass')
+        #    tau1                       = skimmedTree.__getattr__('AK8PuppijetTau1')
+        #    tau2                       = skimmedTree.__getattr__('AK8PuppijetTau2')
+        #    tau3                       = skimmedTree.__getattr__('AK8PuppijetTau3')
+        #    
+        #    doublebtagger              = skimmedTree.__getattr__('AK8Puppijet_DoubleSV')
+        #    nSubSoftDropJet            = skimmedTree.__getattr__('AK8PuppinSubSDJet')
+        #    subjetSDCSV                = skimmedTree.__getattr__('AK8PuppisubjetSDCSV')
+        #    subjetSDPx                 = skimmedTree.__getattr__('AK8PuppisubjetSDPx')
+        #    subjetSDPy                 = skimmedTree.__getattr__('AK8PuppisubjetSDPy')
+        #    subjetSDPz                 = skimmedTree.__getattr__('AK8PuppisubjetSDPz')
+        #    subjetSDE                  = skimmedTree.__getattr__('AK8PuppisubjetSDE')
+        #    passFatJetTightID          = skimmedTree.__getattr__('AK8PuppijetPassIDTight')
+        #    subjetHadronFlavor         = skimmedTree.__getattr__('AK8PuppisubjetSDHadronFlavor')
 
-        if PUPPI & CA15: 
-            nFATJets                   = skimmedTree.__getattr__('CA15PuppinJet')
-            fatjetP4                   = skimmedTree.__getattr__('CA15PuppijetP4')
-            fatjetPRmassL2L3Corr       = skimmedTree.__getattr__('CA15PuppijetSDmass')
-            tau1                       = skimmedTree.__getattr__('CA15PuppijetTau1')
-            tau2                       = skimmedTree.__getattr__('CA15PuppijetTau2')
-            tau3                       = skimmedTree.__getattr__('CA15PuppijetTau3')
+        #if PUPPI & CA15: 
+        #    nFATJets                   = skimmedTree.__getattr__('CA15PuppinJet')
+        #    fatjetP4                   = skimmedTree.__getattr__('CA15PuppijetP4')
+        #   fatjetPRmassL2L3Corr       = skimmedTree.__getattr__('CA15PuppijetSDmass')
+        #    tau1                       = skimmedTree.__getattr__('CA15PuppijetTau1')
+        #    tau2                       = skimmedTree.__getattr__('CA15PuppijetTau2')
+        #    tau3                       = skimmedTree.__getattr__('CA15PuppijetTau3')
             
-            doublebtagger              = skimmedTree.__getattr__('CA15Puppijet_DoubleSV')
-            nSubSoftDropJet            = skimmedTree.__getattr__('CA15PuppinSubSDJet')
-            subjetSDCSV                = skimmedTree.__getattr__('CA15PuppisubjetSDCSV')
-            subjetSDPx                 = skimmedTree.__getattr__('CA15PuppisubjetSDPx')
-            subjetSDPy                 = skimmedTree.__getattr__('CA15PuppisubjetSDPy')
-            subjetSDPz                 = skimmedTree.__getattr__('CA15PuppisubjetSDPz')
-            subjetSDE                  = skimmedTree.__getattr__('CA15PuppisubjetSDE')
-            passFatJetTightID          = skimmedTree.__getattr__('CA15PuppijetPassIDTight')
-            subjetHadronFlavor         = skimmedTree.__getattr__('CA15PuppisubjetSDHadronFlavor')
+        #    doublebtagger              = skimmedTree.__getattr__('CA15Puppijet_DoubleSV')
+        #    nSubSoftDropJet            = skimmedTree.__getattr__('CA15PuppinSubSDJet')
+        #    subjetSDCSV                = skimmedTree.__getattr__('CA15PuppisubjetSDCSV')
+        #    subjetSDPx                 = skimmedTree.__getattr__('CA15PuppisubjetSDPx')
+        #    subjetSDPy                 = skimmedTree.__getattr__('CA15PuppisubjetSDPy')
+        #    subjetSDPz                 = skimmedTree.__getattr__('CA15PuppisubjetSDPz')
+        #    subjetSDE                  = skimmedTree.__getattr__('CA15PuppisubjetSDE')
+        #    passFatJetTightID          = skimmedTree.__getattr__('CA15PuppijetPassIDTight')
+        #    subjetHadronFlavor         = skimmedTree.__getattr__('CA15PuppisubjetSDHadronFlavor')
         
 
-        if len(fatjetPRmassL2L3Corr)>0: 
-            print " mass = ", fatjetPRmassL2L3Corr[0]
+        #if len(fatjetPRmassL2L3Corr)>0: 
+        #    print " mass = ", fatjetPRmassL2L3Corr[0]
         
         nTHINJets                  = skimmedTree.__getattr__('THINnJet')
         thinjetP4                  = skimmedTree.__getattr__('THINjetP4')
         thinJetCSV                 = skimmedTree.__getattr__('THINjetCISVV2')
         passThinJetLooseID         = skimmedTree.__getattr__('THINjetPassIDLoose')
         THINjetHadronFlavor        = skimmedTree.__getattr__('THINjetHadronFlavor')
+        thinjetNhadEF              = skimmedTree.__getattr__('THINjetNHadEF')
+        thinjetChadEF              = skimmedTree.__getattr__('THINjetCHadEF')
+        
         
         nEle                       = skimmedTree.__getattr__('nEle')
         eleP4                      = skimmedTree.__getattr__('eleP4')
@@ -273,9 +281,12 @@ def AnalyzeDataSet():
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
         itrig_=0; trig1 = False; trig2 = False;
         trig1 = CheckFilter(trigName, trigResult, 'HLT_PFMET170_NoiseCleaned')
-        trig2 = CheckFilter(trigName, trigResult, 'HLT_PFMET90_PFMHT90_')
-        trig3 = CheckFilter(trigName, trigResult, 'HLT_PFMET120_PFMHT120_') ## dummy
-        trig4 = CheckFilter(trigName, trigResult, 'HLT_PFMET110_PFMHT110_') ## dummy
+        trig2 = CheckFilter(trigName, trigResult, 'HLT_PFMET170_JetIdCleaned_v')
+        trig3 = CheckFilter(trigName, trigResult, 'HLT_PFMET170_HBHECleaned_v')
+        trig4 = CheckFilter(trigName, trigResult, 'HLT_PFMETNoMu90_PFMHTNoMu90_IDTight_v')
+        trig5 = CheckFilter(trigName, trigResult, 'HLT_PFMETNoMu110_PFMHTNoMu110_IDTight_v')
+        trig6 = CheckFilter(trigName, trigResult, 'HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v')
+        trig7 = CheckFilter(trigName, trigResult, 'HLT_PFMET110_PFMHT110_')
         #trigstatus =  trig1 | trig2
         if not isData:
             trigstatus  = True
@@ -312,7 +323,7 @@ def AnalyzeDataSet():
         ## PFMET Selection
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------        
-        pfmetstatus = ( pfMet > 170.0 )
+        pfmetstatus = ( pfMet > 200.0 )
         if pfmetstatus == False : continue 
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -321,10 +332,10 @@ def AnalyzeDataSet():
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
         
-        jetpassindex=[]
-        for ifatjet in range(nFATJets):
-            if (fatjetP4[ifatjet].Pt() > 170.0  ) & (abs(fatjetP4[ifatjet].Eta())  < 2.4) & (bool(passFatJetTightID[ifatjet]) == True):
-                jetpassindex.append(ifatjet)
+        #jetpassindex=[]
+        #for ifatjet in range(nFATJets):
+        #    if (fatjetP4[ifatjet].Pt() > 170.0  ) & (abs(fatjetP4[ifatjet].Eta())  < 2.4) & (bool(passFatJetTightID[ifatjet]) == True):
+        #        jetpassindex.append(ifatjet)
                 
                 
         thinjetpassindex=[]
@@ -379,20 +390,20 @@ def AnalyzeDataSet():
         st_pfMetCorrPhi[0]      = pfMetPhi
         st_isData[0]            = isData
         
-        st_nFatJets[0]       = len(jetpassindex)
+        #st_nFatJets[0]       = len(jetpassindex)
         
         
-        st_FATnSubSDJet.clear()
-        st_FATjetP4.clear()
-        st_FATjetTau1.clear()
-        st_FATjetTau2.clear()
-        st_FATjetTau3.clear()
-        st_ADDjet_DoubleSV.clear()
-        st_subjetSDCSV.clear()
-        st_FATjetPRmassL2L3Corr.clear()
-        st_subjetPt.clear()
-        st_subjetEta.clear()
-        st_subjetFlav.clear()
+        #st_FATnSubSDJet.clear()
+        #st_FATjetP4.clear()
+        #st_FATjetTau1.clear()
+        #st_FATjetTau2.clear()
+        #st_FATjetTau3.clear()
+        #st_ADDjet_DoubleSV.clear()
+        #st_subjetSDCSV.clear()
+        #st_FATjetPRmassL2L3Corr.clear()
+        #st_subjetPt.clear()
+        #st_subjetEta.clear()
+        #st_subjetFlav.clear()
         
         st_THINjetP4.clear()
         st_THINjetCISVV2.clear()
@@ -407,46 +418,48 @@ def AnalyzeDataSet():
         st_genParSt.clear()
         st_genParP4.clear()
         
-        for ifatjet in range(len(jetpassindex)):
-            #st_fatjetP4[ifatjet] = fatjetP4[ifatjet].Pt()
-            st_FATnSubSDJet.push_back(nSubSoftDropJet[ifatjet])
-            st_FATjetP4.push_back(fatjetP4[ifatjet])
-            st_FATjetPRmassL2L3Corr.push_back(fatjetPRmassL2L3Corr[ifatjet])
-            st_FATjetTau1.push_back(tau1[ifatjet])
-            st_FATjetTau2.push_back(tau2[ifatjet])
-            st_FATjetTau3.push_back(tau3[ifatjet])
-            dbt = -99.
-            if (len(doublebtagger) == len(st_FATjetTau1)):
-                dbt = doublebtagger[ifatjet]
-            st_ADDjet_DoubleSV.push_back(dbt)
+        #for ifatjet in range(len(jetpassindex)):
+        #    #st_fatjetP4[ifatjet] = fatjetP4[ifatjet].Pt()
+        #    st_FATnSubSDJet.push_back(nSubSoftDropJet[ifatjet])
+        #    st_FATjetP4.push_back(fatjetP4[ifatjet])
+        #    st_FATjetPRmassL2L3Corr.push_back(fatjetPRmassL2L3Corr[ifatjet])
+        #    st_FATjetTau1.push_back(tau1[ifatjet])
+        #    st_FATjetTau2.push_back(tau2[ifatjet])
+        #    st_FATjetTau3.push_back(tau3[ifatjet])
+        #    dbt = -99.
+        #    if (len(doublebtagger) == len(st_FATjetTau1)):
+        #        dbt = doublebtagger[ifatjet]
+        #    st_ADDjet_DoubleSV.push_back(dbt)
             
             
-            csv= ROOT.std.vector('float')()
-            csv.clear()
-            pt= ROOT.std.vector('float')()
-            pt.clear()
-            eta= ROOT.std.vector('float')()
-            eta.clear()
-            flav= ROOT.std.vector('float')()
-            flav.clear()
+        #    csv= ROOT.std.vector('float')()
+        #    csv.clear()
+        #    pt= ROOT.std.vector('float')()
+        #    pt.clear()
+        #    eta= ROOT.std.vector('float')()
+        #    eta.clear()
+        #    flav= ROOT.std.vector('float')()
+        #    flav.clear()
             
-            for isj in range(nSubSoftDropJet[ifatjet]):
-                csv.push_back(subjetSDCSV[ifatjet][isj])
-                p4 = TLorentzVector(subjetSDPx[ifatjet][isj], subjetSDPy[ifatjet][isj], subjetSDPz[ifatjet][isj], subjetSDE[ifatjet][isj])
-                pt.push_back(p4.Pt())
-                eta.push_back(p4.Eta())
-                flav.push_back(subjetHadronFlavor[ifatjet][isj])
-            st_subjetSDCSV.push_back(csv)
-            st_subjetPt.push_back(pt)
-            st_subjetEta.push_back(eta)
-            st_subjetFlav.push_back(flav)
-            
+        #    for isj in range(nSubSoftDropJet[ifatjet]):
+        #        csv.push_back(subjetSDCSV[ifatjet][isj])
+        #        p4 = TLorentzVector(subjetSDPx[ifatjet][isj], subjetSDPy[ifatjet][isj], subjetSDPz[ifatjet][isj], subjetSDE[ifatjet][isj])
+        #        pt.push_back(p4.Pt())
+        #       eta.push_back(p4.Eta())
+        #        flav.push_back(subjetHadronFlavor[ifatjet][isj])
+        #    st_subjetSDCSV.push_back(csv)
+        #    st_subjetPt.push_back(pt)
+        #    st_subjetEta.push_back(eta)
+        #    st_subjetFlav.push_back(flav)
+        #    
         #thinjetpassindex=[]
         st_THINnJet[0] = len(thinjetpassindex)
         for ithinjet in range(len(thinjetpassindex)):
             st_THINjetP4.push_back(thinjetP4[ithinjet])
             st_THINjetCISVV2.push_back(thinJetCSV[ithinjet])
             st_THINjetHadronFlavor.push_back(THINjetHadronFlavor[ithinjet])
+            st_THINjetNHadEF.push_back(THINjetNHadEF[ithinjet])
+            st_THINjetCHadEF.push_back(THINjetCHadEF[ithinjet])
             
         st_nEle[0] = len(myEles)
         for iele in range(len(myEles)):

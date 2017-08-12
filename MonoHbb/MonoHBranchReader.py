@@ -265,12 +265,12 @@ def AnalyzeDataSet():
         pfMet                      = skimmedTree.__getattr__('st_pfMetCorrPt')
         pfMetPhi                   = skimmedTree.__getattr__('st_pfMetCorrPhi')
         
-        nFatJets                   = skimmedTree.__getattr__('st_nFatJets')
-        fatjetP4                   = skimmedTree.__getattr__('st_FATjetP4')
-        fatjetPRmassL2L3Corr       = skimmedTree.__getattr__('st_FATjetPRmassL2L3Corr')
+        #nFatJets                   = skimmedTree.__getattr__('st_nFatJets')
+        #fatjetP4                   = skimmedTree.__getattr__('st_FATjetP4')
+        #fatjetPRmassL2L3Corr       = skimmedTree.__getattr__('st_FATjetPRmassL2L3Corr')
                 
-        nSubSoftDropJet            = skimmedTree.__getattr__('st_FATnSubSDJet')
-        subjetSDCSV                = skimmedTree.__getattr__('st_subjetSDCSV')
+        #nSubSoftDropJet            = skimmedTree.__getattr__('st_FATnSubSDJet')
+        #subjetSDCSV                = skimmedTree.__getattr__('st_subjetSDCSV')
         
 
         
@@ -278,14 +278,14 @@ def AnalyzeDataSet():
         #subjetSDPy                 = skimmedTree.__getattr__('st_FATsubjetSDPy')
         #subjetSDPz                 = skimmedTree.__getattr__('st_FATsubjetSDPz')
         #subjetSDE                  = skimmedTree.__getattr__('st_FATsubjetSDE')
-        subjetSDPt                  = skimmedTree.__getattr__('st_subjetPt')
-        subjetSDEta                  = skimmedTree.__getattr__('st_subjetEta')
+        #subjetSDPt                  = skimmedTree.__getattr__('st_subjetPt')
+        #subjetSDEta                  = skimmedTree.__getattr__('st_subjetEta')
         #passFatJetTightID          = skimmedTree.__getattr__('st_FATjetPassIDTight')
-        subjetHadronFlavor         = skimmedTree.__getattr__('st_subjetFlav')
+        #subjetHadronFlavor         = skimmedTree.__getattr__('st_subjetFlav')
         
-        doublebtagger              = skimmedTree.__getattr__('st_ADDjet_DoubleSV')
-        tau2                       = skimmedTree.__getattr__('st_FATjetTau2')
-        tau1                       = skimmedTree.__getattr__('st_FATjetTau1')
+        #doublebtagger              = skimmedTree.__getattr__('st_ADDjet_DoubleSV')
+        #tau2                       = skimmedTree.__getattr__('st_FATjetTau2')
+        #au1                       = skimmedTree.__getattr__('st_FATjetTau1')
         
         
         nTHINJets                  = skimmedTree.__getattr__('st_THINnJet')
@@ -294,6 +294,8 @@ def AnalyzeDataSet():
         #passThinJetLooseID         = skimmedTree.__getattr__('st_THINjetPassIDLoose')
         #passThinJetPUID            = skimmedTree.__getattr__('st_THINisPUJetID')
         THINjetHadronFlavor        = skimmedTree.__getattr__('st_THINjetHadronFlavor')
+        thinjetNhadEF              = skimmedTree.__getattr__('st_THINjetNHadEF')
+        thinjetChadEF              = skimmedTree.__getattr__('st_THINjetCHadEF')
         
         nEle                       = skimmedTree.__getattr__('st_nEle')
         eleP4                      = skimmedTree.__getattr__('st_eleP4')
@@ -355,24 +357,24 @@ def AnalyzeDataSet():
          # 2 jets and 1 btagged 
          
          
-        nJetsr1 = (len(THINnJets) <= 2)
+        nJetsr1 = (len(nTHINJets) <= 2)
         if nJetsr1 == False  : continue
         cutStatus['njetSR1'] += 1
-        for ithinjet in range(THINnJets):
+        for ithinjet in range(nTHINJets):
            j1 = thinjetP4[ithinjet]
            if (j1.Pt() > 30.0) & (DeltaPhi(j1.Phi(),pfpuppiMETPhi) > 0.5):
                njet1SR1index = ithinjet
                h_jet1_pT_sr1.Fill(j1.Pt())
                h_jet1_eta_sr1.Fill(j1.Eta())
                h_jet1_phi_sr1.Fill(j1.Phi())
-               for jthinjet in range(THINnJets):
+               for jthinjet in range(nTHINJets):
                     if (jthinjet != ithinjet ) & ( jthinjet > ithinjet ) & (jthinjet < nTHINJets) : 
                         j2 = thinjetP4[jthinjet]
                         if (j2.Pt() < 50.0) : continue
                         if (DeltaPhi(j1.Phi,pfpuppiMETPhi) < 0.5) :continue
                         if (THINjetCISVV2[jthinjet] < 0.8): continue 
-                        if thinjetnhadef[jthinjet] > 0.8 : continue
-                        if THINjetCHadEF[jthinjet]< 0.1: continue
+                        if thinjetNhadEF[jthinjet] > 0.8 : continue
+                        if thinjetChadEF[jthinjet]< 0.1: continue
                         njet1SR1index = jthinjet
                         h_jet2_pT_sr1.Fill(j2.Pt())
                         h_jet2_eta_sr1.Fill(j2.Eta())
@@ -388,30 +390,30 @@ def AnalyzeDataSet():
      ## for SR2
         # 3 jets and 2 btagged 
         
-        nJetsr2 = (len(THINnJets) <= 3)
+        nJetsr2 = (len(nTHINJets) <= 3)
         if nJetsr2 == False : continue
         cutStatus['njetSR2'] += 1
-        for ithinjet in range(THINnJets):
+        for ithinjet in range(nTHINJets):
             j1 = thinjetP4[ithinjet]
             if (j1.Pt() > 30.0) & (DeltaPhi(j1.Phi(),pfpuppiMETPhi) > 0.5):
                njet1SR2index = ithinjet
-               for jthinjet in range(THINnJets):
+               for jthinjet in range(nTHINJets):
                   if (jthinjet != ithinjet ) & ( jthinjet > ithinjet ) & (jthinjet < nTHINJets) : 
                      j2 = thinjetP4[jthinjet]
                      if (j2.Pt() < 50.0) : continue
                      if (DeltaPhi(j2.Phi,pfpuppiMETPhi) < 0.5) :continue
                      if (THINjetCISVV2[jthinjet] < 0.8): continue 
-                     if thinjetnhadef[jthinjet] > 0.8 : continue
-                     if THINjetCHadEF[jthinjet]< 0.1: continue
+                     if thinjetNhadEF[jthinjet] > 0.8 : continue
+                     if thinjetChadEF[jthinjet]< 0.1: continue
                      njet2SR2index = jthinjet
-                     for kthinjet in range(THINnJets):
+                     for kthinjet in range(nTHINJets):
                         if (kthinjet != ithinjet ) & ( kthinjet > ithinjet ) & (kthinjet < nTHINJets) & (kthinjet != jthinjet ) & ( kthinjet > jthinjet ) : 
                            j3 = thinjetP4[kthinjet]
                            if (j3.Pt() < 50.0) : continue
                            if (DeltaPhi(j3.Phi,pfpuppiMETPhi) < 0.5) :continue
-                           if (THINjetCISVV2[kthinjet] < 0.8): continue 
-                           if thinjetnhadef[kthinjet] > 0.8 : continue
-                           if THINjetCHadEF[kthinjet]< 0.1: continue
+                           if (thinJetCSV[kthinjet] < 0.8): continue 
+                           if thinjetNhadEF[kthinjet] > 0.8 : continue
+                           if thinjetChadEF[kthinjet]< 0.1: continue
                            njet3SR2index = jthinjet
                            pair.append(j1); pair.append(j2); pair.append(j3)
                            jetSR2Info.append(pair)
