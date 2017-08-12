@@ -408,6 +408,8 @@ def AnalyzeDataSet():
         st_THINjetP4.clear()
         st_THINjetCISVV2.clear()
         st_THINjetHadronFlavor.clear()
+        st_THINjetNHadEF.clear()
+        st_THINjetCHadEF.clear()
         
         st_eleP4.clear()
         st_muP4.clear()
