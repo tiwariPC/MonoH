@@ -1,0 +1,1 @@
+root://se01.indiacms.res.in:1094//cms/store/user/ptiwari/bbDM/V1/BBbarDMJets_pseudo_NLO_Mchi-1_Mphi-50_TuneCUETP8M1_13TeV-madgraph-pythia8/crab_BBbarDMJets_pseudo_NLO_Mchi-1_Mphi-50_TuneCUETP8M1_13TeV-madgraph-pythia8/170729_082049/0000/NCUGlobalTuples_1.root
