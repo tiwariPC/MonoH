@@ -10,8 +10,8 @@ import numpy as numpy_
 ROOT.gROOT.LoadMacro("Loader.h+")
 
 ## When not running on farmout
-inputfilename= 'MZp1700Ma0300.txt'
-outfilename= 'tmp.root'
+inputfilename= 'Mchi1Mphi50.txt'
+outfilename= 'Mchi1_Mphi50.root'
 PUPPI = True
 CA15  = False
 
@@ -374,7 +374,7 @@ def AnalyzeDataSet():
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
         myTaus=[]
         for itau in range(nTau):
-            if (tauP4[itau].Pt()>20.) & (abs(tauP4[itau].Eta())<2.3) & (bool(isDecayModeFinding[itau]) == True) & (bool(passLooseTauIso[itau]) == True):
+            if (tauP4[itau].Pt()>18.) & (abs(tauP4[itau].Eta())<2.5) & (bool(isDecayModeFinding[itau]) == True) & (bool(passLooseTauIso[itau]) == True):
                 myTaus.append(itau)
         
         
