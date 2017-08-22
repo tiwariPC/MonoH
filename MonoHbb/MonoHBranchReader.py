@@ -374,8 +374,17 @@ def AnalyzeDataSet():
                         if thinjetNhadEF[jthinjet] > 0.8 : continue
                         if thinjetChadEF[jthinjet]< 0.1: continue
                         njet1SR1index = jthinjet
-                        pair.append(j1); pair.append(j2)
-                        jetSR1Info.append(pair)
+                        jet1pt = j1.Pt()
+                        jet1phi = j1.Phi()
+                        jet1eta = j1.eta()
+                        jet2pt = j2.Pt()
+                        jet2phi = j2.Phi()
+                        jet2eta = j2.eta()
+                        pair1 = []
+                        pair2 = []
+                        pair1.append(jet1pt); pair1.append(jet1eta); pair1.append(jet1phi)
+                        pair2.append(jet2pt); pair2.append(jet2eta); pair2.append(jet2phi)
+                        jetSR1Info.append(pair1);jetSR1Info.append(pair2)
                         
         if njet1SR1index > -1 :
            cutStatus['njet1SR1'] += 1
@@ -411,8 +420,26 @@ def AnalyzeDataSet():
                            if thinjetNhadEF[kthinjet] > 0.8 : continue
                            if thinjetChadEF[kthinjet]< 0.1: continue
                            njet3SR2index = jthinjet
-                           pair.append(j1); pair.append(j2); pair.append(j3)
-                           jetSR2Info.append(pair)
+                           jet1pt = j1.Pt()
+                           jet1phi = j1.Phi()
+                           jet1eta = j1.eta()
+                           jet2pt = j2.Pt()
+                           jet2phi = j2.Phi()
+                           jet2eta = j2.eta()
+                           jet3pt = j2.Pt()
+                           jet3phi = j2.Phi()
+                           jet3eta = j2.eta()
+                           pair1 = []
+                           pair2 = []
+                           pair3 = []
+                           pair1.append(jet1pt); pair1.append(jet1eta); pair1.append(jet1phi)
+                           pair2.append(jet2pt); pair2.append(jet2eta); pair2.append(jet2phi)
+                           pair3.append(jet3pt); pair3.append(jet3eta); pair3.append(jet3phi)
+                           jetSR1Info.append(pair1);jetSR1Info.append(pair2)
+                           pair1.append(jet1pt); pair1.append(jet1eta); pair1.append(jet1phi)
+                           pair2.append(jet2pt); pair2.append(jet2eta); pair2.append(jet2phi)
+                           pair3.append(jet3pt); pair3.append(jet3eta); pair3.append(jet3phi)
+                           jetSR2Info.append(pair1);jetSR2Info.append(pair2);jetSR2Info.append(pair3)
         if njet1SR2index > -1 :
          cutStatus['njet1SR2'] += 1
         if njet2SR2index > -1 :
@@ -602,21 +629,21 @@ def AnalyzeDataSet():
             
         #if not regime:  
          #allquantities.mass            = HiggsInfo_sorted[0][2]
-        allquantities.jet1_pT_sr1     = jetSR1Info[0][0].Pt()
-        allquantities.jet1_eta_sr1    = jetSR1Info[0][0].Eta()
-        allquantities.jet1_phi_sr1    = jetSR1Info[0][0].Phi()
-        allquantities.jet2_pT_sr1     = jetSR1Info[0][1].Pt()
-        allquantities.jet2_eta_sr1    = jetSR1Info[0][1].Eta()
-        allquantities.jet2_phi_sr1    = jetSR1Info[0][1].Phi()
-        allquantities.jet1_pT_sr2     = jetSR2Info[0][0].Pt()
-        allquantities.jet1_eta_sr2    = jetSR2Info[0][0].Eta()
-        allquantities.jet1_phi_sr2    = jetSR2Info[0][0].Phi()
-        allquantities.jet2_pT_sr1     = jetSR2Info[0][1].Pt()
-        allquantities.jet2_eta_sr1    = jetSR2Info[0][1].Eta()
-        allquantities.jet2_phi_sr1    = jetSR2Info[0][1].Phi()
-        allquantities.jet3_pT_sr1     = jetSR2Info[0][2].Pt()
-        allquantities.jet3_eta_sr1    = jetSR2Info[0][2].Eta()
-        allquantities.jet3_phi_sr1    = jetSR2Info[0][2].Phi()
+        allquantities.jet1_pT_sr1     = jetSR1Info[0][0]
+        allquantities.jet1_eta_sr1    = jetSR1Info[0][1]
+        allquantities.jet1_phi_sr1    = jetSR1Info[0][2]
+        allquantities.jet2_pT_sr1     = jetSR1Info[1][0]
+        allquantities.jet2_eta_sr1    = jetSR1Info[1][1]
+        allquantities.jet2_phi_sr1    = jetSR1Info[1][2]
+        allquantities.jet1_pT_sr2     = jetSR2Info[0][0]
+        allquantities.jet1_eta_sr2    = jetSR2Info[0][1]
+        allquantities.jet1_phi_sr2    = jetSR2Info[0][2]
+        allquantities.jet2_pT_sr1     = jetSR2Info[1][0]
+        allquantities.jet2_eta_sr1    = jetSR2Info[1][1]
+        allquantities.jet2_phi_sr1    = jetSR2Info[1][2]
+        allquantities.jet3_pT_sr1     = jetSR2Info[2][0]
+        allquantities.jet3_eta_sr1    = jetSR2Info[2][1]
+        allquantities.jet3_phi_sr1    = jetSR2Info[2][2]
             
         #print (allquantities.regime, allquantities.met,allquantities.mass )
         allquantities.FillHisto()
