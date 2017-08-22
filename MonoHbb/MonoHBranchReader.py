@@ -429,6 +429,7 @@ def AnalyzeDataSet():
                            jet3pt = j2.Pt()
                            jet3phi = j2.Phi()
                            jet3eta = j2.eta()
+                           #aappend pt et and phi
                            pair1 = []
                            pair2 = []
                            pair3 = []
