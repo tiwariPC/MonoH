@@ -10,7 +10,7 @@ import numpy as numpy_
 ROOT.gROOT.LoadMacro("Loader.h+")
 
 ## When not running on farmout
-inputfilename= 'Mchi1Mphi50.txt'
+inputfilename= 'Mchi1_Mphi50.txt'
 outfilename= 'Mchi1_Mphi50.root'
 PUPPI = True
 CA15  = False
