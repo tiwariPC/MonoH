@@ -355,7 +355,8 @@ def AnalyzeDataSet():
         ## list comprehensation
         ## for SR1
          # 2 jets and 1 btagged 
-         
+        njet1SR1index = -1
+        njet2SR1index = -1
         nJetsr1 = False
         if nTHINJets <= 2:
             nJetsr1 = True
@@ -393,6 +394,9 @@ def AnalyzeDataSet():
      
      ## for SR2
         # 3 jets and 2 btagged 
+        njet1SR2index = -1
+        njet2SR2index = -1
+        njet3SR2index = -1
         nJetsr2 = False
         if nTHINJets <= 3 :
             nJetsr2 = True
@@ -429,7 +433,6 @@ def AnalyzeDataSet():
                            jet3pt = j2.Pt()
                            jet3phi = j2.Phi()
                            jet3eta = j2.eta()
-                           #aappend pt et and phi
                            pair1 = []
                            pair2 = []
                            pair3 = []
