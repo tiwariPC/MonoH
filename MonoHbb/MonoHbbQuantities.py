@@ -105,14 +105,14 @@ class MonoHbbQuantities:
 
             self.h_csv1.append(TH1F('h_csv1_'+postname, 'h_csv1_'+postname, 20,0.,1.))
             self.h_csv2.append(TH1F('h_csv2_'+postname, 'h_csv2_'+postname, 20,0.,1.))
-            self.h_mt.append(TH1F('h_mt_'+postname,'h_mt_'+postname,100,400.,1400.))
+            #self.h_mt.append(TH1F('h_mt_'+postname,'h_mt_'+postname,100,400.,1400.))
             #self.h_dPhi.append(TH1F('h_dPhi_'+postname,'h_dPhi_'+postname,70, -3.5, 3.5 ))
             self.h_N_e.append(TH1F('h_N_e_'+postname,'h_N_e_'+postname,3,0,3))
             self.h_N_mu.append(TH1F('h_N_mu_'+postname,'h_N_mu_'+postname,3,0,3))
             self.h_N_tau.append(TH1F('h_N_tau_'+postname,'h_N_tau_'+postname,3,0,3))
             self.h_N_Pho.append(TH1F('h_N_Pho_'+postname,'h_N_Pho_'+postname,3,0,3))
             #self.h_N_b.append(TH1F('h_N_b_'+postname,'h_N_b_'+postname,3,0,3))
-            self.h_N_j.append(TH1F('h_N_j_'+postname,'h_N_j_'+postname,5,0,5))
+            #self.h_N_j.append(TH1F('h_N_j_'+postname,'h_N_j_'+postname,5,0,5))
             #self.h_jet1_pT_sr1.append(TH1F('h_jet1_pT_sr1_'+postname,'h_jet1_pT_sr1_'+postname,1000,0.,1000.))
             self.h_jet1_eta_sr1.append(TH1F('h_jet1_eta_sr1_'+postname,'h_jet1_eta_sr1_'+postname,70, -3.5, 3.5))
             self.h_jet1_phi_sr1.append(TH1F('h_jet1_phi_sr1_'+postname,'h_jet1_phi_sr1_'+postname,70, -3.5, 3.5))
@@ -202,7 +202,7 @@ class MonoHbbQuantities:
         self.h_total_weight[0].SetBinContent(1,nevts_weight)
         self.h_total_weight[0].Write()
         
-        self.h_met[iregime].Write()
+        self.h_met[0].Write()
         #self.h_met_rebin[iregime].Write()
         for ipdf in range(101):
             self.h_met_pdf[ipdf].Write()

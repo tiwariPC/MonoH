@@ -370,17 +370,17 @@ def AnalyzeDataSet():
                     if (jthinjet != ithinjet ) & ( jthinjet > ithinjet ) & (jthinjet < nTHINJets) : 
                         j2 = thinjetP4[jthinjet]
                         if (j2.Pt() < 50.0) : continue
-                        if (DeltaPhi(j1.Phi,pfMetPhi) < 0.5) :continue
-                        if (THINjetCISVV2[jthinjet] < 0.8): continue 
+                        if (DeltaPhi(j1.Phi(),pfMetPhi) < 0.5) :continue
+                        if (thinJetCSV[jthinjet] < 0.8): continue 
                         if thinjetNhadEF[jthinjet] > 0.8 : continue
                         if thinjetChadEF[jthinjet]< 0.1: continue
                         njet1SR1index = jthinjet
                         jet1pt = j1.Pt()
                         jet1phi = j1.Phi()
-                        jet1eta = j1.eta()
+                        jet1eta = j1.Eta()
                         jet2pt = j2.Pt()
                         jet2phi = j2.Phi()
-                        jet2eta = j2.eta()
+                        jet2eta = j2.Eta()
                         pair1 = []
                         pair2 = []
                         pair1.append(jet1pt); pair1.append(jet1eta); pair1.append(jet1phi)
@@ -410,8 +410,8 @@ def AnalyzeDataSet():
                   if (jthinjet != ithinjet ) & ( jthinjet > ithinjet ) & (jthinjet < nTHINJets) : 
                      j2 = thinjetP4[jthinjet]
                      if (j2.Pt() < 50.0) : continue
-                     if (DeltaPhi(j2.Phi,pfMetPhi) < 0.5) :continue
-                     if (THINjetCISVV2[jthinjet] < 0.8): continue 
+                     if (DeltaPhi(j2.Phi(),pfMetPhi) < 0.5) :continue
+                     if (thinJetCSV[jthinjet] < 0.8): continue 
                      if thinjetNhadEF[jthinjet] > 0.8 : continue
                      if thinjetChadEF[jthinjet]< 0.1: continue
                      njet2SR2index = jthinjet
@@ -419,20 +419,20 @@ def AnalyzeDataSet():
                         if (kthinjet != ithinjet ) & ( kthinjet > ithinjet ) & (kthinjet < nTHINJets) & (kthinjet != jthinjet ) & ( kthinjet > jthinjet ) : 
                            j3 = thinjetP4[kthinjet]
                            if (j3.Pt() < 50.0) : continue
-                           if (DeltaPhi(j3.Phi,pfMetPhi) < 0.5) :continue
+                           if (DeltaPhi(j3.Phi(),pfMetPhi) < 0.5) :continue
                            if (thinJetCSV[kthinjet] < 0.8): continue 
                            if thinjetNhadEF[kthinjet] > 0.8 : continue
                            if thinjetChadEF[kthinjet]< 0.1: continue
                            njet3SR2index = jthinjet
                            jet1pt = j1.Pt()
                            jet1phi = j1.Phi()
-                           jet1eta = j1.eta()
+                           jet1eta = j1.Eta()
                            jet2pt = j2.Pt()
                            jet2phi = j2.Phi()
-                           jet2eta = j2.eta()
+                           jet2eta = j2.Eta()
                            jet3pt = j2.Pt()
                            jet3phi = j2.Phi()
-                           jet3eta = j2.eta()
+                           jet3eta = j2.Eta()
                            pair1 = []
                            pair2 = []
                            pair3 = []
@@ -633,8 +633,8 @@ def AnalyzeDataSet():
             
         #if not regime:  
          #allquantities.mass            = HiggsInfo_sorted[0][2]
-        if len(jetSR1Info) !> 0 : continue
-        if len(jetSR2Info) !> 0 : continue
+        if len(jetSR1Info) >= 0 : continue
+        if len(jetSR2Info) >= 0 : continue
         allquantities.jet1_pT_sr1     = jetSR1Info[0][0]
         allquantities.jet1_eta_sr1    = jetSR1Info[0][1]
         allquantities.jet1_phi_sr1    = jetSR1Info[0][2]
