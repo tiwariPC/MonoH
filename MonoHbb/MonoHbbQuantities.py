@@ -91,60 +91,59 @@ class MonoHbbQuantities:
         self.h_total.append(TH1F('h_total','h_total',4,0,4))
         self.h_total_weight.append(TH1F('h_total_weight','h_total_weight',4,0,4))
         
-        for iregime in range(2):
-            postname = str(iregime)
-            self.h_met.append(TH1F('h_met_'+postname,  'h_met_'+postname,  1000,0.,1000.))
-            
-            
-            #metbins_ = [200,350,500,1000]
-            #self.h_met_rebin.append(TH1F('h_met_rebin_'+postname,  'h_met_rebin'+postname,  3, array(('d'),metbins_)))
-            
-            #self.h_mass.append(TH1F('h_mass_'+postname, 'h_mass_'+postname, 400,0.,400.))
-            
-            self.h_met_vs_mass.append(TH2F('h_met_vs_mass_'+postname, 'h_met_vs_mass_'+postname, 1000, 0., 1000., 250, 0, 250.))
 
-            self.h_csv1.append(TH1F('h_csv1_'+postname, 'h_csv1_'+postname, 20,0.,1.))
-            self.h_csv2.append(TH1F('h_csv2_'+postname, 'h_csv2_'+postname, 20,0.,1.))
-            #self.h_mt.append(TH1F('h_mt_'+postname,'h_mt_'+postname,100,400.,1400.))
-            #self.h_dPhi.append(TH1F('h_dPhi_'+postname,'h_dPhi_'+postname,70, -3.5, 3.5 ))
-            self.h_N_e.append(TH1F('h_N_e_'+postname,'h_N_e_'+postname,3,0,3))
-            self.h_N_mu.append(TH1F('h_N_mu_'+postname,'h_N_mu_'+postname,3,0,3))
-            self.h_N_tau.append(TH1F('h_N_tau_'+postname,'h_N_tau_'+postname,3,0,3))
-            self.h_N_Pho.append(TH1F('h_N_Pho_'+postname,'h_N_Pho_'+postname,3,0,3))
-            #self.h_N_b.append(TH1F('h_N_b_'+postname,'h_N_b_'+postname,3,0,3))
-            #self.h_N_j.append(TH1F('h_N_j_'+postname,'h_N_j_'+postname,5,0,5))
-            #self.h_jet1_pT_sr1.append(TH1F('h_jet1_pT_sr1_'+postname,'h_jet1_pT_sr1_'+postname,1000,0.,1000.))
-            self.h_jet1_eta_sr1.append(TH1F('h_jet1_eta_sr1_'+postname,'h_jet1_eta_sr1_'+postname,70, -3.5, 3.5))
-            self.h_jet1_phi_sr1.append(TH1F('h_jet1_phi_sr1_'+postname,'h_jet1_phi_sr1_'+postname,70, -3.5, 3.5))
-            self.h_jet2_pT_sr1.append(TH1F('h_jet2_pT_sr1_'+postname,'h_jet2_pT_sr1_'+postname,1000,0.,1000.))
-            self.h_jet2_eta_sr1.append(TH1F('h_jet2_eta_sr1_'+postname,'h_jet2_eta_sr1_'+postname,70, -3.5, 3.5))
-            self.h_jet2_phi_sr1.append(TH1F('h_jet2_phi_sr1_'+postname,'h_jet2_phi_sr1_'+postname,70, -3.5, 3.5))
-            self.h_jet1_pT_sr2.append(TH1F('h_jet1_pT_sr2_'+postname,'h_jet1_pT_sr2_'+postname,1000,0.,1000.))
-            self.h_jet1_eta_sr2.append(TH1F('h_jet1_eta_sr2_'+postname,'h_jet1_eta_sr2_'+postname,70, -3.5, 3.5))
-            self.h_jet1_phi_sr2.append(TH1F('h_jet1_phi_sr2_'+postname,'h_jet1_phi_sr2_'+postname,70, -3.5, 3.5))
-            self.h_jet2_pT_sr2.append(TH1F('h_jet2_pT_sr2_'+postname,'h_jet2_pT_sr2_'+postname,1000,0.,1000.))
-            self.h_jet2_eta_sr2.append(TH1F('h_jet2_eta_sr2_'+postname,'h_jet2_eta_sr2_'+postname,70, -3.5, 3.5))
-            self.h_jet2_phi_sr2.append(TH1F('h_jet2_phi_sr2_'+postname,'h_jet2_phi_sr2_'+postname,70, -3.5, 3.5))
-            self.h_jet3_pT_sr2.append(TH1F('h_jet3_pT_sr2_'+postname,'h_jet3_pT_sr2_'+postname,1000,0.,1000.))
-            self.h_jet3_eta_sr2.append(TH1F('h_jet3_eta_sr2_'+postname,'h_jet3_eta_sr2_'+postname,70, -3.5, 3.5))
-            self.h_jet3_phi_sr2.append(TH1F('h_jet3_phi_sr2_'+postname,'h_jet3_phi_sr2_'+postname,70, -3.5, 3.5))
-                        
-            h_met_pdf_tmp = []
-            for ipdf in range(101):
-                midname = str(ipdf)
-                h_met_pdf_tmp.append(TH1F('h_met_pdf'+'_'+midname+'_'+postname,  'h_met_pdf'+postname,  1000,0.,1000.))
-            self.h_met_pdf.append(h_met_pdf_tmp)
-            h_met_muR_tmp = []
-            for imuR in range(2):
-                midname = str(imuR)
-                h_met_muR_tmp.append(TH1F('h_met_muR'+'_'+midname+'_'+postname,  'h_met_muR'+postname,  1000,0.,1000.))
-            self.h_met_muR.append(h_met_muR_tmp)
-            h_met_muF_tmp = []
-            for imuF in range(2):
-                midname = str(imuF)
-                h_met_muF_tmp.append(TH1F('h_met_muF'+'_'+midname+'_'+postname,  'h_met_muF'+postname,  1000,0.,1000.))
-            self.h_met_muF.append(h_met_muF_tmp)
-                
+        self.h_met.append(TH1F('h_met_'+postname,  'h_met_'+postname,  1000,0.,1000.))
+        
+
+        #metbins_ = [200,350,500,1000]
+        #self.h_met_rebin.append(TH1F('h_met_rebin_'+postname,  'h_met_rebin'+postname,  3, array(('d'),metbins_)))
+
+        #self.h_mass.append(TH1F('h_mass_'+postname, 'h_mass_'+postname, 400,0.,400.))
+
+        self.h_met_vs_mass.append(TH2F('h_met_vs_mass_'+postname, 'h_met_vs_mass_'+postname, 1000, 0., 1000., 250, 0, 250.))
+
+        self.h_csv1.append(TH1F('h_csv1_'+postname, 'h_csv1_'+postname, 20,0.,1.))
+        self.h_csv2.append(TH1F('h_csv2_'+postname, 'h_csv2_'+postname, 20,0.,1.))
+        #self.h_mt.append(TH1F('h_mt_'+postname,'h_mt_'+postname,100,400.,1400.))
+        #self.h_dPhi.append(TH1F('h_dPhi_'+postname,'h_dPhi_'+postname,70, -3.5, 3.5 ))
+        self.h_N_e.append(TH1F('h_N_e_'+postname,'h_N_e_'+postname,3,0,3))
+        self.h_N_mu.append(TH1F('h_N_mu_'+postname,'h_N_mu_'+postname,3,0,3))
+        self.h_N_tau.append(TH1F('h_N_tau_'+postname,'h_N_tau_'+postname,3,0,3))
+        self.h_N_Pho.append(TH1F('h_N_Pho_'+postname,'h_N_Pho_'+postname,3,0,3))
+        #self.h_N_b.append(TH1F('h_N_b_'+postname,'h_N_b_'+postname,3,0,3))
+        #self.h_N_j.append(TH1F('h_N_j_'+postname,'h_N_j_'+postname,5,0,5))
+        #self.h_jet1_pT_sr1.append(TH1F('h_jet1_pT_sr1_'+postname,'h_jet1_pT_sr1_'+postname,1000,0.,1000.))
+        self.h_jet1_eta_sr1.append(TH1F('h_jet1_eta_sr1_'+postname,'h_jet1_eta_sr1_'+postname,70, -3.5, 3.5))
+        self.h_jet1_phi_sr1.append(TH1F('h_jet1_phi_sr1_'+postname,'h_jet1_phi_sr1_'+postname,70, -3.5, 3.5))
+        self.h_jet2_pT_sr1.append(TH1F('h_jet2_pT_sr1_'+postname,'h_jet2_pT_sr1_'+postname,1000,0.,1000.))
+        self.h_jet2_eta_sr1.append(TH1F('h_jet2_eta_sr1_'+postname,'h_jet2_eta_sr1_'+postname,70, -3.5, 3.5))
+        self.h_jet2_phi_sr1.append(TH1F('h_jet2_phi_sr1_'+postname,'h_jet2_phi_sr1_'+postname,70, -3.5, 3.5))
+        self.h_jet1_pT_sr2.append(TH1F('h_jet1_pT_sr2_'+postname,'h_jet1_pT_sr2_'+postname,1000,0.,1000.))
+        self.h_jet1_eta_sr2.append(TH1F('h_jet1_eta_sr2_'+postname,'h_jet1_eta_sr2_'+postname,70, -3.5, 3.5))
+        self.h_jet1_phi_sr2.append(TH1F('h_jet1_phi_sr2_'+postname,'h_jet1_phi_sr2_'+postname,70, -3.5, 3.5))
+        self.h_jet2_pT_sr2.append(TH1F('h_jet2_pT_sr2_'+postname,'h_jet2_pT_sr2_'+postname,1000,0.,1000.))
+        self.h_jet2_eta_sr2.append(TH1F('h_jet2_eta_sr2_'+postname,'h_jet2_eta_sr2_'+postname,70, -3.5, 3.5))
+        self.h_jet2_phi_sr2.append(TH1F('h_jet2_phi_sr2_'+postname,'h_jet2_phi_sr2_'+postname,70, -3.5, 3.5))
+        self.h_jet3_pT_sr2.append(TH1F('h_jet3_pT_sr2_'+postname,'h_jet3_pT_sr2_'+postname,1000,0.,1000.))
+        self.h_jet3_eta_sr2.append(TH1F('h_jet3_eta_sr2_'+postname,'h_jet3_eta_sr2_'+postname,70, -3.5, 3.5))
+        self.h_jet3_phi_sr2.append(TH1F('h_jet3_phi_sr2_'+postname,'h_jet3_phi_sr2_'+postname,70, -3.5, 3.5))
+
+        h_met_pdf_tmp = []
+        for ipdf in range(101):
+            midname = str(ipdf)
+            h_met_pdf_tmp.append(TH1F('h_met_pdf'+'_'+midname+'_'+postname,  'h_met_pdf'+postname,  1000,0.,1000.))
+        self.h_met_pdf.append(h_met_pdf_tmp)
+        h_met_muR_tmp = []
+        for imuR in range(2):
+            midname = str(imuR)
+            h_met_muR_tmp.append(TH1F('h_met_muR'+'_'+midname+'_'+postname,  'h_met_muR'+postname,  1000,0.,1000.))
+        self.h_met_muR.append(h_met_muR_tmp)
+        h_met_muF_tmp = []
+        for imuF in range(2):
+            midname = str(imuF)
+            h_met_muF_tmp.append(TH1F('h_met_muF'+'_'+midname+'_'+postname,  'h_met_muF'+postname,  1000,0.,1000.))
+        self.h_met_muF.append(h_met_muF_tmp)
+
         print "histo defined"
         
     def FillHisto(self):
