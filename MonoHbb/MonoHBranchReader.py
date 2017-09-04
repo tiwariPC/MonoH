@@ -489,8 +489,8 @@ def AnalyzeDataSet():
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
         nleptons_ = (len(myTaus) + len(myMuos) + len(myEles))
         
-        if not (nleptons_ >= nlepton) : continue 
-        if not (nleptons_ < nLepton) : continue  
+        #if not (nleptons_ >= nlepton) : continue 
+        #if not (nleptons_ < nLepton) : continue  
         
         #regime = False
         #if isboosted: regime = True
@@ -611,8 +611,8 @@ def AnalyzeDataSet():
         if isData: allweights = 1.0 
         #allquantities.regime     = regime
         allquantities.met        = pfMet
-        allquantities.mt         = mt_
-        if not  ((len(myTaus) + len(myMuos) + len(myEles)) < nLepton) : continue
+        #allquantities.mt         = mt_
+        #if not  ((len(myTaus) + len(myMuos) + len(myEles)) < nLepton) : continue
 
         #if len(dphiVec)>0: allquantities.dPhi            = min(dphiVec)
         allquantities.N_e             = len(myEles)
