@@ -135,13 +135,11 @@ class MonoHbbQuantities:
         h_met_muR_tmp = []
         for imuR in range(2):
             midname = str(imuR)
-            h_met_muR_tmp.append(TH1F('h_met_muR'+'_'+midname+'_',  'h_met_muR',  1000,0.,1000.))
-        self.h_met_muR.append(h_met_muR_tmp)
+            self.h_met_muR.append(TH1F('h_met_muR'+'_'+midname+'_',  'h_met_muR',  1000,0.,1000.))
         h_met_muF_tmp = []
         for imuF in range(2):
             midname = str(imuF)
-            h_met_muF_tmp.append(TH1F('h_met_muF'+'_'+midname+'_',  'h_met_muF',  1000,0.,1000.))
-        self.h_met_muF.append(h_met_muF_tmp)
+            self.h_met_muF.append(TH1F('h_met_muF'+'_'+midname+'_',  'h_met_muF',  1000,0.,1000.))
 
         print "histo defined"
         
