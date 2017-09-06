@@ -131,17 +131,17 @@ class MonoHbbQuantities:
         h_met_pdf_tmp = []
         for ipdf in range(101):
             midname = str(ipdf)
-            h_met_pdf_tmp.append(TH1F('h_met_pdf'+'_'+midname+'_'+postname,  'h_met_pdf'+postname,  1000,0.,1000.))
+            h_met_pdf_tmp.append(TH1F('h_met_pdf'+'_'+midname+'_',  'h_met_pdf',  1000,0.,1000.))
         self.h_met_pdf.append(h_met_pdf_tmp)
         h_met_muR_tmp = []
         for imuR in range(2):
             midname = str(imuR)
-            h_met_muR_tmp.append(TH1F('h_met_muR'+'_'+midname+'_'+postname,  'h_met_muR'+postname,  1000,0.,1000.))
+            h_met_muR_tmp.append(TH1F('h_met_muR'+'_'+midname+'_',  'h_met_muR',  1000,0.,1000.))
         self.h_met_muR.append(h_met_muR_tmp)
         h_met_muF_tmp = []
         for imuF in range(2):
             midname = str(imuF)
-            h_met_muF_tmp.append(TH1F('h_met_muF'+'_'+midname+'_'+postname,  'h_met_muF'+postname,  1000,0.,1000.))
+            h_met_muF_tmp.append(TH1F('h_met_muF'+'_'+midname+'_',  'h_met_muF',  1000,0.,1000.))
         self.h_met_muF.append(h_met_muF_tmp)
 
         print "histo defined"
