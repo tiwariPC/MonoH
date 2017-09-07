@@ -131,15 +131,18 @@ class MonoHbbQuantities:
         h_met_pdf_tmp = []
         for ipdf in range(101):
             midname = str(ipdf)
-            self.h_met_pdf.append(TH1F('h_met_pdf'+'_'+midname+'_',  'h_met_pdf',  1000,0.,1000.))
+            h_met_pdf.append(TH1F('h_met_pdf'+'_'+midname+'_',  'h_met_pdf',  1000,0.,1000.))
+        self.h_met_pdf.append(h_met_pdf_tmp)
         h_met_muR_tmp = []
         for imuR in range(2):
             midname = str(imuR)
-            self.h_met_muR.append(TH1F('h_met_muR'+'_'+midname+'_',  'h_met_muR',  1000,0.,1000.))
+            h_met_muR_tmp.append(TH1F('h_met_muR'+'_'+midname+'_',  'h_met_muR',  1000,0.,1000.))
+        self.h_met_muR.append(h_met_muR_tmp)
         h_met_muF_tmp = []
         for imuF in range(2):
             midname = str(imuF)
-            self.h_met_muF.append(TH1F('h_met_muF'+'_'+midname+'_',  'h_met_muF',  1000,0.,1000.))
+            h_met_muF_tmp.append(TH1F('h_met_muF'+'_'+midname+'_',  'h_met_muF',  1000,0.,1000.))
+        self.h_met_muF.append(h_met_muF_tmp)
 
         print "histo defined"
         
@@ -150,13 +153,13 @@ class MonoHbbQuantities:
         
         
         for ipdf in range(101):
-            self.h_met_pdf        [ipdf].Fill(self.met,       1.0)
+            self.h_met_pdf[0]        [ipdf].Fill(self.met,       1.0)
 
         for imuR in range(2):
-            self.h_met_muR        [imuR].Fill(self.met,       1.0)
+            self.h_met_muR[0]        [imuR].Fill(self.met,       1.0)
             
         for imuF in range(2):
-            self.h_met_muF        [imuF].Fill(self.met,       1.0)
+            self.h_met_muF[0]        [imuF].Fill(self.met,       1.0)
         
 
         self.h_met_vs_mass .Fill(self.met, self.mass, WF)
@@ -201,11 +204,11 @@ class MonoHbbQuantities:
         self.h_met[0].Write()
         #self.h_met_rebin[iregime].Write()
         for ipdf in range(101):
-            self.h_met_pdf[ipdf].Write()
+            self.h_met_pdf[0][ipdf].Write()
         for imuR in range(2):
-            self.h_met_muR[imuR].Write()
+            self.h_met_muR[0][imuR].Write()
         for imuF in range(2):
-            self.h_met_muF[imuF].Write()
+            self.h_met_muF[0][imuF].Write()
 
         self.h_met_vs_mass.Write()
 
