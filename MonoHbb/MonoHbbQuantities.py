@@ -131,8 +131,8 @@ class MonoHbbQuantities:
         h_met_pdf_tmp = []
         for ipdf in range(101):
             midname = str(ipdf)
-            h_met_pdf.append(TH1F('h_met_pdf'+'_'+midname+'_',  'h_met_pdf',  1000,0.,1000.))
-        self.h_met_pdf.append(h_met_pdf_tmp)
+            self.h_met_pdf.append(TH1F('h_met_pdf'+'_'+midname+'_',  'h_met_pdf',  1000,0.,1000.))
+        #self.h_met_pdf.append(h_met_pdf_tmp)
         h_met_muR_tmp = []
         for imuR in range(2):
             midname = str(imuR)
