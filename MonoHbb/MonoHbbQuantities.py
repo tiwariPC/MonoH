@@ -149,7 +149,7 @@ class MonoHbbQuantities:
     def FillHisto(self):
         WF = self.weight
         #print "WF = ", WF
-        self.h_met        .Fill(self.met,       WF)
+        self.h_met[0]        .Fill(self.met,       WF)
         
         
         for ipdf in range(101):
@@ -201,7 +201,7 @@ class MonoHbbQuantities:
         self.h_total_weight[0].SetBinContent(1,nevts_weight)
         self.h_total_weight[0].Write()
         
-        self.h_met.Write()
+        self.h_met[0].Write()
         #self.h_met_rebin[iregime].Write()
         for ipdf in range(101):
             self.h_met_pdf[0][ipdf].Write()
