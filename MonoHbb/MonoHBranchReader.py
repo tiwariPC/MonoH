@@ -188,9 +188,9 @@ def AnalyzeDataSet():
 #    cutStatus['njet1SR2'] = 0
 #    cutStatus['njet2SR2'] = 0
 #    cutStatus['njet2SR2'] = 0    
-    cutstatus['isinSR'] = 0
-    cutstatus['hasgoodjets'] = 0
-    cutstatus['hasbtaggedjet'] = 0
+    cutStatus['isinSR'] = 0
+    cutStatus['hasgoodjets'] = 0
+    cutStatus['hasbtaggedjet'] = 0
     cutStatus['btag'] = 0
     cutStatus['dphi'] = 0
     cutStatus['ThinJetVeto'] = 0
@@ -366,7 +366,7 @@ def AnalyzeDataSet():
         else:
             continue 
         
-        cutstatus['isinSR'] += 1        # The event qualifies to be in either of the SRs based on njet
+        cutStatus['isinSR'] += 1        # The event qualifies to be in either of the SRs based on njet
         
         ## for SR1
          # 2 jets and 1 btagged 
@@ -391,11 +391,11 @@ def AnalyzeDataSet():
             if j2.Pt() < 30.0: continue
             if DeltaPhi(j1.Phi(),pfMetPhi) < 0.5: continue
             
-            cutstatus['hasgoodjets'] += 1           # The jets satisfy the required criteria
+            cutStatus['hasgoodjets'] += 1           # The jets satisfy the required criteria
             
             if thinJetCSV[ifirstjet] < 0.8: continue            # Lead jet has to be b-tagged
             
-            cutstatus['hasbtaggedjet'] += 1         # The b-jet criteria is fulfilled 
+            cutStatus['hasbtaggedjet'] += 1         # The b-jet criteria is fulfilled 
             
             jet1pt = j1.Pt()
             jet1phi = j1.Phi()
@@ -440,12 +440,12 @@ def AnalyzeDataSet():
             if j3.Pt() < 30.0: continue
             if DeltaPhi(j3.Phi(),pfMetPhi) < 0.5: continue
             
-            cutstatus['hasgoodjets'] += 1           # The jets satisfy the required criteria
+            cutStatus['hasgoodjets'] += 1           # The jets satisfy the required criteria
             
             if thinJetCSV[ifirstjet] < 0.8: continue            # Lead jet has to be b-tagged
             if thinJetCSV[isecondjet] < 0.8: continue           # Second jet has to be b-tagged
             
-            cutstatus['hasbtaggedjet'] += 1         # The b-jet criteria is fulfilled 
+            cutStatus['hasbtaggedjet'] += 1         # The b-jet criteria is fulfilled 
             
             jet1pt = j1.Pt()
             jet1phi = j1.Phi()
