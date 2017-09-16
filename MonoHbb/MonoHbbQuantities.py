@@ -162,7 +162,7 @@ class MonoHbbQuantities:
             self.h_met_muF[0]        [imuF].Fill(self.met,       1.0)
         
 
-        self.h_met_vs_mass .Fill(self.met, self.mass, WF)
+        self.h_met_vs_mass[0] .Fill(self.met, self.mass, WF)
 
         #self.h_mass           Fill(self.mass,      WF)
         self.h_csv1           .Fill(self.csv1,      WF)
