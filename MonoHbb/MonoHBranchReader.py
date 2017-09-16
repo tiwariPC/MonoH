@@ -181,13 +181,16 @@ def AnalyzeDataSet():
     cutStatus['trigger'] = 0
     cutStatus['filter'] = 0
     cutStatus['pfmet'] =  0
-    cutStatus['njetSR1']=  0
-    cutStatus['njet1SR1'] = 0
-    cutStatus['njet2SR1'] = 0
-    cutStatus['njetSR2'] = 0
-    cutStatus['njet1SR2'] = 0
-    cutStatus['njet2SR2'] = 0
-    cutStatus['njet2SR2'] = 0
+#    cutStatus['njetSR1']=  0
+#    cutStatus['njet1SR1'] = 0
+#    cutStatus['njet2SR1'] = 0
+#    cutStatus['njetSR2'] = 0
+#    cutStatus['njet1SR2'] = 0
+#    cutStatus['njet2SR2'] = 0
+#    cutStatus['njet2SR2'] = 0    
+    cutstatus['isinSR'] = 0
+    cutstatus['hasgoodjets'] = 0
+    cutstatus['hasbtaggedjet'] = 0
     cutStatus['btag'] = 0
     cutStatus['dphi'] = 0
     cutStatus['ThinJetVeto'] = 0
@@ -352,105 +355,112 @@ def AnalyzeDataSet():
         
 
         ## list comprehensation
-        ## list comprehensation
+        
+        inSR1=False
+        inSR2=False
+        
+        if nTHINJets == 2:
+            inSR1=True
+        elif nTHINJets == 3:
+            inSR2=True            
+        else:
+            continue 
+        
+        cutstatus['isinSR'] += 1        # The event qualifies to be in either of the SRs based on njet
+        
         ## for SR1
          # 2 jets and 1 btagged 
-        njet1SR1index = -1
-        njet2SR1index = -1
-        nJetsr1 = False
-        if nTHINJets <= 2:
-            nJetsr1 = True
-        if nJetsr1 == False  : continue
-        cutStatus['njetSR1'] += 1
-        for ithinjet in range(nTHINJets):
-           j1 = thinjetP4[ithinjet]
-           if (j1.Pt() > 50.0) & (DeltaPhi(j1.Phi(),pfMetPhi) > 0.5):
-               if (thinJetCSV[ithinjet] < 0.8): continue
-               if thinjetNhadEF[ithinjet] > 0.8 : continue
-               if thinjetChadEF[ithinjet]< 0.1: continue
-               njet1SR1index = ithinjet
-               for jthinjet in range(nTHINJets):
-                    if (jthinjet != ithinjet ) & ( jthinjet > ithinjet ) & (jthinjet < nTHINJets) : 
-                        j2 = thinjetP4[jthinjet]
-                        if (j2.Pt() < 30.0) : continue
-                        if (DeltaPhi(j1.Phi(),pfMetPhi) < 0.5) :continue
-                        njet1SR1index = jthinjet
-                        jet1pt = j1.Pt()
-                        jet1phi = j1.Phi()
-                        jet1eta = j1.Eta()
-                        jet2pt = j2.Pt()
-                        jet2phi = j2.Phi()
-                        jet2eta = j2.Eta()
-                        pair1 = []
-                        pair2 = []
-                        pair1.append(jet1pt); pair1.append(jet1eta); pair1.append(jet1phi)
-                        pair2.append(jet2pt); pair2.append(jet2eta); pair2.append(jet2phi)
-                        jetSR1Info.append(pair1);jetSR1Info.append(pair2)
-                        
-        if njet1SR1index > -1 :
-           cutStatus['njet1SR1'] += 1
-        if njet1SR1index > -1 :
-           cutStatus['njet2SR1'] += 1
+         
+        if inSR1:                  
+            
+            if thinjetP4[0].Pt()>thinjetP4[1].Pt():   # Set lead jet as j1, second jet as j2
+                ifirstjet=0
+                isecondjet=1
+            else:
+                ifirstjet=1
+                isecondjet=0
+                
+            j1=thinjetP4[ifirstjet]
+            j2=thinjetP4[isecondjet]
+            
+            if j1.Pt() < 50.0: continue
+            if DeltaPhi(j1.Phi(),pfMetPhi) < 0.5: continue            
+            if thinjetNhadEF[ifirstjet] > 0.8 : continue
+            if thinjetChadEF[ifirstjet]< 0.1: continue
+                            
+            if j2.Pt() < 30.0: continue
+            if DeltaPhi(j1.Phi(),pfMetPhi) < 0.5: continue
+            
+            cutstatus['hasgoodjets'] += 1           # The jets satisfy the required criteria
+            
+            if thinJetCSV[ifirstjet] < 0.8: continue            # Lead jet has to be b-tagged
+            
+            cutstatus['hasbtaggedjet'] += 1         # The b-jet criteria is fulfilled 
+            
+            jet1pt = j1.Pt()
+            jet1phi = j1.Phi()
+            jet1eta = j1.Eta()
+            jet2pt = j2.Pt()
+            jet2phi = j2.Phi()
+            jet2eta = j2.Eta()
+
+            jetSR1Info.append([jet1pt,jet1eta,jet1phi])
+            jetSR1Info.append([jet2pt,jet2eta,jet2phi])
+          
      
      ## for SR2
         # 3 jets and 2 btagged 
-        njet1SR2index = -1
-        njet2SR2index = -1
-        njet3SR2index = -1
-        nJetsr2 = False
-        if nTHINJets <= 3 :
-            nJetsr2 = True
-        if nJetsr2 == False : continue
-        cutStatus['njetSR2'] += 1
-        for ithinjet in range(nTHINJets):
-            j1 = thinjetP4[ithinjet]
-            if (j1.Pt() > 50.0) & (DeltaPhi(j1.Phi(),pfMetPhi) > 0.5):
-               if (thinJetCSV[ithinjet] < 0.8): continue
-               if thinjetNhadEF[ithinjet] > 0.8 : continue
-               if thinjetChadEF[ithinjet]< 0.1: continue
-               njet1SR2index = ithinjet
-               for jthinjet in range(nTHINJets):
-                  if (jthinjet != ithinjet ) & ( jthinjet > ithinjet ) & (jthinjet < nTHINJets) : 
-                     j2 = thinjetP4[jthinjet]
-                     if (j2.Pt() < 50.0) : continue
-                     if (DeltaPhi(j2.Phi(),pfMetPhi) < 0.5) :continue
-                     if (thinJetCSV[jthinjet] < 0.8): continue
-                     if thinjetNhadEF[jthinjet] > 0.8 : continue
-                     if thinjetChadEF[jthinjet]< 0.1: continue
-                     njet2SR2index = jthinjet
-                     for kthinjet in range(nTHINJets):
-                        if (kthinjet != ithinjet ) & ( kthinjet > ithinjet ) & (kthinjet < nTHINJets) & (kthinjet != jthinjet ) & ( kthinjet > jthinjet ) : 
-                           j3 = thinjetP4[kthinjet]
-                           if (j3.Pt() < 30.0) : continue
-                           if (DeltaPhi(j3.Phi(),pfMetPhi) < 0.5) :continue
-                           njet3SR2index = kthinjet
-                           jet1pt = j1.Pt()
-                           jet1phi = j1.Phi()
-                           jet1eta = j1.Eta()
-                           jet2pt = j2.Pt()
-                           jet2phi = j2.Phi()
-                           jet2eta = j2.Eta()
-                           jet3pt = j2.Pt()
-                           jet3phi = j2.Phi()
-                           jet3eta = j2.Eta()
-                           pair1 = []
-                           pair2 = []
-                           pair3 = []
-                           pair1.append(jet1pt); pair1.append(jet1eta); pair1.append(jet1phi)
-                           pair2.append(jet2pt); pair2.append(jet2eta); pair2.append(jet2phi)
-                           pair3.append(jet3pt); pair3.append(jet3eta); pair3.append(jet3phi)
-                           jetSR1Info.append(pair1);jetSR1Info.append(pair2)
-                           pair1.append(jet1pt); pair1.append(jet1eta); pair1.append(jet1phi)
-                           pair2.append(jet2pt); pair2.append(jet2eta); pair2.append(jet2phi)
-                           pair3.append(jet3pt); pair3.append(jet3eta); pair3.append(jet3phi)
-                           jetSR2Info.append(pair1);jetSR2Info.append(pair2);jetSR2Info.append(pair3)
-        if njet1SR2index > -1 :
-         cutStatus['njet1SR2'] += 1
-        if njet2SR2index > -1 :
-         cutStatus['njet2SR2'] += 1
-        if njet3SR2index > -1 :
-          cutStatus['njet2SR2'] += 1
         
+        if inSR2:
+        
+            alljetPT=[jet.Pt() for jet in thinjetP4]
+            jetindex=[0,1,2]
+                        
+            sortedjets=[jet for pt,jet in sorted(zip(alljetPT,thinjetP4), reverse=True)]      # This gives a list of jets with their pTs in descending order
+            sortedindex=[jetindex for pt,jetindex in sorted(zip(alljetPT,jetindex), reverse=True)]     # Indices of jets in thinjetP4 in decscending order of jetPT
+            
+            j1=sortedjets[0]
+            j2=sortedjets[1]
+            j3=sortedjets[2]
+            
+            ifirstjet=sortedindex[0]
+            isecondjet=sortedindex[1]
+            ithirdjet=sortedindex[2]
+            
+            if j1.Pt() < 50.0: continue
+            if DeltaPhi(j1.Phi(),pfMetPhi) < 0.5: continue            
+            if thinjetNhadEF[ifirstjet] > 0.8 : continue
+            if thinjetChadEF[ifirstjet]< 0.1: continue
+            
+            if j2.Pt() < 50.0: continue
+            if DeltaPhi(j2.Phi(),pfMetPhi) < 0.5: continue            
+            if thinjetNhadEF[isecondjet] > 0.8 : continue
+            if thinjetChadEF[isecondjet]< 0.1: continue
+            
+            if j3.Pt() < 30.0: continue
+            if DeltaPhi(j3.Phi(),pfMetPhi) < 0.5: continue
+            
+            cutstatus['hasgoodjets'] += 1           # The jets satisfy the required criteria
+            
+            if thinJetCSV[ifirstjet] < 0.8: continue            # Lead jet has to be b-tagged
+            if thinJetCSV[isecondjet] < 0.8: continue           # Second jet has to be b-tagged
+            
+            cutstatus['hasbtaggedjet'] += 1         # The b-jet criteria is fulfilled 
+            
+            jet1pt = j1.Pt()
+            jet1phi = j1.Phi()
+            jet1eta = j1.Eta()
+            jet2pt = j2.Pt()
+            jet2phi = j2.Phi()
+            jet2eta = j2.Eta()
+            jet3pt = j3.Pt()
+            jet3phi = j3.Phi()
+            jet3eta = j3.Eta()
+
+            jetSR2Info.append([jet1pt,jet1eta,jet1phi])
+            jetSR2Info.append([jet2pt,jet2eta,jet2phi])
+            jetSR2Info.append([jet3pt,jet3eta,jet3phi])
+
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
         ## min DPhi
@@ -633,23 +643,27 @@ def AnalyzeDataSet():
             
         #if not regime:  
          #allquantities.mass            = HiggsInfo_sorted[0][2]
-        if len(jetSR1Info) <= 0 : continue
-        if len(jetSR2Info) <= 0 : continue
-        allquantities.jet1_pT_sr1     = jetSR1Info[0][0]
-        allquantities.jet1_eta_sr1    = jetSR1Info[0][1]
-        allquantities.jet1_phi_sr1    = jetSR1Info[0][2]
-        allquantities.jet2_pT_sr1     = jetSR1Info[1][0]
-        allquantities.jet2_eta_sr1    = jetSR1Info[1][1]
-        allquantities.jet2_phi_sr1    = jetSR1Info[1][2]
-        allquantities.jet1_pT_sr2     = jetSR2Info[0][0]
-        allquantities.jet1_eta_sr2    = jetSR2Info[0][1]
-        allquantities.jet1_phi_sr2    = jetSR2Info[0][2]
-        allquantities.jet2_pT_sr1     = jetSR2Info[1][0]
-        allquantities.jet2_eta_sr1    = jetSR2Info[1][1]
-        allquantities.jet2_phi_sr1    = jetSR2Info[1][2]
-        allquantities.jet3_pT_sr1     = jetSR2Info[2][0]
-        allquantities.jet3_eta_sr1    = jetSR2Info[2][1]
-        allquantities.jet3_phi_sr1    = jetSR2Info[2][2]
+         
+         
+        if inSR1:        
+            allquantities.jet1_pT_sr1     = jetSR1Info[0][0]
+            allquantities.jet1_eta_sr1    = jetSR1Info[0][1]
+            allquantities.jet1_phi_sr1    = jetSR1Info[0][2]
+            allquantities.jet2_pT_sr1     = jetSR1Info[1][0]
+            allquantities.jet2_eta_sr1    = jetSR1Info[1][1]
+            allquantities.jet2_phi_sr1    = jetSR1Info[1][2]
+        elif inSR2:
+            allquantities.jet1_pT_sr2     = jetSR2Info[0][0]
+            allquantities.jet1_eta_sr2    = jetSR2Info[0][1]
+            allquantities.jet1_phi_sr2    = jetSR2Info[0][2]
+            allquantities.jet2_pT_sr1     = jetSR2Info[1][0]
+            allquantities.jet2_eta_sr1    = jetSR2Info[1][1]
+            allquantities.jet2_phi_sr1    = jetSR2Info[1][2]
+            allquantities.jet3_pT_sr1     = jetSR2Info[2][0]
+            allquantities.jet3_eta_sr1    = jetSR2Info[2][1]
+            allquantities.jet3_phi_sr1    = jetSR2Info[2][2]
+        else:
+            continue
             
         #print (allquantities.regime, allquantities.met,allquantities.mass )
         allquantities.FillHisto()
