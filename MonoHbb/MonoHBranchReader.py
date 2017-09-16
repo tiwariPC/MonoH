@@ -620,7 +620,8 @@ def AnalyzeDataSet():
         
         if isData: allweights = 1.0 
         #allquantities.regime     = regime
-        allquantities.met        = pfMet
+        if pfMet is None:
+           allquantities.met        = pfMet
         #allquantities.mt         = mt_
         #if not  ((len(myTaus) + len(myMuos) + len(myEles)) < nLepton) : continue
 
