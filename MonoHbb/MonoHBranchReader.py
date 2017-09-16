@@ -645,7 +645,8 @@ def AnalyzeDataSet():
          #allquantities.mass            = HiggsInfo_sorted[0][2]
          
          
-        if inSR1:        
+        if inSR1:
+            if len(jetSR1Info) <= 0: continue
             allquantities.jet1_pT_sr1     = jetSR1Info[0][0]
             allquantities.jet1_eta_sr1    = jetSR1Info[0][1]
             allquantities.jet1_phi_sr1    = jetSR1Info[0][2]
@@ -653,6 +654,7 @@ def AnalyzeDataSet():
             allquantities.jet2_eta_sr1    = jetSR1Info[1][1]
             allquantities.jet2_phi_sr1    = jetSR1Info[1][2]
         elif inSR2:
+            if len(jetSR2Info) <=0: continue
             allquantities.jet1_pT_sr2     = jetSR2Info[0][0]
             allquantities.jet1_eta_sr2    = jetSR2Info[0][1]
             allquantities.jet1_phi_sr2    = jetSR2Info[0][2]
