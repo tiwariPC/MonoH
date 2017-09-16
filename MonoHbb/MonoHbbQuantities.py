@@ -165,9 +165,9 @@ class MonoHbbQuantities:
         #self.h_met_vs_mass[0] .Fill(self.met, self.mass, WF)
 
         #self.h_mass           Fill(self.mass,      WF)
-        self.h_csv1           .Fill(self.csv1,      WF)
-        self.h_csv2           .Fill(self.csv2,      WF)
-        self.h_mt             .Fill(self.mt,        WF)
+        #self.h_csv1           .Fill(self.csv1,      WF)
+        #self.h_csv2           .Fill(self.csv2,      WF)
+        #self.h_mt             .Fill(self.mt,        WF)
         #self.h_dPhi           Fill(self.dPhi,      WF)
         self.h_N_e            .Fill(self.N_e,       WF)
         self.h_N_mu           .Fill(self.N_mu,      WF)
