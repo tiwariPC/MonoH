@@ -175,7 +175,7 @@ class MonoHbbQuantities:
         self.h_N_Pho[0]          .Fill(self.N_Pho,     WF)
         #self.h_N_b            Fill(self.N_b,       WF)
         #self.h_N_j            Fill(self.N_j,       WF)
-        self.h_jet1_pT_sr1    .Fill(self.jet1_pT_sr1,    WF)
+        self.h_jet1_pT_sr1[1]    .Fill(self.jet1_pT_sr1,    WF)
         self.h_jet1_eta_sr1[0]   .Fill(self.jet1_eta_sr1,  WF)
         self.h_jet1_phi_sr1[0]   .Fill(self.jet1_phi_sr1,  WF)
         self.h_jet2_pT_sr1[0]    .Fill(self.jet2_pT_sr1,  WF)
