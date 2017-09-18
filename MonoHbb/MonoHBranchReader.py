@@ -47,10 +47,11 @@ parser.add_option("--theac", action="store_true",  dest="theac")
 
 (options, args) = parser.parse_args()
 
+if options.farmout==None:
+    isfarmout = False
+else:
+    isfarmout = options.farmout
 
-
-
-isfarmout = options.farmout 
 print (options.inputfile, options.outputfile )
 #print 'options = ',[options.inputfile]
 inputfilename = options.inputfile
@@ -66,13 +67,12 @@ textfile = rootfile+".txt"
 #outputdir='MonoHSamples/'
 #os.system('mkdir '+outputdir)
 
-outfilename=''
-if not isfarmout:
-    outfilename = options.outputdir + "/" + rootfile
+outfilename=''  
 
 if isfarmout:
-    outfilename = options.outputfile
-
+    outfilename = options.outputdir + "/Output_" + rootfile
+else:
+    outfilename = options.outputfile    
 
 skimmedTree = TChain("outTree")
 
@@ -199,6 +199,7 @@ def AnalyzeDataSet():
     cutStatus['muveto'] = 0
     cutStatus['tauveto'] = 0
     
+    print outfilename
     allquantities = MonoHbbQuantities(outfilename)
     allquantities.defineHisto()
 
@@ -259,7 +260,7 @@ def AnalyzeDataSet():
 
         #if event != 4126: continue                                
         #if lumi  != 42: continue                                
-        if event%100==0: print (event)
+        if event%10000==0: print (event)
         #trigName                   = skimmedTree.__getattr__('st_hlt_trigName')
         #trigResult                 = skimmedTree.__getattr__('st_hlt_trigResult')
         #filterName                 = skimmedTree.__getattr__('st_hlt_filterName')
