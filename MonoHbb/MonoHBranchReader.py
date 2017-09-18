@@ -68,10 +68,10 @@ textfile = rootfile+".txt"
 
 
 outfilename=''
-if not isfarmout:
-    outfilename = options.outputdir + "/" + options   .outputfile
-
 if isfarmout:
+    outfilename = options.outputdir + "/" + options.outputfile
+
+if not isfarmout:
     outfilename = options.outputfile
 
 
@@ -855,7 +855,3 @@ if __name__ == "__main__":
     if options.analyze:
         print "now calling analyzedataset"
         AnalyzeDataSet()
-    
-    
-    
-
