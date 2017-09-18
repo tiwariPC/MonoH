@@ -112,7 +112,7 @@ class MonoHbbQuantities:
         self.h_N_Pho.append(TH1F('h_N_Pho_','h_N_Pho_',3,0,3))
         #self.h_N_b.append(TH1F('h_N_b_'+postname,'h_N_b_'+postname,3,0,3))
         #self.h_N_j.append(TH1F('h_N_j_'+postname,'h_N_j_'+postname,5,0,5))
-        #self.h_jet1_pT_sr1.append(TH1F('h_jet1_pT_sr1_'+postname,'h_jet1_pT_sr1_'+postname,1000,0.,1000.))
+        self.h_jet1_pT_sr1.append(TH1F('h_jet1_pT_sr1_'+postname,'h_jet1_pT_sr1_'+postname,1000,0.,1000.))
         self.h_jet1_eta_sr1.append(TH1F('h_jet1_eta_sr1_','h_jet1_eta_sr1_',70, -3.5, 3.5))
         self.h_jet1_phi_sr1.append(TH1F('h_jet1_phi_sr1_','h_jet1_phi_sr1_',70, -3.5, 3.5))
         self.h_jet2_pT_sr1.append(TH1F('h_jet2_pT_sr1_','h_jet2_pT_sr1_',1000,0.,1000.))
