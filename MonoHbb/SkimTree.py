@@ -528,7 +528,7 @@ def AnalyzeDataSet():
             if not  ( (mass > 60.0 ) & (mass < 120.0) ): continue
             if ( muCharge[mu1] * muCharge[mu2] > 0 ) : continue
             
-            zmumuRecoilPx = -( pfMet*math.acos(pfMetPhi)  - p4_mu1.Px() - p4_ele2.Px())
+            zmumuRecoilPx = -( pfMet*math.acos(pfMetPhi)  - p4_mu1.Px() - p4_mu2.Px())
             zmumuRecoilPy = -( pfMet*math.asin(pfMetPhi)  - p4_mu1.Py() - p4_mu2.Py())
             ZmumuRecoil =  math.sqrt(zmumuRecoilPx * zmumuRecoilPx  +  zmumuRecoilPy*zmumuRecoilPy)
             ZmumuMass = mass

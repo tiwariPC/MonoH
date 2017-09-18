@@ -149,7 +149,7 @@ class MonoHbbQuantities:
     def FillHisto(self):
         WF = self.weight
         #print "WF = ", WF
-        self.h_met        .Fill(self.met,       WF)
+        self.h_met[0]        .Fill(self.met,       WF)
         
         
         for ipdf in range(101):
@@ -162,34 +162,34 @@ class MonoHbbQuantities:
             self.h_met_muF[0]        [imuF].Fill(self.met,       1.0)
         
 
-        self.h_met_vs_mass .Fill(self.met, self.mass, WF)
+        #self.h_met_vs_mass[0] .Fill(self.met, self.mass, WF)
 
         #self.h_mass           Fill(self.mass,      WF)
-        self.h_csv1           .Fill(self.csv1,      WF)
-        self.h_csv2           .Fill(self.csv2,      WF)
-        self.h_mt             .Fill(self.mt,        WF)
+        #self.h_csv1           .Fill(self.csv1,      WF)
+        #self.h_csv2           .Fill(self.csv2,      WF)
+        #self.h_mt             .Fill(self.mt,        WF)
         #self.h_dPhi           Fill(self.dPhi,      WF)
-        self.h_N_e            .Fill(self.N_e,       WF)
-        self.h_N_mu           .Fill(self.N_mu,      WF)
-        self.h_N_tau          .Fill(self.N_tau,     WF)
-        self.h_N_Pho          .Fill(self.N_Pho,     WF)
+        self.h_N_e[0]            .Fill(self.N_e,       WF)
+        self.h_N_mu[0]           .Fill(self.N_mu,      WF)
+        self.h_N_tau[0]          .Fill(self.N_tau,     WF)
+        self.h_N_Pho[0]          .Fill(self.N_Pho,     WF)
         #self.h_N_b            Fill(self.N_b,       WF)
         #self.h_N_j            Fill(self.N_j,       WF)
-        self.h_jet1_pT_sr1    .Fill(self.jet1_pT_sr1,    WF)
-        self.h_jet1_eta_sr1   .Fill(self.jet1_eta_sr1,  WF)
-        self.h_jet1_phi_sr1   .Fill(self.jet1_phi_sr1,  WF)
-        self.h_jet2_pT_sr1    .Fill(self.jet2_pT_sr1,  WF)
-        self.h_jet2_eta_sr1   .Fill(self.jet2_eta_sr1,  WF)
-        self.h_jet2_phi_sr1   .Fill(self.jet2_phi_sr1,  WF)
-        self.h_jet1_pT_sr2    .Fill(self.jet1_pT_sr2,  WF)
-        self.h_jet1_eta_sr2   .Fill(self.jet1_eta_sr2,  WF)
-        self.h_jet1_phi_sr2   .Fill(self.jet1_phi_sr2,  WF)
-        self.h_jet2_pT_sr2    .Fill(self.jet2_pT_sr2,  WF)
-        self.h_jet2_eta_sr2   .Fill(self.jet2_eta_sr2,  WF)
-        self.h_jet2_phi_sr2   .Fill(self.jet2_phi_sr2,  WF)
-        self.h_jet3_pT_sr2    .Fill(self.jet3_pT_sr2,  WF)
-        self.h_jet3_eta_sr2   .Fill(self.jet3_eta_sr2,  WF)
-        self.h_jet3_phi_sr2   .Fill(self.jet3_phi_sr2,  WF)
+        self.h_jet1_pT_sr1[1]    .Fill(self.jet1_pT_sr1,    WF)
+        self.h_jet1_eta_sr1[0]   .Fill(self.jet1_eta_sr1,  WF)
+        self.h_jet1_phi_sr1[0]   .Fill(self.jet1_phi_sr1,  WF)
+        self.h_jet2_pT_sr1[0]    .Fill(self.jet2_pT_sr1,  WF)
+        self.h_jet2_eta_sr1[0]   .Fill(self.jet2_eta_sr1,  WF)
+        self.h_jet2_phi_sr1[0]   .Fill(self.jet2_phi_sr1,  WF)
+        self.h_jet1_pT_sr2[0]    .Fill(self.jet1_pT_sr2,  WF)
+        self.h_jet1_eta_sr2[0]   .Fill(self.jet1_eta_sr2,  WF)
+        self.h_jet1_phi_sr2[0]   .Fill(self.jet1_phi_sr2,  WF)
+        self.h_jet2_pT_sr2[0]    .Fill(self.jet2_pT_sr2,  WF)
+        self.h_jet2_eta_sr2[0]   .Fill(self.jet2_eta_sr2,  WF)
+        self.h_jet2_phi_sr2[0]   .Fill(self.jet2_phi_sr2,  WF)
+        self.h_jet3_pT_sr2[0]    .Fill(self.jet3_pT_sr2,  WF)
+        self.h_jet3_eta_sr2[0]   .Fill(self.jet3_eta_sr2,  WF)
+        self.h_jet3_phi_sr2[0]   .Fill(self.jet3_phi_sr2,  WF)
         
         
     def WriteHisto(self, (nevts,nevts_weight)):
@@ -210,12 +210,12 @@ class MonoHbbQuantities:
         for imuF in range(2):
             self.h_met_muF[0][imuF].Write()
 
-        self.h_met_vs_mass.Write()
+        #self.h_met_vs_mass.Write()
 
         #self.h_mass.Write()
-        self.h_csv1.Write()
-        self.h_csv2.Write()
-        self.h_mt.Write()
+        #self.h_csv1.Write()
+        #self.h_csv2.Write()
+        #self.h_mt.Write()
         #self.h_dPhi.Write()
         self.h_N_e.Write()
         self.h_N_mu.Write()
