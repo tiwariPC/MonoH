@@ -69,7 +69,7 @@ textfile = rootfile+".txt"
 
 outfilename=''
 if not isfarmout:
-    outfilename = options.outputdir + "/" + option.outputfile
+    outfilename = options.outputdir + "/" + options.outputfile
 
 if isfarmout:
     outfilename = options.outputfile
