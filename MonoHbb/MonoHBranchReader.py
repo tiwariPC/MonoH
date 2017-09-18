@@ -66,9 +66,10 @@ textfile = rootfile+".txt"
 #outputdir='MonoHSamples/'
 #os.system('mkdir '+outputdir)
 
+
 outfilename=''
 if not isfarmout:
-    outfilename = options.outputdir + "/" + outputfile
+    outfilename = options.outputdir + "/" + option.outputfile
 
 if isfarmout:
     outfilename = options.outputfile
