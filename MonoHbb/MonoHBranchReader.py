@@ -69,7 +69,7 @@ textfile = rootfile+".txt"
 
 outfilename=''
 if not isfarmout:
-    outfilename = options.outputdir + "/" + options.outputfile
+    outfilename = options.outputdir + "/" + options   .outputfile
 
 if isfarmout:
     outfilename = options.outputfile
@@ -169,7 +169,7 @@ debug = False
 def AnalyzeDataSet():
     ## Input rootfile name
     
-    #rootfilename = inputfilename
+    rootfilename = inputfilename
     print (rootfilename,inputfilename)
     #f = TFile(rootfilename,'READ')
     #skimmedTree = f.Get('tree/treeMaker')
