@@ -51,7 +51,7 @@ parser.add_option("--theac", action="store_true",  dest="theac")
 
 
 isfarmout = options.farmout 
-print (options.inputfile, options.outputfile )
+print (options.inputfile , options.outputfile )
 #print 'options = ',[options.inputfile]
 inputfilename = options.inputfile
 
@@ -68,7 +68,7 @@ textfile = rootfile+".txt"
 
 outfilename=''
 if not isfarmout:
-    outfilename = options.outputdir + "/" + rootfile
+    outfilename = options.outputdir + "/" + outputfile
 
 if isfarmout:
     outfilename = options.outputfile
@@ -76,7 +76,7 @@ if isfarmout:
 
 skimmedTree = TChain("outTree")
 
-#print isfarmout
+print isfarmout
 
 
 
@@ -169,7 +169,7 @@ def AnalyzeDataSet():
     ## Input rootfile name
     
     #rootfilename = inputfilename
-    #print (rootfilename,inputfilename)
+    print (rootfilename,inputfilename)
     #f = TFile(rootfilename,'READ')
     #skimmedTree = f.Get('tree/treeMaker')
     NEntries = skimmedTree.GetEntries()
