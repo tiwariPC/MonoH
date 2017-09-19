@@ -47,11 +47,13 @@ parser.add_option("--theac", action="store_true",  dest="theac")
 
 (options, args) = parser.parse_args()
 
+if options.farmout==None:
+    isfarmout = False
+else:
+    isfarmout = options.farmout
 
+print (options.inputfile, options.outputfile )
 
-
-isfarmout = options.farmout 
-print (options.inputfile , options.outputfile )
 #print 'options = ',[options.inputfile]
 inputfilename = options.inputfile
 
@@ -66,13 +68,12 @@ textfile = rootfile+".txt"
 #outputdir='MonoHSamples/'
 #os.system('mkdir '+outputdir)
 
-
 outfilename=''
-if isfarmout:
-    outfilename = options.outputdir + "/" + options.outputfile
 
-if not isfarmout:
-    outfilename = options.outputfile
+if isfarmout:
+    outfilename = options.outputdir + "/Output_" + rootfile
+else:
+    outfilename = options.outputfile    
 
 
 skimmedTree = TChain("outTree")
@@ -200,6 +201,7 @@ def AnalyzeDataSet():
     cutStatus['muveto'] = 0
     cutStatus['tauveto'] = 0
     
+    print outfilename
     allquantities = MonoHbbQuantities(outfilename)
     allquantities.defineHisto()
 
@@ -260,7 +262,7 @@ def AnalyzeDataSet():
 
         #if event != 4126: continue                                
         #if lumi  != 42: continue                                
-        if event%100==0: print (event)
+        if event%10000==0: print (event)
         #trigName                   = skimmedTree.__getattr__('st_hlt_trigName')
         #trigResult                 = skimmedTree.__getattr__('st_hlt_trigResult')
         #filterName                 = skimmedTree.__getattr__('st_hlt_filterName')
@@ -646,25 +648,23 @@ def AnalyzeDataSet():
          #allquantities.mass            = HiggsInfo_sorted[0][2]
          
          
-        if inSR1:
-            if len(jetSR1Info) > 0:
-               allquantities.jet1_pT_sr1     = jetSR1Info[0][0]
-               allquantities.jet1_eta_sr1    = jetSR1Info[0][1]
-               allquantities.jet1_phi_sr1    = jetSR1Info[0][2]
-               allquantities.jet2_pT_sr1     = jetSR1Info[1][0]
-               allquantities.jet2_eta_sr1    = jetSR1Info[1][1]
-               allquantities.jet2_phi_sr1    = jetSR1Info[1][2]
-        elif inSR2:
-            if len(jetSR2Info) > 0:
-               allquantities.jet1_pT_sr2     = jetSR2Info[0][0]
-               allquantities.jet1_eta_sr2    = jetSR2Info[0][1]
-               allquantities.jet1_phi_sr2    = jetSR2Info[0][2]
-               allquantities.jet2_pT_sr1     = jetSR2Info[1][0]
-               allquantities.jet2_eta_sr1    = jetSR2Info[1][1]
-               allquantities.jet2_phi_sr1    = jetSR2Info[1][2]
-               allquantities.jet3_pT_sr1     = jetSR2Info[2][0]
-               allquantities.jet3_eta_sr1    = jetSR2Info[2][1]
-               allquantities.jet3_phi_sr1    = jetSR2Info[2][2]
+        if inSR1:            
+           allquantities.jet1_pT_sr1     = jetSR1Info[0][0]
+           allquantities.jet1_eta_sr1    = jetSR1Info[0][1]
+           allquantities.jet1_phi_sr1    = jetSR1Info[0][2]
+           allquantities.jet2_pT_sr1     = jetSR1Info[1][0]
+           allquantities.jet2_eta_sr1    = jetSR1Info[1][1]
+           allquantities.jet2_phi_sr1    = jetSR1Info[1][2]
+        elif inSR2:            
+           allquantities.jet1_pT_sr2     = jetSR2Info[0][0]
+           allquantities.jet1_eta_sr2    = jetSR2Info[0][1]
+           allquantities.jet1_phi_sr2    = jetSR2Info[0][2]
+           allquantities.jet2_pT_sr1     = jetSR2Info[1][0]
+           allquantities.jet2_eta_sr1    = jetSR2Info[1][1]
+           allquantities.jet2_phi_sr1    = jetSR2Info[1][2]
+           allquantities.jet3_pT_sr1     = jetSR2Info[2][0]
+           allquantities.jet3_eta_sr1    = jetSR2Info[2][1]
+           allquantities.jet3_phi_sr1    = jetSR2Info[2][2]
         else:
             continue
             

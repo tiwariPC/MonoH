@@ -194,6 +194,7 @@ class MonoHbbQuantities:
         
     def WriteHisto(self, (nevts,nevts_weight)):
         f = TFile(self.rootfilename,'RECREATE')
+        print self.rootfilename
         f.cd()
         self.h_total[0].SetBinContent(1,nevts)
         self.h_total[0].Write()
