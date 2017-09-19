@@ -53,6 +53,7 @@ else:
     isfarmout = options.farmout
 
 print (options.inputfile, options.outputfile )
+
 #print 'options = ',[options.inputfile]
 inputfilename = options.inputfile
 
@@ -67,16 +68,17 @@ textfile = rootfile+".txt"
 #outputdir='MonoHSamples/'
 #os.system('mkdir '+outputdir)
 
-outfilename=''  
+outfilename=''
 
 if isfarmout:
     outfilename = options.outputdir + "/Output_" + rootfile
 else:
     outfilename = options.outputfile    
 
+
 skimmedTree = TChain("outTree")
 
-#print isfarmout
+print isfarmout
 
 
 
@@ -168,8 +170,8 @@ debug = False
 def AnalyzeDataSet():
     ## Input rootfile name
     
-    #rootfilename = inputfilename
-    #print (rootfilename,inputfilename)
+    rootfilename = inputfilename
+    print (rootfilename,inputfilename)
     #f = TFile(rootfilename,'READ')
     #skimmedTree = f.Get('tree/treeMaker')
     NEntries = skimmedTree.GetEntries()
@@ -853,7 +855,3 @@ if __name__ == "__main__":
     if options.analyze:
         print "now calling analyzedataset"
         AnalyzeDataSet()
-    
-    
-    
-
