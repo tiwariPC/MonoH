@@ -205,8 +205,8 @@ def AnalyzeDataSet():
     allquantities = MonoHbbQuantities(outfilename)
     allquantities.defineHisto()
 
-
-    bbMET_tree.Branch('bbMETvariables',AddressOf(allquantities,'histo'),'histo/D')
+    for x in allquantities if isinstance(x, float):
+       bbMET_tree.Branch('bbMETvariables',AddressOf(allquantities,'histo'),'histo/D')
     # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
     # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
     # BTag Scale Factor Initialisation--------------------------------------------------------------------------------------------------------------------------------
