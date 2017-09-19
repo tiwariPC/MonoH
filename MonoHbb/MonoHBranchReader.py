@@ -76,6 +76,9 @@ else:
 
 skimmedTree = TChain("outTree")
 
+bbMET_tree = TTree( 'bbMET_tree', 'outputTree' )
+
+bbMET_tree.Branch("bbMET_branch", "Event", allquantities,16000,2)
 #print isfarmout
 
 
@@ -687,6 +690,8 @@ def AnalyzeDataSet():
             
         #print (allquantities.regime, allquantities.met,allquantities.mass )
         allquantities.FillHisto()
+        
+        bbMET_tree.Fill(); 
     
 
     #print cutStatus
