@@ -76,9 +76,6 @@ else:
 
 skimmedTree = TChain("outTree")
 
-bbMET_tree = TTree( 'bbMET_tree', 'outputTree' )
-
-bbMET_tree.Branch("bbMET_branch", "Event", allquantities,16000,2)
 #print isfarmout
 
 
@@ -206,7 +203,9 @@ def AnalyzeDataSet():
     allquantities = MonoHbbQuantities(outfilename)
     allquantities.defineHisto()
 
-    
+    bbMET_tree = TTree( 'bbMET_tree', 'outputTree' )
+
+    bbMET_tree.Branch("bbMET_branch", "Event", allquantities,16000,2)
     # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
     # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
     # BTag Scale Factor Initialisation--------------------------------------------------------------------------------------------------------------------------------
