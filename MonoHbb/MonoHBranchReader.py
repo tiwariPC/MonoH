@@ -53,7 +53,6 @@ else:
     isfarmout = options.farmout
 
 print (options.inputfile, options.outputfile )
-
 #print 'options = ',[options.inputfile]
 inputfilename = options.inputfile
 
@@ -68,17 +67,16 @@ textfile = rootfile+".txt"
 #outputdir='MonoHSamples/'
 #os.system('mkdir '+outputdir)
 
-outfilename=''
+outfilename=''  
 
 if isfarmout:
     outfilename = options.outputdir + "/Output_" + rootfile
 else:
     outfilename = options.outputfile    
 
-
 skimmedTree = TChain("outTree")
 
-print isfarmout
+#print isfarmout
 
 
 
@@ -170,8 +168,8 @@ debug = False
 def AnalyzeDataSet():
     ## Input rootfile name
     
-    rootfilename = inputfilename
-    print (rootfilename,inputfilename)
+    #rootfilename = inputfilename
+    #print (rootfilename,inputfilename)
     #f = TFile(rootfilename,'READ')
     #skimmedTree = f.Get('tree/treeMaker')
     NEntries = skimmedTree.GetEntries()
@@ -655,16 +653,35 @@ def AnalyzeDataSet():
            allquantities.jet2_pT_sr1     = jetSR1Info[1][0]
            allquantities.jet2_eta_sr1    = jetSR1Info[1][1]
            allquantities.jet2_phi_sr1    = jetSR1Info[1][2]
+           
+           allquantities.jet1_pT_sr2     = None
+           allquantities.jet1_eta_sr2    = None
+           allquantities.jet1_phi_sr2    = None
+           allquantities.jet2_pT_sr2     = None
+           allquantities.jet2_eta_sr2    = None
+           allquantities.jet2_phi_sr2    = None
+           allquantities.jet3_pT_sr2     = None
+           allquantities.jet3_eta_sr2    = None
+           allquantities.jet3_phi_sr2    = None
+#           print "SR1: jet1: "+str(jetSR1Info[0])+"; jet2: "+str(jetSR1Info[1])
         elif inSR2:            
            allquantities.jet1_pT_sr2     = jetSR2Info[0][0]
            allquantities.jet1_eta_sr2    = jetSR2Info[0][1]
            allquantities.jet1_phi_sr2    = jetSR2Info[0][2]
-           allquantities.jet2_pT_sr1     = jetSR2Info[1][0]
-           allquantities.jet2_eta_sr1    = jetSR2Info[1][1]
-           allquantities.jet2_phi_sr1    = jetSR2Info[1][2]
-           allquantities.jet3_pT_sr1     = jetSR2Info[2][0]
-           allquantities.jet3_eta_sr1    = jetSR2Info[2][1]
-           allquantities.jet3_phi_sr1    = jetSR2Info[2][2]
+           allquantities.jet2_pT_sr2     = jetSR2Info[1][0]
+           allquantities.jet2_eta_sr2    = jetSR2Info[1][1]
+           allquantities.jet2_phi_sr2    = jetSR2Info[1][2]
+           allquantities.jet3_pT_sr2     = jetSR2Info[2][0]
+           allquantities.jet3_eta_sr2    = jetSR2Info[2][1]
+           allquantities.jet3_phi_sr2    = jetSR2Info[2][2]
+           
+           allquantities.jet1_pT_sr1     = None
+           allquantities.jet1_eta_sr1    = None
+           allquantities.jet1_phi_sr1    = None
+           allquantities.jet2_pT_sr1     = None
+           allquantities.jet2_eta_sr1    = None
+           allquantities.jet2_phi_sr1    = None
+#           print "SR2: jet1: "+str(jetSR2Info[0])+"; jet2: "+str(jetSR2Info[1])+"; jet3: "+str(jetSR2Info[2])
         else:
             continue
             
@@ -855,3 +872,7 @@ if __name__ == "__main__":
     if options.analyze:
         print "now calling analyzedataset"
         AnalyzeDataSet()
+    
+    
+    
+
