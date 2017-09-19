@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-from ROOT import TFile, TTree, TH1F, TH1D, TH1, TCanvas, TChain,TGraphAsymmErrors, TMath, TH2D, TLorentzVector, TF1
+from ROOT import TFile, TTree, TH1F, TH1D, TH1, TCanvas, TChain,TGraphAsymmErrors, TMath, TH2D, TLorentzVector, TF1, AddressOf
 import ROOT as ROOT
 import os
 import sys, optparse
@@ -76,6 +76,8 @@ else:
 
 skimmedTree = TChain("outTree")
 
+
+bbMET_tree = TTree( 'bbMET_tree', 'outputTree' )
 #print isfarmout
 
 
@@ -203,9 +205,8 @@ def AnalyzeDataSet():
     allquantities = MonoHbbQuantities(outfilename)
     allquantities.defineHisto()
 
-    bbMET_tree = TTree( 'bbMET_tree', 'outputTree' )
 
-    bbMET_tree.Branch("bbMET_branch", "Event", allquantities,16000,2)
+    bbMET_tree.Branch('bbMETvariables',AddressOf(allquantities,'histo'),'histo/D')
     # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
     # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
     # BTag Scale Factor Initialisation--------------------------------------------------------------------------------------------------------------------------------
@@ -665,6 +666,7 @@ def AnalyzeDataSet():
            allquantities.jet3_pT_sr2     = None
            allquantities.jet3_eta_sr2    = None
            allquantities.jet3_phi_sr2    = None
+           bbMET_tree.Fill()
 #           print "SR1: jet1: "+str(jetSR1Info[0])+"; jet2: "+str(jetSR1Info[1])
         elif inSR2:            
            allquantities.jet1_pT_sr2     = jetSR2Info[0][0]
@@ -683,6 +685,8 @@ def AnalyzeDataSet():
            allquantities.jet2_pT_sr1     = None
            allquantities.jet2_eta_sr1    = None
            allquantities.jet2_phi_sr1    = None
+           
+           bbMET_tree.Fill()
 #           print "SR2: jet1: "+str(jetSR2Info[0])+"; jet2: "+str(jetSR2Info[1])+"; jet3: "+str(jetSR2Info[2])
         else:
             continue
@@ -690,7 +694,7 @@ def AnalyzeDataSet():
         #print (allquantities.regime, allquantities.met,allquantities.mass )
         allquantities.FillHisto()
         
-        bbMET_tree.Fill(); 
+        
     
 
     #print cutStatus
