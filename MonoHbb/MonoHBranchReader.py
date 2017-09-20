@@ -205,6 +205,8 @@ def AnalyzeDataSet():
     allquantities = MonoHbbQuantities(outfilename)
     allquantities.defineHisto()
 
+    for attr, value in allquantities.__dict__.iteritems():
+       print attr, value
     for x in allquantities:
        if isinstance(x, float):
           bbMET_tree.Branch('bbMETvariables',AddressOf(allquantities,'histo'),'histo/D')
