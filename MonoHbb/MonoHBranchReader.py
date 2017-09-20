@@ -206,7 +206,7 @@ def AnalyzeDataSet():
     allquantities.defineHisto()
 
     for attr, value in allquantities.__dict__.iteritems():
-       print value
+       print attr, value
        if isinstance(value, float):
           bbMET_tree.Branch('bbMETvariables',AddressOf(allquantities,'histo'),'histo/D')
     # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
