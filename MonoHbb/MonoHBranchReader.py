@@ -175,7 +175,7 @@ def AnalyzeDataSet():
     #f = TFile(rootfilename,'READ')
     #skimmedTree = f.Get('tree/treeMaker')
     NEntries = skimmedTree.GetEntries()
-    print ('NEntries = ',NEntries)
+    print 'NEntries = '+str(NEntries)
     npass = 0
     #print [rootfilename, NEntries]
     cutStatus={'total':NEntries}
@@ -191,8 +191,9 @@ def AnalyzeDataSet():
 #    cutStatus['njet2SR2'] = 0
 #    cutStatus['njet2SR2'] = 0    
     cutStatus['isinSR'] = 0
-    cutStatus['hasgoodjets'] = 0
-    cutStatus['hasbtaggedjet'] = 0
+    cutStatus['jet1'] = 0
+    cutStatus['jet2/3'] = 0
+    cutStatus['btaggedjet'] = 0
     cutStatus['btag'] = 0
     cutStatus['dphi'] = 0
     cutStatus['ThinJetVeto'] = 0
@@ -265,7 +266,7 @@ def AnalyzeDataSet():
 
         #if event != 4126: continue                                
         #if lumi  != 42: continue                                
-        if event%10000==0: print (event)
+        if ievent%10000==0: print (ievent)
         #trigName                   = skimmedTree.__getattr__('st_hlt_trigName')
         #trigResult                 = skimmedTree.__getattr__('st_hlt_trigResult')
         #filterName                 = skimmedTree.__getattr__('st_hlt_filterName')
@@ -393,15 +394,17 @@ def AnalyzeDataSet():
             if DeltaPhi(j1.Phi(),pfMetPhi) < 0.5: continue            
             if thinjetNhadEF[ifirstjet] > 0.8 : continue
             if thinjetChadEF[ifirstjet]< 0.1: continue
+            
+            cutStatus['jet1'] += 1              # Lead jet satisfies required criteria
                             
             if j2.Pt() < 30.0: continue
             if DeltaPhi(j1.Phi(),pfMetPhi) < 0.5: continue
             
-            cutStatus['hasgoodjets'] += 1           # The jets satisfy the required criteria
+            cutStatus['jet2/3'] += 1           # Jet 2 satisfies the required criteria
             
             if thinJetCSV[ifirstjet] < 0.8: continue            # Lead jet has to be b-tagged
             
-            cutStatus['hasbtaggedjet'] += 1         # The b-jet criteria is fulfilled 
+            cutStatus['btaggedjet'] += 1         # The b-jet criteria is fulfilled 
             
             jet1pt = j1.Pt()
             jet1phi = j1.Phi()
@@ -438,20 +441,22 @@ def AnalyzeDataSet():
             if thinjetNhadEF[ifirstjet] > 0.8 : continue
             if thinjetChadEF[ifirstjet]< 0.1: continue
             
+            cutStatus['jet1'] += 1              # Lead jet satisfies required criteria
+            
             if j2.Pt() < 50.0: continue
             if DeltaPhi(j2.Phi(),pfMetPhi) < 0.5: continue            
-            if thinjetNhadEF[isecondjet] > 0.8 : continue
-            if thinjetChadEF[isecondjet]< 0.1: continue
+#            if thinjetNhadEF[isecondjet] > 0.8 : continue
+#            if thinjetChadEF[isecondjet]< 0.1: continue
             
             if j3.Pt() < 30.0: continue
             if DeltaPhi(j3.Phi(),pfMetPhi) < 0.5: continue
             
-            cutStatus['hasgoodjets'] += 1           # The jets satisfy the required criteria
+            cutStatus['jet2/3'] += 1           # The jets 2 and 3 satisfy the required criteria
             
             if thinJetCSV[ifirstjet] < 0.8: continue            # Lead jet has to be b-tagged
             if thinJetCSV[isecondjet] < 0.8: continue           # Second jet has to be b-tagged
             
-            cutStatus['hasbtaggedjet'] += 1         # The b-jet criteria is fulfilled 
+            cutStatus['btaggedjet'] += 1         # The b-jet criteria is fulfilled 
             
             jet1pt = j1.Pt()
             jet1phi = j1.Phi()
@@ -700,13 +705,26 @@ def AnalyzeDataSet():
     
 
     #print cutStatus
-    #print "npass = ", npass
+    print "npass = ", npass
     NEntries_Weight = h_t.Integral()
-    NEntries_total        = h_t_weight.Integral()
-    allquantities.WriteHisto((NEntries_total,NEntries_Weight))
-    #print " efficiency = ", float(npass/float(NEntries))
+    NEntries_total  = h_t_weight.Integral()
+    
+    cutflowTable=""
+    cutflowHeader=""
+    cutflowvalues=[]    
+    cutflownames=['total','pfmet','isinSR','jet1','jet2/3','btaggedjet']
+    for cutflowname in cutflownames:   
+        cutflowvalues.append(cutStatus[cutflowname])
+        cutflowTable += str(cutStatus[cutflowname])+" "
+        cutflowHeader += cutflowname+" "    
+    
+    allquantities.WriteHisto((NEntries_total,NEntries_Weight,cutflowvalues,cutflownames))
+    
+    print "efficiency = ", float(npass/float(NEntries))   
+        
     f = open('efficiencyfiles/'+textfile, 'w')
-    f.write(str(float(npass/float(NEntries))))
+    f.write(str(round(float(npass)/float(NEntries),5))+"\n\n#Cutflow Table:\n"+cutflowHeader[:-1]+"\n"+cutflowTable[:-1])
+    print "Written to "+'efficiencyfiles/'+textfile
     f.close()
 
 
