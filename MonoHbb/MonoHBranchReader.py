@@ -308,15 +308,15 @@ def AnalyzeDataSet():
         
         nEle                       = skimmedTree.__getattr__('st_nEle')
         eleP4                      = skimmedTree.__getattr__('st_eleP4')
-        #eleIsPassLoose             = skimmedTree.__getattr__('st_eleIsPassLoose')
+        eleIsPassLoose             = skimmedTree.__getattr__('st_eleIsPassLoose')
         
         nMu                        = skimmedTree.__getattr__('st_nMu')
         muP4                       = skimmedTree.__getattr__('st_muP4')
-        #isLooseMuon                = skimmedTree.__getattr__('st_isLooseMuon')
-        #muChHadIso                 = skimmedTree.__getattr__('st_muChHadIso')
-        #muNeHadIso                 = skimmedTree.__getattr__('st_muNeHadIso')
-        #muGamIso                   = skimmedTree.__getattr__('st_muGamIso')
-        #muPUPt                     = skimmedTree.__getattr__('st_muPUPt')
+        isLooseMuon                = skimmedTree.__getattr__('st_isLooseMuon')
+        muChHadIso                 = skimmedTree.__getattr__('st_muChHadIso')
+        muNeHadIso                 = skimmedTree.__getattr__('st_muNeHadIso')
+        muGamIso                   = skimmedTree.__getattr__('st_muGamIso')
+        muPUPt                     = skimmedTree.__getattr__('st_muPUPt')
         
         nTau                       = skimmedTree.__getattr__('st_HPSTau_n')
         tauP4                      = skimmedTree.__getattr__('st_HPSTau_4Momentum')
