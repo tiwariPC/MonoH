@@ -91,6 +91,7 @@ class MonoHbbQuantities:
         self.h_total.append(TH1F('h_total','h_total',2,0,2))
         self.h_total_weight.append(TH1F('h_total_weight','h_total_weight',2,0,2))
         
+        self.h_cutflow=TH1F('h_cutflow_','h_cutflow_',7, 0, 7)                          # Cutflow        
 
         self.h_met.append(TH1F('h_met_',  'h_met_',  1000,0.,1000.))
         
@@ -127,7 +128,7 @@ class MonoHbbQuantities:
         self.h_jet3_pT_sr2.append(TH1F('h_jet3_pT_sr2_','h_jet3_pT_sr2_',1000,0.,1000.))
         self.h_jet3_eta_sr2.append(TH1F('h_jet3_eta_sr2_','h_jet3_eta_sr2_',70, -3.5, 3.5))
         self.h_jet3_phi_sr2.append(TH1F('h_jet3_phi_sr2_','h_jet3_phi_sr2_',70, -3.5, 3.5))
-
+        
         h_met_pdf_tmp = []
         for ipdf in range(101):
             midname = str(ipdf)
@@ -144,7 +145,7 @@ class MonoHbbQuantities:
             h_met_muF_tmp.append(TH1F('h_met_muF'+'_'+midname+'_',  'h_met_muF',  1000,0.,1000.))
         self.h_met_muF.append(h_met_muF_tmp)
 
-        print "histo defined"
+        print "Histograms defined"
         
     def FillHisto(self):
         WF = self.weight
@@ -194,9 +195,9 @@ class MonoHbbQuantities:
         if self.jet3_pT_sr2 is not None:    self.h_jet3_pT_sr2[0]    .Fill(self.jet3_pT_sr2,   WF)
         if self.jet3_eta_sr2 is not None:   self.h_jet3_eta_sr2[0]   .Fill(self.jet3_eta_sr2,  WF)
         if self.jet3_phi_sr2 is not None:   self.h_jet3_phi_sr2[0]   .Fill(self.jet3_phi_sr2,  WF)
+       
         
-        
-    def WriteHisto(self, (nevts,nevts_weight)):
+    def WriteHisto(self, (nevts,nevts_weight,cutflowvalues,cutflownames)):
         f = TFile(self.rootfilename,'RECREATE')
         print 
         f.cd()
@@ -205,6 +206,13 @@ class MonoHbbQuantities:
         
         self.h_total_weight[0].SetBinContent(1,nevts_weight)
         self.h_total_weight[0].Write()
+        
+        ncutflow=len(cutflowvalues)
+        self.h_cutflow=TH1F('h_cutflow_','h_cutflow_',ncutflow, 0, ncutflow)                          # Cutflow         
+        for icutflow in range(len(cutflowvalues)):
+            self.h_cutflow.GetXaxis().SetBinLabel(icutflow+1,cutflownames[icutflow])
+            self.h_cutflow.SetBinContent(icutflow+1,cutflowvalues[icutflow])
+        self.h_cutflow.Write()
         
         self.h_met[0].Write()
         #self.h_met_rebin[iregime].Write()
@@ -244,3 +252,6 @@ class MonoHbbQuantities:
         self.h_jet3_pT_sr2[0].Write()
         self.h_jet3_eta_sr2[0].Write()
         self.h_jet3_phi_sr2[0].Write()
+
+
+               
