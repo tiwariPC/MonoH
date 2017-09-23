@@ -55,9 +55,21 @@ def AnalyzeDataSet():
     
     st_nEle                = array( 'L', [ 0 ] ) #ROOT.std.vector('int')()
     st_eleP4               = ROOT.std.vector('TLorentzVector')()
+    st_eleIsPassLoose      = array( 'b', [ False ] )
+    st_eleIsPassMedium     = array( 'b', [ False ] )
+    st_eleIsPassTight      = array( 'b', [ False ] )
     
     st_nMu= array( 'L', [ 0 ] ) #ROOT.std.vector('int')()
     st_muP4= ROOT.std.vector('TLorentzVector')()
+    st_isLooseMuon         = array( 'b', [ False ] )
+    st_isMediumMuon        = array( 'b', [ False ] )
+    st_isTightMuon         = array( 'b', [ False ] )
+    st_muChHadIso          = ROOT.std.vector('float')()
+    st_muNeHadIso          = ROOT.std.vector('float')()
+    st_muGamIso            = ROOT.std.vector('float')()
+    st_muPUPt              = ROOT.std.vector('float')()
+    st_muCharge            = ROOT.std.vector('int')()
+    
     
     st_HPSTau_n= array( 'L', [ 0 ] ) #ROOT.std.vector('int')()
     st_HPSTau_4Momentum= ROOT.std.vector('TLorentzVector')()
@@ -98,10 +110,20 @@ def AnalyzeDataSet():
     outTree.Branch( 'st_THINjetCHadEF',st_THINjetCHadEF )
     
     outTree.Branch( 'st_nEle',st_nEle , 'st_nEle/L') 
-    outTree.Branch( 'st_eleP4',st_eleP4 ) 
-    
+    outTree.Branch( 'st_eleP4',st_eleP4 )
+    outTree.Branch( 'st_eleIsPassLoose', st_eleIsPassLoose, 'st_eleIsPassLoose/O' )
+    outTree.Branch( 'st_eleIsPassMedium', st_eleIsPassMedium, 'st_eleIsPassMedium/O' )
+    outTree.Branch( 'st_eleIsPassTight', st_eleIsPassTight, 'st_eleIsPassTight/O' )
+                   
     outTree.Branch( 'st_nMu',st_nMu , 'st_nMu/L') 
     outTree.Branch( 'st_muP4',st_muP4 ) 
+    outTree.Branch( 'st_isLooseMuon', st_isLooseMuon, 'st_isLooseMuon/O' )
+    outTree.Branch( 'st_isMediumMuon', st_isMediumMuon, 'st_isMediumMuon/O' )
+    outTree.Branch( 'st_isTightMuon', st_isTightMuon, 'st_isTightMuon/O' )
+    outTree.Branch( 'st_muChHadIso', st_muChHadIso, 'st_muChHadIso/F')
+    outTree.Branch( 'st_muNeHadIso', st_muNeHadIso, 'st_muNeHadIso/F')
+    outTree.Branch( 'st_muGamIso', st_muGamIso, 'st_muGamIso/F')
+    outTree.Branch( 'st_muPUPt', st_muPUPt, 'st_muPUPt/F')
     
     outTree.Branch( 'st_HPSTau_n', st_HPSTau_n, 'st_HPSTau_n/L') 
     outTree.Branch( 'st_HPSTau_4Momentum', st_HPSTau_4Momentum) 
@@ -156,11 +178,15 @@ def AnalyzeDataSet():
         nEle                       = skimmedTree.__getattr__('nEle')
         eleP4                      = skimmedTree.__getattr__('eleP4')
         eleIsPassLoose             = skimmedTree.__getattr__('eleIsPassLoose')
+        eleIsPassMedium            = skimmedTree.__getattr__('eleIsPassMedium')
+        eleIsPassTight             = skimmedTree.__getattr__('eleIsPassTight')
         eleCharge                  = skimmedTree.__getattr__('eleCharge')
         
         nMu                        = skimmedTree.__getattr__('nMu')
         muP4                       = skimmedTree.__getattr__('muP4')
         isLooseMuon                = skimmedTree.__getattr__('isLooseMuon')
+        isMediumMuon               = skimmedTree.__getattr__('isMediumMuon')
+        isTightMuon                = skimmedTree.__getattr__('isTightMuon')
         muChHadIso                 = skimmedTree.__getattr__('muChHadIso')
         muNeHadIso                 = skimmedTree.__getattr__('muNeHadIso')
         muGamIso                   = skimmedTree.__getattr__('muGamIso')
@@ -345,10 +371,21 @@ def AnalyzeDataSet():
         st_nEle[0] = len(myEles)
         for iele in range(len(myEles)):
             st_eleP4.push_back(eleP4[iele])
+            st_eleIsPassLoose.push_back(eleIsPassLoose[iele])
+            st_eleIsPassMedium.push_back(eleIsPassMedium[iele])
+            st_eleIsPassTight.push_back(eleIsPassTight[iele])
             
         st_nMu[0] = len(myMuos)
         for imu in range(len(myMuos)):
             st_muP4.push_back(muP4[imu])
+            st_isLooseMuon.push_back(isLooseMuon[imu])
+            st_isTightMuon.push_back(isTightMuon[imu])
+            st_isMediumMuon.push_back(isMediumMuon[imu])
+            st_muChHadIso.push_back(muChHadIso[imu])
+            st_muNeHadIso.push_back(muNeHadIso[imu])
+            st_muGamIso.push_back(muGamIso[imu])
+            st_muPUPt.push_back(muPUPt[imu]
+            
         
         st_HPSTau_n[0] = len(myTaus)
         for itau in range(len(myTaus)):
@@ -364,7 +401,6 @@ def AnalyzeDataSet():
             st_genParSt.push_back(genParSt[igp])
             st_genParP4.push_back(genParP4[igp])
 
-            #for isj in range(nSubSoftDropJet[ifatjet]):
                 
         
         ## Fill variables for the CRs. 
