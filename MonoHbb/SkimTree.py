@@ -385,7 +385,7 @@ def AnalyzeDataSet():
             st_muChHadIso.push_back(muChHadIso[imu])
             st_muNeHadIso.push_back(muNeHadIso[imu])
             st_muGamIso.push_back(muGamIso[imu])
-            st_muPUPt.push_back(muPUPt[imu]
+            st_muPUPt.push_back(muPUPt[imu])
             
         st_HPSTau_n[0] = len(myTaus)
         for itau in range(len(myTaus)):
