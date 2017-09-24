@@ -41,7 +41,7 @@ def AnalyzeDataSet():
     st_eventId          = array( 'L', [ 0 ] )
     st_pfMetCorrPt      = array( 'f', [ 0. ] )
     st_pfMetCorrPhi     = array( 'f', [ 0. ] )
-    st_isData           = array( 'b', [ False ] )
+    st_isData           = array( 'b', [ 0 ] )
     
     maxn = 10
     
@@ -83,17 +83,19 @@ def AnalyzeDataSet():
     st_genParSt = ROOT.std.vector('int')()
     st_genParP4 = ROOT.std.vector('TLorentzVector')()
     
-    WenuRecoil = array( 'f', [ 0 ] )
-    Wenumass = array( 'f', [ 0 ] )
+    WenuRecoil = array( 'f', [ 0. ] )
+    Wenumass = array( 'f', [ 0. ] )
     
-    WmunuRecoil = array( 'f', [ 0 ] )
-    Wmunumass = array( 'f', [ 0 ] )
+    WmunuRecoil = array( 'f', [ 0. ] )
+    Wmunumass = array( 'f', [ 0. ] )
     
-    ZeeRecoil = array( 'f', [ 0 ] )
-    ZeeMass = array( 'f', [ 0 ] )
+    ZeeRecoil = array( 'f', [ 0. ] )
+    ZeeMass = array( 'f', [ 0. ] )
     
-    ZmumuRecoil = array( 'f', [ 0 ] )
-    ZmumuMass = array( 'f', [ 0 ] )
+    ZmumuRecoil = array( 'f', [ 0. ] )
+    ZmumuMass = array( 'f', [ 0. ] )
+    
+    TOPRecoil = array( 'f', [ 0. ] )
            
     outTree.Branch( 'st_runId', st_runId , 'st_runId/L')
     outTree.Branch( 'st_lumiSection', st_lumiSection , 'st_lumiSection/L')
@@ -147,6 +149,8 @@ def AnalyzeDataSet():
     
     outTree.Branch( 'ZmumuRecoil', ZmumuRecoil, 'ZmumuRecoil/F')
     outTree.Branch( 'ZmumuMass', ZmumuMass, 'ZmumuMass/F')
+    
+    outTree.Branch( 'TOPRecoil', TOPRecoil, 'TOPRecoil/F')
 
     
     for ievent in range(NEntries):
@@ -230,7 +234,7 @@ def AnalyzeDataSet():
         ## Trigger selection
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
-        itrig_=0; trig1 = False; trig2 = False;
+        itrig_=0; trig1 = False; trig2 = False; trig3 = False; trig4 = False; trig5 = False; trig6 = False; trig7 = False; trig8 = False; trig9 = False;
         trig1 = CheckFilter(trigName, trigResult, 'HLT_PFMET170_NoiseCleaned')
         trig2 = CheckFilter(trigName, trigResult, 'HLT_PFMET170_JetIdCleaned_v')
         trig3 = CheckFilter(trigName, trigResult, 'HLT_PFMET170_HBHECleaned_v')
@@ -241,12 +245,10 @@ def AnalyzeDataSet():
         trig8 = CheckFilter(trigName, trigResult, 'HLT_IsoMu20')
         trig9 = CheckFilter(trigName, trigResult, 'HLT Ele27 WPLoose Gsf')
         
-        trigstatus =  trig1 | trig2 | trig3 | trig4 | trig5 | trig6 | trig7 | trig8 | trig9
         if not isData:
-            trigstatus  = False
+            trigstatus  = False # triggers are not required for MC
         if isData:
-            trigstatus =  True #trig1 | trig2
-        
+            trigstatus =  trig1 | trig2 | trig3 | trig4 | trig5 | trig6 | trig7 | trig8 | trig9 #to include data with above triggers
         if not isData:
            if trigstatus == True : continue
             
@@ -282,16 +284,6 @@ def AnalyzeDataSet():
         if pfmetstatus == False : continue 
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
-        ## Fat-Jet Selection
-        ## Higgs Tagging
-        # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
-        # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
-        
-        #jetpassindex=[]
-        #for ifatjet in range(nFATJets):
-        #    if (fatjetP4[ifatjet].Pt() > 170.0  ) & (abs(fatjetP4[ifatjet].Eta())  < 2.4) & (bool(passFatJetTightID[ifatjet]) == True):
-        #        jetpassindex.append(ifatjet)
-                
                 
         thinjetpassindex=[]
         for ithinjet in range(nTHINJets):
@@ -442,7 +434,7 @@ def AnalyzeDataSet():
             mumu_mass = ( p4_mu1 + p4_mu2 ).M()
             
             #if not  ( (mumu_mass > 70.0 ) & (mumu_mass < 110.0) ): continue
-            if not ( muCharge[mu1] * muCharge[mu2] > 0 ) :             
+            if not ( muCharge[mu1] * muCharge[mu2] > 0 ) :
                 zmumuRecoilPx = -( pfMet*math.cos(pfMetPhi)  - p4_mu1.Px() - p4_mu2.Px())
                 zmumuRecoilPy = -( pfMet*math.sin(pfMetPhi)  - p4_mu1.Py() - p4_mu2.Py())
                 ZmumuRecoil[0] =  math.sqrt(zmumuRecoilPx * zmumuRecoilPx  +  zmumuRecoilPy*zmumuRecoilPy)
@@ -453,7 +445,7 @@ def AnalyzeDataSet():
            ele1 = myEles[0]
            p4_ele1 = eleP4[ele1]
            
-           e_mass = math.sqrt( 2*p4_ele1.Pt()*pfMet*(1 - math.cos(DeltaPhi(p4_ele1.Phi(),pfMetPhi))))
+           e_mass = MT(p4_ele1.Pt(),pfMet, DeltaPhi(p4_ele1.Phi(),pfMetPhi)) #transverse mass defined as sqrt{2pT*MET*(1-cos(dphi)}
            
            #if not  ( (e_mass > 50.0 ) & (e_mass < 160.0) ): continue
            
@@ -467,7 +459,7 @@ def AnalyzeDataSet():
            mu1 = myMuos[0]
            p4_mu1 = muP4[mu1]
            
-           mu_mass = math.sqrt( 2*p4_mu1.Pt()*pfMet*(1 - math.cos(DeltaPhi(p4_mu1.Phi(),pfMetPhi))))
+           mu_mass = MT(p4_mu1.Pt(),pfMet, DeltaPhi(p4_mu1.Phi(),pfMetPhi)) #transverse mass defined as sqrt{2pT*MET*(1-cos(dphi)} 
            
            #if not  ( (mu_mass > 50.0 ) & (mu_mass < 160.0) ): continue
            
@@ -475,13 +467,38 @@ def AnalyzeDataSet():
            WmunuRecoilPy = -( pfMet*math.sin(pfMetPhi) - p4_mu1.Py())
            WmunuRecoil[0] =  math.sqrt(WmunuRecoilPx * WmunuRecoilPx  +  WmunuRecoilPy*WmunuRecoilPy)
            Wmunumass[0] = mu_mass
+           
+           
+        ## for Single electron && Single Muon
+        if len(myEles) == 1 && len(myMuos) == 1:
+           ele1 = myEles[0]
+           p4_ele1 = eleP4[ele1]
+           mu1 = myMuos[0]
+           p4_mu1 = muP4[mu1]
+           
+           #e_mass = MT(p4_ele1.Pt(),pfMet, DeltaPhi(p4_ele1.Phi(),pfMetPhi)) #transverse mass defined as sqrt{2pT*MET*(1-cos(dphi)}
+           #mu_mass = MT(p4_mu1.Pt(),pfMet, DeltaPhi(p4_mu1.Phi(),pfMetPhi))
+           #if not  ( (e_mass > 50.0 ) & (e_mass < 160.0) ): continue
+           
+           TOPenumunuRecoilPx = -( pfMet*math.cos(pfMetPhi) - p4_mu1.Px() -p4_ele1.Px())
+           TOPenumunuRecoilPy = -( pfMet*math.sin(pfMetPhi) - p4_mu1.Py() -p4_ele1.Py())
+           TOPRecoil[0] =  math.sqrt(TOPenumunuRecoilPx * TOPenumunuRecoilPx  +  TOPenumunuRecoilPy*TOPenumunuRecoilPy)
         
         outTree.Fill()
 
     h_total_mcweight.Write()
     h_total.Write()
     outfile.Write()
-        
+
+def CheckFilter(filterName, filterResult,filtercompare):
+    ifilter_=0
+    filter1 = False
+    for ifilter in filterName:
+        filter1 = (ifilter.find(filtercompare) != -1)  & (bool(filterResult[ifilter_]) == True)   
+        if filter1: break
+        ifilter_ = ifilter_ + 1
+    return filter1
+
 def DeltaR(p4_1, p4_2):
     eta1 = p4_1.Eta()
     eta2 = p4_2.Eta()
@@ -517,7 +534,7 @@ def CheckFilter(filterName, filterResult,filtercompare):
         ifilter_ = ifilter_ + 1
     return filter1
 
-   
+
 def GenWeightProducer(sample,nGenPar, genParId, genMomParId, genParSt,genParP4):
     pt__=0;
     #print " inside gen weight "
@@ -607,7 +624,6 @@ def GenWeightProducer(sample,nGenPar, genParId, genMomParId, genParSt,genParP4):
         k2 = 1.0
         
     return k2
-
 
 def MT(Pt, met, dphi):
     return ROOT.TMath.Sqrt( 2 * Pt * met * (1.0 - ROOT.TMath.Cos(dphi)) )
