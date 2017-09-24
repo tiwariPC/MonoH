@@ -10,7 +10,7 @@ import numpy as numpy_
 ROOT.gROOT.LoadMacro("Loader.h+")
 
 ## When not running on farmout
-inputfilename= 'Mchi1_Mphi50.txt'
+inputfilename= 'test_Mchi1Mphi50.txt'
 outfilename= 'Mchi1_Mphi50.root'
 PUPPI = True
 CA15  = False
@@ -41,7 +41,7 @@ def AnalyzeDataSet():
     st_eventId          = array( 'L', [ 0 ] )
     st_pfMetCorrPt      = array( 'f', [ 0. ] )
     st_pfMetCorrPhi     = array( 'f', [ 0. ] )
-    st_isData           = array( 'b', [ False ] )
+    st_isData           = array( 'b', [ 0 ] )
     
     maxn = 10
     
@@ -83,17 +83,17 @@ def AnalyzeDataSet():
     st_genParSt = ROOT.std.vector('int')()
     st_genParP4 = ROOT.std.vector('TLorentzVector')()
     
-    WenuRecoil = array( 'f', [ 0 ] )
-    Wenumass = array( 'f', [ 0 ] )
+    WenuRecoil = array( 'f', [ 0. ] )
+    Wenumass = array( 'f', [ 0. ] )
     
-    WmunuRecoil = array( 'f', [ 0 ] )
-    Wmunumass = array( 'f', [ 0 ] )
+    WmunuRecoil = array( 'f', [ 0. ] )
+    Wmunumass = array( 'f', [ 0. ] )
     
-    ZeeRecoil = array( 'f', [ 0 ] )
-    ZeeMass = array( 'f', [ 0 ] )
+    ZeeRecoil = array( 'f', [ 0. ] )
+    ZeeMass = array( 'f', [ 0. ] )
     
-    ZmumuRecoil = array( 'f', [ 0 ] )
-    ZmumuMass = array( 'f', [ 0 ] )
+    ZmumuRecoil = array( 'f', [ 0. ] )
+    ZmumuMass = array( 'f', [ 0. ] )
            
     outTree.Branch( 'st_runId', st_runId , 'st_runId/L')
     outTree.Branch( 'st_lumiSection', st_lumiSection , 'st_lumiSection/L')
@@ -430,7 +430,7 @@ def AnalyzeDataSet():
             mumu_mass = ( p4_mu1 + p4_mu2 ).M()
             
             #if not  ( (mumu_mass > 70.0 ) & (mumu_mass < 110.0) ): continue
-            if not ( muCharge[mu1] * muCharge[mu2] > 0 ) :             
+            if not ( muCharge[mu1] * muCharge[mu2] > 0 ) :
                 zmumuRecoilPx = -( pfMet*math.cos(pfMetPhi)  - p4_mu1.Px() - p4_mu2.Px())
                 zmumuRecoilPy = -( pfMet*math.sin(pfMetPhi)  - p4_mu1.Py() - p4_mu2.Py())
                 ZmumuRecoil[0] =  math.sqrt(zmumuRecoilPx * zmumuRecoilPx  +  zmumuRecoilPy*zmumuRecoilPy)
@@ -441,7 +441,7 @@ def AnalyzeDataSet():
            ele1 = myEles[0]
            p4_ele1 = eleP4[ele1]
            
-           e_mass = MT(p4_ele1.Pt(),pfMet, DeltaPhi(p4_ele1.Phi(),pfMetPhi))
+           e_mass = MT(p4_ele1.Pt(),pfMet, DeltaPhi(p4_ele1.Phi(),pfMetPhi)) #transverse mass defined as sqrt{2pT*MET*(1-cos(dphi)}
            
            #if not  ( (e_mass > 50.0 ) & (e_mass < 160.0) ): continue
            
@@ -455,7 +455,7 @@ def AnalyzeDataSet():
            mu1 = myMuos[0]
            p4_mu1 = muP4[mu1]
            
-           mu_mass = MT(p4_mu1.Pt(),pfMet, DeltaPhi(p4_mu1.Phi(),pfMetPhi))
+           mu_mass = MT(p4_mu1.Pt(),pfMet, DeltaPhi(p4_mu1.Phi(),pfMetPhi)) #transverse mass defined as sqrt{2pT*MET*(1-cos(dphi)} 
            
            #if not  ( (mu_mass > 50.0 ) & (mu_mass < 160.0) ): continue
            
