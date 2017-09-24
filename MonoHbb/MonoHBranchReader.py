@@ -255,32 +255,9 @@ def AnalyzeDataSet():
         #trigResult                 = skimmedTree.__getattr__('st_hlt_trigResult')
         #filterName                 = skimmedTree.__getattr__('st_hlt_filterName')
         #filterResult               = skimmedTree.__getattr__('st_hlt_filterResult')
-                                   
+         
         pfMet                      = skimmedTree.__getattr__('st_pfMetCorrPt')
         pfMetPhi                   = skimmedTree.__getattr__('st_pfMetCorrPhi')
-        
-        #nFatJets                   = skimmedTree.__getattr__('st_nFatJets')
-        #fatjetP4                   = skimmedTree.__getattr__('st_FATjetP4')
-        #fatjetPRmassL2L3Corr       = skimmedTree.__getattr__('st_FATjetPRmassL2L3Corr')
-                
-        #nSubSoftDropJet            = skimmedTree.__getattr__('st_FATnSubSDJet')
-        #subjetSDCSV                = skimmedTree.__getattr__('st_subjetSDCSV')
-        
-
-        
-        #subjetSDPx                 = skimmedTree.__getattr__('st_FATsubjetSDPx')
-        #subjetSDPy                 = skimmedTree.__getattr__('st_FATsubjetSDPy')
-        #subjetSDPz                 = skimmedTree.__getattr__('st_FATsubjetSDPz')
-        #subjetSDE                  = skimmedTree.__getattr__('st_FATsubjetSDE')
-        #subjetSDPt                  = skimmedTree.__getattr__('st_subjetPt')
-        #subjetSDEta                  = skimmedTree.__getattr__('st_subjetEta')
-        #passFatJetTightID          = skimmedTree.__getattr__('st_FATjetPassIDTight')
-        #subjetHadronFlavor         = skimmedTree.__getattr__('st_subjetFlav')
-        
-        #doublebtagger              = skimmedTree.__getattr__('st_ADDjet_DoubleSV')
-        #tau2                       = skimmedTree.__getattr__('st_FATjetTau2')
-        #au1                       = skimmedTree.__getattr__('st_FATjetTau1')
-        
         
         nTHINJets                  = skimmedTree.__getattr__('st_THINnJet')
         thinjetP4                  = skimmedTree.__getattr__('st_THINjetP4')
@@ -330,6 +307,7 @@ def AnalyzeDataSet():
         ZeeMass                    = skimmedTree.__getattr__('ZeeMass')
         ZmumuRecoil                = skimmedTree.__getattr__('ZmumuRecoil')
         ZmumuMass                  = skimmedTree.__getattr__('ZmumuMass')
+        TOPRecoil                  = skimmedTree.__getattr__('TOPRecoil'
              
         jetSR1Info           = []
         jetSR2Info           = []
@@ -475,6 +453,10 @@ def AnalyzeDataSet():
 
         #Control Regions
         
+        #Calculate Muon Relative PF isolation:
+        
+        MuIso = [(muChHadIso[imu]+ max(0., muNeHadIso[imu] + muGamIso[imu] - 0.5*muPUPt[imu]))/muP4[imu].Pt() for imu in range(nMu)]        
+        
         #=================================================================
         #  Z control region
         #=================================================================
@@ -488,15 +470,19 @@ def AnalyzeDataSet():
             LepP4=eleP4
             isLoose=eleIsPassLoose
             isTight=eleIsPassTight
+            zmass=ZeeMassMass
+            hadrecoil=ZeeRecoil
         elif nMu==2 and nEle==0 and nTau==0:
             zCRMu=True
             LepP4=MuP4
             isLoose=isLooseMuon
             isTight=isTightMuon
+            zmass=ZmumuMass
+            hadrecoil=ZmumuRecoil            
         else:
             zCR=False
         
-        if zCR:                                 # Just to reduce reduntant computation
+        if zCR:                                                 # Just to reduce reduntant computation
             if LepP4[0].Pt() > LepP4[1].Pt()
                 iLeadLep=0
                 iSecondLep=1
@@ -506,22 +492,22 @@ def AnalyzeDataSet():
             
             # Leading lepton conditions:
             if LepP4[iLeadLep].Pt() < 30.: zCR=False
-            print "isLoose: "+str(isLoose[iLeadLep])
+            print "isLoose: "+str(isLoose[iLeadLep])            #To see the data type in case of bugs (if any)
             if not isTight[iLeadLep]: zCR=False
             
             # Sub-leading lepton conditions:
             if LepP4[iSecondLep].Pt() < 10.: zCR=False
             if not isLoose[iSecondLep]: zCR=False
             
-            if zCRMu:                                           # Special isolation requirement for Muon
-                if MuIso[iLeadLep] > 0.15: zCR=False             #### Needs update
-                if MuIso[iSecondLep] > 0.25: zCR=False             #### Needs update
+            if zCRMu:                                           # Special isolation requirement for Muon                
+                if MuIso[iLeadLep] > 0.15: zCR=False             
+                if MuIso[iSecondLep] > 0.25: zCR=False             
             
             # Z Mass condition:
             if zmass <= 70. or zmass >= 110.: zCR=False             
             
             # Hadronic recoil:
-            if hadrecoil <= 200.: zCR=False             #### Needs update
+            if hadrecoil <= 200.: zCR=False 
             
             
         #=================================================================
@@ -535,27 +521,31 @@ def AnalyzeDataSet():
         if nEle==1 and nMu==0 and nTau==0:
             wCREle=True
             LepP4=eleP4
-            isLoose=eleIsPassLoose
+            isTight=eleIsPassTight
+            wmass=Wenumass
+            hadrecoil=WenuRecoil
         elif nMu==1 and nEle==0 and nTau==0:
             wCRMu=True
             LepP4=MuP4
-            isLoose=isLooseMuon
+            isTight=isTightMuon
+            wmass=Wmunumass
+            hadrecoil=WmunuRecoil
         else:
             wCR=False
             
         if wCR:        
             # Leading lepton conditions:
             if LepP4[0].Pt() < 30.: wCR=False
-            if isLoose[0]: wCR=False
+            if not isTight[0]: wCR=False
             
             if wCRMu:
-                if MuIso[0] > 0.15: wCR=False           #### Needs update
+                if MuIso[0] > 0.15: wCR=False           
             
             # W Mass condition:
-            if wmass <= 50. or wmass >= 160.: wCR=False             #### Needs update
+            if wmass <= 50. or wmass >= 160.: wCR=False    
             
             # Hadronic recoil:
-            if hadrecoil <= 200.: wCR=False             #### Needs update
+            if hadrecoil <= 200.: wCR=False 
             
         
         #=================================================================
@@ -568,16 +558,15 @@ def AnalyzeDataSet():
             
             # Muon
             if MuP4[0].Pt() < 30.: TopCR=False
-            if MuIso[0] > 0.15: TopCR=False                  #### Needs update
-            if isLooseMuon[0]: TopCR=False                   
+            if MuIso[0] > 0.15: TopCR=False                  
+            if not isTightMuon[0]: TopCR=False                   
             
             # Electron
             if eleP4[0].Pt() < 30.: TopCR=False
-            if eleIsPassLoose[0]: TopCR=False
+            if not eleIsPassTight[0]: TopCR=False
             
             # Hadronic recoil:
-            if hadrecoil <= 200.: TopCR=False             #### Needs update
-            
+            if TOPRecoil <= 200.: TopCR=False
             
         
         
@@ -688,32 +677,28 @@ def AnalyzeDataSet():
         ## BTag Scale Factor 
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
          if inSR1:
-            ij = j1
-            jj = j2
-            
-            flav1 = jetflav(THINjetHadronFlavor[ij])
-            flav2 = jetflav(THINjetHadronFlavor[jj])
 
-            print ("ij, flav, pt, eta, ",ij, flav1, thinjetP4[ij].Pt(), thinjetP4[ij].Eta())
+            flav1 = jetflav(THINjetHadronFlavor[j1])
+            flav2 = jetflav(THINjetHadronFlavor[j2])
+
+            #print ("ij, flav, pt, eta, ",j1, flav1, thinjetP4[j1].Pt(), thinjetP4[j1].Eta())
             reader1.eval_auto_bounds('central', 0, 1.2, 50.)
-            sf_resolved1 = weightbtag(reader1, flav1, thinjetP4[ij].Pt(), thinjetP4[ij].Eta())
-            sf_resolved2 = weightbtag(reader1, flav2, thinjetP4[jj].Pt(), thinjetP4[jj].Eta())
+            sf_resolved1 = weightbtag(reader1, flav1, thinjetP4[j1].Pt(), thinjetP4[j1].Eta())
+            sf_resolved2 = weightbtag(reader1, flav2, thinjetP4[j2].Pt(), thinjetP4[j2].Eta())
             
             print (sf_resolved1, sf_resolved2)
+            
          else if inSR2:
-            ij = j1
-            jj = j2
-            jk = j3
-         
-            flav1 = jetflav(THINjetHadronFlavor[ij])
-            flav2 = jetflav(THINjetHadronFlavor[jj])
-            flav3 = jetflav(THINjetHadronFlavor[jj])
+ 
+            flav1 = jetflav(THINjetHadronFlavor[j1])
+            flav2 = jetflav(THINjetHadronFlavor[j2])
+            flav3 = jetflav(THINjetHadronFlavor[j3])
 
-            print ("ij, flav, pt, eta, ",ij, flav1, thinjetP4[ij].Pt(), thinjetP4[ij].Eta())
+            print ("ij, flav, pt, eta, ",j1, flav1, thinjetP4[j1].Pt(), thinjetP4[j2].Eta())
             reader1.eval_auto_bounds('central', 0, 1.2, 50.)
-            sf_resolved1 = weightbtag(reader1, flav1, thinjetP4[ij].Pt(), thinjetP4[ij].Eta())
-            sf_resolved2 = weightbtag(reader1, flav2, thinjetP4[jj].Pt(), thinjetP4[jj].Eta())
-            sf_resolved3 = weightbtag(reader1, flav3, thinjetP4[jk].Pt(), thinjetP4[jk].Eta())
+            sf_resolved1 = weightbtag(reader1, flav1, thinjetP4[j1].Pt(), thinjetP4[j1].Eta())
+            sf_resolved2 = weightbtag(reader1, flav2, thinjetP4[j2].Pt(), thinjetP4[j2].Eta())
+            sf_resolved3 = weightbtag(reader1, flav3, thinjetP4[j3].Pt(), thinjetP4[j3].Eta())
             
             print (sf_resolved1, sf_resolved2, sf_resolved3)
             
