@@ -476,6 +476,10 @@ def AnalyzeDataSet():
 
         #Control Regions
         
+        #Calculate Muon Relative PF isolation:
+        
+        MuIso = [(muChHadIso[imu]+ max(0., muNeHadIso[imu] + muGamIso[imu] - 0.5*muPUPt[imu]))/muP4[imu].Pt() for imu in range(nMu)]        
+        
         #=================================================================
         #  Z control region
         #=================================================================
@@ -497,11 +501,11 @@ def AnalyzeDataSet():
             isLoose=isLooseMuon
             isTight=isTightMuon
             zmass=ZmumuMass
-            hadrecoil=ZmumuRecoil
+            hadrecoil=ZmumuRecoil            
         else:
             zCR=False
         
-        if zCR:                                 # Just to reduce reduntant computation
+        if zCR:                                                 # Just to reduce reduntant computation
             if LepP4[0].Pt() > LepP4[1].Pt()
                 iLeadLep=0
                 iSecondLep=1
@@ -511,16 +515,16 @@ def AnalyzeDataSet():
             
             # Leading lepton conditions:
             if LepP4[iLeadLep].Pt() < 30.: zCR=False
-            print "isLoose: "+str(isLoose[iLeadLep])
+            print "isLoose: "+str(isLoose[iLeadLep])            #To see the data type in case of bugs (if any)
             if not isTight[iLeadLep]: zCR=False
             
             # Sub-leading lepton conditions:
             if LepP4[iSecondLep].Pt() < 10.: zCR=False
             if not isLoose[iSecondLep]: zCR=False
             
-            if zCRMu:                                           # Special isolation requirement for Muon
-                if MuIso[iLeadLep] > 0.15: zCR=False             #### Needs update
-                if MuIso[iSecondLep] > 0.25: zCR=False             #### Needs update
+            if zCRMu:                                           # Special isolation requirement for Muon                
+                if MuIso[iLeadLep] > 0.15: zCR=False             
+                if MuIso[iSecondLep] > 0.25: zCR=False             
             
             # Z Mass condition:
             if zmass <= 70. or zmass >= 110.: zCR=False             
@@ -558,7 +562,7 @@ def AnalyzeDataSet():
             if not isTight[0]: wCR=False
             
             if wCRMu:
-                if MuIso[0] > 0.15: wCR=False           #### Needs update
+                if MuIso[0] > 0.15: wCR=False           
             
             # W Mass condition:
             if wmass <= 50. or wmass >= 160.: wCR=False    
@@ -577,7 +581,7 @@ def AnalyzeDataSet():
             
             # Muon
             if MuP4[0].Pt() < 30.: TopCR=False
-            if MuIso[0] > 0.15: TopCR=False                  #### Needs update
+            if MuIso[0] > 0.15: TopCR=False                  
             if not isTightMuon[0]: TopCR=False                   
             
             # Electron
