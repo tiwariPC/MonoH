@@ -10,8 +10,8 @@ import numpy as numpy_
 ROOT.gROOT.LoadMacro("Loader.h+")
 
 ## When not running on farmout
-inputfilename= 'Mchi1_Mphi50.txt'
-outfilename= 'Mchi1_Mphi50.root'
+inputfilename= 'FileList.txt'
+outfilename= 'Output_WJetsToLNu_HT-1200To2500.root'
 PUPPI = True
 CA15  = False
 
@@ -55,15 +55,15 @@ def AnalyzeDataSet():
     
     st_nEle                = array( 'L', [ 0 ] ) #ROOT.std.vector('int')()
     st_eleP4               = ROOT.std.vector('TLorentzVector')()
-    st_eleIsPassLoose      = array( 'b', [ False ] )
-    st_eleIsPassMedium     = array( 'b', [ False ] )
-    st_eleIsPassTight      = array( 'b', [ False ] )
+    st_eleIsPassLoose      = ROOT.std.vector('bool')()
+    st_eleIsPassMedium     = ROOT.std.vector('bool')()
+    st_eleIsPassTight      = ROOT.std.vector('bool')()
     
     st_nMu= array( 'L', [ 0 ] ) #ROOT.std.vector('int')()
     st_muP4= ROOT.std.vector('TLorentzVector')()
-    st_isLooseMuon         = array( 'b', [ False ] )
-    st_isMediumMuon        = array( 'b', [ False ] )
-    st_isTightMuon         = array( 'b', [ False ] )
+    st_isLooseMuon         = ROOT.std.vector('bool')()
+    st_isMediumMuon        = ROOT.std.vector('bool')()
+    st_isTightMuon         = ROOT.std.vector('bool')()
     st_muChHadIso          = ROOT.std.vector('float')()
     st_muNeHadIso          = ROOT.std.vector('float')()
     st_muGamIso            = ROOT.std.vector('float')()
@@ -155,7 +155,7 @@ def AnalyzeDataSet():
         run                        = skimmedTree.__getattr__('runId')
         lumi                       = skimmedTree.__getattr__('lumiSection')
         event                      = skimmedTree.__getattr__('eventId')
-        print (run,lumi,event)
+        print "Run:"+str(run)+"; Lumi:"+str(lumi)+"; Event:"+str(event)
         trigName                   = skimmedTree.__getattr__('hlt_trigName')
         trigResult                 = skimmedTree.__getattr__('hlt_trigResult')
         filterName                 = skimmedTree.__getattr__('hlt_filterName')
@@ -241,7 +241,7 @@ def AnalyzeDataSet():
         trig8 = CheckFilter(trigName, trigResult, 'HLT_IsoMu20')
         trig9 = CheckFilter(trigName, trigResult, 'HLT Ele27 WPLoose Gsf')
         
-        trigstatus =  trig1 | trig2 | trig3 | trig4 | trig5 | trig6 | trig7 | trig8 | trig3
+        trigstatus =  trig1 | trig2 | trig3 | trig4 | trig5 | trig6 | trig7 | trig8 | trig9
         if not isData:
             trigstatus  = False
         if isData:
@@ -339,7 +339,7 @@ def AnalyzeDataSet():
         st_runId[0]             = long(run)
         st_lumiSection[0]       = lumi
         st_eventId[0]           = event
-        print ('-----------',st_runId,st_lumiSection,st_eventId)
+#        print '-----------'+str(st_runId)+", "+str(st_lumiSection)+", "+str(st_eventId)
         
         st_pfMetCorrPt[0]       = pfMet
         st_pfMetCorrPhi[0]      = pfMetPhi
@@ -372,16 +372,16 @@ def AnalyzeDataSet():
         st_nEle[0] = len(myEles)
         for iele in range(len(myEles)):
             st_eleP4.push_back(eleP4[iele])
-            st_eleIsPassLoose.push_back(eleIsPassLoose[iele])
-            st_eleIsPassMedium.push_back(eleIsPassMedium[iele])
-            st_eleIsPassTight.push_back(eleIsPassTight[iele])
+            st_eleIsPassLoose.push_back(bool(eleIsPassLoose[iele]))
+            st_eleIsPassMedium.push_back(bool(eleIsPassMedium[iele]))
+            st_eleIsPassTight.push_back(bool(eleIsPassTight[iele]))
             
         st_nMu[0] = len(myMuos)
         for imu in range(len(myMuos)):
             st_muP4.push_back(muP4[imu])
-            st_isLooseMuon.push_back(isLooseMuon[imu])
-            st_isTightMuon.push_back(isTightMuon[imu])
-            st_isMediumMuon.push_back(isMediumMuon[imu])
+            st_isLooseMuon.push_back(bool(isLooseMuon[imu]))
+            st_isTightMuon.push_back(bool(isTightMuon[imu]))
+            st_isMediumMuon.push_back(bool(isMediumMuon[imu]))
             st_muChHadIso.push_back(muChHadIso[imu])
             st_muNeHadIso.push_back(muNeHadIso[imu])
             st_muGamIso.push_back(muGamIso[imu])
@@ -404,17 +404,17 @@ def AnalyzeDataSet():
                 
         
         ## Fill variables for the CRs. 
-        WenuRecoil = 0.0
-        Wenumass = 0.0
+        WenuRecoil[0] = -999.
+        Wenumass[0] = -999.
         
-        WmunuRecoil = 0.0
-        Wmunumass = 0.0
+        WmunuRecoil[0] = -999.
+        Wmunumass[0] = -999.
         
-        ZeeMass = 0.0
-        ZeeRecoil = .0
+        ZeeMass[0] = -999.
+        ZeeRecoil[0] = -999.
         
-        ZmumuMass = 0.0
-        ZmumuRecoil = 0.0
+        ZmumuMass[0] = -999.
+        ZmumuRecoil[0] = -999.
         
         ## for dielectron 
         if len(myEles) ==2:
@@ -426,12 +426,11 @@ def AnalyzeDataSet():
             ee_mass = ( p4_ele1 + p4_ele2 ).M()
             
             #if not  ( (ee_mass > 70.0 ) & (ee_mass < 110.0) ): continue
-            if ( eleCharge[ele1] * eleCharge[ele2] > 0 ) : continue
-            
-            zeeRecoilPx = -( pfMet*math.cos(pfMetPhi)  - p4_ele1.Px() - p4_ele2.Px())
-            zeeRecoilPy = -( pfMet*math.sin(pfMetPhi) - p4_ele1.Py() - p4_ele2.Py())
-            ZeeRecoil =  math.sqrt(zeeRecoilPx * zeeRecoilPx  +  zeeRecoilPy*zeeRecoilPy)
-            ZeeMass = ee_mass
+            if not ( eleCharge[ele1] * eleCharge[ele2] > 0 ) :            
+                zeeRecoilPx = -( pfMet*math.cos(pfMetPhi) - p4_ele1.Px() - p4_ele2.Px())
+                zeeRecoilPy = -( pfMet*math.sin(pfMetPhi) - p4_ele1.Py() - p4_ele2.Py())
+                ZeeRecoil[0] =  math.sqrt(zeeRecoilPx * zeeRecoilPx  +  zeeRecoilPy*zeeRecoilPy)
+                ZeeMass[0] = ee_mass
         
         ## for dimu
         if len(myMuos) ==2:
@@ -443,12 +442,11 @@ def AnalyzeDataSet():
             mumu_mass = ( p4_mu1 + p4_mu2 ).M()
             
             #if not  ( (mumu_mass > 70.0 ) & (mumu_mass < 110.0) ): continue
-            if ( muCharge[mu1] * muCharge[mu2] > 0 ) : continue
-            
-            zmumuRecoilPx = -( pfMet*math.cos(pfMetPhi)  - p4_mu1.Px() - p4_mu2.Px())
-            zmumuRecoilPy = -( pfMet*math.sin(pfMetPhi)  - p4_mu1.Py() - p4_mu2.Py())
-            ZmumuRecoil =  math.sqrt(zmumuRecoilPx * zmumuRecoilPx  +  zmumuRecoilPy*zmumuRecoilPy)
-            ZmumuMass = mumu_mass
+            if not ( muCharge[mu1] * muCharge[mu2] > 0 ) :             
+                zmumuRecoilPx = -( pfMet*math.cos(pfMetPhi)  - p4_mu1.Px() - p4_mu2.Px())
+                zmumuRecoilPy = -( pfMet*math.sin(pfMetPhi)  - p4_mu1.Py() - p4_mu2.Py())
+                ZmumuRecoil[0] =  math.sqrt(zmumuRecoilPx * zmumuRecoilPx  +  zmumuRecoilPy*zmumuRecoilPy)
+                ZmumuMass[0] = mumu_mass
         
         ## for Single electron  
         if len(myEles) == 1:
@@ -459,10 +457,10 @@ def AnalyzeDataSet():
            
            #if not  ( (e_mass > 50.0 ) & (e_mass < 160.0) ): continue
            
-           WenuRecoilPx = -( pfMet*math.cos(pfMetPhi)  - p4_ele1.Px())
+           WenuRecoilPx = -( pfMet*math.cos(pfMetPhi) - p4_ele1.Px())
            WenuRecoilPy = -( pfMet*math.sin(pfMetPhi) - p4_ele1.Py())
-           WenuRecoil =  math.sqrt(WenuRecoilPx * WenuRecoilPx  +  WenuRecoilPy*WenuRecoilPy)
-           Wenumass = e_mass
+           WenuRecoil[0] =  math.sqrt(WenuRecoilPx * WenuRecoilPx  +  WenuRecoilPy*WenuRecoilPy)
+           Wenumass[0] = e_mass
            
         ## for Single muon  
         if len(myMuos) == 1:
@@ -473,33 +471,17 @@ def AnalyzeDataSet():
            
            #if not  ( (mu_mass > 50.0 ) & (mu_mass < 160.0) ): continue
            
-           WenuRecoilPx = -( pfMet*math.cos(pfMetPhi)  - p4_ele1.Px())
-           WenuRecoilPy = -( pfMet*math.sin(pfMetPhi) - p4_ele1.Py())
-           WenuRecoil =  math.sqrt(WenuRecoilPx * WenuRecoilPx  +  WenuRecoilPy*WenuRecoilPy)
-           Wmunumass = mu_mass
+           WmunuRecoilPx = -( pfMet*math.cos(pfMetPhi) - p4_mu1.Px())
+           WmunuRecoilPy = -( pfMet*math.sin(pfMetPhi) - p4_mu1.Py())
+           WmunuRecoil[0] =  math.sqrt(WmunuRecoilPx * WmunuRecoilPx  +  WmunuRecoilPy*WmunuRecoilPy)
+           Wmunumass[0] = mu_mass
         
         outTree.Fill()
 
     h_total_mcweight.Write()
     h_total.Write()
     outfile.Write()
-
         
-
-
-        
-def CheckFilter(filterName, filterResult,filtercompare):
-    ifilter_=0
-    filter1 = False
-    for ifilter in filterName:
-        filter1 = (ifilter.find(filtercompare) != -1)  & (bool(filterResult[ifilter_]) == True)   
-        if filter1: break
-        ifilter_ = ifilter_ + 1
-    return filter1
-
-
-
-
 def DeltaR(p4_1, p4_2):
     eta1 = p4_1.Eta()
     eta2 = p4_2.Eta()
@@ -521,8 +503,21 @@ def Phi_mpi_pi(x):
     while (x < -kPI): x = x + kTWOPI;
     return x;
     
+def DeltaPhi(phi1,phi2):
+   phi = Phi_mpi_pi(phi1-phi2)
+   
+   return phi
+        
+def CheckFilter(filterName, filterResult,filtercompare):
+    ifilter_=0
+    filter1 = False
+    for ifilter in filterName:
+        filter1 = (ifilter.find(filtercompare) != -1)  & (bool(filterResult[ifilter_]) == True)   
+        if filter1: break
+        ifilter_ = ifilter_ + 1
+    return filter1
 
-
+   
 def GenWeightProducer(sample,nGenPar, genParId, genMomParId, genParSt,genParP4):
     pt__=0;
     #print " inside gen weight "
