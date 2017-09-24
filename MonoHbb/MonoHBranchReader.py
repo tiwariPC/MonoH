@@ -211,24 +211,9 @@ def AnalyzeDataSet():
 #       if isinstance(value, float):
 #          bbMET_tree.Branch('bbMETvariables',AddressOf(allquantities,'histo'),'histo/D')
     # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+    # BTag Scale Factor Initialisation
     # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
-    # BTag Scale Factor Initialisation--------------------------------------------------------------------------------------------------------------------------------
-    # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
-    # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-    ## FatJets
-    calib = ROOT.BTagCalibrationStandalone('csvv1', 'subjet_CSVv2_ichep.csv')
-    v_sys = getattr(ROOT, 'vector<string>')()
-    v_sys.push_back('up')
-    v_sys.push_back('down')
-    ### working point, central systematic type, vector of other sys. types 
-    ###  0 is for loose op, 1: medium, 2: tight, 3: discr. reshaping
-    reader = ROOT.BTagCalibrationStandaloneReader( 0, "central", v_sys )    
-    reader.load(calib, 0,  "lt" )  
-    reader.load(calib, 1,  "lt" )  
-    reader.load(calib, 2,  "incl" )  
     
-
 
     ## ThinJets
     calib1 = ROOT.BTagCalibrationStandalone('csvv2', 'CSVv2_ichep.csv')
@@ -237,8 +222,8 @@ def AnalyzeDataSet():
     reader1.load(calib1, 1,  "comb" )  
     reader1.load(calib1, 2,  "incl" )  
     
-    #h_total = TH1F('h_total','h_total',2,0,2)
-    #h_total_mcweight = TH1F('h_total_mcweight','h_total_mcweight',2,0,2)
+    h_total = TH1F('h_total','h_total',2,0,2)
+    h_total_mcweight = TH1F('h_total_mcweight','h_total_mcweight',2,0,2)
     
     
     
@@ -248,8 +233,7 @@ def AnalyzeDataSet():
         ##
         sf_resolved1 = []
         sf_resolved2 = []
-        sf_boosted1 = []
-        sf_boosted2 = []
+        sf_resolved3 = []
         #print "event number = ",ievent
         skimmedTree.GetEntry(ievent)
         
@@ -346,7 +330,7 @@ def AnalyzeDataSet():
         ZeeMass                    = skimmedTree.__getattr__('ZeeMass')
         ZmumuRecoil                = skimmedTree.__getattr__('ZmumuRecoil')
         ZmumuMass                  = skimmedTree.__getattr__('ZmumuMass')
-        TOPRecoil                  = skimmedTree.__getattr__('TOPRecoil')
+        TOPRecoil                  = skimmedTree.__getattr__('TOPRecoil'
              
         jetSR1Info           = []
         jetSR2Info           = []
@@ -486,7 +470,6 @@ def AnalyzeDataSet():
             jetSR2Info.append([jet2pt,jet2eta,jet2phi])
             jetSR2Info.append([jet3pt,jet3eta,jet3phi])
 
-
 # --------------------------------------------------------------------------------------------------------------------------------------------------------
 
 # --------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -604,7 +587,6 @@ def AnalyzeDataSet():
             # Hadronic recoil:
             if TOPRecoil <= 200.: TopCR=False
             
-            
         
         
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -711,66 +693,46 @@ def AnalyzeDataSet():
 
 
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+        ## BTag Scale Factor 
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
-        ## BTag Scale Factor ---------------------------------------------------------------------------------------------------------------------------------------------
-        # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
-        # ----------------------------------------------------------------------------------------------------------------------------------------------------------------        
-        
-        #if regime:
-            #print "inside regime"
-            #p4_1 = TLorentzVector(subjetSDPx[HIndex][0], subjetSDPy[HIndex][0], subjetSDPz[HIndex][0], subjetSDE[HIndex][0])
-            #p4_2 = TLorentzVector(subjetSDPx[HIndex][1], subjetSDPy[HIndex][1], subjetSDPz[HIndex][1], subjetSDE[HIndex][1])
+         if inSR1:
+            ij = j1
+            jj = j2
             
-         #   pt1 = subjetSDPt[HIndex][0]
-         #   eta1 = subjetSDEta[HIndex][0]
-         #   pt2 = subjetSDPt[HIndex][1]
-         #   eta2 = subjetSDEta[HIndex][1]
-            
-         #   flav1 = jetflav(subjetHadronFlavor[HIndex][0])
-         #   flav2 = jetflav(subjetHadronFlavor[HIndex][1])
-            
-         #   sf_boosted1 = weightbtag(reader, flav1, pt1, eta1)
-         #   sf_boosted2 = weightbtag(reader, flav2, pt2, eta2)
-            
-         #   if options.dbt:
-         #       sf_boosted1 = [1.0,1.0,1.0]
-         #       sf_boosted2 = [1.0,1.0,1.0] 
-            #print (sf_boosted1, sf_boosted2)
-            
-        
-        #if not regime: 
-            
-            #print "inside not regime"
-           # ij = HiggsInfo_sorted[0][0]
-           # jj = HiggsInfo_sorted[0][1]
-            
-          #  flav1 = jetflav(THINjetHadronFlavor[ij])
-          #  flav2 = jetflav(THINjetHadronFlavor[jj])
+            flav1 = jetflav(THINjetHadronFlavor[ij])
+            flav2 = jetflav(THINjetHadronFlavor[jj])
 
-            #print ("ij, flav, pt, eta, ",ij, flav1, thinjetP4[ij].Pt(), thinjetP4[ij].Eta())
-            #reader1.eval_auto_bounds('central', 0, 1.2, 50.)
-          #  sf_resolved1 = weightbtag(reader1, flav1, thinjetP4[ij].Pt(), thinjetP4[ij].Eta())
-         #   sf_resolved2 = weightbtag(reader1, flav2, thinjetP4[jj].Pt(), thinjetP4[jj].Eta())
+            print ("ij, flav, pt, eta, ",ij, flav1, thinjetP4[ij].Pt(), thinjetP4[ij].Eta())
+            reader1.eval_auto_bounds('central', 0, 1.2, 50.)
+            sf_resolved1 = weightbtag(reader1, flav1, thinjetP4[ij].Pt(), thinjetP4[ij].Eta())
+            sf_resolved2 = weightbtag(reader1, flav2, thinjetP4[jj].Pt(), thinjetP4[jj].Eta())
             
-            #print (sf_resolved1, sf_resolved2)
+            print (sf_resolved1, sf_resolved2)
+         else if inSR2:
+            ij = j1
+            jj = j2
+            jk = j3
+         
+            flav1 = jetflav(THINjetHadronFlavor[ij])
+            flav2 = jetflav(THINjetHadronFlavor[jj])
+            flav3 = jetflav(THINjetHadronFlavor[jj])
 
-        
-        #########################################
-        ## Regime Loop ends here
-        #########################################
-        #print (sf_resolved1, sf_resolved2,sf_boosted1, sf_boosted2)
-       # if regime: 
-       #     allweights = allweights * sf_boosted1[0] * sf_boosted2[0]
-       # if not regime:
-       #     allweights = allweights * sf_resolved1[0] * sf_resolved2[0]
-        
+            print ("ij, flav, pt, eta, ",ij, flav1, thinjetP4[ij].Pt(), thinjetP4[ij].Eta())
+            reader1.eval_auto_bounds('central', 0, 1.2, 50.)
+            sf_resolved1 = weightbtag(reader1, flav1, thinjetP4[ij].Pt(), thinjetP4[ij].Eta())
+            sf_resolved2 = weightbtag(reader1, flav2, thinjetP4[jj].Pt(), thinjetP4[jj].Eta())
+            sf_resolved3 = weightbtag(reader1, flav3, thinjetP4[jk].Pt(), thinjetP4[jk].Eta())
+            
+            print (sf_resolved1, sf_resolved2, sf_resolved3)
+            
+         if inSR1:
+            allweights = allweights * sf_resolved1[0] * sf_resolved2[0]
+         if inSR2:
+            allweights = allweights * sf_resolved1[0] * sf_resolved2[0] * sf_resolved3[0]
+       
         if isData: allweights = 1.0 
-        #allquantities.regime     = regime
         allquantities.met        = pfMet
-        #allquantities.mt         = mt_
-        #if not  ((len(myTaus) + len(myMuos) + len(myEles)) < nLepton) : continue
 
-        #if len(dphiVec)>0: allquantities.dPhi            = min(dphiVec)
         allquantities.N_e             = len(myEles)
         allquantities.N_mu            = len(myMuos)
         allquantities.N_tau           = len(myTaus)
@@ -780,15 +742,6 @@ def AnalyzeDataSet():
 
         allquantities.weight    = allweights
         allquantities.totalevents = 1
-        
-        #if regime: 
-         #allquantities.mass            = fatjetPRmassL2L3Corr[HIndex]
-         #allquantities.HiggsPt         = fatjetP4[HIndex].Pt()
-         #allquantities.HiggsEta        = fatjetP4[HIndex].Eta()
-         #allquantities.HiggsPhi        = fatjetP4[HIndex].Phi()
-            
-        #if not regime:  
-         #allquantities.mass            = HiggsInfo_sorted[0][2]
          
          
         if inSR1:            
@@ -808,7 +761,7 @@ def AnalyzeDataSet():
            allquantities.jet3_pT_sr2     = None
            allquantities.jet3_eta_sr2    = None
            allquantities.jet3_phi_sr2    = None
-           bbMET_tree.Fill()
+#           bbMET_tree.Fill()
 #           print "SR1: jet1: "+str(jetSR1Info[0])+"; jet2: "+str(jetSR1Info[1])
         elif inSR2:            
            allquantities.jet1_pT_sr2     = jetSR2Info[0][0]
@@ -828,7 +781,7 @@ def AnalyzeDataSet():
            allquantities.jet2_eta_sr1    = None
            allquantities.jet2_phi_sr1    = None
            
-           bbMET_tree.Fill()
+#           bbMET_tree.Fill()
 #           print "SR2: jet1: "+str(jetSR2Info[0])+"; jet2: "+str(jetSR2Info[1])+"; jet3: "+str(jetSR2Info[2])
         else:
             continue
