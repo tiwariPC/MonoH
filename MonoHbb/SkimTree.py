@@ -470,7 +470,7 @@ def AnalyzeDataSet():
            
            
         ## for Single electron && Single Muon
-        if len(myEles) == 1 && len(myMuos) == 1:
+        if len(myEles) == 1 and len(myMuos) == 1:
            ele1 = myEles[0]
            p4_ele1 = eleP4[ele1]
            mu1 = myMuos[0]
