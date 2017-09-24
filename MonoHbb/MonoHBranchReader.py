@@ -264,32 +264,9 @@ def AnalyzeDataSet():
         #trigResult                 = skimmedTree.__getattr__('st_hlt_trigResult')
         #filterName                 = skimmedTree.__getattr__('st_hlt_filterName')
         #filterResult               = skimmedTree.__getattr__('st_hlt_filterResult')
-                                   
+         
         pfMet                      = skimmedTree.__getattr__('st_pfMetCorrPt')
         pfMetPhi                   = skimmedTree.__getattr__('st_pfMetCorrPhi')
-        
-        #nFatJets                   = skimmedTree.__getattr__('st_nFatJets')
-        #fatjetP4                   = skimmedTree.__getattr__('st_FATjetP4')
-        #fatjetPRmassL2L3Corr       = skimmedTree.__getattr__('st_FATjetPRmassL2L3Corr')
-                
-        #nSubSoftDropJet            = skimmedTree.__getattr__('st_FATnSubSDJet')
-        #subjetSDCSV                = skimmedTree.__getattr__('st_subjetSDCSV')
-        
-
-        
-        #subjetSDPx                 = skimmedTree.__getattr__('st_FATsubjetSDPx')
-        #subjetSDPy                 = skimmedTree.__getattr__('st_FATsubjetSDPy')
-        #subjetSDPz                 = skimmedTree.__getattr__('st_FATsubjetSDPz')
-        #subjetSDE                  = skimmedTree.__getattr__('st_FATsubjetSDE')
-        #subjetSDPt                  = skimmedTree.__getattr__('st_subjetPt')
-        #subjetSDEta                  = skimmedTree.__getattr__('st_subjetEta')
-        #passFatJetTightID          = skimmedTree.__getattr__('st_FATjetPassIDTight')
-        #subjetHadronFlavor         = skimmedTree.__getattr__('st_subjetFlav')
-        
-        #doublebtagger              = skimmedTree.__getattr__('st_ADDjet_DoubleSV')
-        #tau2                       = skimmedTree.__getattr__('st_FATjetTau2')
-        #au1                       = skimmedTree.__getattr__('st_FATjetTau1')
-        
         
         nTHINJets                  = skimmedTree.__getattr__('st_THINnJet')
         thinjetP4                  = skimmedTree.__getattr__('st_THINjetP4')
