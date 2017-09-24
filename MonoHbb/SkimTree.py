@@ -94,6 +94,8 @@ def AnalyzeDataSet():
     
     ZmumuRecoil = array( 'f', [ 0. ] )
     ZmumuMass = array( 'f', [ 0. ] )
+    
+    TOPRecoil = array( 'f', [ 0. ] )
            
     outTree.Branch( 'st_runId', st_runId , 'st_runId/L')
     outTree.Branch( 'st_lumiSection', st_lumiSection , 'st_lumiSection/L')
@@ -147,6 +149,8 @@ def AnalyzeDataSet():
     
     outTree.Branch( 'ZmumuRecoil', ZmumuRecoil, 'ZmumuRecoil/F')
     outTree.Branch( 'ZmumuMass', ZmumuMass, 'ZmumuMass/F')
+    
+    outTree.Branch( 'TOPRecoil', TOPRecoil, 'TOPRecoil/F')
 
     
     for ievent in range(NEntries):
@@ -463,6 +467,22 @@ def AnalyzeDataSet():
            WmunuRecoilPy = -( pfMet*math.sin(pfMetPhi) - p4_mu1.Py())
            WmunuRecoil[0] =  math.sqrt(WmunuRecoilPx * WmunuRecoilPx  +  WmunuRecoilPy*WmunuRecoilPy)
            Wmunumass[0] = mu_mass
+           
+           
+        ## for Single electron && Single Muon
+        if len(myEles) == 1 && len(myMuos) == 1:
+           ele1 = myEles[0]
+           p4_ele1 = eleP4[ele1]
+           mu1 = myMuos[0]
+           p4_mu1 = muP4[mu1]
+           
+           #e_mass = MT(p4_ele1.Pt(),pfMet, DeltaPhi(p4_ele1.Phi(),pfMetPhi)) #transverse mass defined as sqrt{2pT*MET*(1-cos(dphi)}
+           #mu_mass = MT(p4_mu1.Pt(),pfMet, DeltaPhi(p4_mu1.Phi(),pfMetPhi))
+           #if not  ( (e_mass > 50.0 ) & (e_mass < 160.0) ): continue
+           
+           TOPenumunuRecoilPx = -( pfMet*math.cos(pfMetPhi) - p4_mu1.Px() -p4_ele1.Px())
+           TOPenumunuRecoilPy = -( pfMet*math.sin(pfMetPhi) - p4_mu1.Py() -p4_ele1.Py())
+           TOPRecoil[0] =  math.sqrt(TOPenumunuRecoilPx * TOPenumunuRecoilPx  +  TOPenumunuRecoilPy*TOPenumunuRecoilPy)
         
         outTree.Fill()
 
