@@ -10,8 +10,8 @@ import numpy as numpy_
 ROOT.gROOT.LoadMacro("Loader.h+")
 
 ## When not running on farmout
-inputfilename= 'test_Mchi1Mphi50.txt'
-outfilename= 'Mchi1_Mphi50.root'
+inputfilename= 'FileList.txt'
+outfilename= 'Output_WJetsToLNu_HT-1200To2500.root'
 PUPPI = True
 CA15  = False
 
