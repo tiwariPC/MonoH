@@ -206,10 +206,10 @@ def AnalyzeDataSet():
     allquantities = MonoHbbQuantities(outfilename)
     allquantities.defineHisto()
 
-    for attr, value in allquantities.__dict__.iteritems():
-       print attr, value
-       if isinstance(value, float):
-          bbMET_tree.Branch('bbMETvariables',AddressOf(allquantities,'histo'),'histo/D')
+#    for attr, value in allquantities.__dict__.iteritems():
+#       print attr, value
+#       if isinstance(value, float):
+#          bbMET_tree.Branch('bbMETvariables',AddressOf(allquantities,'histo'),'histo/D')
     # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
     # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
     # BTag Scale Factor Initialisation--------------------------------------------------------------------------------------------------------------------------------
@@ -310,10 +310,14 @@ def AnalyzeDataSet():
         nEle                       = skimmedTree.__getattr__('st_nEle')
         eleP4                      = skimmedTree.__getattr__('st_eleP4')
         eleIsPassLoose             = skimmedTree.__getattr__('st_eleIsPassLoose')
+        eleIsPassMedium            = skimmedTree.__getattr__('st_eleIsPassMedium')
+        eleIsPassTight             = skimmedTree.__getattr__('st_eleIsPassTight')
         
         nMu                        = skimmedTree.__getattr__('st_nMu')
         muP4                       = skimmedTree.__getattr__('st_muP4')
         isLooseMuon                = skimmedTree.__getattr__('st_isLooseMuon')
+        isMediumMuon               = skimmedTree.__getattr__('st_isMediumMuon')
+        isTightMuon                = skimmedTree.__getattr__('st_isTightMuon')
         muChHadIso                 = skimmedTree.__getattr__('st_muChHadIso')
         muNeHadIso                 = skimmedTree.__getattr__('st_muNeHadIso')
         muGamIso                   = skimmedTree.__getattr__('st_muGamIso')
@@ -333,6 +337,16 @@ def AnalyzeDataSet():
         genMomParId                = skimmedTree.__getattr__('st_genMomParId')
         genParSt                   = skimmedTree.__getattr__('st_genParSt')
         genParP4                   = skimmedTree.__getattr__('st_genParP4')
+        
+        WenuRecoil                 = skimmedTree.__getattr__('WenuRecoil')
+        Wenumass                   = skimmedTree.__getattr__('Wenumass')
+        WmunuRecoil                = skimmedTree.__getattr__('WmunuRecoil')
+        Wmunumass                  = skimmedTree.__getattr__('Wmunumass')
+        ZeeRecoil                  = skimmedTree.__getattr__('ZeeRecoil')
+        ZeeMass                    = skimmedTree.__getattr__('ZeeMass')
+        ZmumuRecoil                = skimmedTree.__getattr__('ZmumuRecoil')
+        ZmumuMass                  = skimmedTree.__getattr__('ZmumuMass')
+        TOPRecoil                  = skimmedTree.__getattr__('TOPRecoil')
              
         jetSR1Info           = []
         jetSR2Info           = []
@@ -474,11 +488,125 @@ def AnalyzeDataSet():
 
 
 # --------------------------------------------------------------------------------------------------------------------------------------------------------
+
+# --------------------------------------------------------------------------------------------------------------------------------------------------------
+
         #Control Regions
         
-        #SR1 Control Regions:
-         
-
+        #=================================================================
+        #  Z control region
+        #=================================================================
+        zCR=True
+        
+        zCREle=False
+        zCRMu=False
+        
+        if nEle==2 and nMu==0 and nTau==0:
+            zCREle=True
+            LepP4=eleP4
+            isLoose=eleIsPassLoose
+            isTight=eleIsPassTight
+            zmass=ZeeMassMass
+            hadrecoil=ZeeRecoil
+        elif nMu==2 and nEle==0 and nTau==0:
+            zCRMu=True
+            LepP4=MuP4
+            isLoose=isLooseMuon
+            isTight=isTightMuon
+            zmass=ZmumuMass
+            hadrecoil=ZmumuRecoil
+        else:
+            zCR=False
+        
+        if zCR:                                 # Just to reduce reduntant computation
+            if LepP4[0].Pt() > LepP4[1].Pt()
+                iLeadLep=0
+                iSecondLep=1
+            else:
+                iLeadLep=1
+                iSecondLep=0
+            
+            # Leading lepton conditions:
+            if LepP4[iLeadLep].Pt() < 30.: zCR=False
+            print "isLoose: "+str(isLoose[iLeadLep])
+            if not isTight[iLeadLep]: zCR=False
+            
+            # Sub-leading lepton conditions:
+            if LepP4[iSecondLep].Pt() < 10.: zCR=False
+            if not isLoose[iSecondLep]: zCR=False
+            
+            if zCRMu:                                           # Special isolation requirement for Muon
+                if MuIso[iLeadLep] > 0.15: zCR=False             #### Needs update
+                if MuIso[iSecondLep] > 0.25: zCR=False             #### Needs update
+            
+            # Z Mass condition:
+            if zmass <= 70. or zmass >= 110.: zCR=False             
+            
+            # Hadronic recoil:
+            if hadrecoil <= 200.: zCR=False 
+            
+            
+        #=================================================================
+        #  W control region
+        #=================================================================       
+        wCR=True
+        
+        wCREle=False
+        wCRMu=False
+        
+        if nEle==1 and nMu==0 and nTau==0:
+            wCREle=True
+            LepP4=eleP4
+            isTight=eleIsPassTight
+            wmass=Wenumass
+            hadrecoil=WenuRecoil
+        elif nMu==1 and nEle==0 and nTau==0:
+            wCRMu=True
+            LepP4=MuP4
+            isTight=isTightMuon
+            wmass=Wmunumass
+            hadrecoil=WmunuRecoil
+        else:
+            wCR=False
+            
+        if wCR:        
+            # Leading lepton conditions:
+            if LepP4[0].Pt() < 30.: wCR=False
+            if not isTight[0]: wCR=False
+            
+            if wCRMu:
+                if MuIso[0] > 0.15: wCR=False           #### Needs update
+            
+            # W Mass condition:
+            if wmass <= 50. or wmass >= 160.: wCR=False    
+            
+            # Hadronic recoil:
+            if hadrecoil <= 200.: wCR=False 
+            
+        
+        #=================================================================
+        #  Top control region
+        #================================================================= 
+        TopCR=False
+        
+        if nEle==1 and nMu==1 and nTau==0:
+            TopCR=True
+            
+            # Muon
+            if MuP4[0].Pt() < 30.: TopCR=False
+            if MuIso[0] > 0.15: TopCR=False                  #### Needs update
+            if not isTightMuon[0]: TopCR=False                   
+            
+            # Electron
+            if eleP4[0].Pt() < 30.: TopCR=False
+            if not eleIsPassTight[0]: TopCR=False
+            
+            # Hadronic recoil:
+            if TOPRecoil <= 200.: TopCR=False
+            
+            
+        
+        
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
         ## min DPhi
@@ -713,8 +841,8 @@ def AnalyzeDataSet():
 
     #print cutStatus
     print "npass = ", npass
-    NEntries_Weight = h_t.Integral()
-    NEntries_total  = h_t_weight.Integral()
+    NEntries_Weight = h_t_weight.Integral()
+    NEntries_total  = h_t.Integral()
     
     cutflowTable=""
     cutflowHeader=""
