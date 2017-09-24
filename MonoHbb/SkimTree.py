@@ -230,7 +230,7 @@ def AnalyzeDataSet():
         ## Trigger selection
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
-        itrig_=0; trig1 = False; trig2 = False,trig3 = False,trig4 = False,trig5 = False,trig6 = False,trig7 = False,trig8 = False,trig9 = False;
+        itrig_=0; trig1 = False; trig2 = False; trig3 = False; trig4 = False; trig5 = False; trig6 = False; trig7 = False; trig8 = False; trig9 = False;
         trig1 = CheckFilter(trigName, trigResult, 'HLT_PFMET170_NoiseCleaned')
         trig2 = CheckFilter(trigName, trigResult, 'HLT_PFMET170_JetIdCleaned_v')
         trig3 = CheckFilter(trigName, trigResult, 'HLT_PFMET170_HBHECleaned_v')
