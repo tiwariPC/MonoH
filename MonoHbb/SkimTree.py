@@ -11,7 +11,7 @@ ROOT.gROOT.LoadMacro("Loader.h+")
 
 ## When not running on farmout
 inputfilename= 'FileList.txt'
-outfilename= 'Output_WJetsToLNu_HT-1200To2500.root'
+outfilename= 'Output_ZJetsToNuNu_HT-1200To2500.root'
 PUPPI = True
 CA15  = False
 
@@ -407,6 +407,8 @@ def AnalyzeDataSet():
         
         ZmumuMass[0] = -999.
         ZmumuRecoil[0] = -999.
+        
+        TOPRecoil[0] = -999.
         
         ## for dielectron 
         if len(myEles) ==2:

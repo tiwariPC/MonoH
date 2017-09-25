@@ -202,6 +202,13 @@ def AnalyzeDataSet():
     cutStatus['muveto'] = 0
     cutStatus['tauveto'] = 0
     
+    CRs=['ZCRSR1','ZCRSR2','WCRSR1','WCRSR2','TopCRSR1','TopCRSR2']
+    
+    CRStatus={'total':NEntries}
+    for CRname in CRs:
+        CRStatus[CRname]=0
+    
+    
     print outfilename
     allquantities = MonoHbbQuantities(outfilename)
     allquantities.defineHisto()
@@ -214,10 +221,12 @@ def AnalyzeDataSet():
     # BTag Scale Factor Initialisation
     # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
     
-
+    othersys = ROOT.std.vector('string')()
+    othersys.push_back('down')
+    othersys.push_back('up')
     ## ThinJets
     calib1 = ROOT.BTagCalibrationStandalone('csvv2', 'CSVv2_ichep.csv')
-    reader1 = ROOT.BTagCalibrationStandaloneReader( 0, "central", v_sys )    
+    reader1 = ROOT.BTagCalibrationStandaloneReader( 0, "central", othersys)    
     reader1.load(calib1, 0,  "comb" )  
     reader1.load(calib1, 1,  "comb" )  
     reader1.load(calib1, 2,  "incl" )  
@@ -307,7 +316,7 @@ def AnalyzeDataSet():
         ZeeMass                    = skimmedTree.__getattr__('ZeeMass')
         ZmumuRecoil                = skimmedTree.__getattr__('ZmumuRecoil')
         ZmumuMass                  = skimmedTree.__getattr__('ZmumuMass')
-        TOPRecoil                  = skimmedTree.__getattr__('TOPRecoil'
+        TOPRecoil                  = skimmedTree.__getattr__('TOPRecoil')
              
         jetSR1Info           = []
         jetSR2Info           = []
@@ -483,7 +492,7 @@ def AnalyzeDataSet():
             zCR=False
         
         if zCR:                                                 # Just to reduce reduntant computation
-            if LepP4[0].Pt() > LepP4[1].Pt()
+            if LepP4[0].Pt() > LepP4[1].Pt():
                 iLeadLep=0
                 iSecondLep=1
             else:
@@ -509,7 +518,11 @@ def AnalyzeDataSet():
             # Hadronic recoil:
             if hadrecoil <= 200.: zCR=False 
             
-            
+        if zCR:
+            if inSR1:
+                CRStatus['ZCRSR1']+=1
+            if inSR2:
+                CRStatus['ZCRSR2']+=1
         #=================================================================
         #  W control region
         #=================================================================       
@@ -547,7 +560,11 @@ def AnalyzeDataSet():
             # Hadronic recoil:
             if hadrecoil <= 200.: wCR=False 
             
-        
+        if wCR:
+            if inSR1:
+                CRStatus['WCRSR1']+=1
+            if inSR2:
+                CRStatus['WCRSR2']+=1
         #=================================================================
         #  Top control region
         #================================================================= 
@@ -568,7 +585,11 @@ def AnalyzeDataSet():
             # Hadronic recoil:
             if TOPRecoil <= 200.: TopCR=False
             
-        
+        if TopCR:
+            if inSR1:
+                CRStatus['TopCRSR1']+=1
+            if inSR2:
+                CRStatus['TopCRSR2']+=1
         
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -676,35 +697,39 @@ def AnalyzeDataSet():
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
         ## BTag Scale Factor 
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
-         if inSR1:
+        if inSR1:
+            ij = ifirstjet
+            jj = isecondjet
+            
+            flav1 = jetflav(THINjetHadronFlavor[ij])
+            flav2 = jetflav(THINjetHadronFlavor[jj])
 
-            flav1 = jetflav(THINjetHadronFlavor[j1])
-            flav2 = jetflav(THINjetHadronFlavor[j2])
-
-            #print ("ij, flav, pt, eta, ",j1, flav1, thinjetP4[j1].Pt(), thinjetP4[j1].Eta())
+#            print ("ij, flav, pt, eta, ",ij, flav1, thinjetP4[ij].Pt(), thinjetP4[ij].Eta())
             reader1.eval_auto_bounds('central', 0, 1.2, 50.)
-            sf_resolved1 = weightbtag(reader1, flav1, thinjetP4[j1].Pt(), thinjetP4[j1].Eta())
-            sf_resolved2 = weightbtag(reader1, flav2, thinjetP4[j2].Pt(), thinjetP4[j2].Eta())
+            sf_resolved1 = weightbtag(reader1, flav1, thinjetP4[ij].Pt(), thinjetP4[ij].Eta())
+            sf_resolved2 = weightbtag(reader1, flav2, thinjetP4[jj].Pt(), thinjetP4[jj].Eta())
             
-            print (sf_resolved1, sf_resolved2)
-            
-         else if inSR2:
- 
-            flav1 = jetflav(THINjetHadronFlavor[j1])
-            flav2 = jetflav(THINjetHadronFlavor[j2])
-            flav3 = jetflav(THINjetHadronFlavor[j3])
+#            print (sf_resolved1, sf_resolved2)
+        elif inSR2:
+            ij = ifirstjet
+            jj = isecondjet
+            jk = ithirdjet
+         
+            flav1 = jetflav(THINjetHadronFlavor[ij])
+            flav2 = jetflav(THINjetHadronFlavor[jj])
+            flav3 = jetflav(THINjetHadronFlavor[jj])
 
-            print ("ij, flav, pt, eta, ",j1, flav1, thinjetP4[j1].Pt(), thinjetP4[j2].Eta())
+#            print ("ij, flav, pt, eta, ",ij, flav1, thinjetP4[ij].Pt(), thinjetP4[ij].Eta())
             reader1.eval_auto_bounds('central', 0, 1.2, 50.)
-            sf_resolved1 = weightbtag(reader1, flav1, thinjetP4[j1].Pt(), thinjetP4[j1].Eta())
-            sf_resolved2 = weightbtag(reader1, flav2, thinjetP4[j2].Pt(), thinjetP4[j2].Eta())
-            sf_resolved3 = weightbtag(reader1, flav3, thinjetP4[j3].Pt(), thinjetP4[j3].Eta())
+            sf_resolved1 = weightbtag(reader1, flav1, thinjetP4[ij].Pt(), thinjetP4[ij].Eta())
+            sf_resolved2 = weightbtag(reader1, flav2, thinjetP4[jj].Pt(), thinjetP4[jj].Eta())
+            sf_resolved3 = weightbtag(reader1, flav3, thinjetP4[jk].Pt(), thinjetP4[jk].Eta())
             
-            print (sf_resolved1, sf_resolved2, sf_resolved3)
+#            print (sf_resolved1, sf_resolved2, sf_resolved3)
             
-         if inSR1:
+        if inSR1:
             allweights = allweights * sf_resolved1[0] * sf_resolved2[0]
-         if inSR2:
+        if inSR2:
             allweights = allweights * sf_resolved1[0] * sf_resolved2[0] * sf_resolved3[0]
        
         if isData: allweights = 1.0 
@@ -774,6 +799,7 @@ def AnalyzeDataSet():
     NEntries_Weight = h_t_weight.Integral()
     NEntries_total  = h_t.Integral()
     
+    # Cutflow
     cutflowTable=""
     cutflowHeader=""
     cutflowvalues=[]    
@@ -783,12 +809,22 @@ def AnalyzeDataSet():
         cutflowTable += str(cutStatus[cutflowname])+" "
         cutflowHeader += cutflowname+" "    
     
-    allquantities.WriteHisto((NEntries_total,NEntries_Weight,cutflowvalues,cutflownames))
+    # CR counts
+    CRTable=""
+    CRHeader=""
+    CRvalues=[]
+    for CRname in CRs:   
+        CRvalues.append(CRStatus[CRname])
+        CRTable += str(CRStatus[CRname])+" "
+        CRHeader += CRname+" "
+    
+    
+    allquantities.WriteHisto((NEntries_total,NEntries_Weight,cutflowvalues,cutflownames,CRvalues,CRs))
     
     print "efficiency = ", float(npass/float(NEntries))   
         
     f = open('efficiencyfiles/'+textfile, 'w')
-    f.write(str(round(float(npass)/float(NEntries),5))+"\n\n#Cutflow Table:\n"+cutflowHeader[:-1]+"\n"+cutflowTable[:-1])
+    f.write(str(round(float(npass)/float(NEntries),5))+"\n\n#Cutflow Table:\n"+cutflowHeader[:-1]+"\n"+cutflowTable[:-1]+"\n\n#CR Table:\n"+CRHeader[:-1]+"\n"+CRTable[:-1])
     print "Written to "+'efficiencyfiles/'+textfile
     f.close()
 
