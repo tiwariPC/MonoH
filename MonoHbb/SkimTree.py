@@ -234,21 +234,24 @@ def AnalyzeDataSet():
         ## Trigger selection
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
-        itrig_=0; trig1 = False; trig2 = False; trig3 = False; trig4 = False; trig5 = False; trig6 = False; trig7 = False; trig8 = False; trig9 = False;
-        trig1 = CheckFilter(trigName, trigResult, 'HLT_PFMET170_NoiseCleaned')
-        trig2 = CheckFilter(trigName, trigResult, 'HLT_PFMET170_JetIdCleaned_v')
-        trig3 = CheckFilter(trigName, trigResult, 'HLT_PFMET170_HBHECleaned_v')
-        trig4 = CheckFilter(trigName, trigResult, 'HLT_PFMETNoMu90_PFMHTNoMu90_IDTight_v')
-        trig5 = CheckFilter(trigName, trigResult, 'HLT_PFMETNoMu110_PFMHTNoMu110_IDTight_v')
-        trig6 = CheckFilter(trigName, trigResult, 'HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v')
-        trig7 = CheckFilter(trigName, trigResult, 'HLT_PFMET110_PFMHT110_')
-        trig8 = CheckFilter(trigName, trigResult, 'HLT_IsoMu20')
-        trig9 = CheckFilter(trigName, trigResult, 'HLT_Ele27_WPLoose_Gsf')
+        itrig_=0; trig1 = False; trig2 = False; trig3 = False; trig4 = False; trig5 = False; trig6 = False; trig7 = False; trig8 = False; trig9 = False; trig10 = False; trig11 = False; trig12 = False;
+        trig1 = CheckFilter(trigName, trigResult, 'HLT_PFMET170_') # added from  monojet
+        trig2 = CheckFilter(trigName, trigResult, 'HLT_PFMET170_NoiseCleaned')
+        trig3 = CheckFilter(trigName, trigResult, 'HLT_PFMET170_JetIdCleaned_v')
+        trig4 = CheckFilter(trigName, trigResult, 'HLT_PFMET170_HBHECleaned_v')
+        trig5 = CheckFilter(trigName, trigResult, 'HLT_PFMETNoMu90_PFMHTNoMu90_IDTight_v')
+        trig6 = CheckFilter(trigName, trigResult, 'HLT_PFMETNoMu100_PFMHTNoMu100_IDTight_v') #added from  tt+DM all hadronic analysis
+        trig7 = CheckFilter(trigName, trigResult, 'HLT_PFMETNoMu110_PFMHTNoMu110_IDTight_v')
+        trig8 = CheckFilter(trigName, trigResult, 'HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v')
+        trig9 = CheckFilter(trigName, trigResult, 'HLT_PFMET110_PFMHT110_')
+        trig10 = CheckFilter(trigName, trigResult, 'HLT_IsoMu24_v') #added from tt+DM all hadronic analysis
+        trig11 = CheckFilter(trigName, trigResult, 'HLT_IsoTkMu24_v') #added from tt+DM all hadronic analysis
+        trig12 = CheckFilter(trigName, trigResult, 'HLT_Ele27_WPTight_Gsf') #added from Siew Yan slides
         
         if not isData:
             trigstatus  = False # triggers are not required for MC
         if isData:
-            trigstatus =  trig1 | trig2 | trig3 | trig4 | trig5 | trig6 | trig7 | trig8 | trig9 #to include data with above triggers
+            trigstatus =  trig1 | trig2 | trig3 | trig4 | trig5 | trig6 | trig7 | trig8 | trig9 | trig10 | trig11 | trig12  #to include data with above triggers
         if not isData:
            if trigstatus == True : continue
             
@@ -396,19 +399,20 @@ def AnalyzeDataSet():
                 
         
         ## Fill variables for the CRs. 
-        WenuRecoil[0] = None
-        Wenumass[0] = None
+        WenuRecoil[0] = -1.0
+        Wenumass[0] = -1.0
         
-        WmunuRecoil[0] = None
-        Wmunumass[0] = None
+        WmunuRecoil[0] = -1.0
+        Wmunumass[0] = -1.0
         
-        ZeeMass[0] = None
-        ZeeRecoil[0] = None
+        ZeeMass[0] = -1.0
+        ZeeRecoil[0] = -1.0
         
-        ZmumuMass[0] = None
-        ZmumuRecoil[0] = None
+        ZmumuMass[0] = -1.0
+        ZmumuRecoil[0] = -1.0
         
-        TOPRecoil[0] = None
+        TOPRecoil[0] = -1.0
+        
         ## for dielectron 
         if len(myEles) ==2:
             ele1 = myEles[0]
