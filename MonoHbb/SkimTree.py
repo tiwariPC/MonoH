@@ -11,7 +11,7 @@ ROOT.gROOT.LoadMacro("Loader.h+")
 
 ## When not running on farmout
 inputfilename= 'FileList.txt'
-outfilename= 'Output_ZJetsToNuNu_HT-1200To2500.root'
+outfilename= 'Output_WJetsToLNu_HT-1200To2500.root'
 PUPPI = True
 CA15  = False
 
@@ -243,7 +243,7 @@ def AnalyzeDataSet():
         trig6 = CheckFilter(trigName, trigResult, 'HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v')
         trig7 = CheckFilter(trigName, trigResult, 'HLT_PFMET110_PFMHT110_')
         trig8 = CheckFilter(trigName, trigResult, 'HLT_IsoMu20')
-        trig9 = CheckFilter(trigName, trigResult, 'HLT Ele27 WPLoose Gsf')
+        trig9 = CheckFilter(trigName, trigResult, 'HLT_Ele27_WPLoose_Gsf')
         
         if not isData:
             trigstatus  = False # triggers are not required for MC
@@ -280,7 +280,7 @@ def AnalyzeDataSet():
         ## PFMET Selection
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------        
-        pfmetstatus = ( pfMet > 200.0 )
+        pfmetstatus = ( pfMet > 50.0 )
         if pfmetstatus == False : continue 
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -396,20 +396,19 @@ def AnalyzeDataSet():
                 
         
         ## Fill variables for the CRs. 
-        WenuRecoil[0] = -999.
-        Wenumass[0] = -999.
+        WenuRecoil[0] = None
+        Wenumass[0] = None
         
-        WmunuRecoil[0] = -999.
-        Wmunumass[0] = -999.
+        WmunuRecoil[0] = None
+        Wmunumass[0] = None
         
-        ZeeMass[0] = -999.
-        ZeeRecoil[0] = -999.
+        ZeeMass[0] = None
+        ZeeRecoil[0] = None
         
-        ZmumuMass[0] = -999.
-        ZmumuRecoil[0] = -999.
+        ZmumuMass[0] = None
+        ZmumuRecoil[0] = None
         
-        TOPRecoil[0] = -999.
-        
+        TOPRecoil[0] = None
         ## for dielectron 
         if len(myEles) ==2:
             ele1 = myEles[0]
