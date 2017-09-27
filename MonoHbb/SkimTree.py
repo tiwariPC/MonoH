@@ -10,7 +10,7 @@ import numpy as numpy_
 ROOT.gROOT.LoadMacro("Loader.h+")
 
 ## When not running on farmout
-inputfilename= 'FileList.txt'
+#inputfilename= 'FileList.txt' uncomment it for providing list of file
 outfilename= 'Output_WJetsToLNu_HT-1200To2500.root'
 PUPPI = True
 CA15  = False
@@ -21,10 +21,14 @@ CA15  = False
 
 
 skimmedTree = TChain("tree/treeMaker")
-infile = open(inputfilename)
-for ifile in infile: 
-    skimmedTree.Add(ifile.rstrip())
-    
+##======use this for providing list of file======##
+#infile = open(inputfilename)
+#for ifile in infile: 
+#    skimmedTree.Add(ifile.rstrip())
+#    samplename = WhichSample(inputfilename)
+##======use this for providing list of file======##
+skimmedTree.Add(sys.argv[1])
+samplename = WhichSample(sys.argv[1])
 
     
 def AnalyzeDataSet():
@@ -282,9 +286,12 @@ def AnalyzeDataSet():
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
         ## PFMET Selection
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
-        # ----------------------------------------------------------------------------------------------------------------------------------------------------------------        
-        pfmetstatus = ( pfMet > 50.0 )
-        if pfmetstatus == False : continue 
+        # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+        
+        if samplename=="all":
+           pfmetstatus = ( pfMet > 200.0 )
+           if pfmetstatus == False : continue
+         
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
                 
@@ -428,6 +435,12 @@ def AnalyzeDataSet():
                 zeeRecoilPy = -( pfMet*math.sin(pfMetPhi) - p4_ele1.Py() - p4_ele2.Py())
                 ZeeRecoil[0] =  math.sqrt(zeeRecoilPx * zeeRecoilPx  +  zeeRecoilPy*zeeRecoilPy)
                 ZeeMass[0] = ee_mass
+                
+        ## hardrecoil cut for ZJETS sample
+        if samplename == "ZJETS":
+           ZeeRecoilstatus =(ZeeRecoil > 200)
+           if ZeeRecoilstatus == False : continue
+           
         
         ## for dimu
         if len(myMuos) ==2:
@@ -444,6 +457,11 @@ def AnalyzeDataSet():
                 zmumuRecoilPy = -( pfMet*math.sin(pfMetPhi)  - p4_mu1.Py() - p4_mu2.Py())
                 ZmumuRecoil[0] =  math.sqrt(zmumuRecoilPx * zmumuRecoilPx  +  zmumuRecoilPy*zmumuRecoilPy)
                 ZmumuMass[0] = mumu_mass
+                
+        ## hardrecoil cut for ZJETS sample
+        if samplename == "ZJETS":
+           ZmumuRecoilstatus =(ZmumuRecoil > 200)
+           if ZmumuRecoilstatus == False : continue
         
         ## for Single electron  
         if len(myEles) == 1:
@@ -459,6 +477,11 @@ def AnalyzeDataSet():
            WenuRecoil[0] =  math.sqrt(WenuRecoilPx * WenuRecoilPx  +  WenuRecoilPy*WenuRecoilPy)
            Wenumass[0] = e_mass
            
+        ## hardrecoil cut for WJETS sample   
+        if samplename == "WJETS":
+           WenuRecoilstatus =(WenuRecoil > 200)
+           if WenuRecoilstatus == False : continue
+         
         ## for Single muon  
         if len(myMuos) == 1:
            mu1 = myMuos[0]
@@ -473,7 +496,12 @@ def AnalyzeDataSet():
            WmunuRecoil[0] =  math.sqrt(WmunuRecoilPx * WmunuRecoilPx  +  WmunuRecoilPy*WmunuRecoilPy)
            Wmunumass[0] = mu_mass
            
-           
+        ## hardrecoil cut for WJETS sample
+        if samplename == "WJETS":
+           WmunuRecoilstatus =(WmunuRecoil > 200)
+           if WmunuRecoilstatus == False : continue
+         
+         
         ## for Single electron && Single Muon
         if len(myEles) == 1 and len(myMuos) == 1:
            ele1 = myEles[0]
@@ -488,13 +516,31 @@ def AnalyzeDataSet():
            TOPenumunuRecoilPx = -( pfMet*math.cos(pfMetPhi) - p4_mu1.Px() -p4_ele1.Px())
            TOPenumunuRecoilPy = -( pfMet*math.sin(pfMetPhi) - p4_mu1.Py() -p4_ele1.Py())
            TOPRecoil[0] =  math.sqrt(TOPenumunuRecoilPx * TOPenumunuRecoilPx  +  TOPenumunuRecoilPy*TOPenumunuRecoilPy)
-        
+           
+         
+        if samplename == "TT": #hardrecoil cut for TTbar sample
+            TOPRecoilstatus =(TOPRecoil > 200)
+            if TOPRecoilstatus == False : continue
+         
         outTree.Fill()
 
     h_total_mcweight.Write()
     h_total.Write()
     outfile.Write()
 
+#to find which sample is being used
+def WhichSample(filename):
+    samplename = 'all'
+    if filename.find('WJets')>-1:
+        samplename = 'WJETS'
+    elif filename.find('ZJets')>-1:
+        samplename = 'ZJETS'
+    elif filename.find('TT')>-1:
+        samplename  = 'TT'
+    else:
+        samplename = 'all'
+    return samplename
+    
 def CheckFilter(filterName, filterResult,filtercompare):
     ifilter_=0
     filter1 = False
