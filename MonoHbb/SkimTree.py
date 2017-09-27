@@ -494,6 +494,7 @@ def AnalyzeDataSet():
         ## hardrecoil cut for WJETS sample   
         if samplename == "WJETS":
            WenuRecoilstatus =(WenuRecoil > 200)
+           print(samplename,WenuRecoilstatus) 
            if WenuRecoilstatus == False : continue
          
         ## for Single muon  
@@ -513,6 +514,7 @@ def AnalyzeDataSet():
         ## hardrecoil cut for WJETS sample
         if samplename == "WJETS":
            WmunuRecoilstatus =(WmunuRecoil > 200)
+           print(samplename,WenuRecoilstatus) 
            if WmunuRecoilstatus == False : continue
          
          
