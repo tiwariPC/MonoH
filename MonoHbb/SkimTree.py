@@ -9,6 +9,20 @@ import numpy as numpy_
 
 ROOT.gROOT.LoadMacro("Loader.h+")
 
+#to find which sample is being used
+def WhichSample(filename):
+    samplename = 'all'
+    if filename.find('WJets')>-1:
+        samplename = 'WJETS'
+    elif filename.find('ZJets')>-1:
+        samplename = 'ZJETS'
+    elif filename.find('TT')>-1:
+        samplename  = 'TT'
+    else:
+        samplename = 'all'
+    return samplename   
+    
+    
 ## When not running on farmout
 #inputfilename= 'FileList.txt' uncomment it for providing list of file
 outfilename= 'Output_WJetsToLNu_HT-1200To2500.root'
@@ -528,19 +542,7 @@ def AnalyzeDataSet():
     h_total.Write()
     outfile.Write()
 
-#to find which sample is being used
-def WhichSample(filename):
-    samplename = 'all'
-    if filename.find('WJets')>-1:
-        samplename = 'WJETS'
-    elif filename.find('ZJets')>-1:
-        samplename = 'ZJETS'
-    elif filename.find('TT')>-1:
-        samplename  = 'TT'
-    else:
-        samplename = 'all'
-    return samplename
-    
+
 def CheckFilter(filterName, filterResult,filtercompare):
     ifilter_=0
     filter1 = False
