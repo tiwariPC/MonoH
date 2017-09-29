@@ -320,6 +320,12 @@ def AnalyzeDataSet():
              
         jetSR1Info           = []
         jetSR2Info           = []
+        jetZCR1Info          = []
+        jetZCR2Info          = []
+        jetWCR1Info          = []
+        jetWCR2Info          = []
+        jetTopCR1Info        = []
+        jetTopCR2Info        = []
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
         # MC Weights ----------------------------------------------------------------------------------------------------------------------------------------------------
@@ -338,7 +344,7 @@ def AnalyzeDataSet():
         ## PFMET Selection
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------        
-        pfmetstatus = ( pfMet > 200.0 )
+        pfmetstatus = ( pfMet > 200.0 )   #already applied in SkimTree, do we need it here as well?
         if pfmetstatus == False : continue 
         cutStatus['pfmet'] += 1
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -765,7 +771,7 @@ def AnalyzeDataSet():
            allquantities.jet3_phi_sr2    = None
 #           bbMET_tree.Fill()
 #           print "SR1: jet1: "+str(jetSR1Info[0])+"; jet2: "+str(jetSR1Info[1])
-        elif inSR2:            
+        elif inSR2:
            allquantities.jet1_pT_sr2     = jetSR2Info[0][0]
            allquantities.jet1_eta_sr2    = jetSR2Info[0][1]
            allquantities.jet1_phi_sr2    = jetSR2Info[0][2]
@@ -783,6 +789,117 @@ def AnalyzeDataSet():
            allquantities.jet2_eta_sr1    = None
            allquantities.jet2_phi_sr1    = None
            
+        ## to fill for ZCR
+        elseif inSR1 and zCR:
+           allquantities.jet1_pT_Zcr1     = jetSR1Info[0][0]
+           allquantities.jet1_eta_Zcr1    = jetSR1Info[0][1]
+           allquantities.jet1_phi_Zcr1    = jetSR1Info[0][2]
+           allquantities.jet2_pT_Zcr1     = jetSR1Info[1][0]
+           allquantities.jet2_eta_Zcr1    = jetSR1Info[1][1]
+           allquantities.jet2_phi_Zcr1    = jetSR1Info[1][2]
+           
+           allquantities.jet1_pT_Zcr2     = None
+           allquantities.jet1_eta_Zcr2    = None
+           allquantities.jet1_phi_Zcr2    = None
+           allquantities.jet2_pT_Zcr2     = None
+           allquantities.jet2_eta_Zcr2    = None
+           allquantities.jet2_phi_Zcr2    = None
+           allquantities.jet3_pT_Zcr2     = None
+           allquantities.jet3_eta_Zcr2    = None
+           allquantities.jet3_phi_Zcr2    = None
+        
+        elseif inSR2 and zCR:
+           allquantities.jet1_pT_Zcr2     = jetSR2Info[0][0]
+           allquantities.jet1_eta_Zcr2    = jetSR2Info[0][1]
+           allquantities.jet1_phi_Zcr2    = jetSR2Info[0][2]
+           allquantities.jet2_pT_Zcr2     = jetSR2Info[1][0]
+           allquantities.jet2_eta_Zcr2    = jetSR2Info[1][1]
+           allquantities.jet2_phi_Zcr2    = jetSR2Info[1][2]
+           allquantities.jet3_pT_Zcr2     = jetSR2Info[2][0]
+           allquantities.jet3_eta_Zcr2    = jetSR2Info[2][1]
+           allquantities.jet3_phi_Zcr2    = jetSR2Info[2][2]
+           
+           allquantities.jet1_pT_Zcr1     = None
+           allquantities.jet1_eta_Zcr1    = None
+           allquantities.jet1_phi_Zcr1    = None
+           allquantities.jet2_pT_Zcr1     = None
+           allquantities.jet2_eta_Zcr1    = None
+           allquantities.jet2_phi_Zcr1    = None
+           
+        ##To fill WCR region
+        elseif inSR1 and wCR:
+           allquantities.jet1_pT_Wcr1     = jetSR1Info[0][0]
+           allquantities.jet1_eta_Wcr1    = jetSR1Info[0][1]
+           allquantities.jet1_phi_Wcr1    = jetSR1Info[0][2]
+           allquantities.jet2_pT_Wcr1     = jetSR1Info[1][0]
+           allquantities.jet2_eta_Wcr1    = jetSR1Info[1][1]
+           allquantities.jet2_phi_Wcr1    = jetSR1Info[1][2]
+           
+           allquantities.jet1_pT_Wcr2     = None
+           allquantities.jet1_eta_Wcr2    = None
+           allquantities.jet1_phi_Wcr2    = None
+           allquantities.jet2_pT_Wcr2     = None
+           allquantities.jet2_eta_Wcr2    = None
+           allquantities.jet2_phi_Wcr2    = None
+           allquantities.jet3_pT_Wcr2     = None
+           allquantities.jet3_eta_Wcr2    = None
+           allquantities.jet3_phi_Wcr2    = None
+        
+        
+        elseif inSR2 and wCR:
+           allquantities.jet1_pT_Wcr2     = jetSR2Info[0][0]
+           allquantities.jet1_eta_Wcr2    = jetSR2Info[0][1]
+           allquantities.jet1_phi_Wcr2    = jetSR2Info[0][2]
+           allquantities.jet2_pT_Wcr2     = jetSR2Info[1][0]
+           allquantities.jet2_eta_Wcr2    = jetSR2Info[1][1]
+           allquantities.jet2_phi_Wcr2    = jetSR2Info[1][2]
+           allquantities.jet3_pT_Wcr2     = jetSR2Info[2][0]
+           allquantities.jet3_eta_Wcr2    = jetSR2Info[2][1]
+           allquantities.jet3_phi_Wcr2    = jetSR2Info[2][2]
+           
+           allquantities.jet1_pT_Wcr1     = None
+           allquantities.jet1_eta_Wcr1    = None
+           allquantities.jet1_phi_Wcr1    = None
+           allquantities.jet2_pT_Wcr1     = None
+           allquantities.jet2_eta_Wcr1    = None
+           allquantities.jet2_phi_Wcr1    = None
+           
+        ##For TopCR region
+        elseif inSR1 and TopCR:
+           allquantities.jet1_pT_TOPcr1     = jetSR1Info[0][0]
+           allquantities.jet1_eta_TOPcr1    = jetSR1Info[0][1]
+           allquantities.jet1_phi_TOPcr1    = jetSR1Info[0][2]
+           allquantities.jet2_pT_TOPcr1     = jetSR1Info[1][0]
+           allquantities.jet2_eta_TOPcr1    = jetSR1Info[1][1]
+           allquantities.jet2_phi_TOPcr1    = jetSR1Info[1][2]
+           
+           allquantities.jet1_pT_TOPcr2     = None
+           allquantities.jet1_eta_TOPcr2    = None
+           allquantities.jet1_phi_TOPcr2    = None
+           allquantities.jet2_pT_TOPcr2     = None
+           allquantities.jet2_eta_TOPcr2    = None
+           allquantities.jet2_phi_TOPcr2    = None
+           allquantities.jet3_pT_TOPcr2     = None
+           allquantities.jet3_eta_TOPcr2    = None
+           allquantities.jet3_phi_TOPcr2    = None
+        
+        elseif inSR2 and zCR:
+           allquantities.jet1_pT_TOPcr2     = jetSR2Info[0][0]
+           allquantities.jet1_eta_TOPcr2    = jetSR2Info[0][1]
+           allquantities.jet1_phi_TOPcr2    = jetSR2Info[0][2]
+           allquantities.jet2_pT_TOPcr2     = jetSR2Info[1][0]
+           allquantities.jet2_eta_TOPcr2    = jetSR2Info[1][1]
+           allquantities.jet2_phi_TOPcr2    = jetSR2Info[1][2]
+           allquantities.jet3_pT_TOPcr2     = jetSR2Info[2][0]
+           allquantities.jet3_eta_TOPcr2    = jetSR2Info[2][1]
+           allquantities.jet3_phi_TOPcr2    = jetSR2Info[2][2]
+           
+           allquantities.jet1_pT_TOPcr1     = None
+           allquantities.jet1_eta_TOPcr1    = None
+           allquantities.jet1_phi_TOPcr1    = None
+           allquantities.jet2_pT_TOPcr1     = None
+           allquantities.jet2_eta_TOPcr1    = None
+           allquantities.jet2_phi_TOPcr1    = None
 #           bbMET_tree.Fill()
 #           print "SR2: jet1: "+str(jetSR2Info[0])+"; jet2: "+str(jetSR2Info[1])+"; jet3: "+str(jetSR2Info[2])
         else:
