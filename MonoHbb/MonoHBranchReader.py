@@ -470,7 +470,7 @@ def AnalyzeDataSet():
         
         #Calculate Muon Relative PF isolation:
         
-        MuIso = [(muChHadIso[imu]+ max(0., muNeHadIso[imu] + muGamIso[imu] - 0.5*muPUPt[imu]))/muP4[imu].Pt() for imu in range(nMu)]        
+        MuIso = (muChHadIso[imu]+ max(0., muNeHadIso[imu] + muGamIso[imu] - 0.5*muPUPt[imu]))/muP4[imu].Pt() for imu in range(nMu)       
         
         #=================================================================
         #  Z control region
