@@ -797,6 +797,8 @@ def AnalyzeDataSet():
            allquantities.jet2_pT_Zcr1     = jetSR1Info[1][0]
            allquantities.jet2_eta_Zcr1    = jetSR1Info[1][1]
            allquantities.jet2_phi_Zcr1    = jetSR1Info[1][2]
+           allquantities.h_ZhadronRecoil  = hadrecoil
+           allquantities.Zmass            = zmass
            
            allquantities.jet1_pT_Zcr2     = None
            allquantities.jet1_eta_Zcr2    = None
@@ -818,6 +820,8 @@ def AnalyzeDataSet():
            allquantities.jet3_pT_Zcr2     = jetSR2Info[2][0]
            allquantities.jet3_eta_Zcr2    = jetSR2Info[2][1]
            allquantities.jet3_phi_Zcr2    = jetSR2Info[2][2]
+           allquantities.h_ZhadronRecoil  = hadrecoil
+           allquantities.Zmass            = zmass
            
            allquantities.jet1_pT_Zcr1     = None
            allquantities.jet1_eta_Zcr1    = None
@@ -834,6 +838,8 @@ def AnalyzeDataSet():
            allquantities.jet2_pT_Wcr1     = jetSR1Info[1][0]
            allquantities.jet2_eta_Wcr1    = jetSR1Info[1][1]
            allquantities.jet2_phi_Wcr1    = jetSR1Info[1][2]
+           allquantities.h_WhadronRecoil  = hadrecoil
+           allquantities.Wmass            = wmass
            
            allquantities.jet1_pT_Wcr2     = None
            allquantities.jet1_eta_Wcr2    = None
@@ -856,6 +862,8 @@ def AnalyzeDataSet():
            allquantities.jet3_pT_Wcr2     = jetSR2Info[2][0]
            allquantities.jet3_eta_Wcr2    = jetSR2Info[2][1]
            allquantities.jet3_phi_Wcr2    = jetSR2Info[2][2]
+           allquantities.h_WhadronRecoil  = hadrecoil
+           allquantities.Wmass            = wmass
            
            allquantities.jet1_pT_Wcr1     = None
            allquantities.jet1_eta_Wcr1    = None
@@ -872,6 +880,7 @@ def AnalyzeDataSet():
            allquantities.jet2_pT_TOPcr1     = jetSR1Info[1][0]
            allquantities.jet2_eta_TOPcr1    = jetSR1Info[1][1]
            allquantities.jet2_phi_TOPcr1    = jetSR1Info[1][2]
+           allquantities.h_TOPRecoil        = hadrecoil
            
            allquantities.jet1_pT_TOPcr2     = None
            allquantities.jet1_eta_TOPcr2    = None
@@ -883,7 +892,7 @@ def AnalyzeDataSet():
            allquantities.jet3_eta_TOPcr2    = None
            allquantities.jet3_phi_TOPcr2    = None
         
-        elseif inSR2 and zCR:
+        elseif inSR2 and TopCR:
            allquantities.jet1_pT_TOPcr2     = jetSR2Info[0][0]
            allquantities.jet1_eta_TOPcr2    = jetSR2Info[0][1]
            allquantities.jet1_phi_TOPcr2    = jetSR2Info[0][2]
@@ -893,6 +902,7 @@ def AnalyzeDataSet():
            allquantities.jet3_pT_TOPcr2     = jetSR2Info[2][0]
            allquantities.jet3_eta_TOPcr2    = jetSR2Info[2][1]
            allquantities.jet3_phi_TOPcr2    = jetSR2Info[2][2]
+           allquantities.h_TOPRecoil        = hadrecoil
            
            allquantities.jet1_pT_TOPcr1     = None
            allquantities.jet1_eta_TOPcr1    = None

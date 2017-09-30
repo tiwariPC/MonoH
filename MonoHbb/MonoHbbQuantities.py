@@ -364,8 +364,6 @@ class MonoHbbQuantities:
         if self.jet2_pT_Zcr1 is not None:    self.h_jet2_pT_Zcr1[0]    .Fill(self.jet2_pT_Zcr1,   WF)
         if self.jet2_eta_Zcr1 is not None:   self.h_jet2_eta_Zcr1[0]   .Fill(self.jet2_eta_Zcr1,  WF)
         if self.jet2_phi_Zcr1 is not None:   self.h_jet2_phi_Zcr1[0]   .Fill(self.jet2_phi_Zcr1,  WF)
-        self.h_ZhadronRecoil[0] .Fill(self.ZhadronRecoil,  WF)
-        self.h_Zmass[0]         .Fill(self.Zmass,  WF)
         
         if self.jet1_pT_Zcr2 is not None:    self.h_jet1_pT_Zcr2[0]    .Fill(self.jet1_pT_Zcr2,   WF)
         if self.jet1_eta_Zcr2 is not None:   self.h_jet1_eta_Zcr2[0]   .Fill(self.jet1_eta_Zcr2,  WF)
@@ -376,6 +374,10 @@ class MonoHbbQuantities:
         if self.jet3_pT_Zcr2 is not None:    self.h_jet3_pT_Zcr2[0]    .Fill(self.jet3_pT_Zcr2,   WF)
         if self.jet3_eta_Zcr2 is not None:   self.h_jet3_eta_Zcr2[0]   .Fill(self.jet3_eta_Zcr2,  WF)
         if self.jet3_phi_Zcr2 is not None:   self.h_jet3_phi_Zcr2[0]   .Fill(self.jet3_phi_Zcr2,  WF)
+        
+        self.h_ZhadronRecoil[0] .Fill(self.ZhadronRecoil,  WF)
+        self.h_Zmass[0]         .Fill(self.Zmass,  WF)
+        
         
         ##For WCRs##
         if self.jet1_pT_Wcr1 is not None:    self.h_jet1_pT_Wcr1[0]    .Fill(self.jet1_pT_Wcr1,   WF)
@@ -395,6 +397,9 @@ class MonoHbbQuantities:
         if self.jet3_eta_Wcr2 is not None:   self.h_jet3_eta_Wcr2[0]   .Fill(self.jet3_eta_Wcr2,  WF)
         if self.jet3_phi_Wcr2 is not None:   self.h_jet3_phi_Wcr2[0]   .Fill(self.jet3_phi_Wcr2,  WF)
         
+        self.h_WhadronRecoil[0] .Fill(self.WhadronRecoil,  WF)
+        self.h_Wmass[0]         .Fill(self.Zmass,  WF)
+        
         ##For TopCRs##
         if self.jet1_pT_TOPcr1 is not None:    self.h_jet1_pT_TOPcr1[0]    .Fill(self.jet1_pT_TOPcr1,   WF)
         if self.jet1_eta_TOPcr1 is not None:   self.h_jet1_eta_TOPcr1[0]   .Fill(self.jet1_eta_TOPcr1,  WF)
@@ -412,6 +417,8 @@ class MonoHbbQuantities:
         if self.jet3_pT_TOPcr2 is not None:    self.h_jet3_pT_TOPcr2[0]    .Fill(self.jet3_pT_TOPcr2,   WF)
         if self.jet3_eta_TOPcr2 is not None:   self.h_jet3_eta_TOPcr2[0]   .Fill(self.jet3_eta_TOPcr2,  WF)
         if self.jet3_phi_TOPcr2 is not None:   self.h_jet3_phi_TOPcr2[0]   .Fill(self.jet3_phi_TOPcr2,  WF)
+        
+        self.h_TOPRecoil[0] .Fill(self.WhadronRecoil,  WF)
        
         
     def WriteHisto(self, (nevts,nevts_weight,cutflowvalues,cutflownames,CRvalues,CRnames)):
@@ -492,6 +499,8 @@ class MonoHbbQuantities:
         self.h_jet3_pT_Zcr2[0].Write()
         self.h_jet3_eta_Zcr2[0].Write()
         self.h_jet3_phi_Zcr2[0].Write()
+        self.h_ZhadronRecoil[0].Write()
+        self.h_Zmass[0].Write()
         #for WCR
         self.h_jet1_pT_Wcr1[0].Write()
         self.h_jet1_eta_Wcr1[0].Write()
@@ -508,6 +517,8 @@ class MonoHbbQuantities:
         self.h_jet3_pT_Wcr2[0].Write()
         self.h_jet3_eta_Wcr2[0].Write()
         self.h_jet3_phi_Wcr2[0].Write()
+        self.h_WhadronRecoil[0].Write()
+        self.h_Wmass[0].Write()
         #for TOPcr
         self.h_jet1_pT_TOPcr1[0].Write()
         self.h_jet1_eta_TOPcr1[0].Write()
@@ -524,3 +535,4 @@ class MonoHbbQuantities:
         self.h_jet3_pT_TOPcr2[0].Write()
         self.h_jet3_eta_TOPcr2[0].Write()
         self.h_jet3_phi_TOPcr2[0].Write()
+        self.h_TOPRecoil[0].Write()
