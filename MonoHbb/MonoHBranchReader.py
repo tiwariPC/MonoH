@@ -790,7 +790,7 @@ def AnalyzeDataSet():
            allquantities.jet2_phi_sr1    = None
            
         ## to fill for ZCR
-        elseif inSR1 and zCR:
+        elif inSR1 and zCR:
            allquantities.jet1_pT_Zcr1     = jetSR1Info[0][0]
            allquantities.jet1_eta_Zcr1    = jetSR1Info[0][1]
            allquantities.jet1_phi_Zcr1    = jetSR1Info[0][2]
@@ -810,7 +810,7 @@ def AnalyzeDataSet():
            allquantities.jet3_eta_Zcr2    = None
            allquantities.jet3_phi_Zcr2    = None
         
-        elseif inSR2 and zCR:
+        elif inSR2 and zCR:
            allquantities.jet1_pT_Zcr2     = jetSR2Info[0][0]
            allquantities.jet1_eta_Zcr2    = jetSR2Info[0][1]
            allquantities.jet1_phi_Zcr2    = jetSR2Info[0][2]
@@ -831,7 +831,7 @@ def AnalyzeDataSet():
            allquantities.jet2_phi_Zcr1    = None
            
         ##To fill WCR region
-        elseif inSR1 and wCR:
+        elif inSR1 and wCR:
            allquantities.jet1_pT_Wcr1     = jetSR1Info[0][0]
            allquantities.jet1_eta_Wcr1    = jetSR1Info[0][1]
            allquantities.jet1_phi_Wcr1    = jetSR1Info[0][2]
@@ -852,7 +852,7 @@ def AnalyzeDataSet():
            allquantities.jet3_phi_Wcr2    = None
         
         
-        elseif inSR2 and wCR:
+        elif inSR2 and wCR:
            allquantities.jet1_pT_Wcr2     = jetSR2Info[0][0]
            allquantities.jet1_eta_Wcr2    = jetSR2Info[0][1]
            allquantities.jet1_phi_Wcr2    = jetSR2Info[0][2]
@@ -873,7 +873,7 @@ def AnalyzeDataSet():
            allquantities.jet2_phi_Wcr1    = None
            
         ##For TopCR region
-        elseif inSR1 and TopCR:
+        elif inSR1 and TopCR:
            allquantities.jet1_pT_TOPcr1     = jetSR1Info[0][0]
            allquantities.jet1_eta_TOPcr1    = jetSR1Info[0][1]
            allquantities.jet1_phi_TOPcr1    = jetSR1Info[0][2]
@@ -892,7 +892,7 @@ def AnalyzeDataSet():
            allquantities.jet3_eta_TOPcr2    = None
            allquantities.jet3_phi_TOPcr2    = None
         
-        elseif inSR2 and TopCR:
+        elif inSR2 and TopCR:
            allquantities.jet1_pT_TOPcr2     = jetSR2Info[0][0]
            allquantities.jet1_eta_TOPcr2    = jetSR2Info[0][1]
            allquantities.jet1_phi_TOPcr2    = jetSR2Info[0][2]
