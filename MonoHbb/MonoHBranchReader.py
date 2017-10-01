@@ -343,6 +343,8 @@ def AnalyzeDataSet():
         cutStatus['pfmet'] += 1
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
         #----------------------------------------------------------------------------------------------------------------------------------------------------------------
+        #Calculate Muon Relative PF isolation:
+        MuIso = [((muChHadIso[imu]+ max(0., muNeHadIso[imu] + muGamIso[imu] - 0.5*muPUPt[imu]))/muP4[imu].Pt()) for imu in range(nMu)]
         
 
         ## list comprehensation
@@ -462,17 +464,6 @@ def AnalyzeDataSet():
 
         #Control Regions
         
-        #Calculate Muon Relative PF isolation:
-        for imu in range(nMu):
-           nhadISO  = muNeHadIso
-           chhadISO = muChHadIso
-           gamISO   = muGamIso
-           pupt     = muPUPt[imu]
-           p4Pt     = muP4[imu].Pt()
-           MuIso[imu] = (chhadISO+ max(0., nhadISO + gamISO - 0.5*pupt))/p4Pt;
-        #MuIso = [((muChHadIso[imu]+ max(0., muNeHadIso[imu] + muGamIso[imu] - 0.5*muPUPt[imu]))/muP4[imu].Pt()) for imu in range(nMu)]
-        
-        
         #=================================================================
         #  Z control region
         #=================================================================
@@ -490,7 +481,7 @@ def AnalyzeDataSet():
             hadrecoil=ZeeRecoil
         elif nMu==2 and nEle==0 and nTau==0:
             zCRMu=True
-            LepP4=MuP4
+            LepP4=muP4
             isLoose=isLooseMuon
             isTight=isTightMuon
             zmass=ZmumuMass
@@ -546,7 +537,7 @@ def AnalyzeDataSet():
             hadrecoil=WenuRecoil
         elif nMu==1 and nEle==0 and nTau==0:
             wCRMu=True
-            LepP4=MuP4
+            LepP4=muP4
             isTight=isTightMuon
             wmass=Wmunumass
             hadrecoil=WmunuRecoil
@@ -581,7 +572,7 @@ def AnalyzeDataSet():
             TopCR=True
             
             # Muon
-            if MuP4[0].Pt() < 30.: TopCR=False
+            if muP4[0].Pt() < 30.: TopCR=False
             if MuIso[0] > 0.15: TopCR=False                  
             if not isTightMuon[0]: TopCR=False                   
             
@@ -881,7 +872,7 @@ def AnalyzeDataSet():
            allquantities.jet2_pT_TOPcr1     = jetSR1Info[1][0]
            allquantities.jet2_eta_TOPcr1    = jetSR1Info[1][1]
            allquantities.jet2_phi_TOPcr1    = jetSR1Info[1][2]
-           allquantities.h_TOPRecoil        = hadrecoil
+           allquantities.h_TOPRecoil        = TOPRecoil             # BugFix: hadrecoil is not defined for top
            
            allquantities.jet1_pT_TOPcr2     = None
            allquantities.jet1_eta_TOPcr2    = None
@@ -903,7 +894,7 @@ def AnalyzeDataSet():
            allquantities.jet3_pT_TOPcr2     = jetSR2Info[2][0]
            allquantities.jet3_eta_TOPcr2    = jetSR2Info[2][1]
            allquantities.jet3_phi_TOPcr2    = jetSR2Info[2][2]
-           allquantities.h_TOPRecoil        = hadrecoil
+           allquantities.h_TOPRecoil        = TOPRecoil
            
            allquantities.jet1_pT_TOPcr1     = None
            allquantities.jet1_eta_TOPcr1    = None
