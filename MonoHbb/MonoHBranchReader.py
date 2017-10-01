@@ -320,12 +320,6 @@ def AnalyzeDataSet():
              
         jetSR1Info           = []
         jetSR2Info           = []
-        jetZCR1Info          = []
-        jetZCR2Info          = []
-        jetWCR1Info          = []
-        jetWCR2Info          = []
-        jetTopCR1Info        = []
-        jetTopCR2Info        = []
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
         # MC Weights ----------------------------------------------------------------------------------------------------------------------------------------------------
@@ -470,8 +464,12 @@ def AnalyzeDataSet():
         
         #Calculate Muon Relative PF isolation:
         for imu in range(nMu):
-            if (muP4[imu].Pt()>10.) & (abs(muP4[imu].Eta()) < 2.4) & (bool(isLooseMuon[imu]) == True):
-                MuIso[imu] = (muChHadIso[imu]+ max(0., muNeHadIso[imu] + muGamIso[imu] - 0.5*muPUPt[imu]))/muP4[imu].Pt();
+           nhadISO  = muNeHadIso[imu]
+           chhadISO = muChHadIso[imu]
+           gamISO   = muGamIso[imu]
+           pupt     = muPUPt[imu]
+           p4Pt     = muP4[imu].Pt()
+           MuIso[imu] = (chhadISO+ max(0., nhadISO + gamISO - 0.5*pupt))/p4Pt;
         #MuIso = [((muChHadIso[imu]+ max(0., muNeHadIso[imu] + muGamIso[imu] - 0.5*muPUPt[imu]))/muP4[imu].Pt()) for imu in range(nMu)]
         
         
@@ -496,7 +494,7 @@ def AnalyzeDataSet():
             isLoose=isLooseMuon
             isTight=isTightMuon
             zmass=ZmumuMass
-            hadrecoil=ZmumuRecoil            
+            hadrecoil=ZmumuRecoil
         else:
             zCR=False
         

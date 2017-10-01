@@ -370,6 +370,9 @@ def AnalyzeDataSet():
         
         st_eleP4.clear()
         st_muP4.clear()
+        st_muChHadIso.clear()
+        st_muGamIso.clear()
+        st_muNeHadIso.clear()
         st_HPSTau_4Momentum.clear()
         
         st_genParId.clear()
