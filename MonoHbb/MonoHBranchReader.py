@@ -464,9 +464,9 @@ def AnalyzeDataSet():
         
         #Calculate Muon Relative PF isolation:
         for imu in range(nMu):
-           nhadISO  = muNeHadIso[imu]
-           chhadISO = muChHadIso[imu]
-           gamISO   = muGamIso[imu]
+           nhadISO  = muNeHadIso
+           chhadISO = muChHadIso
+           gamISO   = muGamIso
            pupt     = muPUPt[imu]
            p4Pt     = muP4[imu].Pt()
            MuIso[imu] = (chhadISO+ max(0., nhadISO + gamISO - 0.5*pupt))/p4Pt;
