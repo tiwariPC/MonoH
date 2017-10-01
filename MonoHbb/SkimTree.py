@@ -25,7 +25,7 @@ def WhichSample(filename):
     
 ## When not running on farmout
 #inputfilename= 'FileList.txt' uncomment it for providing list of file
-outfilename= 'Output_WJetsToLNu_HT-1200To2500.root'
+outfilename= 'Output_WJetsToLNu_HT-800To1200.root'
 PUPPI = True
 CA15  = False
 
@@ -78,7 +78,7 @@ def AnalyzeDataSet():
     st_eleIsPassTight      = ROOT.std.vector('bool')()
     
     st_nMu= array( 'L', [ 0 ] ) #ROOT.std.vector('int')()
-    st_muP4= ROOT.std.vector('TLorentzVector')()
+    st_muP4                = ROOT.std.vector('TLorentzVector')()
     st_isLooseMuon         = ROOT.std.vector('bool')()
     st_isMediumMuon        = ROOT.std.vector('bool')()
     st_isTightMuon         = ROOT.std.vector('bool')()
@@ -131,19 +131,19 @@ def AnalyzeDataSet():
     
     outTree.Branch( 'st_nEle',st_nEle , 'st_nEle/L') 
     outTree.Branch( 'st_eleP4',st_eleP4 )
-    outTree.Branch( 'st_eleIsPassLoose', st_eleIsPassLoose, 'st_eleIsPassLoose/O' )
-    outTree.Branch( 'st_eleIsPassMedium', st_eleIsPassMedium, 'st_eleIsPassMedium/O' )
-    outTree.Branch( 'st_eleIsPassTight', st_eleIsPassTight, 'st_eleIsPassTight/O' )
+    outTree.Branch( 'st_eleIsPassLoose', st_eleIsPassLoose)#, 'st_eleIsPassLoose/O' )
+    outTree.Branch( 'st_eleIsPassMedium', st_eleIsPassMedium)#, 'st_eleIsPassMedium/O' )
+    outTree.Branch( 'st_eleIsPassTight', st_eleIsPassTight)#, 'st_eleIsPassTight/O' )
                    
     outTree.Branch( 'st_nMu',st_nMu , 'st_nMu/L') 
     outTree.Branch( 'st_muP4',st_muP4 ) 
-    outTree.Branch( 'st_isLooseMuon', st_isLooseMuon, 'st_isLooseMuon/O' )
-    outTree.Branch( 'st_isMediumMuon', st_isMediumMuon, 'st_isMediumMuon/O' )
-    outTree.Branch( 'st_isTightMuon', st_isTightMuon, 'st_isTightMuon/O' )
-    outTree.Branch( 'st_muChHadIso', st_muChHadIso, 'st_muChHadIso/F')
-    outTree.Branch( 'st_muNeHadIso', st_muNeHadIso, 'st_muNeHadIso/F')
-    outTree.Branch( 'st_muGamIso', st_muGamIso, 'st_muGamIso/F')
-    outTree.Branch( 'st_muPUPt', st_muPUPt, 'st_muPUPt/F')
+    outTree.Branch( 'st_isLooseMuon', st_isLooseMuon)#, 'st_isLooseMuon/O' )
+    outTree.Branch( 'st_isMediumMuon', st_isMediumMuon)#, 'st_isMediumMuon/O' )
+    outTree.Branch( 'st_isTightMuon', st_isTightMuon)#, 'st_isTightMuon/O' )
+    outTree.Branch( 'st_muChHadIso', st_muChHadIso)#, 'st_muChHadIso/F')
+    outTree.Branch( 'st_muNeHadIso', st_muNeHadIso)#, 'st_muNeHadIso/F')
+    outTree.Branch( 'st_muGamIso', st_muGamIso)#, 'st_muGamIso/F')
+    outTree.Branch( 'st_muPUPt', st_muPUPt)#, 'st_muPUPt/F')
     
     outTree.Branch( 'st_HPSTau_n', st_HPSTau_n, 'st_HPSTau_n/L') 
     outTree.Branch( 'st_HPSTau_4Momentum', st_HPSTau_4Momentum) 
@@ -454,10 +454,10 @@ def AnalyzeDataSet():
                 ZeeMass[0] = ee_mass
                 
         ## hardrecoil cut for ZJETS sample
-        if samplename == "ZJETS":
-           ZeeRecoilstatus =(ZeeRecoil > 200)
-           print(samplename,ZeeRecoilstatus)
-           if ZeeRecoilstatus == False : continue
+#            if samplename == "ZJETS":
+#               ZeeRecoilstatus =(ZeeRecoil > 200)
+#               print(samplename,ZeeRecoilstatus)
+#               if ZeeRecoilstatus == False : continue
            
         
         ## for dimu
@@ -478,8 +478,14 @@ def AnalyzeDataSet():
                 
         ## hardrecoil cut for ZJETS sample
         if samplename == "ZJETS":
-           ZmumuRecoilstatus =(ZmumuRecoil > 200)
-           if ZmumuRecoilstatus == False : continue
+            if len(myEles) ==2:
+                ZRecoilstatus =(ZeeRecoil > 200)                
+            elif len(myMuos) ==2:
+                ZRecoilstatus =(ZmumuRecoil > 200)
+            else:
+                ZRecoilstatus=False
+            print(samplename,ZRecoilstatus)
+            if ZRecoilstatus == False : continue
         
         ## for Single electron  
         if len(myEles) == 1:
@@ -496,10 +502,10 @@ def AnalyzeDataSet():
            Wenumass[0] = e_mass
            
         ## hardrecoil cut for WJETS sample   
-        if samplename == "WJETS":
-           WenuRecoilstatus =(WenuRecoil > 200)
-           print(samplename,WenuRecoilstatus) 
-           if WenuRecoilstatus == False : continue
+#        if samplename == "WJETS":
+#           WenuRecoilstatus =(WenuRecoil > 200)
+#           print(samplename,WenuRecoilstatus) 
+#           if WenuRecoilstatus == False : continue
          
         ## for Single muon  
         if len(myMuos) == 1:
@@ -517,9 +523,14 @@ def AnalyzeDataSet():
            
         ## hardrecoil cut for WJETS sample
         if samplename == "WJETS":
-           WmunuRecoilstatus =(WmunuRecoil > 200)
-           print(samplename,WenuRecoilstatus) 
-           if WmunuRecoilstatus == False : continue
+            if len(myEles) == 1:
+                WRecoilstatus =(WenuRecoil > 200)
+            elif len(myMuos) == 1:
+                WRecoilstatus =(WmunuRecoil > 200)
+            else:
+                WRecoilstatus=False
+            print(samplename,WRecoilstatus) 
+            if WRecoilstatus == False : continue
          
          
         ## for Single electron && Single Muon
