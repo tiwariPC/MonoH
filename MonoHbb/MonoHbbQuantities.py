@@ -375,8 +375,8 @@ class MonoHbbQuantities:
         if self.jet3_eta_Zcr2 is not None:   self.h_jet3_eta_Zcr2[0]   .Fill(self.jet3_eta_Zcr2,  WF)
         if self.jet3_phi_Zcr2 is not None:   self.h_jet3_phi_Zcr2[0]   .Fill(self.jet3_phi_Zcr2,  WF)
         
-        self.h_ZhadronRecoil[0] .Fill(self.ZhadronRecoil,  WF)
-        self.h_Zmass[0]         .Fill(self.Zmass,  WF)
+        if self.ZhadronRecoil is not None:   self.h_ZhadronRecoil[0]   .Fill(self.ZhadronRecoil,  WF)
+        if self.Zmass is not None:           self.h_Zmass[0]           .Fill(self.Zmass,  WF)
         
         
         ##For WCRs##
@@ -397,8 +397,8 @@ class MonoHbbQuantities:
         if self.jet3_eta_Wcr2 is not None:   self.h_jet3_eta_Wcr2[0]   .Fill(self.jet3_eta_Wcr2,  WF)
         if self.jet3_phi_Wcr2 is not None:   self.h_jet3_phi_Wcr2[0]   .Fill(self.jet3_phi_Wcr2,  WF)
         
-        self.h_WhadronRecoil[0] .Fill(self.WhadronRecoil,  WF)
-        self.h_Wmass[0]         .Fill(self.Zmass,  WF)
+        if self.WhadronRecoil is not None:   self.h_WhadronRecoil[0]   .Fill(self.WhadronRecoil,  WF)
+        if self.Wmass is not None:           self.h_Wmass[0]           .Fill(self.Wmass,  WF)
         
         ##For TopCRs##
         if self.jet1_pT_TOPcr1 is not None:    self.h_jet1_pT_TOPcr1[0]    .Fill(self.jet1_pT_TOPcr1,   WF)
@@ -418,7 +418,7 @@ class MonoHbbQuantities:
         if self.jet3_eta_TOPcr2 is not None:   self.h_jet3_eta_TOPcr2[0]   .Fill(self.jet3_eta_TOPcr2,  WF)
         if self.jet3_phi_TOPcr2 is not None:   self.h_jet3_phi_TOPcr2[0]   .Fill(self.jet3_phi_TOPcr2,  WF)
         
-        self.h_TOPRecoil[0] .Fill(self.WhadronRecoil,  WF)
+        if self.TOPRecoil is not None:         self.h_TOPRecoil[0]         .Fill(self.TOPRecoil,  WF)
        
         
     def WriteHisto(self, (nevts,nevts_weight,cutflowvalues,cutflownames,CRvalues,CRnames)):
@@ -447,7 +447,7 @@ class MonoHbbQuantities:
         
         self.h_met[0].Write()
         #self.h_met_rebin[iregime].Write()
-        for ipdf in range(101):
+        for ipdf in range(2):
             self.h_met_pdf[0][ipdf].Write()
         for imuR in range(2):
             self.h_met_muR[0][imuR].Write()
