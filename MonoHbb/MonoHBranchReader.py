@@ -458,6 +458,28 @@ def AnalyzeDataSet():
             jetSR2Info.append([jet2pt,jet2eta,jet2phi])
             jetSR2Info.append([jet3pt,jet3eta,jet3phi])
 
+        # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+        # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+        ## Leptons Info
+        # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+        # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+        myEles=[]
+        for iele in range(nEle):
+            if eleP4[iele].Pt() < 10 : continue
+            if abs(eleP4[iele].Eta()) >2.5: continue
+            myEles.append(iele)
+        
+        myMuos = []
+        for imu in range(nMu):
+            if muP4[imu].Pt()<10 : continue
+            if abs(muP4[imu].Eta()) > 2.4  : continue
+            myMuos.append(imu)
+
+        myTaus=[]
+        for itau in range(nTau):
+            if tauP4[itau].Pt()<20 : continue
+            if abs(tauP4[itau].Eta())>2.3 : continue
+            myTaus.append(itau);
 # --------------------------------------------------------------------------------------------------------------------------------------------------------
 
 # --------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -508,7 +530,21 @@ def AnalyzeDataSet():
             
             if zCRMu:                                           # Special isolation requirement for Muon                
                 if MuIso[iLeadLep] > 0.15: zCR=False             
-                if MuIso[iSecondLep] > 0.25: zCR=False             
+                if MuIso[iSecondLep] > 0.25: zCR=False
+                Zmu1pT  = LepP4[iLeadLep].Pt()
+                Zmu1eta = LepP4[iLeadLep].Eta()
+                Zmu1phi = LepP4[iLeadLep].Phi()
+                Zmu2pT = LepP4[iSecondLep].Pt()
+                Zmu2eta = LepP4[iSecondLep].Eta()
+                Zmu2phi = LepP4[iSecondLep].Phi()
+                
+            if zCREle:
+                Zele1pT  = LepP4[iLeadLep].Pt()
+                Zele1eta = LepP4[iLeadLep].Eta()
+                Zele1phi = LepP4[iLeadLep].Phi()
+                Zele2pT = LepP4[iSecondLep].Pt()
+                Zele2eta = LepP4[iSecondLep].Eta()
+                Zele2phi = LepP4[iSecondLep].Phi()
             
             # Z Mass condition:
             if zmass <= 70. or zmass >= 110.: zCR=False             
@@ -550,8 +586,15 @@ def AnalyzeDataSet():
             if not isTight[0]: wCR=False
             
             if wCRMu:
-                if MuIso[0] > 0.15: wCR=False           
+                if MuIso[0] > 0.15: wCR=False
+                Wmu1pT  = LepP4[0].Pt()
+                Wmu1eta = LepP4[0].Eta()
+                Wmu1phi = LepP4[0].Phi()
             
+            if wCREle:
+                Wele1pT  = LepP4[0].Pt()
+                Wele1eta = LepP4[0].Eta()
+                Wele1phi = LepP4[0].Phi()
             # W Mass condition:
             if wmass <= 50. or wmass >= 160.: wCR=False    
             
@@ -583,6 +626,13 @@ def AnalyzeDataSet():
             # Hadronic recoil:
             if TOPRecoil <= 200.: TopCR=False
             
+            TOPmu1pT   = muP4[0].Pt()
+            TOPmu1eta  = muP4[0].Eta()
+            TOPmu1phi  = muP4[0].Phi()
+            TOPele1pT  = eleP4[0].Pt()
+            TOPele1eta = eleP4[0].Eta()
+            TOPele1phi = eleP4[0].Phi()
+            
         if TopCR:
             if inSR1:
                 CRStatus['TopCRSR1']+=1
@@ -596,29 +646,6 @@ def AnalyzeDataSet():
         ## b-jet Veto
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
-        
-        # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
-        # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
-        ## Leptons Info
-        # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
-        # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
-        myEles=[]
-        for iele in range(nEle):
-            if eleP4[iele].Pt() < 10 : continue
-            if abs(eleP4[iele].Eta()) >2.5: continue
-            myEles.append(iele)
-        
-        myMuos = []
-        for imu in range(nMu):
-            if muP4[imu].Pt()<10 : continue
-            if abs(muP4[imu].Eta()) > 2.4  : continue
-            myMuos.append(imu)
-
-        myTaus=[]
-        for itau in range(nTau):
-            if tauP4[itau].Pt()<20 : continue
-            if abs(tauP4[itau].Eta())>2.3 : continue
-            myTaus.append(itau);
         
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -749,6 +776,9 @@ def AnalyzeDataSet():
             for jetprop in ['pT','eta','phi']:
                 for jetnum in [1,2]:
                     allquantlist.append('jet'+str(jetnum)+"_"+jetprop+"_"+region+"1")
+                    for lep in ['mu','el']:
+                       if region != 'Zcr' and jetnum==2: continue
+                       allquantlist.append(lep+str(jetnum)+"_"+jetprop+"_"+region)
                 for jetnum in [1,2,3]:
                     allquantlist.append('jet'+str(jetnum)+"_"+jetprop+"_"+region+"2")
                     
@@ -763,7 +793,7 @@ def AnalyzeDataSet():
            allquantities.jet1_phi_sr1    = jetSR1Info[0][2]
            allquantities.jet2_pT_sr1     = jetSR1Info[1][0]
            allquantities.jet2_eta_sr1    = jetSR1Info[1][1]
-           allquantities.jet2_phi_sr1    = jetSR1Info[1][2]      
+           allquantities.jet2_phi_sr1    = jetSR1Info[1][2]
            
         elif inSR2:
            allquantities.jet1_pT_sr2     = jetSR2Info[0][0]
@@ -774,7 +804,7 @@ def AnalyzeDataSet():
            allquantities.jet2_phi_sr2    = jetSR2Info[1][2]
            allquantities.jet3_pT_sr2     = jetSR2Info[2][0]
            allquantities.jet3_eta_sr2    = jetSR2Info[2][1]
-           allquantities.jet3_phi_sr2    = jetSR2Info[2][2]    
+           allquantities.jet3_phi_sr2    = jetSR2Info[2][2]
            
         else:
             continue       
@@ -789,6 +819,18 @@ def AnalyzeDataSet():
            allquantities.jet2_phi_Zcr1    = jetSR1Info[1][2]
            allquantities.ZhadronRecoil    = hadrecoil
            allquantities.Zmass            = zmass
+           allquantities.mu1_pT_Zcr       = Zmu1pT
+           allquantities.mu2_pT_Zcr       = Zmu2pT
+           allquantities.el1_pT_Zcr       = Zele1pT
+           allquantities.el2_pT_Zcr       = Zele2pT
+           allquantities.mu1_eta_Zcr      = Zmu1eta
+           allquantities.mu2_eta_Zcr      = Zmu2eta
+           allquantities.el1_eta_Zcr      = Zele1eta
+           allquantities.el2_eta_Zcr      = Zele2eta
+           allquantities.mu1_phi_Zcr      = Zmu1phi
+           allquantities.mu2_phi_Zcr      = Zmu2phi
+           allquantities.el1_phi_Zcr      = Zele1phi
+           allquantities.el2_phi_Zcr      = Zele2phi
         
         elif inSR2 and zCR:
            allquantities.jet1_pT_Zcr2     = jetSR2Info[0][0]
@@ -802,6 +844,18 @@ def AnalyzeDataSet():
            allquantities.jet3_phi_Zcr2    = jetSR2Info[2][2]
            allquantities.ZhadronRecoil    = hadrecoil
            allquantities.Zmass            = zmass
+           allquantities.mu1_pT_Zcr       = Zmu1pT
+           allquantities.mu2_pT_Zcr       = Zmu2pT
+           allquantities.el1_pT_Zcr       = Zele1pT
+           allquantities.el2_pT_Zcr       = Zele2pT
+           allquantities.mu1_eta_Zcr      = Zmu1eta
+           allquantities.mu2_eta_Zcr      = Zmu2eta
+           allquantities.el1_eta_Zcr      = Zele1eta
+           allquantities.el2_eta_Zcr      = Zele2eta
+           allquantities.mu1_phi_Zcr      = Zmu1phi
+           allquantities.mu2_phi_Zcr      = Zmu2phi
+           allquantities.el1_phi_Zcr      = Zele1phi
+           allquantities.el2_phi_Zcr      = Zele2phi
            
         ##To fill WCR region
         if inSR1 and wCR:
@@ -813,6 +867,13 @@ def AnalyzeDataSet():
            allquantities.jet2_phi_Wcr1    = jetSR1Info[1][2]
            allquantities.WhadronRecoil    = hadrecoil
            allquantities.Wmass            = wmass
+           allquantities.mu1_pT_Wcr       = Wmu1pT
+           allquantities.el1_pT_Wcr       = Wele1pT
+           allquantities.mu1_eta_Wcr      = Wmu1eta
+           allquantities.el1_eta_Wcr      = Wele1eta
+           allquantities.mu1_phi_Wcr      = Wmu1phi
+           allquantities.el1_phi_Wcr      = Wele1phi
+           
         
         elif inSR2 and wCR:
            allquantities.jet1_pT_Wcr2     = jetSR2Info[0][0]
@@ -826,6 +887,12 @@ def AnalyzeDataSet():
            allquantities.jet3_phi_Wcr2    = jetSR2Info[2][2]
            allquantities.WhadronRecoil    = hadrecoil
            allquantities.Wmass            = wmass
+           allquantities.mu1_pT_Wcr       = Wmu1pT
+           allquantities.el1_pT_Wcr       = Wele1pT
+           allquantities.mu1_eta_Wcr      = Wmu1eta
+           allquantities.el1_eta_Wcr      = Wele1eta
+           allquantities.mu1_phi_Wcr      = Wmu1phi
+           allquantities.el1_phi_Wcr      = Wele1phi
            
         ##For TopCR region
         if inSR1 and TopCR:
@@ -835,8 +902,14 @@ def AnalyzeDataSet():
            allquantities.jet2_pT_TOPcr1     = jetSR1Info[1][0]
            allquantities.jet2_eta_TOPcr1    = jetSR1Info[1][1]
            allquantities.jet2_phi_TOPcr1    = jetSR1Info[1][2]
-           allquantities.TOPRecoil          = TOPRecoil             # BugFix: hadrecoil is not defined for top           
-        
+           allquantities.TOPRecoil          = TOPRecoil           # BugFix: hadrecoil is not defined for top
+           allquantities.mu1_pT_TOPcr       = TOPmu1pT
+           allquantities.el1_pT_TOPcr       = TOPele1pT
+           allquantities.mu1_eta_TOPcr      = TOPmu1eta
+           allquantities.el1_eta_TOPcr      = TOPele1eta
+           allquantities.mu1_phi_TOPcr      = TOPmu1phi
+           allquantities.el1_phi_TOPcr      = TOPele1phi
+           
         elif inSR2 and TopCR:
            allquantities.jet1_pT_TOPcr2     = jetSR2Info[0][0]
            allquantities.jet1_eta_TOPcr2    = jetSR2Info[0][1]
@@ -848,6 +921,12 @@ def AnalyzeDataSet():
            allquantities.jet3_eta_TOPcr2    = jetSR2Info[2][1]
            allquantities.jet3_phi_TOPcr2    = jetSR2Info[2][2]
            allquantities.TOPRecoil          = TOPRecoil
+           allquantities.mu1_pT_TOPcr       = TOPmu1pT
+           allquantities.el1_pT_TOPcr       = TOPele1pT
+           allquantities.mu1_eta_TOPcr      = TOPmu1eta
+           allquantities.el1_eta_TOPcr      = TOPele1eta
+           allquantities.mu1_phi_TOPcr      = TOPmu1phi
+           allquantities.el1_phi_TOPcr      = TOPele1phi
            
 
             
