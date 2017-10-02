@@ -539,9 +539,13 @@ def AnalyzeDataSet():
             Zele2pT = -999.
             Zele2eta = -999.
             Zele2phi = -999.
+            Zmu1Iso  = -999.
+            Zmu2Iso  = -999.
             if zCRMu:                                           # Special isolation requirement for Muon                
                 if MuIso[iLeadLep] > 0.15: zCR=False             
                 if MuIso[iSecondLep] > 0.25: zCR=False
+                Zmu1Iso = MuIso[iLeadLep]
+                Zmu2Iso = MuIso[iSecondLep]
                 Zmu1pT  = LepP4[iLeadLep].Pt()
                 Zmu1eta = LepP4[iLeadLep].Eta()
                 Zmu1phi = LepP4[iLeadLep].Phi()
@@ -601,8 +605,10 @@ def AnalyzeDataSet():
             Wele1pT = -999.
             Wele1eta = -999.
             Wele1phi = -999.
+            Wmu1Iso  = -999.
             if wCRMu:
                 if MuIso[0] > 0.15: wCR=False
+                Wmu1Iso = MuIso[0]
                 Wmu1pT  = LepP4[0].Pt()
                 Wmu1eta = LepP4[0].Eta()
                 Wmu1phi = LepP4[0].Phi()
@@ -641,6 +647,7 @@ def AnalyzeDataSet():
             
             # Hadronic recoil:
             if TOPRecoil <= 200.: TopCR=False
+            TOPmu1Iso = MuIso[0]
             
             TOPmu1pT   = muP4[0].Pt()
             TOPmu1eta  = muP4[0].Eta()
@@ -793,8 +800,10 @@ def AnalyzeDataSet():
                 for jetnum in [1,2]:
                     allquantlist.append('jet'+str(jetnum)+"_"+jetprop+"_"+region+"1")
                     for lep in ['mu','el']:
-                       if region != 'Zcr' and jetnum==2: continue
+                       if (region != 'Zcr' and jetnum==2) or region == 'sr': continue
                        allquantlist.append(lep+str(jetnum)+"_"+jetprop+"_"+region)
+                       if lep == 'mu':
+                          allquantlist.append(lep+str(jetnum)+"_iso_"+region
                 for jetnum in [1,2,3]:
                     allquantlist.append('jet'+str(jetnum)+"_"+jetprop+"_"+region+"2")
                     
@@ -847,6 +856,8 @@ def AnalyzeDataSet():
            allquantities.mu2_phi_Zcr      = Zmu2phi
            allquantities.el1_phi_Zcr      = Zele1phi
            allquantities.el2_phi_Zcr      = Zele2phi
+           allquantities.mu1_iso_Zcr      = Zmu1Iso
+           allquantities.mu2_iso_Zcr      = Zmu2Iso
         
         elif inSR2 and zCR:
            allquantities.jet1_pT_Zcr2     = jetSR2Info[0][0]
@@ -872,7 +883,8 @@ def AnalyzeDataSet():
            allquantities.mu2_phi_Zcr      = Zmu2phi
            allquantities.el1_phi_Zcr      = Zele1phi
            allquantities.el2_phi_Zcr      = Zele2phi
-           
+           allquantities.mu1_iso_Zcr      = Zmu1Iso
+           allquantities.mu2_iso_Zcr      = Zmu2Iso
         ##To fill WCR region
         if inSR1 and wCR:
            allquantities.jet1_pT_Wcr1     = jetSR1Info[0][0]
@@ -889,6 +901,7 @@ def AnalyzeDataSet():
            allquantities.el1_eta_Wcr      = Wele1eta
            allquantities.mu1_phi_Wcr      = Wmu1phi
            allquantities.el1_phi_Wcr      = Wele1phi
+           allquantities.mu1_iso_Wcr      = Wmu1Iso
            
         
         elif inSR2 and wCR:
@@ -909,7 +922,8 @@ def AnalyzeDataSet():
            allquantities.el1_eta_Wcr      = Wele1eta
            allquantities.mu1_phi_Wcr      = Wmu1phi
            allquantities.el1_phi_Wcr      = Wele1phi
-           
+           allquantities.mu1_iso_Wcr      = Wmu1Iso
+        
         ##For TopCR region
         if inSR1 and TopCR:
            allquantities.jet1_pT_TOPcr1     = jetSR1Info[0][0]
@@ -925,6 +939,7 @@ def AnalyzeDataSet():
            allquantities.el1_eta_TOPcr      = TOPele1eta
            allquantities.mu1_phi_TOPcr      = TOPmu1phi
            allquantities.el1_phi_TOPcr      = TOPele1phi
+           allquantities.mu1_iso_TOPcr      = TOPmu1Iso
            
         elif inSR2 and TopCR:
            allquantities.jet1_pT_TOPcr2     = jetSR2Info[0][0]
@@ -943,6 +958,7 @@ def AnalyzeDataSet():
            allquantities.el1_eta_TOPcr      = TOPele1eta
            allquantities.mu1_phi_TOPcr      = TOPmu1phi
            allquantities.el1_phi_TOPcr      = TOPele1phi
+           allquantities.mu1_iso_TOPcr      = TOPmu1Iso
            
 
             

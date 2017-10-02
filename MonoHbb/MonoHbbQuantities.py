@@ -74,6 +74,8 @@ class MonoHbbQuantities:
         self.mu2_phi_Zcr      = -999.
         self.el1_phi_Zcr      = -999.
         self.el2_phi_Zcr      = -999.
+        self.mu1_iso_Zcr      = -999.
+        self.mu2_iso_Zcr      = -999.
         
         #for WCR
         self.jet1_pT_Wcr1     = -999.
@@ -99,6 +101,7 @@ class MonoHbbQuantities:
         self.el1_eta_Wcr      = -999.
         self.mu1_phi_Wcr      = -999.
         self.el1_phi_Wcr      = -999.
+        self.mu1_iso_Wcr      = -999.
         
         #for TOPcr
         self.jet1_pT_TOPcr1     = -999.
@@ -123,6 +126,7 @@ class MonoHbbQuantities:
         self.el1_eta_TOPcr      = -999.
         self.mu1_phi_TOPcr      = -999.
         self.el1_phi_TOPcr      = -999. 
+        self.mu1_iso_TOPcr      = -999.
 
 
         self.h_mt              = []
@@ -183,6 +187,8 @@ class MonoHbbQuantities:
         self.h_mu2_phi_Zcr      = []
         self.h_el1_phi_Zcr      = []
         self.h_el2_phi_Zcr      = []
+        self.h_mu1_iso_Zcr      = []
+        self.h_mu2_iso_Zcr      = []
         
         #for WCR
         self.h_jet1_pT_Wcr1     = []
@@ -208,6 +214,7 @@ class MonoHbbQuantities:
         self.h_el1_eta_Wcr      = []
         self.h_mu1_phi_Wcr      = []
         self.h_el1_phi_Wcr      = []
+        self.h_mu1_iso_Wcr      = []
         
         #for TOPcr
         self.h_jet1_pT_TOPcr1     = []
@@ -231,7 +238,8 @@ class MonoHbbQuantities:
         self.h_mu1_eta_TOPcr      = []
         self.h_el1_eta_TOPcr      = []
         self.h_mu1_phi_TOPcr      = []
-        self.h_el1_phi_TOPcr      = [] 
+        self.h_el1_phi_TOPcr      = []
+        self.h_mu1_iso_TOPcr      = []
         
         
         ## 2d histograms 
@@ -318,6 +326,8 @@ class MonoHbbQuantities:
         self.h_mu2_phi_Zcr.append(TH1F('h_mu2_phi_Zcr_','h_mu2_phi_Zcr_',70, -3.5, 3.5))
         self.h_el1_phi_Zcr.append(TH1F('h_el1_phi_Zcr_','h_el1_phi_Zcr_',70, -3.5, 3.5))
         self.h_el2_phi_Zcr.append(TH1F('h_el2_phi_Zcr_','h_el2_phi_Zcr_',70, -3.5, 3.5))
+        self.h_mu1_iso_Zcr.append(TH1F('h_mu1_iso_Zcr_','h_mu1_iso_Zcr_',70, 0,.25))
+        self.h_mu2_iso_Zcr.append(TH1F('h_mu2_iso_Zcr_','h_mu2_iso_Zcr_',70, 0,.25))
         
         
         #for WCR
@@ -344,6 +354,7 @@ class MonoHbbQuantities:
         self.h_el1_eta_Wcr.append(TH1F('h_el1_eta_Wcr_','h_el1_eta_Wcr_',70, -3.5, 3.5))
         self.h_mu1_phi_Wcr.append(TH1F('h_mu1_phi_Wcr_','h_mu1_phi_Wcr_',70, -3.5, 3.5))
         self.h_el1_phi_Wcr.append(TH1F('h_el1_phi_Wcr_','h_el1_phi_Wcr_',70, -3.5, 3.5))
+        self.h_mu1_iso_Wcr.append(TH1F('h_mu1_iso_Wcr_','h_mu1_iso_Wcr_',70, 0,.25))
         
         
         #for TOPcr
@@ -369,6 +380,7 @@ class MonoHbbQuantities:
         self.h_el1_eta_TOPcr.append(TH1F('h_el1_eta_TOPcr_','h_el1_eta_TOPcr_',70, -3.5, 3.5))
         self.h_mu1_phi_TOPcr.append(TH1F('h_mu1_phi_TOPcr_','h_mu1_phi_TOPcr_',70, -3.5, 3.5))
         self.h_el1_phi_TOPcr.append(TH1F('h_el1_phi_TOPcr_','h_el1_phi_TOPcr_',70, -3.5, 3.5))
+        self.h_mu1_iso_TOPcr.append(TH1F('h_mu1_iso_TOPcr_','h_mu1_iso_TOPcr_',70, 0,.25))
         
         
         h_met_pdf_tmp = []
@@ -470,6 +482,8 @@ class MonoHbbQuantities:
         if self.mu2_phi_Zcr is not None:   self.h_mu1_phi_Zcr[0]     .Fill(self.mu1_phi_Zcr,    WF)
         if self.el1_phi_Zcr is not None:   self.h_el1_phi_Zcr[0]     .Fill(self.el1_phi_Zcr,    WF)
         if self.el2_phi_Zcr is not None:   self.h_el2_phi_Zcr[0]     .Fill(self.el2_phi_Zcr,    WF)
+        if self.mu1_iso_Zcr is not None:   self.h_mu1_iso_Zcr[0]     .Fill(self.mu1_iso_Zcr,    WF)
+        if self.mu2_iso_Zcr is not None:   self.h_mu2_iso_Zcr[0]     .Fill(self.mu2_iso_Zcr,    WF)
         
         
         ##For WCRs##
@@ -498,6 +512,7 @@ class MonoHbbQuantities:
         if self.el1_eta_Wcr is not None:     self.h_el1_eta_Wcr[0]     .Fill(self.el1_eta_Wcr,    WF)
         if self.mu1_phi_Wcr is not None:     self.h_mu1_phi_Wcr[0]     .Fill(self.mu1_phi_Wcr,    WF)
         if self.el1_phi_Wcr is not None:     self.h_el1_phi_Wcr[0]     .Fill(self.el1_phi_Wcr,    WF)
+        if self.mu1_iso_Wcr is not None:     self.h_mu1_iso_Wcr[0]     .Fill(self.mu1_iso_Wcr,    WF)
         
         ##For TopCRs##
         if self.jet1_pT_TOPcr1 is not None:    self.h_jet1_pT_TOPcr1[0]    .Fill(self.jet1_pT_TOPcr1,   WF)
@@ -523,6 +538,7 @@ class MonoHbbQuantities:
         if self.el1_eta_TOPcr is not None:     self.h_el1_eta_TOPcr[0]     .Fill(self.el1_eta_TOPcr,    WF)
         if self.mu1_phi_TOPcr is not None:     self.h_mu1_phi_TOPcr[0]     .Fill(self.mu1_phi_TOPcr,    WF)
         if self.el1_phi_TOPcr is not None:     self.h_el1_phi_TOPcr[0]     .Fill(self.el1_phi_TOPcr,    WF)
+        if self.mu1_iso_TOPcr is not None:     self.h_mu1_iso_TOPcr[0]     .Fill(self.mu1_iso_TOPcr,    WF)
         
         if self.TOPRecoil is not None:         self.h_TOPRecoil[0]         .Fill(self.TOPRecoil,  WF)
        
@@ -619,6 +635,8 @@ class MonoHbbQuantities:
         self.h_mu2_phi_Zcr[0].Write()
         self.h_el1_phi_Zcr[0].Write()
         self.h_el2_phi_Zcr[0].Write()
+        self.h_mu1_iso_Zcr[0].Write()
+        self.h_mu2_iso_Zcr[0].Write()
         
         #for WCR
         self.h_jet1_pT_Wcr1[0].Write()
@@ -644,6 +662,7 @@ class MonoHbbQuantities:
         self.h_el1_eta_Wcr[0].Write()
         self.h_mu1_phi_Wcr[0].Write()
         self.h_el1_phi_Wcr[0].Write()
+        self.h_mu1_iso_Wcr[0].Write()
         
         #for TOPcr
         self.h_jet1_pT_TOPcr1[0].Write()
@@ -668,3 +687,4 @@ class MonoHbbQuantities:
         self.h_el1_eta_TOPcr[0].Write()
         self.h_mu1_phi_TOPcr[0].Write()
         self.h_el1_phi_TOPcr[0].Write()
+        self.h_mu1_iso_TOPcr[0].Write()
