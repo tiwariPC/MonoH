@@ -527,7 +527,18 @@ def AnalyzeDataSet():
             # Sub-leading lepton conditions:
             if LepP4[iSecondLep].Pt() < 10.: zCR=False
             if not isLoose[iSecondLep]: zCR=False
-            
+            Zmu1pT = -999.
+            Zmu1eta = -999.
+            Zmu1phi = -999.
+            Zele1pT = -999.
+            Zele1eta = -999.
+            Zele1phi = -999.
+            Zmu2pT = -999.
+            Zmu2eta = -999.
+            Zmu2phi = -999.
+            Zele2pT = -999.
+            Zele2eta = -999.
+            Zele2phi = -999.
             if zCRMu:                                           # Special isolation requirement for Muon                
                 if MuIso[iLeadLep] > 0.15: zCR=False             
                 if MuIso[iSecondLep] > 0.25: zCR=False
@@ -584,7 +595,12 @@ def AnalyzeDataSet():
             # Leading lepton conditions:
             if LepP4[0].Pt() < 30.: wCR=False
             if not isTight[0]: wCR=False
-            
+            Wmu1pT = -999.
+            Wmu1eta = -999.
+            Wmu1phi = -999.
+            Wele1pT = -999.
+            Wele1eta = -999.
+            Wele1phi = -999.
             if wCRMu:
                 if MuIso[0] > 0.15: wCR=False
                 Wmu1pT  = LepP4[0].Pt()
