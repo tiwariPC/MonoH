@@ -64,8 +64,8 @@ rootfile='tmphist'
 rootfile = pathlist[sizeoflist-1]
 textfile = rootfile+".txt"
 
-#outputdir='MonoHSamples/'
-#os.system('mkdir '+outputdir)
+#outputdir='bbMETSamples/'
+os.system('mkdir '+outputdir)
 
 outfilename=''  
 
