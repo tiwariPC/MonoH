@@ -27,7 +27,7 @@ class MonoHbbQuantities:
         self.N_tau           = -10
         self.N_Pho           = -10
         #self.N_b             = -10
-        #self.N_j             = -10
+        self.N_j             = -10
         #self.mass            = -999.
         self.jet1_pT_sr1     = -999.
         self.jet1_eta_sr1    = -999.
@@ -44,6 +44,14 @@ class MonoHbbQuantities:
         self.jet3_pT_sr2     = -999.
         self.jet3_eta_sr2    = -999.
         self.jet3_phi_sr2    = -999.
+        
+        self.jet1_csv_sr1    = -999.
+        self.jet2_csv_sr1    = -999.
+        self.jet1_csv_sr2    = -999.
+        self.jet2_csv_sr2    = -999.
+        self.jet3_csv_sr2    = -999.
+        
+        
         #for ZCR
         self.jet1_pT_Zcr1     = -999.
         self.jet1_eta_Zcr1    = -999.
@@ -60,22 +68,46 @@ class MonoHbbQuantities:
         self.jet3_pT_Zcr2     = -999.
         self.jet3_eta_Zcr2    = -999.
         self.jet3_phi_Zcr2    = -999.
-        self.ZhadronRecoil    = -999.
-        self.Zmass            = -999.
-        self.mu1_pT_Zcr       = -999.
-        self.mu2_pT_Zcr       = -999.
-        self.el1_pT_Zcr       = -999.
-        self.el2_pT_Zcr       = -999.
-        self.mu1_eta_Zcr      = -999.
-        self.mu2_eta_Zcr      = -999.
-        self.el1_eta_Zcr      = -999.
-        self.el2_eta_Zcr      = -999.
-        self.mu1_phi_Zcr      = -999.
-        self.mu2_phi_Zcr      = -999.
-        self.el1_phi_Zcr      = -999.
-        self.el2_phi_Zcr      = -999.
-        self.mu1_iso_Zcr      = -999.
-        self.mu2_iso_Zcr      = -999.
+        self.ZhadronRecoil1    = -999.
+        self.Zmass1            = -999.
+        self.ZpT1              = -999.
+        self.ZhadronRecoil2    = -999.
+        self.Zmass2            = -999.
+        self.ZpT2              = -999.
+        self.mu1_pT_Zcr1       = -999.
+        self.mu2_pT_Zcr1       = -999.
+        self.el1_pT_Zcr1       = -999.
+        self.el2_pT_Zcr1       = -999.
+        self.mu1_eta_Zcr1      = -999.
+        self.mu2_eta_Zcr1      = -999.
+        self.el1_eta_Zcr1      = -999.
+        self.el2_eta_Zcr1      = -999.
+        self.mu1_phi_Zcr1      = -999.
+        self.mu2_phi_Zcr1      = -999.
+        self.el1_phi_Zcr1      = -999.
+        self.el2_phi_Zcr1      = -999.
+        self.mu1_iso_Zcr1      = -999.
+        self.mu2_iso_Zcr1      = -999.
+        self.mu1_pT_Zcr2       = -999.
+        self.mu2_pT_Zcr2       = -999.
+        self.el1_pT_Zcr2       = -999.
+        self.el2_pT_Zcr2       = -999.
+        self.mu1_eta_Zcr2      = -999.
+        self.mu2_eta_Zcr2      = -999.
+        self.el1_eta_Zcr2      = -999.
+        self.el2_eta_Zcr2      = -999.
+        self.mu1_phi_Zcr2      = -999.
+        self.mu2_phi_Zcr2      = -999.
+        self.el1_phi_Zcr2      = -999.
+        self.el2_phi_Zcr2      = -999.
+        self.mu1_iso_Zcr2      = -999.
+        self.mu2_iso_Zcr2      = -999.
+        
+        self.jet1_csv_Zcr1    = -999.
+        self.jet2_csv_Zcr1    = -999.
+        self.jet1_csv_Zcr2    = -999.
+        self.jet2_csv_Zcr2    = -999.
+        self.jet3_csv_Zcr2    = -999.
         
         #for WCR
         self.jet1_pT_Wcr1     = -999.
@@ -93,15 +125,32 @@ class MonoHbbQuantities:
         self.jet3_pT_Wcr2     = -999.
         self.jet3_eta_Wcr2    = -999.
         self.jet3_phi_Wcr2    = -999.
-        self.WhadronRecoil    = -999.
-        self.Wmass            = -999.
-        self.mu1_pT_Wcr       = -999.
-        self.el1_pT_Wcr       = -999.
-        self.mu1_eta_Wcr      = -999.
-        self.el1_eta_Wcr      = -999.
-        self.mu1_phi_Wcr      = -999.
-        self.el1_phi_Wcr      = -999.
-        self.mu1_iso_Wcr      = -999.
+        self.WhadronRecoil1    = -999.
+        self.Wmass1            = -999.
+        self.WpT1              = -999.
+        self.WhadronRecoil2    = -999.
+        self.Wmass2            = -999.
+        self.WpT2              = -999.
+        self.mu1_pT_Wcr1       = -999.
+        self.el1_pT_Wcr1       = -999.
+        self.mu1_eta_Wcr1      = -999.
+        self.el1_eta_Wcr1      = -999.
+        self.mu1_phi_Wcr1      = -999.
+        self.el1_phi_Wcr1      = -999.
+        self.mu1_iso_Wcr1      = -999.
+        self.mu1_pT_Wcr2       = -999.
+        self.el1_pT_Wcr2       = -999.
+        self.mu1_eta_Wcr2      = -999.
+        self.el1_eta_Wcr2      = -999.
+        self.mu1_phi_Wcr2      = -999.
+        self.el1_phi_Wcr2      = -999.
+        self.mu1_iso_Wcr2      = -999.
+        
+        self.jet1_csv_Wcr1    = -999.
+        self.jet2_csv_Wcr1    = -999.
+        self.jet1_csv_Wcr2    = -999.
+        self.jet2_csv_Wcr2    = -999.
+        self.jet3_csv_Wcr2    = -999.
         
         #for TOPcr
         self.jet1_pT_TOPcr1     = -999.
@@ -119,14 +168,28 @@ class MonoHbbQuantities:
         self.jet3_pT_TOPcr2     = -999.
         self.jet3_eta_TOPcr2    = -999.
         self.jet3_phi_TOPcr2    = -999.
-        self.TOPRecoil          = -999.
-        self.mu1_pT_TOPcr       = -999.
-        self.el1_pT_TOPcr       = -999.
-        self.mu1_eta_TOPcr      = -999.
-        self.el1_eta_TOPcr      = -999.
-        self.mu1_phi_TOPcr      = -999.
-        self.el1_phi_TOPcr      = -999. 
-        self.mu1_iso_TOPcr      = -999.
+        self.TOPRecoil1          = -999.
+        self.TOPRecoil2          = -999.
+        self.mu1_pT_TOPcr1       = -999.
+        self.el1_pT_TOPcr1       = -999.
+        self.mu1_eta_TOPcr1      = -999.
+        self.el1_eta_TOPcr1      = -999.
+        self.mu1_phi_TOPcr1      = -999.
+        self.el1_phi_TOPcr1      = -999. 
+        self.mu1_iso_TOPcr1      = -999.
+        self.mu1_pT_TOPcr2       = -999.
+        self.el1_pT_TOPcr2       = -999.
+        self.mu1_eta_TOPcr2      = -999.
+        self.el1_eta_TOPcr2      = -999.
+        self.mu1_phi_TOPcr2      = -999.
+        self.el1_phi_TOPcr2      = -999. 
+        self.mu1_iso_TOPcr2      = -999.
+        
+        self.jet1_csv_TOPcr1    = -999.
+        self.jet2_csv_TOPcr1    = -999.
+        self.jet1_csv_TOPcr2    = -999.
+        self.jet2_csv_TOPcr2    = -999.
+        self.jet3_csv_TOPcr2    = -999.
 
 
         self.h_mt              = []
@@ -136,7 +199,7 @@ class MonoHbbQuantities:
         self.h_N_tau           = []
         self.h_N_Pho           = []
         #self.h_N_b             = []
-        #self.h_N_j             = []
+        self.h_N_j             = []
         #self.h_mass            = []
         self.h_met_pdf         = []
         self.h_met_muR         = []
@@ -173,22 +236,46 @@ class MonoHbbQuantities:
         self.h_jet3_pT_Zcr2     = []
         self.h_jet3_eta_Zcr2    = []
         self.h_jet3_phi_Zcr2    = []
-        self.h_ZhadronRecoil    = []
-        self.h_Zmass            = []
-        self.h_mu1_pT_Zcr       = []
-        self.h_mu2_pT_Zcr       = []
-        self.h_el1_pT_Zcr       = []
-        self.h_el2_pT_Zcr       = []
-        self.h_mu1_eta_Zcr      = []
-        self.h_mu2_eta_Zcr      = []
-        self.h_el1_eta_Zcr      = []
-        self.h_el2_eta_Zcr      = []
-        self.h_mu1_phi_Zcr      = []
-        self.h_mu2_phi_Zcr      = []
-        self.h_el1_phi_Zcr      = []
-        self.h_el2_phi_Zcr      = []
-        self.h_mu1_iso_Zcr      = []
-        self.h_mu2_iso_Zcr      = []
+        self.h_ZhadronRecoil1    = []
+        self.h_Zmass1            = []
+        self.h_ZpT1              = []
+        self.h_ZhadronRecoil2    = []
+        self.h_Zmass2            = []
+        self.h_ZpT2              = []
+        self.h_mu1_pT_Zcr1       = []
+        self.h_mu2_pT_Zcr1       = []
+        self.h_el1_pT_Zcr1       = []
+        self.h_el2_pT_Zcr1       = []
+        self.h_mu1_eta_Zcr1      = []
+        self.h_mu2_eta_Zcr1      = []
+        self.h_el1_eta_Zcr1      = []
+        self.h_el2_eta_Zcr1      = []
+        self.h_mu1_phi_Zcr1      = []
+        self.h_mu2_phi_Zcr1      = []
+        self.h_el1_phi_Zcr1      = []
+        self.h_el2_phi_Zcr1      = []
+        self.h_mu1_iso_Zcr1      = []
+        self.h_mu2_iso_Zcr1      = []
+        self.h_mu1_pT_Zcr2       = []
+        self.h_mu2_pT_Zcr2       = []
+        self.h_el1_pT_Zcr2       = []
+        self.h_el2_pT_Zcr2       = []
+        self.h_mu1_eta_Zcr2      = []
+        self.h_mu2_eta_Zcr2      = []
+        self.h_el1_eta_Zcr2      = []
+        self.h_el2_eta_Zcr2      = []
+        self.h_mu1_phi_Zcr2      = []
+        self.h_mu2_phi_Zcr2      = []
+        self.h_el1_phi_Zcr2      = []
+        self.h_el2_phi_Zcr2      = []
+        self.h_mu1_iso_Zcr2      = []
+        self.h_mu2_iso_Zcr2      = []
+        
+        self.h_jet1_csv_Zcr1    = []
+        self.h_jet2_csv_Zcr1    = []
+        self.h_jet1_csv_Zcr2    = []
+        self.h_jet2_csv_Zcr2    = []
+        self.h_jet3_csv_Zcr2    = []
         
         #for WCR
         self.h_jet1_pT_Wcr1     = []
@@ -206,15 +293,32 @@ class MonoHbbQuantities:
         self.h_jet3_pT_Wcr2     = []
         self.h_jet3_eta_Wcr2    = []
         self.h_jet3_phi_Wcr2    = []
-        self.h_WhadronRecoil    = []
-        self.h_Wmass            = []
-        self.h_mu1_pT_Wcr       = []
-        self.h_el1_pT_Wcr       = []
-        self.h_mu1_eta_Wcr      = []
-        self.h_el1_eta_Wcr      = []
-        self.h_mu1_phi_Wcr      = []
-        self.h_el1_phi_Wcr      = []
-        self.h_mu1_iso_Wcr      = []
+        self.h_WhadronRecoil1    = []
+        self.h_Wmass1            = []
+        self.h_WpT1              = []
+        self.h_WhadronRecoil2    = []
+        self.h_Wmass2            = []
+        self.h_WpT2              = []
+        self.h_mu1_pT_Wcr1       = []
+        self.h_el1_pT_Wcr1       = []
+        self.h_mu1_eta_Wcr1      = []
+        self.h_el1_eta_Wcr1      = []
+        self.h_mu1_phi_Wcr1      = []
+        self.h_el1_phi_Wcr1      = []
+        self.h_mu1_iso_Wcr1      = []
+        self.h_mu1_pT_Wcr2       = []
+        self.h_el1_pT_Wcr2       = []
+        self.h_mu1_eta_Wcr2      = []
+        self.h_el1_eta_Wcr2      = []
+        self.h_mu1_phi_Wcr2      = []
+        self.h_el1_phi_Wcr2      = []
+        self.h_mu1_iso_Wcr2      = []
+        
+        self.h_jet1_csv_Wcr1    = []
+        self.h_jet2_csv_Wcr1    = []
+        self.h_jet1_csv_Wcr2    = []
+        self.h_jet2_csv_Wcr2    = []
+        self.h_jet3_csv_Wcr2    = []
         
         #for TOPcr
         self.h_jet1_pT_TOPcr1     = []
@@ -232,15 +336,28 @@ class MonoHbbQuantities:
         self.h_jet3_pT_TOPcr2     = []
         self.h_jet3_eta_TOPcr2    = []
         self.h_jet3_phi_TOPcr2    = []
-        self.h_TOPRecoil          = []
-        self.h_mu1_pT_TOPcr       = []
-        self.h_el1_pT_TOPcr       = []
-        self.h_mu1_eta_TOPcr      = []
-        self.h_el1_eta_TOPcr      = []
-        self.h_mu1_phi_TOPcr      = []
-        self.h_el1_phi_TOPcr      = []
-        self.h_mu1_iso_TOPcr      = []
+        self.h_TOPRecoil1          = []
+        self.h_TOPRecoil2          = []
+        self.h_mu1_pT_TOPcr1       = []
+        self.h_el1_pT_TOPcr1       = []
+        self.h_mu1_eta_TOPcr1      = []
+        self.h_el1_eta_TOPcr1      = []
+        self.h_mu1_phi_TOPcr1      = []
+        self.h_el1_phi_TOPcr1      = []
+        self.h_mu1_iso_TOPcr1      = []
+        self.h_mu1_pT_TOPcr2       = []
+        self.h_el1_pT_TOPcr2       = []
+        self.h_mu1_eta_TOPcr2      = []
+        self.h_el1_eta_TOPcr2      = []
+        self.h_mu1_phi_TOPcr2      = []
+        self.h_el1_phi_TOPcr2      = []
+        self.h_mu1_iso_TOPcr2      = []
         
+        self.h_jet1_csv_TOPcr1    = []
+        self.h_jet2_csv_TOPcr1    = []
+        self.h_jet1_csv_TOPcr2    = []
+        self.h_jet2_csv_TOPcr2    = []
+        self.h_jet3_csv_TOPcr2    = []
         
         ## 2d histograms 
         self.h_met_vs_mass     = []
@@ -274,12 +391,12 @@ class MonoHbbQuantities:
         self.h_csv2.append(TH1F('h_csv2_', 'h_csv2_', 20,0.,1.))
         #self.h_mt.append(TH1F('h_mt_'+postname,'h_mt_'+postname,100,400.,1400.))
         #self.h_dPhi.append(TH1F('h_dPhi_'+postname,'h_dPhi_'+postname,70, -3.5, 3.5 ))
-        self.h_N_e.append(TH1F('h_N_e_','h_N_e_',3,0,3))
-        self.h_N_mu.append(TH1F('h_N_mu_','h_N_mu_',3,0,3))
-        self.h_N_tau.append(TH1F('h_N_tau_','h_N_tau_',3,0,3))
-        self.h_N_Pho.append(TH1F('h_N_Pho_','h_N_Pho_',3,0,3))
+        self.h_N_e.append(TH1F('h_N_e_','h_N_e_',5,0,5))
+        self.h_N_mu.append(TH1F('h_N_mu_','h_N_mu_',5,0,5))
+        self.h_N_tau.append(TH1F('h_N_tau_','h_N_tau_',5,0,5))
+        self.h_N_Pho.append(TH1F('h_N_Pho_','h_N_Pho_',5,0,5))
         #self.h_N_b.append(TH1F('h_N_b_'+postname,'h_N_b_'+postname,3,0,3))
-        #self.h_N_j.append(TH1F('h_N_j_'+postname,'h_N_j_'+postname,5,0,5))
+        self.h_N_j.append(TH1F('h_N_j_','h_N_j_',10,0,10))
         self.h_jet1_pT_sr1.append(TH1F('h_jet1_pT_sr1_','h_jet1_pT_sr1_',1000,0.,1000.))
         self.h_jet1_eta_sr1.append(TH1F('h_jet1_eta_sr1_','h_jet1_eta_sr1_',70, -3.5, 3.5))
         self.h_jet1_phi_sr1.append(TH1F('h_jet1_phi_sr1_','h_jet1_phi_sr1_',70, -3.5, 3.5))
@@ -312,23 +429,46 @@ class MonoHbbQuantities:
         self.h_jet3_pT_Zcr2.append(TH1F('h_jet3_pT_Zcr2_','h_jet3_pT_Zcr2_',1000,0.,1000.))
         self.h_jet3_eta_Zcr2.append(TH1F('h_jet3_eta_Zcr2_','h_jet3_eta_Zcr2_',70, -3.5, 3.5))
         self.h_jet3_phi_Zcr2.append(TH1F('h_jet3_phi_Zcr2_','h_jet3_phi_Zcr2_',70, -3.5, 3.5))
-        self.h_ZhadronRecoil.append(TH1F('h_ZhadronRecoil_','h_ZhadronRecoil_',1000,0.,1000.))
-        self.h_Zmass.append(TH1F('h_Zmass_','h_Zmass_',1000,0.,500.))
-        self.h_mu1_pT_Zcr.append(TH1F('h_mu1_pT_Zcr_','h_mu1_pT_Zcr_',1000,0.,1000.))
-        self.h_mu2_pT_Zcr.append(TH1F('h_mu2_pT_Zcr_','h_mu2_pT_Zcr_',1000,0.,1000.))
-        self.h_el1_pT_Zcr.append(TH1F('h_el1_pT_Zcr_','h_el1_pT_Zcr_',1000,0.,1000.))
-        self.h_el2_pT_Zcr.append(TH1F('h_el2_pT_Zcr_','h_el2_pT_Zcr_',1000,0.,1000.))
-        self.h_mu1_eta_Zcr.append(TH1F('h_mu1_eta_Zcr_','h_mu1_eta_Zcr_',70, -3.5, 3.5))
-        self.h_mu2_eta_Zcr.append(TH1F('h_mu2_eta_Zcr_','h_mu2_eta_Zcr_',70, -3.5, 3.5))
-        self.h_el1_eta_Zcr.append(TH1F('h_el1_eta_Zcr_','h_el1_eta_Zcr_',70, -3.5, 3.5))
-        self.h_el2_eta_Zcr.append(TH1F('h_el2_eta_Zcr_','h_el2_eta_Zcr_',70, -3.5, 3.5))
-        self.h_mu1_phi_Zcr.append(TH1F('h_mu1_phi_Zcr_','h_mu1_phi_Zcr_',70, -3.5, 3.5))
-        self.h_mu2_phi_Zcr.append(TH1F('h_mu2_phi_Zcr_','h_mu2_phi_Zcr_',70, -3.5, 3.5))
-        self.h_el1_phi_Zcr.append(TH1F('h_el1_phi_Zcr_','h_el1_phi_Zcr_',70, -3.5, 3.5))
-        self.h_el2_phi_Zcr.append(TH1F('h_el2_phi_Zcr_','h_el2_phi_Zcr_',70, -3.5, 3.5))
-        self.h_mu1_iso_Zcr.append(TH1F('h_mu1_iso_Zcr_','h_mu1_iso_Zcr_',70, 0,.25))
-        self.h_mu2_iso_Zcr.append(TH1F('h_mu2_iso_Zcr_','h_mu2_iso_Zcr_',70, 0,.25))
+        self.h_ZhadronRecoil1.append(TH1F('h_ZhadronRecoil1_','h_ZhadronRecoil1_',1000,0.,1000.))
+        self.h_Zmass1.append(TH1F('h_Zmass1_','h_Zmass1_',1000,0.,500.))
+        self.h_ZpT1.append(TH1F('h_ZpT1_','h_ZpT1_',1000,0.,1000.))
+        self.h_ZhadronRecoil2.append(TH1F('h_ZhadronRecoil2_','h_ZhadronRecoil2_',1000,0.,1000.))
+        self.h_Zmass2.append(TH1F('h_Zmass2_','h_Zmass2_',1000,0.,500.))
+        self.h_ZpT2.append(TH1F('h_ZpT2_','h_ZpT2_',1000,0.,1000.))
+        self.h_mu1_pT_Zcr1.append(TH1F('h_mu1_pT_Zcr1_','h_mu1_pT_Zcr1_',1000,0.,1000.))
+        self.h_mu2_pT_Zcr1.append(TH1F('h_mu2_pT_Zcr1_','h_mu2_pT_Zcr1_',1000,0.,1000.))
+        self.h_el1_pT_Zcr1.append(TH1F('h_el1_pT_Zcr1_','h_el1_pT_Zcr1_',1000,0.,1000.))
+        self.h_el2_pT_Zcr1.append(TH1F('h_el2_pT_Zcr1_','h_el2_pT_Zcr1_',1000,0.,1000.))
+        self.h_mu1_eta_Zcr1.append(TH1F('h_mu1_eta_Zcr1_','h_mu1_eta_Zcr1_',70, -3.5, 3.5))
+        self.h_mu2_eta_Zcr1.append(TH1F('h_mu2_eta_Zcr1_','h_mu2_eta_Zcr1_',70, -3.5, 3.5))
+        self.h_el1_eta_Zcr1.append(TH1F('h_el1_eta_Zcr1_','h_el1_eta_Zcr1_',70, -3.5, 3.5))
+        self.h_el2_eta_Zcr1.append(TH1F('h_el2_eta_Zcr1_','h_el2_eta_Zcr1_',70, -3.5, 3.5))
+        self.h_mu1_phi_Zcr1.append(TH1F('h_mu1_phi_Zcr1_','h_mu1_phi_Zcr1_',70, -3.5, 3.5))
+        self.h_mu2_phi_Zcr1.append(TH1F('h_mu2_phi_Zcr1_','h_mu2_phi_Zcr1_',70, -3.5, 3.5))
+        self.h_el1_phi_Zcr1.append(TH1F('h_el1_phi_Zcr1_','h_el1_phi_Zcr1_',70, -3.5, 3.5))
+        self.h_el2_phi_Zcr1.append(TH1F('h_el2_phi_Zcr1_','h_el2_phi_Zcr1_',70, -3.5, 3.5))
+        self.h_mu1_iso_Zcr1.append(TH1F('h_mu1_iso_Zcr1_','h_mu1_iso_Zcr1_',70, 0,.25))
+        self.h_mu2_iso_Zcr1.append(TH1F('h_mu2_iso_Zcr1_','h_mu2_iso_Zcr1_',70, 0,.25))
+        self.h_mu1_pT_Zcr2.append(TH1F('h_mu1_pT_Zcr2_','h_mu1_pT_Zcr2_',1000,0.,1000.))
+        self.h_mu2_pT_Zcr2.append(TH1F('h_mu2_pT_Zcr2_','h_mu2_pT_Zcr2_',1000,0.,1000.))
+        self.h_el1_pT_Zcr2.append(TH1F('h_el1_pT_Zcr2_','h_el1_pT_Zcr2_',1000,0.,1000.))
+        self.h_el2_pT_Zcr2.append(TH1F('h_el2_pT_Zcr2_','h_el2_pT_Zcr2_',1000,0.,1000.))
+        self.h_mu1_eta_Zcr2.append(TH1F('h_mu1_eta_Zcr2_','h_mu1_eta_Zcr2_',70, -3.5, 3.5))
+        self.h_mu2_eta_Zcr2.append(TH1F('h_mu2_eta_Zcr2_','h_mu2_eta_Zcr2_',70, -3.5, 3.5))
+        self.h_el1_eta_Zcr2.append(TH1F('h_el1_eta_Zcr2_','h_el1_eta_Zcr2_',70, -3.5, 3.5))
+        self.h_el2_eta_Zcr2.append(TH1F('h_el2_eta_Zcr2_','h_el2_eta_Zcr2_',70, -3.5, 3.5))
+        self.h_mu1_phi_Zcr2.append(TH1F('h_mu1_phi_Zcr2_','h_mu1_phi_Zcr2_',70, -3.5, 3.5))
+        self.h_mu2_phi_Zcr2.append(TH1F('h_mu2_phi_Zcr2_','h_mu2_phi_Zcr2_',70, -3.5, 3.5))
+        self.h_el1_phi_Zcr2.append(TH1F('h_el1_phi_Zcr2_','h_el1_phi_Zcr2_',70, -3.5, 3.5))
+        self.h_el2_phi_Zcr2.append(TH1F('h_el2_phi_Zcr2_','h_el2_phi_Zcr2_',70, -3.5, 3.5))
+        self.h_mu1_iso_Zcr2.append(TH1F('h_mu1_iso_Zcr2_','h_mu1_iso_Zcr2_',70, 0,.25))
+        self.h_mu2_iso_Zcr2.append(TH1F('h_mu2_iso_Zcr2_','h_mu2_iso_Zcr2_',70, 0,.25))
         
+        self.h_jet1_csv_Zcr1.append(TH1F('h_jet1_csv_Zcr1_','h_jet1_csv_Zcr1_',100, 0,1.05))
+        self.h_jet2_csv_Zcr1.append(TH1F('h_jet2_csv_Zcr1_','h_jet2_csv_Zcr1_',100, 0,1.05))
+        self.h_jet1_csv_Zcr2.append(TH1F('h_jet1_csv_Zcr2_','h_jet1_csv_Zcr2_',100, 0,1.05))
+        self.h_jet2_csv_Zcr2.append(TH1F('h_jet2_csv_Zcr2_','h_jet2_csv_Zcr2_',100, 0,1.05))
+        self.h_jet3_csv_Zcr2.append(TH1F('h_jet3_csv_Zcr2_','h_jet3_csv_Zcr2_',100, 0,1.05))
         
         #for WCR
         self.h_jet1_pT_Wcr1.append(TH1F('h_jet1_pT_Wcr1_','h_jet1_pT_Wcr1_',1000,0.,1000.))
@@ -346,16 +486,32 @@ class MonoHbbQuantities:
         self.h_jet3_pT_Wcr2.append(TH1F('h_jet3_pT_Wcr2_','h_jet3_pT_Wcr2_',1000,0.,1000.))
         self.h_jet3_eta_Wcr2.append(TH1F('h_jet3_eta_Wcr2_','h_jet3_eta_Wcr2_',70, -3.5, 3.5))
         self.h_jet3_phi_Wcr2.append(TH1F('h_jet3_phi_Wcr2_','h_jet3_phi_Wcr2_',70, -3.5, 3.5))
-        self.h_WhadronRecoil.append(TH1F('h_WhadronRecoil_','h_WhadronRecoil_',1000,0.,1000.))
-        self.h_Wmass.append(TH1F('h_Wmass_','h_Wmass_',1000,0.,500.))
-        self.h_mu1_pT_Wcr.append(TH1F('h_mu1_pT_Wcr_','h_mu1_pT_Wcr_',1000,0.,1000.))
-        self.h_el1_pT_Wcr.append(TH1F('h_el1_pT_Wcr_','h_el1_pT_Wcr_',1000,0.,1000.))
-        self.h_mu1_eta_Wcr.append(TH1F('h_mu1_eta_Wcr_','h_mu1_eta_Wcr_',70, -3.5, 3.5))
-        self.h_el1_eta_Wcr.append(TH1F('h_el1_eta_Wcr_','h_el1_eta_Wcr_',70, -3.5, 3.5))
-        self.h_mu1_phi_Wcr.append(TH1F('h_mu1_phi_Wcr_','h_mu1_phi_Wcr_',70, -3.5, 3.5))
-        self.h_el1_phi_Wcr.append(TH1F('h_el1_phi_Wcr_','h_el1_phi_Wcr_',70, -3.5, 3.5))
-        self.h_mu1_iso_Wcr.append(TH1F('h_mu1_iso_Wcr_','h_mu1_iso_Wcr_',70, 0,.25))
+        self.h_WhadronRecoil1.append(TH1F('h_WhadronRecoil1_','h_WhadronRecoil1_',1000,0.,1000.))
+        self.h_Wmass1.append(TH1F('h_Wmass1_','h_Wmass1_',1000,0.,500.))
+        self.h_WpT1.append(TH1F('h_WpT1_','h_WpT1_',1000,0.,1000.))
+        self.h_WhadronRecoil2.append(TH1F('h_WhadronRecoil2_','h_WhadronRecoil2_',1000,0.,1000.))
+        self.h_Wmass2.append(TH1F('h_Wmass2_','h_Wmass2_',1000,0.,500.))
+        self.h_WpT2.append(TH1F('h_WpT2_','h_WpT2_',1000,0.,1000.))
+        self.h_mu1_pT_Wcr1.append(TH1F('h_mu1_pT_Wcr1_','h_mu1_pT_Wcr1_',1000,0.,1000.))
+        self.h_el1_pT_Wcr1.append(TH1F('h_el1_pT_Wcr1_','h_el1_pT_Wcr1_',1000,0.,1000.))
+        self.h_mu1_eta_Wcr1.append(TH1F('h_mu1_eta_Wcr1_','h_mu1_eta_Wcr1_',70, -3.5, 3.5))
+        self.h_el1_eta_Wcr1.append(TH1F('h_el1_eta_Wcr1_','h_el1_eta_Wcr1_',70, -3.5, 3.5))
+        self.h_mu1_phi_Wcr1.append(TH1F('h_mu1_phi_Wcr1_','h_mu1_phi_Wcr1_',70, -3.5, 3.5))
+        self.h_el1_phi_Wcr1.append(TH1F('h_el1_phi_Wcr1_','h_el1_phi_Wcr1_',70, -3.5, 3.5))
+        self.h_mu1_iso_Wcr1.append(TH1F('h_mu1_iso_Wcr1_','h_mu1_iso_Wcr1_',70, 0,.25))
+        self.h_mu1_pT_Wcr2.append(TH1F('h_mu1_pT_Wcr2_','h_mu1_pT_Wcr2_',1000,0.,1000.))
+        self.h_el1_pT_Wcr2.append(TH1F('h_el1_pT_Wcr2_','h_el1_pT_Wcr2_',1000,0.,1000.))
+        self.h_mu1_eta_Wcr2.append(TH1F('h_mu1_eta_Wcr2_','h_mu1_eta_Wcr2_',70, -3.5, 3.5))
+        self.h_el1_eta_Wcr2.append(TH1F('h_el1_eta_Wcr2_','h_el1_eta_Wcr2_',70, -3.5, 3.5))
+        self.h_mu1_phi_Wcr2.append(TH1F('h_mu1_phi_Wcr2_','h_mu1_phi_Wcr2_',70, -3.5, 3.5))
+        self.h_el1_phi_Wcr2.append(TH1F('h_el1_phi_Wcr2_','h_el1_phi_Wcr2_',70, -3.5, 3.5))
+        self.h_mu1_iso_Wcr2.append(TH1F('h_mu1_iso_Wcr2_','h_mu1_iso_Wcr2_',70, 0,.25))
         
+        self.h_jet1_csv_Wcr1.append(TH1F('h_jet1_csv_Wcr1_','h_jet1_csv_Wcr1_',100, 0,1.05))
+        self.h_jet2_csv_Wcr1.append(TH1F('h_jet2_csv_Wcr1_','h_jet2_csv_Wcr1_',100, 0,1.05))
+        self.h_jet1_csv_Wcr2.append(TH1F('h_jet1_csv_Wcr2_','h_jet1_csv_Wcr2_',100, 0,1.05))
+        self.h_jet2_csv_Wcr2.append(TH1F('h_jet2_csv_Wcr2_','h_jet2_csv_Wcr2_',100, 0,1.05))
+        self.h_jet3_csv_Wcr2.append(TH1F('h_jet3_csv_Wcr2_','h_jet3_csv_Wcr2_',100, 0,1.05))
         
         #for TOPcr
         self.h_jet1_pT_TOPcr1.append(TH1F('h_jet1_pT_TOPcr1_','h_jet1_pT_TOPcr1_',1000,0.,1000.))
@@ -373,14 +529,28 @@ class MonoHbbQuantities:
         self.h_jet3_pT_TOPcr2.append(TH1F('h_jet3_pT_TOPcr2_','h_jet3_pT_TOPcr2_',1000,0.,1000.))
         self.h_jet3_eta_TOPcr2.append(TH1F('h_jet3_eta_TOPcr2_','h_jet3_eta_TOPcr2_',70, -3.5, 3.5))
         self.h_jet3_phi_TOPcr2.append(TH1F('h_jet3_phi_TOPcr2_','h_jet3_phi_TOPcr2_',70, -3.5, 3.5))
-        self.h_TOPRecoil.append(TH1F('h_TOPRecoil','h_TOPRecoil',1000,0.,1000.))
-        self.h_mu1_pT_TOPcr.append(TH1F('h_mu1_pT_TOPcr_','h_mu1_pT_TOPcr_',1000,0.,1000.))
-        self.h_el1_pT_TOPcr.append(TH1F('h_el1_pT_TOPcr_','h_el1_pT_TOPcr_',1000,0.,1000.))
-        self.h_mu1_eta_TOPcr.append(TH1F('h_mu1_eta_TOPcr_','h_mu1_eta_TOPcr_',70, -3.5, 3.5))
-        self.h_el1_eta_TOPcr.append(TH1F('h_el1_eta_TOPcr_','h_el1_eta_TOPcr_',70, -3.5, 3.5))
-        self.h_mu1_phi_TOPcr.append(TH1F('h_mu1_phi_TOPcr_','h_mu1_phi_TOPcr_',70, -3.5, 3.5))
-        self.h_el1_phi_TOPcr.append(TH1F('h_el1_phi_TOPcr_','h_el1_phi_TOPcr_',70, -3.5, 3.5))
-        self.h_mu1_iso_TOPcr.append(TH1F('h_mu1_iso_TOPcr_','h_mu1_iso_TOPcr_',70, 0,.25))
+        self.h_TOPRecoil1.append(TH1F('h_TOPRecoil1_','h_TOPRecoil1_',1000,0.,1000.))
+        self.h_TOPRecoil2.append(TH1F('h_TOPRecoil2_','h_TOPRecoil2_',1000,0.,1000.))
+        self.h_mu1_pT_TOPcr1.append(TH1F('h_mu1_pT_TOPcr1_','h_mu1_pT_TOPcr1_',1000,0.,1000.))
+        self.h_el1_pT_TOPcr1.append(TH1F('h_el1_pT_TOPcr1_','h_el1_pT_TOPcr1_',1000,0.,1000.))
+        self.h_mu1_eta_TOPcr1.append(TH1F('h_mu1_eta_TOPcr1_','h_mu1_eta_TOPcr1_',70, -3.5, 3.5))
+        self.h_el1_eta_TOPcr1.append(TH1F('h_el1_eta_TOPcr1_','h_el1_eta_TOPcr1_',70, -3.5, 3.5))
+        self.h_mu1_phi_TOPcr1.append(TH1F('h_mu1_phi_TOPcr1_','h_mu1_phi_TOPcr1_',70, -3.5, 3.5))
+        self.h_el1_phi_TOPcr1.append(TH1F('h_el1_phi_TOPcr1_','h_el1_phi_TOPcr1_',70, -3.5, 3.5))
+        self.h_mu1_iso_TOPcr1.append(TH1F('h_mu1_iso_TOPcr1_','h_mu1_iso_TOPcr1_',70, 0,.25))
+        self.h_mu1_pT_TOPcr2.append(TH1F('h_mu1_pT_TOPcr2_','h_mu1_pT_TOPcr2_',1000,0.,1000.))
+        self.h_el1_pT_TOPcr2.append(TH1F('h_el1_pT_TOPcr2_','h_el1_pT_TOPcr2_',1000,0.,1000.))
+        self.h_mu1_eta_TOPcr2.append(TH1F('h_mu1_eta_TOPcr2_','h_mu1_eta_TOPcr2_',70, -3.5, 3.5))
+        self.h_el1_eta_TOPcr2.append(TH1F('h_el1_eta_TOPcr2_','h_el1_eta_TOPcr2_',70, -3.5, 3.5))
+        self.h_mu1_phi_TOPcr2.append(TH1F('h_mu1_phi_TOPcr2_','h_mu1_phi_TOPcr2_',70, -3.5, 3.5))
+        self.h_el1_phi_TOPcr2.append(TH1F('h_el1_phi_TOPcr2_','h_el1_phi_TOPcr2_',70, -3.5, 3.5))
+        self.h_mu1_iso_TOPcr2.append(TH1F('h_mu1_iso_TOPcr2_','h_mu1_iso_TOPcr2_',70, 0,.25))
+        
+        self.h_jet1_csv_TOPcr1.append(TH1F('h_jet1_csv_TOPcr1_','h_jet1_csv_Zcr1_',100, 0,1.05))
+        self.h_jet2_csv_TOPcr1.append(TH1F('h_jet2_csv_TOPcr1_','h_jet2_csv_Zcr1_',100, 0,1.05))
+        self.h_jet1_csv_TOPcr2.append(TH1F('h_jet1_csv_TOPcr2_','h_jet1_csv_ZCr2_',100, 0,1.05))
+        self.h_jet2_csv_TOPcr2.append(TH1F('h_jet2_csv_TOPcr2_','h_jet2_csv_Zcr2_',100, 0,1.05))
+        self.h_jet3_csv_TOPcr2.append(TH1F('h_jet3_csv_TOPcr2_','h_jet3_csv_Zcr2_',100, 0,1.05))
         
         
         h_met_pdf_tmp = []
@@ -429,7 +599,7 @@ class MonoHbbQuantities:
         self.h_N_tau[0]          .Fill(self.N_tau,     WF)
         self.h_N_Pho[0]          .Fill(self.N_Pho,     WF)
         #self.h_N_b            Fill(self.N_b,       WF)
-        #self.h_N_j            Fill(self.N_j,       WF)
+        self.h_N_j            Fill(self.N_j,       WF)
 #        print len(self.h_jet1_pT_sr1)
 #        print "HbbQuants: "+str(self.jet1_pT_sr2)
         
@@ -468,23 +638,47 @@ class MonoHbbQuantities:
         if self.jet3_eta_Zcr2 is not None:   self.h_jet3_eta_Zcr2[0]   .Fill(self.jet3_eta_Zcr2,  WF)
         if self.jet3_phi_Zcr2 is not None:   self.h_jet3_phi_Zcr2[0]   .Fill(self.jet3_phi_Zcr2,  WF)
         
-        if self.ZhadronRecoil is not None:   self.h_ZhadronRecoil[0]   .Fill(self.ZhadronRecoil,  WF)
-        if self.Zmass is not None:           self.h_Zmass[0]           .Fill(self.Zmass,          WF)
-        if self.mu1_pT_Zcr is not  None:   self.h_mu1_pT_Zcr[0]        .Fill(self.mu1_pT_Zcr,     WF)
-        if self.mu2_pT_Zcr is not  None:   self.h_mu2_pT_Zcr[0]      .Fill(self.mu2_pT_Zcr,     WF)
-        if self.el1_pT_Zcr is not  None:   self.h_el1_pT_Zcr[0]      .Fill(self.el1_pT_Zcr,     WF)
-        if self.el2_pT_Zcr is not  None:   self.h_el2_pT_Zcr[0]      .Fill(self.el2_pT_Zcr,     WF)
-        if self.mu1_eta_Zcr is not None:   self.h_mu1_eta_Zcr[0]     .Fill(self.mu1_eta_Zcr,    WF)
-        if self.mu2_eta_Zcr is not None:   self.h_mu2_eta_Zcr[0]     .Fill(self.mu2_eta_Zcr,    WF)
-        if self.el1_eta_Zcr is not None:   self.h_el1_eta_Zcr[0]     .Fill(self.el1_eta_Zcr,    WF)
-        if self.el2_eta_Zcr is not None:   self.h_el2_eta_Zcr[0]     .Fill(self.el2_eta_Zcr,    WF)
-        if self.mu1_phi_Zcr is not None:   self.h_mu1_phi_Zcr[0]     .Fill(self.mu1_phi_Zcr,    WF)
-        if self.mu2_phi_Zcr is not None:   self.h_mu1_phi_Zcr[0]     .Fill(self.mu1_phi_Zcr,    WF)
-        if self.el1_phi_Zcr is not None:   self.h_el1_phi_Zcr[0]     .Fill(self.el1_phi_Zcr,    WF)
-        if self.el2_phi_Zcr is not None:   self.h_el2_phi_Zcr[0]     .Fill(self.el2_phi_Zcr,    WF)
-        if self.mu1_iso_Zcr is not None:   self.h_mu1_iso_Zcr[0]     .Fill(self.mu1_iso_Zcr,    WF)
-        if self.mu2_iso_Zcr is not None:   self.h_mu2_iso_Zcr[0]     .Fill(self.mu2_iso_Zcr,    WF)
+        if self.ZhadronRecoil1 is not None:  self.h_ZhadronRecoil1[0]  .Fill(self.ZhadronRecoil1,  WF)
+        if self.Zmass1 is not None:          self.h_Zmass1[0]          .Fill(self.Zmass1,          WF)
+        if self.ZpT1 is not None:            self.h_ZpT1[0]            .Fill(self.ZpT1,            WF)
+        if self.ZhadronRecoil2 is not None:  self.h_ZhadronRecoil2[0]  .Fill(self.ZhadronRecoil2,  WF)
+        if self.Zmass2 is not None:          self.h_Zmass2[0]          .Fill(self.Zmass2,          WF)
+        if self.ZpT2 is not None:            self.h_ZpT2[0]            .Fill(self.ZpT2,            WF)
+        if self.mu1_pT_Zcr1 is not  None:   self.h_mu1_pT_Zcr1[0]      .Fill(self.mu1_pT_Zcr1,     WF)
+        if self.mu2_pT_Zcr1 is not  None:   self.h_mu2_pT_Zcr1[0]      .Fill(self.mu2_pT_Zcr1,     WF)
+        if self.el1_pT_Zcr1 is not  None:   self.h_el1_pT_Zcr1[0]      .Fill(self.el1_pT_Zcr1,     WF)
+        if self.el2_pT_Zcr1 is not  None:   self.h_el2_pT_Zcr1[0]      .Fill(self.el2_pT_Zcr1,     WF)
+        if self.mu1_eta_Zcr1 is not None:   self.h_mu1_eta_Zcr1[0]     .Fill(self.mu1_eta_Zcr1,    WF)
+        if self.mu2_eta_Zcr1 is not None:   self.h_mu2_eta_Zcr1[0]     .Fill(self.mu2_eta_Zcr1,    WF)
+        if self.el1_eta_Zcr1 is not None:   self.h_el1_eta_Zcr1[0]     .Fill(self.el1_eta_Zcr1,    WF)
+        if self.el2_eta_Zcr1 is not None:   self.h_el2_eta_Zcr1[0]     .Fill(self.el2_eta_Zcr1,    WF)
+        if self.mu1_phi_Zcr1 is not None:   self.h_mu1_phi_Zcr1[0]     .Fill(self.mu1_phi_Zcr1,    WF)
+        if self.mu2_phi_Zcr1 is not None:   self.h_mu1_phi_Zcr1[0]     .Fill(self.mu1_phi_Zcr1,    WF)
+        if self.el1_phi_Zcr1 is not None:   self.h_el1_phi_Zcr1[0]     .Fill(self.el1_phi_Zcr1,    WF)
+        if self.el2_phi_Zcr1 is not None:   self.h_el2_phi_Zcr1[0]     .Fill(self.el2_phi_Zcr1,    WF)
+        if self.mu1_iso_Zcr1 is not None:   self.h_mu1_iso_Zcr1[0]     .Fill(self.mu1_iso_Zcr1,    WF)
+        if self.mu2_iso_Zcr1 is not None:   self.h_mu2_iso_Zcr1[0]     .Fill(self.mu2_iso_Zcr1,    WF)
         
+        if self.mu1_pT_Zcr2 is not  None:   self.h_mu1_pT_Zcr2[0]      .Fill(self.mu1_pT_Zcr2,     WF)
+        if self.mu2_pT_Zcr2 is not  None:   self.h_mu2_pT_Zcr2[0]      .Fill(self.mu2_pT_Zcr2,     WF)
+        if self.el1_pT_Zcr2 is not  None:   self.h_el1_pT_Zcr2[0]      .Fill(self.el1_pT_Zcr2,     WF)
+        if self.el2_pT_Zcr2 is not  None:   self.h_el2_pT_Zcr2[0]      .Fill(self.el2_pT_Zcr2,     WF)
+        if self.mu1_eta_Zcr2 is not None:   self.h_mu1_eta_Zcr2[0]     .Fill(self.mu1_eta_Zcr2,    WF)
+        if self.mu2_eta_Zcr2 is not None:   self.h_mu2_eta_Zcr2[0]     .Fill(self.mu2_eta_Zcr2,    WF)
+        if self.el1_eta_Zcr2 is not None:   self.h_el1_eta_Zcr2[0]     .Fill(self.el1_eta_Zcr2,    WF)
+        if self.el2_eta_Zcr2 is not None:   self.h_el2_eta_Zcr2[0]     .Fill(self.el2_eta_Zcr2,    WF)
+        if self.mu1_phi_Zcr2 is not None:   self.h_mu1_phi_Zcr2[0]     .Fill(self.mu1_phi_Zcr2,    WF)
+        if self.mu2_phi_Zcr2 is not None:   self.h_mu1_phi_Zcr2[0]     .Fill(self.mu1_phi_Zcr2,    WF)
+        if self.el1_phi_Zcr2 is not None:   self.h_el1_phi_Zcr2[0]     .Fill(self.el1_phi_Zcr2,    WF)
+        if self.el2_phi_Zcr2 is not None:   self.h_el2_phi_Zcr2[0]     .Fill(self.el2_phi_Zcr2,    WF)
+        if self.mu1_iso_Zcr2 is not None:   self.h_mu1_iso_Zcr2[0]     .Fill(self.mu1_iso_Zcr2,    WF)
+        if self.mu2_iso_Zcr2 is not None:   self.h_mu2_iso_Zcr2[0]     .Fill(self.mu2_iso_Zcr2,    WF)
+        
+        if self.jet1_csv_Zcr1 is not None:    self.h_jet1_csv_Zcr1[0]    .Fill(self.jet1_csv_Zcr1,   WF)
+        if self.jet2_csv_Zcr1 is not None:    self.h_jet2_csv_Zcr1[0]    .Fill(self.jet2_csv_Zcr1,   WF)
+        if self.jet1_csv_Zcr2 is not None:    self.h_jet1_csv_Zcr2[0]    .Fill(self.jet1_csv_Zcr2,   WF)
+        if self.jet2_csv_Zcr2 is not None:    self.h_jet2_csv_Zcr2[0]    .Fill(self.jet2_csv_Zcr2,   WF)
+        if self.jet3_csv_Zcr2 is not None:    self.h_jet3_csv_Zcr2[0]    .Fill(self.jet3_csv_Zcr2,   WF)
         
         ##For WCRs##
         if self.jet1_pT_Wcr1 is not None:    self.h_jet1_pT_Wcr1[0]    .Fill(self.jet1_pT_Wcr1,   WF)
@@ -504,15 +698,33 @@ class MonoHbbQuantities:
         if self.jet3_eta_Wcr2 is not None:   self.h_jet3_eta_Wcr2[0]   .Fill(self.jet3_eta_Wcr2,  WF)
         if self.jet3_phi_Wcr2 is not None:   self.h_jet3_phi_Wcr2[0]   .Fill(self.jet3_phi_Wcr2,  WF)
         
-        if self.WhadronRecoil is not None:   self.h_WhadronRecoil[0]   .Fill(self.WhadronRecoil,  WF)
-        if self.Wmass is not None:           self.h_Wmass[0]           .Fill(self.Wmass,          WF)
-        if self.mu1_pT_Wcr is not None:      self.h_mu1_pT_Wcr[0]      .Fill(self.mu1_pT_Wcr,     WF)
-        if self.el1_pT_Wcr is not None:      self.h_el1_pT_Wcr[0]      .Fill(self.el1_pT_Wcr,     WF)
-        if self.mu1_eta_Wcr is not None:     self.h_mu1_eta_Wcr[0]     .Fill(self.mu1_eta_Wcr,    WF) 
-        if self.el1_eta_Wcr is not None:     self.h_el1_eta_Wcr[0]     .Fill(self.el1_eta_Wcr,    WF)
-        if self.mu1_phi_Wcr is not None:     self.h_mu1_phi_Wcr[0]     .Fill(self.mu1_phi_Wcr,    WF)
-        if self.el1_phi_Wcr is not None:     self.h_el1_phi_Wcr[0]     .Fill(self.el1_phi_Wcr,    WF)
-        if self.mu1_iso_Wcr is not None:     self.h_mu1_iso_Wcr[0]     .Fill(self.mu1_iso_Wcr,    WF)
+        if self.WhadronRecoil1 is not None:   self.h_WhadronRecoil1[0]   .Fill(self.WhadronRecoil1,  WF)
+        if self.Wmass1 is not None:           self.h_Wmass1[0]           .Fill(self.Wmass1,          WF)
+        if self.WpT1 is not None:             self.h_WpT1[0]             .Fill(self.WpT1,            WF)
+        if self.WhadronRecoil2 is not None:   self.h_WhadronRecoil2[0]   .Fill(self.WhadronRecoil2,  WF)
+        if self.Wmass2 is not None:           self.h_Wmass2[0]           .Fill(self.Wmass2,          WF)
+        if self.WpT2 is not None:             self.h_WpT2[0]             .Fill(self.WpT2,            WF)
+        if self.mu1_pT_Wcr1 is not None:      self.h_mu1_pT_Wcr1[0]      .Fill(self.mu1_pT_Wcr1,     WF)
+        if self.el1_pT_Wcr1 is not None:      self.h_el1_pT_Wcr1[0]      .Fill(self.el1_pT_Wcr1,     WF)
+        if self.mu1_eta_Wcr1 is not None:     self.h_mu1_eta_Wcr1[0]     .Fill(self.mu1_eta_Wcr1,    WF) 
+        if self.el1_eta_Wcr1 is not None:     self.h_el1_eta_Wcr1[0]     .Fill(self.el1_eta_Wcr1,    WF)
+        if self.mu1_phi_Wcr1 is not None:     self.h_mu1_phi_Wcr1[0]     .Fill(self.mu1_phi_Wcr1,    WF)
+        if self.el1_phi_Wcr1 is not None:     self.h_el1_phi_Wcr1[0]     .Fill(self.el1_phi_Wcr1,    WF)
+        if self.mu1_iso_Wcr1 is not None:     self.h_mu1_iso_Wcr1[0]     .Fill(self.mu1_iso_Wcr1,    WF)
+        
+        if self.mu1_pT_Wcr2 is not None:      self.h_mu1_pT_Wcr2[0]      .Fill(self.mu1_pT_Wcr2,     WF)
+        if self.el1_pT_Wcr2 is not None:      self.h_el1_pT_Wcr2[0]      .Fill(self.el1_pT_Wcr2,     WF)
+        if self.mu1_eta_Wcr2 is not None:     self.h_mu1_eta_Wcr2[0]     .Fill(self.mu1_eta_Wcr2,    WF) 
+        if self.el1_eta_Wcr2 is not None:     self.h_el1_eta_Wcr2[0]     .Fill(self.el1_eta_Wcr2,    WF)
+        if self.mu1_phi_Wcr2 is not None:     self.h_mu1_phi_Wcr2[0]     .Fill(self.mu1_phi_Wcr2,    WF)
+        if self.el1_phi_Wcr2 is not None:     self.h_el1_phi_Wcr2[0]     .Fill(self.el1_phi_Wcr2,    WF)
+        if self.mu1_iso_Wcr2 is not None:     self.h_mu1_iso_Wcr2[0]     .Fill(self.mu1_iso_Wcr2,    WF)
+        
+        if self.jet1_csv_Wcr1 is not None:    self.h_jet1_csv_Wcr1[0]    .Fill(self.jet1_csv_Wcr1,   WF)
+        if self.jet2_csv_Wcr1 is not None:    self.h_jet2_csv_Wcr1[0]    .Fill(self.jet2_csv_Wcr1,   WF)
+        if self.jet1_csv_Wcr2 is not None:    self.h_jet1_csv_Wcr2[0]    .Fill(self.jet1_csv_Wcr2,   WF)
+        if self.jet2_csv_Wcr2 is not None:    self.h_jet2_csv_Wcr2[0]    .Fill(self.jet2_csv_Wcr2,   WF)
+        if self.jet3_csv_Wcr2 is not None:    self.h_jet3_csv_Wcr2[0]    .Fill(self.jet3_csv_Wcr2,   WF)
         
         ##For TopCRs##
         if self.jet1_pT_TOPcr1 is not None:    self.h_jet1_pT_TOPcr1[0]    .Fill(self.jet1_pT_TOPcr1,   WF)
@@ -532,16 +744,30 @@ class MonoHbbQuantities:
         if self.jet3_eta_TOPcr2 is not None:   self.h_jet3_eta_TOPcr2[0]   .Fill(self.jet3_eta_TOPcr2,  WF)
         if self.jet3_phi_TOPcr2 is not None:   self.h_jet3_phi_TOPcr2[0]   .Fill(self.jet3_phi_TOPcr2,  WF)
         
-        if self.mu1_pT_TOPcr is not None:      self.h_mu1_pT_TOPcr[0]      .Fill(self.mu1_pT_TOPcr,     WF)
-        if self.el1_pT_TOPcr is not None:      self.h_el1_pT_TOPcr[0]      .Fill(self.el1_pT_TOPcr,     WF)
-        if self.mu1_eta_TOPcr is not None:     self.h_mu1_eta_TOPcr[0]     .Fill(self.mu1_eta_TOPcr,    WF) 
-        if self.el1_eta_TOPcr is not None:     self.h_el1_eta_TOPcr[0]     .Fill(self.el1_eta_TOPcr,    WF)
-        if self.mu1_phi_TOPcr is not None:     self.h_mu1_phi_TOPcr[0]     .Fill(self.mu1_phi_TOPcr,    WF)
-        if self.el1_phi_TOPcr is not None:     self.h_el1_phi_TOPcr[0]     .Fill(self.el1_phi_TOPcr,    WF)
-        if self.mu1_iso_TOPcr is not None:     self.h_mu1_iso_TOPcr[0]     .Fill(self.mu1_iso_TOPcr,    WF)
+        if self.mu1_pT_TOPcr1 is not None:      self.h_mu1_pT_TOPcr1[0]      .Fill(self.mu1_pT_TOPcr1,     WF)
+        if self.el1_pT_TOPcr1 is not None:      self.h_el1_pT_TOPcr1[0]      .Fill(self.el1_pT_TOPcr1,     WF)
+        if self.mu1_eta_TOPcr1 is not None:     self.h_mu1_eta_TOPcr1[0]     .Fill(self.mu1_eta_TOPcr1,    WF) 
+        if self.el1_eta_TOPcr1 is not None:     self.h_el1_eta_TOPcr1[0]     .Fill(self.el1_eta_TOPcr1,    WF)
+        if self.mu1_phi_TOPcr1 is not None:     self.h_mu1_phi_TOPcr1[0]     .Fill(self.mu1_phi_TOPcr1,    WF)
+        if self.el1_phi_TOPcr1 is not None:     self.h_el1_phi_TOPcr1[0]     .Fill(self.el1_phi_TOPcr1,    WF)
+        if self.mu1_iso_TOPcr1 is not None:     self.h_mu1_iso_TOPcr1[0]     .Fill(self.mu1_iso_TOPcr1,    WF)
         
-        if self.TOPRecoil is not None:         self.h_TOPRecoil[0]         .Fill(self.TOPRecoil,  WF)
+        if self.mu1_pT_TOPcr2 is not None:      self.h_mu1_pT_TOPcr2[0]      .Fill(self.mu1_pT_TOPcr2,     WF)
+        if self.el1_pT_TOPcr2 is not None:      self.h_el1_pT_TOPcr2[0]      .Fill(self.el1_pT_TOPcr2,     WF)
+        if self.mu1_eta_TOPcr2 is not None:     self.h_mu1_eta_TOPcr2[0]     .Fill(self.mu1_eta_TOPcr2,    WF) 
+        if self.el1_eta_TOPcr2 is not None:     self.h_el1_eta_TOPcr2[0]     .Fill(self.el1_eta_TOPcr2,    WF)
+        if self.mu1_phi_TOPcr2 is not None:     self.h_mu1_phi_TOPcr2[0]     .Fill(self.mu1_phi_TOPcr2,    WF)
+        if self.el1_phi_TOPcr2 is not None:     self.h_el1_phi_TOPcr2[0]     .Fill(self.el1_phi_TOPcr2,    WF)
+        if self.mu1_iso_TOPcr2 is not None:     self.h_mu1_iso_TOPcr2[0]     .Fill(self.mu1_iso_TOPcr2,    WF)
+        
+        if self.TOPRecoil1 is not None:         self.h_TOPRecoil1[0]         .Fill(self.TOPRecoil1,  WF)
+        if self.TOPRecoil2 is not None:         self.h_TOPRecoil2[0]         .Fill(self.TOPRecoil2,  WF)
        
+        if self.jet1_csv_TOPcr1 is not None:    self.h_jet1_csv_TOPcr1[0]    .Fill(self.jet1_csv_TOPcr1,   WF)
+        if self.jet2_csv_TOPcr1 is not None:    self.h_jet2_csv_TOPcr1[0]    .Fill(self.jet2_csv_TOPcr1,   WF)
+        if self.jet1_csv_TOPcr2 is not None:    self.h_jet1_csv_TOPcr2[0]    .Fill(self.jet1_csv_TOPcr2,   WF)
+        if self.jet2_csv_TOPcr2 is not None:    self.h_jet2_csv_TOPcr2[0]    .Fill(self.jet2_csv_TOPcr2,   WF)
+        if self.jet3_csv_TOPcr2 is not None:    self.h_jet3_csv_TOPcr2[0]    .Fill(self.jet3_csv_TOPcr2,   WF)
         
     def WriteHisto(self, (nevts,nevts_weight,cutflowvalues,cutflownames,CRvalues,CRnames)):
         f = TFile(self.rootfilename,'RECREATE')
@@ -588,7 +814,7 @@ class MonoHbbQuantities:
         self.h_N_tau[0].Write()
         self.h_N_Pho[0].Write()
         #self.h_N_b.Write()
-        #self.h_N_j.Write()
+        self.h_N_j.Write()
         #self.h_mass.Write()
         self.h_jet1_pT_sr1[0].Write()
         self.h_jet1_eta_sr1[0].Write()
@@ -621,22 +847,47 @@ class MonoHbbQuantities:
         self.h_jet3_pT_Zcr2[0].Write()
         self.h_jet3_eta_Zcr2[0].Write()
         self.h_jet3_phi_Zcr2[0].Write()
-        self.h_ZhadronRecoil[0].Write()
-        self.h_Zmass[0].Write()
-        self.h_mu1_pT_Zcr[0].Write()
-        self.h_mu2_pT_Zcr[0].Write()
-        self.h_el1_pT_Zcr[0].Write()
-        self.h_el2_pT_Zcr[0].Write()
-        self.h_mu1_eta_Zcr[0].Write()
-        self.h_mu2_eta_Zcr[0].Write()
-        self.h_el1_eta_Zcr[0].Write()
-        self.h_el2_eta_Zcr[0].Write()
-        self.h_mu1_phi_Zcr[0].Write()
-        self.h_mu2_phi_Zcr[0].Write()
-        self.h_el1_phi_Zcr[0].Write()
-        self.h_el2_phi_Zcr[0].Write()
-        self.h_mu1_iso_Zcr[0].Write()
-        self.h_mu2_iso_Zcr[0].Write()
+        self.h_ZhadronRecoil1[0].Write()
+        self.h_Zmass1[0].Write()
+        self.h_ZpT1[0].Write()
+        self.h_ZhadronRecoil2[0].Write()
+        self.h_Zmass2[0].Write()
+        self.h_ZpT2[0].Write()
+        self.h_mu1_pT_Zcr1[0].Write()
+        self.h_mu2_pT_Zcr1[0].Write()
+        self.h_el1_pT_Zcr1[0].Write()
+        self.h_el2_pT_Zcr1[0].Write()
+        self.h_mu1_eta_Zcr1[0].Write()
+        self.h_mu2_eta_Zcr1[0].Write()
+        self.h_el1_eta_Zcr1[0].Write()
+        self.h_el2_eta_Zcr1[0].Write()
+        self.h_mu1_phi_Zcr1[0].Write()
+        self.h_mu2_phi_Zcr1[0].Write()
+        self.h_el1_phi_Zcr1[0].Write()
+        self.h_el2_phi_Zcr1[0].Write()
+        self.h_mu1_iso_Zcr1[0].Write()
+        self.h_mu2_iso_Zcr1[0].Write()
+        
+        self.h_jet1_csv_Zcr1[0].Write()
+        self.h_jet2_csv_Zcr1[0].Write()
+        self.h_jet1_csv_Zcr2[0].Write()
+        self.h_jet2_csv_Zcr2[0].Write()
+        self.h_jet3_csv_Zcr2[0].Write()
+        
+        self.h_mu1_pT_Zcr2[0].Write()
+        self.h_mu2_pT_Zcr2[0].Write()
+        self.h_el1_pT_Zcr2[0].Write()
+        self.h_el2_pT_Zcr2[0].Write()
+        self.h_mu1_eta_Zcr2[0].Write()
+        self.h_mu2_eta_Zcr2[0].Write()
+        self.h_el1_eta_Zcr2[0].Write()
+        self.h_el2_eta_Zcr2[0].Write()
+        self.h_mu1_phi_Zcr2[0].Write()
+        self.h_mu2_phi_Zcr2[0].Write()
+        self.h_el1_phi_Zcr2[0].Write()
+        self.h_el2_phi_Zcr2[0].Write()
+        self.h_mu1_iso_Zcr2[0].Write()
+        self.h_mu2_iso_Zcr2[0].Write()
         
         #for WCR
         self.h_jet1_pT_Wcr1[0].Write()
@@ -654,15 +905,32 @@ class MonoHbbQuantities:
         self.h_jet3_pT_Wcr2[0].Write()
         self.h_jet3_eta_Wcr2[0].Write()
         self.h_jet3_phi_Wcr2[0].Write()
-        self.h_WhadronRecoil[0].Write()
-        self.h_Wmass[0].Write()
-        self.h_mu1_pT_Wcr[0].Write()
-        self.h_el1_pT_Wcr[0].Write()
-        self.h_mu1_eta_Wcr[0].Write()
-        self.h_el1_eta_Wcr[0].Write()
-        self.h_mu1_phi_Wcr[0].Write()
-        self.h_el1_phi_Wcr[0].Write()
-        self.h_mu1_iso_Wcr[0].Write()
+        self.h_WhadronRecoil1[0].Write()
+        self.h_Wmass1[0].Write()
+        self.h_WpT1[0].Write()
+        self.h_WhadronRecoil2[0].Write()
+        self.h_Wmass2[0].Write()
+        self.h_WpT2[0].Write()
+        self.h_mu1_pT_Wcr1[0].Write()
+        self.h_el1_pT_Wcr1[0].Write()
+        self.h_mu1_eta_Wcr1[0].Write()
+        self.h_el1_eta_Wcr1[0].Write()
+        self.h_mu1_phi_Wcr1[0].Write()
+        self.h_el1_phi_Wcr1[0].Write()
+        self.h_mu1_iso_Wcr1[0].Write()
+        self.h_mu1_pT_Wcr2[0].Write()
+        self.h_el1_pT_Wcr2[0].Write()
+        self.h_mu1_eta_Wcr2[0].Write()
+        self.h_el1_eta_Wcr2[0].Write()
+        self.h_mu1_phi_Wcr2[0].Write()
+        self.h_el1_phi_Wcr2[0].Write()
+        self.h_mu1_iso_Wcr2[0].Write()
+        
+        self.h_jet1_csv_Wcr1[0].Write()
+        self.h_jet2_csv_Wcr1[0].Write()
+        self.h_jet1_csv_Wcr2[0].Write()
+        self.h_jet2_csv_Wcr2[0].Write()
+        self.h_jet3_csv_Wcr2[0].Write()
         
         #for TOPcr
         self.h_jet1_pT_TOPcr1[0].Write()
@@ -680,11 +948,25 @@ class MonoHbbQuantities:
         self.h_jet3_pT_TOPcr2[0].Write()
         self.h_jet3_eta_TOPcr2[0].Write()
         self.h_jet3_phi_TOPcr2[0].Write()
-        self.h_TOPRecoil[0].Write()
-        self.h_mu1_pT_TOPcr[0].Write()
-        self.h_el1_pT_TOPcr[0].Write()
-        self.h_mu1_eta_TOPcr[0].Write()
-        self.h_el1_eta_TOPcr[0].Write()
-        self.h_mu1_phi_TOPcr[0].Write()
-        self.h_el1_phi_TOPcr[0].Write()
-        self.h_mu1_iso_TOPcr[0].Write()
+        self.h_TOPRecoil1[0].Write()
+        self.h_TOPRecoil2[0].Write()
+        self.h_mu1_pT_TOPcr1[0].Write()
+        self.h_el1_pT_TOPcr1[0].Write()
+        self.h_mu1_eta_TOPcr1[0].Write()
+        self.h_el1_eta_TOPcr1[0].Write()
+        self.h_mu1_phi_TOPcr1[0].Write()
+        self.h_el1_phi_TOPcr1[0].Write()
+        self.h_mu1_iso_TOPcr1[0].Write()
+        self.h_mu1_pT_TOPcr2[0].Write()
+        self.h_el1_pT_TOPcr2[0].Write()
+        self.h_mu1_eta_TOPcr2[0].Write()
+        self.h_el1_eta_TOPcr2[0].Write()
+        self.h_mu1_phi_TOPcr2[0].Write()
+        self.h_el1_phi_TOPcr2[0].Write()
+        self.h_mu1_iso_TOPcr2[0].Write()
+        
+        self.h_jet1_csv_TOPcr1[0].Write()
+        self.h_jet2_csv_TOPcr1[0].Write()
+        self.h_jet1_csv_TOPcr2[0].Write()
+        self.h_jet2_csv_TOPcr2[0].Write()
+        self.h_jet3_csv_TOPcr2[0].Write()
