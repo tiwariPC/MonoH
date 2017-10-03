@@ -599,7 +599,7 @@ class MonoHbbQuantities:
         self.h_N_tau[0]          .Fill(self.N_tau,     WF)
         self.h_N_Pho[0]          .Fill(self.N_Pho,     WF)
         #self.h_N_b            Fill(self.N_b,       WF)
-        self.h_N_j            Fill(self.N_j,       WF)
+        self.h_N_j               .Fill(self.N_j,       WF)
 #        print len(self.h_jet1_pT_sr1)
 #        print "HbbQuants: "+str(self.jet1_pT_sr2)
         
