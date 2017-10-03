@@ -331,7 +331,14 @@ def AnalyzeDataSet():
             if mcWeight<0:  mcweight = -1.0
             if mcWeight>0:  mcweight =  1.0
         
-
+        
+        # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+        #
+        ##number of bjets without any selection
+        mybjets=[]
+        for nb in range(nTHINJets):
+            if thinJetCSV[nb] < 0.8 : continue
+            mybjets.append(nb)
 
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -796,7 +803,7 @@ def AnalyzeDataSet():
         allquantities.N_mu            = len(myMuos)
         allquantities.N_tau           = len(myTaus)
         allquantities.N_Pho           = 0
-        #allquantities.N_b             = nGoodTHINBJets
+        allquantities.N_b             = len(mybjets)
         allquantities.N_j             = nTHINJets
 
         allquantities.weight    = allweights

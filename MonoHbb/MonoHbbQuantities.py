@@ -26,7 +26,7 @@ class MonoHbbQuantities:
         self.N_mu            = -10
         self.N_tau           = -10
         self.N_Pho           = -10
-        #self.N_b             = -10
+        self.N_b             = -10
         self.N_j             = -10
         #self.mass            = -999.
         self.jet1_pT_sr1     = -999.
@@ -198,7 +198,7 @@ class MonoHbbQuantities:
         self.h_N_mu            = []
         self.h_N_tau           = []
         self.h_N_Pho           = []
-        #self.h_N_b             = []
+        self.h_N_b             = []
         self.h_N_j             = []
         #self.h_mass            = []
         self.h_met_pdf         = []
@@ -401,7 +401,7 @@ class MonoHbbQuantities:
         self.h_N_mu.append(TH1F('h_N_mu_','h_N_mu_',5,0,5))
         self.h_N_tau.append(TH1F('h_N_tau_','h_N_tau_',5,0,5))
         self.h_N_Pho.append(TH1F('h_N_Pho_','h_N_Pho_',5,0,5))
-        #self.h_N_b.append(TH1F('h_N_b_'+postname,'h_N_b_'+postname,3,0,3))
+        self.h_N_b.append(TH1F('h_N_b_','h_N_b_',10,0,10))
         self.h_N_j.append(TH1F('h_N_j_','h_N_j_',10,0,10))
         self.h_jet1_pT_sr1.append(TH1F('h_jet1_pT_sr1_','h_jet1_pT_sr1_',1000,0.,1000.))
         self.h_jet1_eta_sr1.append(TH1F('h_jet1_eta_sr1_','h_jet1_eta_sr1_',70, -3.5, 3.5))
@@ -609,8 +609,8 @@ class MonoHbbQuantities:
         self.h_N_mu[0]           .Fill(self.N_mu,      WF)
         self.h_N_tau[0]          .Fill(self.N_tau,     WF)
         self.h_N_Pho[0]          .Fill(self.N_Pho,     WF)
-        #self.h_N_b            Fill(self.N_b,       WF)
-        self.h_N_j[0]               .Fill(self.N_j,       WF)
+        self.h_N_b[0]            .Fill(self.N_b,       WF)
+        self.h_N_j[0]            .Fill(self.N_j,       WF)
 #        print len(self.h_jet1_pT_sr1)
 #        print "HbbQuants: "+str(self.jet1_pT_sr2)
         
@@ -830,7 +830,7 @@ class MonoHbbQuantities:
         self.h_N_mu[0].Write()
         self.h_N_tau[0].Write()
         self.h_N_Pho[0].Write()
-        #self.h_N_b.Write()
+        self.h_N_b[0].Write()
         self.h_N_j[0].Write()
         #self.h_mass.Write()
         self.h_jet1_pT_sr1[0].Write()
