@@ -809,7 +809,7 @@ def AnalyzeDataSet():
                 for jetnum in [1,2]:
                     allquantlist.append('jet'+str(jetnum)+"_"+jetprop+"_"+region+"1")
                     for lep in ['mu','el']:
-                       if (region != 'Zcr' and jetnum==2 and jetprop == 'csv')) or region == 'sr': continue
+                       if (region != 'Zcr' and jetnum==2 and jetprop == 'csv') or region == 'sr': continue
                        allquantlist.append(lep+str(jetnum)+"_"+jetprop+"_"+region+"1")
                        if lep == 'mu':
                           allquantlist.append(lep+str(jetnum)+"_iso_"+region+"1")
