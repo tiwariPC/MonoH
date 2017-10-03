@@ -814,7 +814,7 @@ class MonoHbbQuantities:
         self.h_N_tau[0].Write()
         self.h_N_Pho[0].Write()
         #self.h_N_b.Write()
-        self.h_N_j.Write()
+        self.h_N_j[0].Write()
         #self.h_mass.Write()
         self.h_jet1_pT_sr1[0].Write()
         self.h_jet1_eta_sr1[0].Write()
