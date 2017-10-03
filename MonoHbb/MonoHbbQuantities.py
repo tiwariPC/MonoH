@@ -220,6 +220,12 @@ class MonoHbbQuantities:
         self.h_jet3_eta_sr2    = []
         self.h_jet3_phi_sr2    = []
         
+        self.h_jet1_csv_sr1    = []
+        self.h_jet2_csv_sr1    = []
+        self.h_jet1_csv_sr2    = []
+        self.h_jet2_csv_sr2    = []
+        self.h_jet3_csv_sr2    = []
+        
         #for ZCR
         self.h_jet1_pT_Zcr1     = []
         self.h_jet1_eta_Zcr1    = []
@@ -412,6 +418,11 @@ class MonoHbbQuantities:
         self.h_jet3_pT_sr2.append(TH1F('h_jet3_pT_sr2_','h_jet3_pT_sr2_',1000,0.,1000.))
         self.h_jet3_eta_sr2.append(TH1F('h_jet3_eta_sr2_','h_jet3_eta_sr2_',70, -3.5, 3.5))
         self.h_jet3_phi_sr2.append(TH1F('h_jet3_phi_sr2_','h_jet3_phi_sr2_',70, -3.5, 3.5))
+        self.h_jet1_csv_sr1.append(TH1F('h_jet1_csv_sr1_','h_jet1_csv_sr1_',100, 0,1.05))
+        self.h_jet2_csv_sr1.append(TH1F('h_jet2_csv_sr1_','h_jet2_csv_sr1_',100, 0,1.05))
+        self.h_jet1_csv_sr2.append(TH1F('h_jet1_csv_sr2_','h_jet1_csv_sr2_',100, 0,1.05))
+        self.h_jet2_csv_sr2.append(TH1F('h_jet2_csv_sr2_','h_jet2_csv_sr2_',100, 0,1.05))
+        self.h_jet3_csv_sr2.append(TH1F('h_jet3_csv_sr2_','h_jet3_csv_sr2_',100, 0,1.05))
         
         #for ZCR
         self.h_jet1_pT_Zcr1.append(TH1F('h_jet1_pT_Zcr1_','h_jet1_pT_Zcr1_',1000,0.,1000.))
@@ -619,6 +630,12 @@ class MonoHbbQuantities:
         if self.jet3_pT_sr2 is not None:    self.h_jet3_pT_sr2[0]    .Fill(self.jet3_pT_sr2,   WF)
         if self.jet3_eta_sr2 is not None:   self.h_jet3_eta_sr2[0]   .Fill(self.jet3_eta_sr2,  WF)
         if self.jet3_phi_sr2 is not None:   self.h_jet3_phi_sr2[0]   .Fill(self.jet3_phi_sr2,  WF)
+        
+        if self.jet1_csv_sr1 is not None:    self.h_jet1_csv_sr1[0]    .Fill(self.jet1_csv_sr1,   WF)
+        if self.jet2_csv_sr1 is not None:    self.h_jet2_csv_sr1[0]    .Fill(self.jet2_csv_sr1,   WF)
+        if self.jet1_csv_sr2 is not None:    self.h_jet1_csv_sr2[0]    .Fill(self.jet1_csv_sr2,   WF)
+        if self.jet2_csv_sr2 is not None:    self.h_jet2_csv_sr2[0]    .Fill(self.jet2_csv_sr2,   WF)
+        if self.jet3_csv_sr2 is not None:    self.h_jet3_csv_sr2[0]    .Fill(self.jet3_csv_sr2,   WF)
         
         ##For ZCRs##
         if self.jet1_pT_Zcr1 is not None:    self.h_jet1_pT_Zcr1[0]    .Fill(self.jet1_pT_Zcr1,   WF)
@@ -831,6 +848,13 @@ class MonoHbbQuantities:
         self.h_jet3_pT_sr2[0].Write()
         self.h_jet3_eta_sr2[0].Write()
         self.h_jet3_phi_sr2[0].Write()
+        
+        self.h_jet1_csv_sr1[0].Write()
+        self.h_jet2_csv_sr1[0].Write()
+        self.h_jet1_csv_sr2[0].Write()
+        self.h_jet2_csv_sr2[0].Write()
+        self.h_jet3_csv_sr2[0].Write()
+        
          #for ZCR
         self.h_jet1_pT_Zcr1[0].Write()
         self.h_jet1_eta_Zcr1[0].Write()
