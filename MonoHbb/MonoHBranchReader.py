@@ -179,10 +179,10 @@ def AnalyzeDataSet():
     print 'NEntries = '+str(NEntries)
     npass = 0
     #print [rootfilename, NEntries]
-    cutStatus={'total':NEntries}
+    cutStatus={'preselection':NEntries}
     
-    cutStatus['trigger'] = 0
-    cutStatus['filter'] = 0
+#    cutStatus['trigger'] = 0
+#    cutStatus['filter'] = 0
     cutStatus['pfmet'] =  0
 #    cutStatus['njetSR1']=  0
 #    cutStatus['njet1SR1'] = 0
@@ -195,13 +195,13 @@ def AnalyzeDataSet():
     cutStatus['jet1'] = 0
     cutStatus['jet2/3'] = 0
     cutStatus['btaggedjet'] = 0
-    cutStatus['btag'] = 0
-    cutStatus['dphi'] = 0
-    cutStatus['ThinJetVeto'] = 0
-    cutStatus['bVeto'] = 0
-    cutStatus['eleveto'] = 0
-    cutStatus['muveto'] = 0
-    cutStatus['tauveto'] = 0
+#    cutStatus['btag'] = 0
+#    cutStatus['dphi'] = 0
+#    cutStatus['ThinJetVeto'] = 0
+#    cutStatus['bVeto'] = 0
+#    cutStatus['eleveto'] = 0
+#    cutStatus['muveto'] = 0
+#    cutStatus['tauveto'] = 0
     
     CRs=['ZCRSR1','ZCRSR2','WCRSR1','WCRSR2','TopCRSR1','TopCRSR2']
     
@@ -1022,16 +1022,19 @@ def AnalyzeDataSet():
         
     
 
-    #print cutStatus
-    print "npass = ", npass
+    #print cutStatus    
     NEntries_Weight = h_t_weight.Integral()
     NEntries_total  = h_t.Integral()
+    cutStatus['total'] = int(NEntries_total)
+    print "Total events =", cutStatus['total']
+    print "Preselected events=", cutStatus['preselection']
+    print "Selected events =", npass
     
     # Cutflow
     cutflowTable=""
     cutflowHeader=""
     cutflowvalues=[]    
-    cutflownames=['total','pfmet','isinSR','jet1','jet2/3','btaggedjet']
+    cutflownames=['total','preselection','isinSR','jet1','jet2/3','btaggedjet']
     for cutflowname in cutflownames:   
         cutflowvalues.append(cutStatus[cutflowname])
         cutflowTable += str(cutStatus[cutflowname])+" "
