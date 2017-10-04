@@ -55,6 +55,7 @@ else:
 print (options.inputfile, options.outputfile )
 #print 'options = ',[options.inputfile]
 inputfilename = options.inputfile
+outputdir = options.outputdir
 
 #print inputfilename
 pathlist = inputfilename.split("/")
@@ -65,14 +66,14 @@ rootfile = pathlist[sizeoflist-1]
 textfile = rootfile+".txt"
 
 #outputdir='bbMETSamples/'
-os.system('mkdir '+outputdir)
+if outputdir!='.': os.system('mkdir -p '+outputdir)
 
 outfilename=''  
 
-if isfarmout:
-    outfilename = options.outputdir + "/Output_" + rootfile
-else:
-    outfilename = options.outputfile    
+#if isfarmout:
+outfilename = outputdir + "/Output_" + rootfile
+#else:
+#    outfilename = options.outputfile    
 
 skimmedTree = TChain("outTree")
 
@@ -346,8 +347,8 @@ def AnalyzeDataSet():
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------        
         pfmetstatus = ( pfMet > 200.0 )   #already applied in SkimTree, do we need it here as well?
-        if pfmetstatus == False : continue 
-        cutStatus['pfmet'] += 1
+#        if pfmetstatus == False : continue         # We don't
+        if pfmetstatus: cutStatus['pfmet'] += 1
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
         #----------------------------------------------------------------------------------------------------------------------------------------------------------------
         #Calculate Muon Relative PF isolation:
@@ -539,20 +540,22 @@ def AnalyzeDataSet():
             # Sub-leading lepton conditions:
             if LepP4[iSecondLep].Pt() < 10.: zCR=False
             if not isLoose[iSecondLep]: zCR=False
-            Zmu1pT = -999.
-            Zmu1eta = -999.
-            Zmu1phi = -999.
-            Zele1pT = -999.
-            Zele1eta = -999.
-            Zele1phi = -999.
-            Zmu2pT = -999.
-            Zmu2eta = -999.
-            Zmu2phi = -999.
-            Zele2pT = -999.
-            Zele2eta = -999.
-            Zele2phi = -999.
-            Zmu1Iso  = -999.
-            Zmu2Iso  = -999.
+            
+           
+            Zmu1pT = None
+            Zmu1eta = None
+            Zmu1phi = None
+            Zele1pT = None
+            Zele1eta = None
+            Zele1phi = None
+            Zmu2pT = None
+            Zmu2eta = None
+            Zmu2phi = None
+            Zele2pT = None
+            Zele2eta = None
+            Zele2phi = None
+            Zmu1Iso  = None
+            Zmu2Iso  = None
             if zCRMu:                                           # Special isolation requirement for Muon                
                 if MuIso[iLeadLep] > 0.15: zCR=False             
                 if MuIso[iSecondLep] > 0.25: zCR=False
@@ -563,8 +566,7 @@ def AnalyzeDataSet():
                 Zmu1phi = LepP4[iLeadLep].Phi()
                 Zmu2pT = LepP4[iSecondLep].Pt()
                 Zmu2eta = LepP4[iSecondLep].Eta()
-                Zmu2phi = LepP4[iSecondLep].Phi()
-                ZpT = math.sqrt( (LepP4[iLeadLep].Px()+LepP4[iSecondLep].Px())*(LepP4[iLeadLep].Px()+LepP4[iSecondLep].Px()) + (LepP4[iLeadLep].Py()+LepP4[iSecondLep].Py())*(LepP4[iLeadLep].Py()+LepP4[iSecondLep].Py()) )
+                Zmu2phi = LepP4[iSecondLep].Phi()                
                 
             if zCREle:
                 Zele1pT  = LepP4[iLeadLep].Pt()
@@ -573,7 +575,8 @@ def AnalyzeDataSet():
                 Zele2pT = LepP4[iSecondLep].Pt()
                 Zele2eta = LepP4[iSecondLep].Eta()
                 Zele2phi = LepP4[iSecondLep].Phi()
-                ZpT = math.sqrt( (LepP4[iLeadLep].Px()+LepP4[iSecondLep].Px())*(LepP4[iLeadLep].Px()+LepP4[iSecondLep].Px()) + (LepP4[iLeadLep].Py()+LepP4[iSecondLep].Py())*(LepP4[iLeadLep].Py()+LepP4[iSecondLep].Py()) )
+                
+            ZpT = math.sqrt( (LepP4[iLeadLep].Px()+LepP4[iSecondLep].Px())*(LepP4[iLeadLep].Px()+LepP4[iSecondLep].Px()) + (LepP4[iLeadLep].Py()+LepP4[iSecondLep].Py())*(LepP4[iLeadLep].Py()+LepP4[iSecondLep].Py()) )        #Identical for Mu and Ele
             
             # Z Mass condition:
             if zmass <= 70. or zmass >= 110.: zCR=False             
@@ -613,26 +616,26 @@ def AnalyzeDataSet():
             # Leading lepton conditions:
             if LepP4[0].Pt() < 30.: wCR=False
             if not isTight[0]: wCR=False
-            Wmu1pT = -999.
-            Wmu1eta = -999.
-            Wmu1phi = -999.
-            Wele1pT = -999.
-            Wele1eta = -999.
-            Wele1phi = -999.
-            Wmu1Iso  = -999.
+            Wmu1pT = None
+            Wmu1eta = None
+            Wmu1phi = None
+            Wele1pT = None
+            Wele1eta = None
+            Wele1phi = None
+            Wmu1Iso  = None
             if wCRMu:
                 if MuIso[0] > 0.15: wCR=False
                 Wmu1Iso = MuIso[0]
                 Wmu1pT  = LepP4[0].Pt()
                 Wmu1eta = LepP4[0].Eta()
-                Wmu1phi = LepP4[0].Phi()
-                WpT = math.sqrt( ( pfMet*math.cos(pfMetPhi) + LepP4[0].Px())*( pfMet*math.cos(pfMetPhi) + LepP4[0].Px()) + ( pfMet*math.sin(pfMetPhi) + LepP4[0].Py())*( pfMet*math.sin(pfMetPhi) + LepP4[0].Py()) )
+                Wmu1phi = LepP4[0].Phi()                
             
             if wCREle:
                 Wele1pT  = LepP4[0].Pt()
                 Wele1eta = LepP4[0].Eta()
                 Wele1phi = LepP4[0].Phi()
-                WpT = math.sqrt( ( pfMet*math.cos(pfMetPhi) + LepP4[0].Px())*( pfMet*math.cos(pfMetPhi) + LepP4[0].Px()) + ( pfMet*math.sin(pfMetPhi) + LepP4[0].Py())*( pfMet*math.sin(pfMetPhi) + LepP4[0].Py()) )
+                
+            WpT = math.sqrt( ( pfMet*math.cos(pfMetPhi) + LepP4[0].Px())*( pfMet*math.cos(pfMetPhi) + LepP4[0].Px()) + ( pfMet*math.sin(pfMetPhi) + LepP4[0].Py())*( pfMet*math.sin(pfMetPhi) + LepP4[0].Py()) )        #Identical for Mu and Ele
             # W Mass condition:
             if wmass <= 50. or wmass >= 160.: wCR=False    
             
@@ -663,6 +666,7 @@ def AnalyzeDataSet():
             
             # Hadronic recoil:
             if TOPRecoil <= 200.: TopCR=False
+            
             TOPmu1Iso = MuIso[0]
             
             TOPmu1pT   = muP4[0].Pt()
@@ -811,22 +815,25 @@ def AnalyzeDataSet():
         
         allquantlist=[]
         
-        for region in ['sr','Zcr','Wcr','TOPcr']:                               # Makes all combinations of region, jet number, etc.
+        for region in ['sr','Zcr','Wcr','TOPcr']:                               # Jets: Makes all combinations of region, jet number, etc.
             for jetprop in ['pT','eta','phi','csv']:
                 for jetnum in [1,2]:
                     allquantlist.append('jet'+str(jetnum)+"_"+jetprop+"_"+region+"1")
-                    for lep in ['mu','el']:
-                       if (region != 'Zcr' and jetnum==2 and jetprop == 'csv') or region == 'sr': continue
-                       allquantlist.append(lep+str(jetnum)+"_"+jetprop+"_"+region+"1")
-                       if lep == 'mu':
-                          allquantlist.append(lep+str(jetnum)+"_iso_"+region+"1")
+                    
                 for jetnum in [1,2,3]:
                     allquantlist.append('jet'+str(jetnum)+"_"+jetprop+"_"+region+"2")
-                    for lep in ['mu','el']:
-                       if (region != 'Zcr' and jetnum==2 and jetprop == 'csv') or region == 'sr': continue
-                       allquantlist.append(lep+str(jetnum)+"_"+jetprop+"_"+region+"2")
-                       if lep == 'mu':
-                          allquantlist.append(lep+str(jetnum)+"_iso_"+region+"2")
+                                             
+        
+        for nSR in ['1','2']:                                                   # Leptons: Makes all combinations of region, lepton number, etc.
+            for lep in ['mu','el']:
+                props = ['pT','eta','phi']
+                if lep=='mu':
+                    props.append('iso')  
+                for lepprop in props:
+                    for nCR in ['1','2']:       # For ZCR, because Z has 2 mu or 2 ele
+                        allquantlist.append(lep+nCR+"_"+lepprop+"_Zcr"+nSR)
+                    for region in ['Wcr','TOPcr']:          # For ZCR, only 1 mu and/or ele
+                        allquantlist.append(lep+"1_"+lepprop+region+nSR)
                     
         allquantlist+=['ZhadronRecoil1','Zmass1','ZpT1','WhadronRecoil1','Wmass1','WpT1','TOPRecoil1','ZhadronRecoil2','Zmass2','ZpT2','WhadronRecoil2','Wmass2','WpT2','TOPRecoil2']
         
