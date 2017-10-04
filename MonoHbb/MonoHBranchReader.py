@@ -394,7 +394,8 @@ def AnalyzeDataSet():
             if DeltaPhi(j1.Phi(),pfMetPhi) < 0.5: continue
             
             cutStatus['jet2/3'] += 1           # Jet 2 satisfies the required criteria
-            
+            jet1csv = thinJetCSV[ifirstjet]
+            jet2csv = thinJetCSV[isecondjet]
             if thinJetCSV[ifirstjet] < 0.8: continue            # Lead jet has to be b-tagged
             
             cutStatus['btaggedjet'] += 1         # The b-jet criteria is fulfilled 
@@ -402,11 +403,11 @@ def AnalyzeDataSet():
             jet1pt = j1.Pt()
             jet1phi = j1.Phi()
             jet1eta = j1.Eta()
-            jet1csv = thinJetCSV[ifirstjet]
+            
             jet2pt = j2.Pt()
             jet2phi = j2.Phi()
             jet2eta = j2.Eta()
-            jet2csv = thinJetCSV[isecondjet]
+            
 
             jetSR1Info.append([jet1pt,jet1eta,jet1phi,jet1csv])
             jetSR1Info.append([jet2pt,jet2eta,jet2phi,jet2csv])
@@ -447,6 +448,9 @@ def AnalyzeDataSet():
             if DeltaPhi(j3.Phi(),pfMetPhi) < 0.5: continue
             
             cutStatus['jet2/3'] += 1           # The jets 2 and 3 satisfy the required criteria
+            jet1csv = thinJetCSV[ifirstjet]
+            jet2csv = thinJetCSV[isecondjet]
+            jet3csv = thinJetCSV[ithirdjet]
             
             if thinJetCSV[ifirstjet] < 0.8: continue            # Lead jet has to be b-tagged
             if thinJetCSV[isecondjet] < 0.8: continue           # Second jet has to be b-tagged
@@ -456,15 +460,15 @@ def AnalyzeDataSet():
             jet1pt = j1.Pt()
             jet1phi = j1.Phi()
             jet1eta = j1.Eta()
-            jet1csv = thinJetCSV[ifirstjet]
+            
             jet2pt = j2.Pt()
             jet2phi = j2.Phi()
             jet2eta = j2.Eta()
-            jet2csv = thinJetCSV[isecondjet]
+            
             jet3pt = j3.Pt()
             jet3phi = j3.Phi()
             jet3eta = j3.Eta()
-            jet3csv = thinJetCSV[ithirdjet]
+            
 
             jetSR2Info.append([jet1pt,jet1eta,jet1phi,jet1csv])
             jetSR2Info.append([jet2pt,jet2eta,jet2phi,jet2csv])
