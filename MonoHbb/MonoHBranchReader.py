@@ -52,7 +52,7 @@ if options.farmout==None:
 else:
     isfarmout = options.farmout
 
-print (options.inputfile, options.outputfile )
+
 #print 'options = ',[options.inputfile]
 inputfilename = options.inputfile
 outputdir = options.outputdir
@@ -68,12 +68,17 @@ textfile = rootfile+".txt"
 #outputdir='bbMETSamples/'
 if outputdir!='.': os.system('mkdir -p '+outputdir)
 
-outfilename=''  
-
+if options.outputfile is None or options.outputfile==rootfile:
+    outputfilename = "/Output_"+rootfile
+else:
+    outputfilename = "/"+outputfilename
+    
 #if isfarmout:
-outfilename = outputdir + "/Output_" + rootfile
+outfilename = outputdir + outputfilename
 #else:
 #    outfilename = options.outputfile    
+
+print "Input:",options.inputfile, "; Output:", outfilename
 
 skimmedTree = TChain("outTree")
 
@@ -210,7 +215,7 @@ def AnalyzeDataSet():
         CRStatus[CRname]=0
     
     
-    print outfilename
+#    print outfilename
     allquantities = MonoHbbQuantities(outfilename)
     allquantities.defineHisto()
 
@@ -538,7 +543,7 @@ def AnalyzeDataSet():
             LepP4=eleP4
             isLoose=eleIsPassLoose
             isTight=eleIsPassTight
-            zmass=ZeeMassMass
+            zmass=ZeeMass
             hadrecoil=ZeeRecoil
         elif nMu==2 and nEle==0 and nTau==0:
             zCRMu=True
@@ -1079,11 +1084,15 @@ def AnalyzeDataSet():
     allquantities.WriteHisto((NEntries_total,NEntries_Weight,cutflowvalues,cutflownames,CRvalues,CRs))
     
     print "efficiency = ", float(npass/float(NEntries))   
+    
+    os.system('mkdir -p '+outputdir+'/efficiencyfiles/')
         
-    f = open('efficiencyfiles/'+textfile, 'w')
+    f = open(outputdir+'/efficiencyfiles/'+textfile, 'w')
     f.write(str(round(float(npass)/float(NEntries),5))+"\n\n#Cutflow Table:\n"+cutflowHeader[:-1]+"\n"+cutflowTable[:-1]+"\n\n#CR Table:\n"+CRHeader[:-1]+"\n"+CRTable[:-1])
-    print "Written to "+'efficiencyfiles/'+textfile
+    print "ROOT file written to", outfilename
+    print "Log written to "+outputdir+'/efficiencyfiles/'+textfile
     f.close()
+    print "Completed."
 
 
 
