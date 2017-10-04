@@ -804,9 +804,9 @@ class MonoHbbQuantities:
         self.h_cutflow.Write()
         
         nCR=len(CRvalues)
-        self.h_CRs=TH1F('h_CRs_','h_CRs_',nCR, 0, nCR)                          # Cutflow         
+        self.h_CRs=TH1F('h_CRs_','h_CRs_',nCR, 0, nCR)                          # CR flow         
         for iCR in range(nCR):
-            self.h_CRs.GetXaxis().SetBinLabel(iCR+1,CRnames[icutflow])
+            self.h_CRs.GetXaxis().SetBinLabel(iCR+1,CRnames[iCR])
             self.h_CRs.SetBinContent(iCR+1,CRvalues[iCR])
         self.h_CRs.Write()
         
