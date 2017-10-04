@@ -369,6 +369,12 @@ def AnalyzeDataSet():
         
         cutStatus['isinSR'] += 1        # The event qualifies to be in either of the SRs based on njet
         
+        allquantities.presel_jet1_csv_sr1 = None
+        allquantities.presel_jet2_csv_sr1 = None
+        allquantities.presel_jet1_csv_sr2 = None
+        allquantities.presel_jet2_csv_sr2 = None
+        allquantities.presel_jet3_csv_sr2 = None
+                
         ## for SR1
          # 2 jets and 1 btagged 
          
@@ -384,6 +390,8 @@ def AnalyzeDataSet():
             j1=thinjetP4[ifirstjet]
             j2=thinjetP4[isecondjet]
             
+            
+            
             if j1.Pt() < 50.0: continue
             if DeltaPhi(j1.Phi(),pfMetPhi) < 0.5: continue            
             if thinjetNhadEF[ifirstjet] > 0.8 : continue
@@ -395,8 +403,13 @@ def AnalyzeDataSet():
             if DeltaPhi(j1.Phi(),pfMetPhi) < 0.5: continue
             
             cutStatus['jet2/3'] += 1           # Jet 2 satisfies the required criteria
-            jet1csv = thinJetCSV[ifirstjet]
-            jet2csv = thinJetCSV[isecondjet]
+            
+            #===CSVs before any selection===
+            allquantities.presel_jet1_csv_sr1=thinJetCSV[ifirstjet]
+            allquantities.presel_jet2_csv_sr1=thinJetCSV[isecondjet]
+            allquantities.FillPreSel()
+            #===            
+            
             if thinJetCSV[ifirstjet] < 0.8: continue            # Lead jet has to be b-tagged
             
             cutStatus['btaggedjet'] += 1         # The b-jet criteria is fulfilled 
@@ -409,6 +422,8 @@ def AnalyzeDataSet():
             jet2phi = j2.Phi()
             jet2eta = j2.Eta()
             
+            jet1csv = thinJetCSV[ifirstjet]
+            jet2csv = thinJetCSV[isecondjet]
 
             jetSR1Info.append([jet1pt,jet1eta,jet1phi,jet1csv])
             jetSR1Info.append([jet2pt,jet2eta,jet2phi,jet2csv])
@@ -449,10 +464,14 @@ def AnalyzeDataSet():
             if DeltaPhi(j3.Phi(),pfMetPhi) < 0.5: continue
             
             cutStatus['jet2/3'] += 1           # The jets 2 and 3 satisfy the required criteria
-            jet1csv = thinJetCSV[ifirstjet]
-            jet2csv = thinJetCSV[isecondjet]
-            jet3csv = thinJetCSV[ithirdjet]
             
+            #===CSVs before any selection===
+            allquantities.presel_jet1_csv_sr2=thinJetCSV[ifirstjet]
+            allquantities.presel_jet2_csv_sr2=thinJetCSV[isecondjet]
+            allquantities.presel_jet3_csv_sr2=thinJetCSV[ithirdjet]
+            allquantities.FillPreSel()
+            #===  
+                        
             if thinJetCSV[ifirstjet] < 0.8: continue            # Lead jet has to be b-tagged
             if thinJetCSV[isecondjet] < 0.8: continue           # Second jet has to be b-tagged
             
@@ -470,6 +489,9 @@ def AnalyzeDataSet():
             jet3phi = j3.Phi()
             jet3eta = j3.Eta()
             
+            jet1csv = thinJetCSV[ifirstjet]
+            jet2csv = thinJetCSV[isecondjet]
+            jet3csv = thinJetCSV[ithirdjet]            
 
             jetSR2Info.append([jet1pt,jet1eta,jet1phi,jet1csv])
             jetSR2Info.append([jet2pt,jet2eta,jet2phi,jet2csv])
