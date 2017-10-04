@@ -828,7 +828,7 @@ def AnalyzeDataSet():
             for lep in ['mu','el']:
                 props = ['pT','eta','phi']
                 if lep=='mu':
-                    props.append('csv')  
+                    props.append('iso')  
                 for lepprop in props:
                     for nCR in ['1','2']:       # For ZCR, because Z has 2 mu or 2 ele
                         allquantlist.append(lep+nCR+"_"+lepprop+"_Zcr"+nSR)
