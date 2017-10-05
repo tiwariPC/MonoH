@@ -69,7 +69,7 @@ textfile = rootfile+".txt"
 if outputdir!='.': os.system('mkdir -p '+outputdir)
 
 if options.outputfile is None or options.outputfile==rootfile:
-   outputfilename = "/Output_"+rootfile		 +
+   outputfilename = "/Output_"+rootfile
 else:
    outputfilename = "/"+outputfilename
 
