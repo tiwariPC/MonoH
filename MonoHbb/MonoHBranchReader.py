@@ -576,7 +576,7 @@ def AnalyzeDataSet():
                 Zele1pT  = LepP4[iLeadLep].Pt()
                 Zele1eta = LepP4[iLeadLep].Eta()
                 Zele1phi = LepP4[iLeadLep].Phi()
-                Zele2pT = LepP4[iSecondLep].Pt()
+                Zele2pT =  LepP4[iSecondLep].Pt()
                 Zele2eta = LepP4[iSecondLep].Eta()
                 Zele2phi = LepP4[iSecondLep].Phi()
                 
@@ -819,7 +819,7 @@ def AnalyzeDataSet():
         
         allquantlist=[]
         
-        for region in ['sr','Zcr','Wcr','TOPcr']:                               # Jets: Makes all combinations of region, jet number, etc.
+        for region in ['sr','Zmumucr','Zeecr','Wmucr','Wecr','TOPcr']:                               # Jets: Makes all combinations of region, jet number, etc.
             for jetprop in ['pT','eta','phi','csv']:
                 for jetnum in [1,2]:
                     allquantlist.append('jet'+str(jetnum)+"_"+jetprop+"_"+region+"1")
@@ -832,14 +832,20 @@ def AnalyzeDataSet():
             for lep in ['mu','el']:
                 props = ['pT','eta','phi']
                 if lep=='mu':
-                    props.append('iso')  
-                for lepprop in props:
-                    for nCR in ['1','2']:       # For ZCR, because Z has 2 mu or 2 ele
-                        allquantlist.append(lep+nCR+"_"+lepprop+"_Zcr"+nSR)
-                    for region in ['Wcr','TOPcr']:          # For ZCR, only 1 mu and/or ele
-                        allquantlist.append(lep+"1_"+lepprop+region+nSR)
+                  props.append('iso')  
+                  for lepprop in props:
+                     for nCR in ['1','2']:       # For ZCR, because Z has 2 mu or 2 ele
+                           allquantlist.append(lep+nCR+"_"+lepprop+"_Zmumucr"+nSR)
+                     for region in ['Wecr','Wmucr','TOPcr']:          # For ZCR, only 1 mu and/or ele
+                           allquantlist.append(lep+"1_"+lepprop+region+nSR)
+                if lep=='el':
+                  for lepprop in props:
+                     for nCR in ['1','2']:       # For ZCR, because Z has 2 mu or 2 ele
+                           allquantlist.append(lep+nCR+"_"+lepprop+"_Zeecr"+nSR)
+                     for region in ['Wecr','Wmucr','TOPcr']:          # For ZCR, only 1 mu and/or ele
+                           allquantlist.append(lep+"1_"+lepprop+region+nSR)        
                     
-        allquantlist+=['ZhadronRecoil1','Zmass1','ZpT1','WhadronRecoil1','Wmass1','WpT1','TOPRecoil1','ZhadronRecoil2','Zmass2','ZpT2','WhadronRecoil2','Wmass2','WpT2','TOPRecoil2']
+        allquantlist+=['ZhadronRecoil1mumu','ZhadronRecoil1ee','Zmass1mumu','Zmass1ee','ZpT1mumu','ZpT1ee','WhadronRecoil1mu','WhadronRecoil1e','Wmass1mu','Wmass1e','WpT1','TOPRecoil1','ZhadronRecoil2mumu','ZhadronRecoil2ee','Zmass2mumu','Zmass2ee','ZpT2mumu','ZpT2ee','WhadronRecoil2mu','WhadronRecoil2e','Wmass2mu','Wmass2e','WpT2mu','WpT2e','TOPRecoil2']
         
         for quant in allquantlist:
             exec("allquantities."+quant+" = None")                              # Presets all quantities to None  
@@ -873,109 +879,167 @@ def AnalyzeDataSet():
            
         ## to fill for ZCR
         if inSR1 and zCR:
-           allquantities.jet1_pT_Zcr1     = jetSR1Info[0][0]
-           allquantities.jet1_eta_Zcr1    = jetSR1Info[0][1]
-           allquantities.jet1_phi_Zcr1    = jetSR1Info[0][2]
-           allquantities.jet1_csv_Zcr1    = jetSR1Info[0][3]
-           allquantities.jet2_pT_Zcr1     = jetSR1Info[1][0]
-           allquantities.jet2_eta_Zcr1    = jetSR1Info[1][1]
-           allquantities.jet2_phi_Zcr1    = jetSR1Info[1][2]
-           allquantities.jet2_csv_Zcr1    = jetSR1Info[1][3]
-           allquantities.ZhadronRecoil1    = hadrecoil
-           allquantities.Zmass1            = zmass
-           allquantities.ZpT1              = ZpT
-           allquantities.mu1_pT_Zcr1       = Zmu1pT
-           allquantities.mu2_pT_Zcr1       = Zmu2pT
-           allquantities.el1_pT_Zcr1       = Zele1pT
-           allquantities.el2_pT_Zcr1       = Zele2pT
-           allquantities.mu1_eta_Zcr1      = Zmu1eta
-           allquantities.mu2_eta_Zcr1      = Zmu2eta
-           allquantities.el1_eta_Zcr1      = Zele1eta
-           allquantities.el2_eta_Zcr1      = Zele2eta
-           allquantities.mu1_phi_Zcr1      = Zmu1phi
-           allquantities.mu2_phi_Zcr1      = Zmu2phi
-           allquantities.el1_phi_Zcr1      = Zele1phi
-           allquantities.el2_phi_Zcr1      = Zele2phi
-           allquantities.mu1_iso_Zcr1      = Zmu1Iso
-           allquantities.mu2_iso_Zcr1      = Zmu2Iso
-           
+           if zCRMu:
+               allquantities.jet1_pT_Zmumucr1     = jetSR1Info[0][0]
+               allquantities.jet1_eta_Zmumucr1    = jetSR1Info[0][1]
+               allquantities.jet1_phi_Zmumucr1    = jetSR1Info[0][2]
+               allquantities.jet1_csv_Zmumucr1    = jetSR1Info[0][3]
+               allquantities.jet2_pT_Zmumucr1     = jetSR1Info[1][0]
+               allquantities.jet2_eta_Zmumucr1    = jetSR1Info[1][1]
+               allquantities.jet2_phi_Zmumucr1    = jetSR1Info[1][2]
+               allquantities.jet2_csv_Zmumucr1    = jetSR1Info[1][3]
+               allquantities.ZhadronRecoil1mumu    = hadrecoil
+               allquantities.Zmass1mumu            = zmass
+               allquantities.ZpT1mumu              = ZpT
+               allquantities.mu1_pT_Zmumucr1       = Zmu1pT
+               allquantities.mu2_pT_Zmumucr1       = Zmu2pT
+               allquantities.mu1_eta_Zmumucr1      = Zmu1eta
+               allquantities.mu2_eta_Zmumucr1      = Zmu2eta
+               allquantities.mu1_phi_Zmumucr1      = Zmu1phi
+               allquantities.mu2_phi_Zmumucr1      = Zmu2phi
+               allquantities.mu1_iso_Zmumucr1      = Zmu1Iso
+               allquantities.mu2_iso_Zmumucr1      = Zmu2Iso
+           if zCREle:
+               allquantities.jet1_pT_Zeecr1     = jetSR1Info[0][0]
+               allquantities.jet1_eta_Zeecr1    = jetSR1Info[0][1]
+               allquantities.jet1_phi_Zeecr1    = jetSR1Info[0][2]
+               allquantities.jet1_csv_Zeecr1    = jetSR1Info[0][3]
+               allquantities.jet2_pT_Zeecr1     = jetSR1Info[1][0]
+               allquantities.jet2_eta_Zeecr1    = jetSR1Info[1][1]
+               allquantities.jet2_phi_Zeecr1    = jetSR1Info[1][2]
+               allquantities.jet2_csv_Zeecr1    = jetSR1Info[1][3]
+               allquantities.ZhadronRecoil1ee    = hadrecoil
+               allquantities.Zmass1ee            = zmass
+               allquantities.ZpT1ee              = ZpT
+               allquantities.el1_pT_Zeecr1       = Zele1pT
+               allquantities.el2_pT_Zeecr1       = Zele2pT
+               allquantities.el1_eta_Zeecr1      = Zele1eta
+               allquantities.el2_eta_Zeecr1      = Zele2eta
+               allquantities.el1_phi_Zeecr1      = Zele1phi
+               allquantities.el2_phi_Zeecr1      = Zele2phi
         
         elif inSR2 and zCR:
-           allquantities.jet1_pT_Zcr2     = jetSR2Info[0][0]
-           allquantities.jet1_eta_Zcr2    = jetSR2Info[0][1]
-           allquantities.jet1_phi_Zcr2    = jetSR2Info[0][2]
-           allquantities.jet1_csv_Zcr2    = jetSR2Info[0][3]
-           allquantities.jet2_pT_Zcr2     = jetSR2Info[1][0]
-           allquantities.jet2_eta_Zcr2    = jetSR2Info[1][1]
-           allquantities.jet2_phi_Zcr2    = jetSR2Info[1][2]
-           allquantities.jet2_csv_Zcr2    = jetSR2Info[1][3]
-           allquantities.jet3_pT_Zcr2     = jetSR2Info[2][0]
-           allquantities.jet3_eta_Zcr2    = jetSR2Info[2][1]
-           allquantities.jet3_phi_Zcr2    = jetSR2Info[2][2]
-           allquantities.jet3_csv_Zcr2    = jetSR2Info[2][3]
-           allquantities.ZhadronRecoil2    = hadrecoil
-           allquantities.Zmass2            = zmass
-           allquantities.ZpT2              = ZpT
-           allquantities.mu1_pT_Zcr2       = Zmu1pT
-           allquantities.mu2_pT_Zcr2       = Zmu2pT
-           allquantities.el1_pT_Zcr2       = Zele1pT
-           allquantities.el2_pT_Zcr2       = Zele2pT
-           allquantities.mu1_eta_Zcr2      = Zmu1eta
-           allquantities.mu2_eta_Zcr2      = Zmu2eta
-           allquantities.el1_eta_Zcr2      = Zele1eta
-           allquantities.el2_eta_Zcr2      = Zele2eta
-           allquantities.mu1_phi_Zcr2      = Zmu1phi
-           allquantities.mu2_phi_Zcr2      = Zmu2phi
-           allquantities.el1_phi_Zcr2      = Zele1phi
-           allquantities.el2_phi_Zcr2      = Zele2phi
-           allquantities.mu1_iso_Zcr2      = Zmu1Iso
-           allquantities.mu2_iso_Zcr2      = Zmu2Iso
+           if zCRMu:
+               allquantities.jet1_pT_Zmumucr2     = jetSR2Info[0][0]
+               allquantities.jet1_eta_Zmumucr2    = jetSR2Info[0][1]
+               allquantities.jet1_phi_Zmumucr2    = jetSR2Info[0][2]
+               allquantities.jet1_csv_Zmumucr2    = jetSR2Info[0][3]
+               allquantities.jet2_pT_Zmumucr2     = jetSR2Info[1][0]
+               allquantities.jet2_eta_Zmumucr2    = jetSR2Info[1][1]
+               allquantities.jet2_phi_Zmumucr2    = jetSR2Info[1][2]
+               allquantities.jet2_csv_Zmumucr2    = jetSR2Info[1][3]
+               allquantities.jet3_pT_Zmumucr2     = jetSR2Info[2][0]
+               allquantities.jet3_eta_Zmumucr2    = jetSR2Info[2][1]
+               allquantities.jet3_phi_Zmumucr2    = jetSR2Info[2][2]
+               allquantities.jet3_csv_Zmumucr2    = jetSR2Info[2][3]
+               allquantities.ZhadronRecoil2mumu    = hadrecoil
+               allquantities.Zmass2mumu            = zmass
+               allquantities.ZpT2mumu              = ZpT
+               allquantities.mu1_pT_Zmumucr2       = Zmu1pT
+               allquantities.mu2_pT_Zmumucr2       = Zmu2pT
+               allquantities.mu1_eta_Zmumucr2      = Zmu1eta
+               allquantities.mu2_eta_Zmumucr2      = Zmu2eta
+               allquantities.mu1_phi_Zmumucr2      = Zmu1phi
+               allquantities.mu2_phi_Zmumucr2      = Zmu2phi
+               allquantities.mu1_iso_Zmumucr2      = Zmu1Iso
+               allquantities.mu2_iso_Zmumucr2      = Zmu2Iso
+           if zCREle:
+               allquantities.jet1_pT_Zeecr2     = jetSR2Info[0][0]
+               allquantities.jet1_eta_Zeecr2    = jetSR2Info[0][1]
+               allquantities.jet1_phi_Zeecr2    = jetSR2Info[0][2]
+               allquantities.jet1_csv_Zeecr2    = jetSR2Info[0][3]
+               allquantities.jet2_pT_Zeecr2     = jetSR2Info[1][0]
+               allquantities.jet2_eta_Zeecr2    = jetSR2Info[1][1]
+               allquantities.jet2_phi_Zeecr2    = jetSR2Info[1][2]
+               allquantities.jet2_csv_Zeecr2    = jetSR2Info[1][3]
+               allquantities.jet3_pT_Zeecr2     = jetSR2Info[2][0]
+               allquantities.jet3_eta_Zeecr2    = jetSR2Info[2][1]
+               allquantities.jet3_phi_Zeecr2    = jetSR2Info[2][2]
+               allquantities.jet3_csv_Zeecr2    = jetSR2Info[2][3]
+               allquantities.ZhadronRecoil2ee    = hadrecoil
+               allquantities.Zmass2ee            = zmass
+               allquantities.ZpT2ee              = ZpT
+               allquantities.el1_pT_Zeecr2       = Zele1pT
+               allquantities.el2_pT_Zeecr2       = Zele2pT
+               allquantities.el1_eta_Zeecr2      = Zele1eta
+               allquantities.el2_eta_Zeecr2      = Zele2eta
+               allquantities.el1_phi_Zeecr2      = Zele1phi
+               allquantities.el2_phi_Zeecr2      = Zele2phi
            
         ##To fill WCR region
         if inSR1 and wCR:
-           allquantities.jet1_pT_Wcr1     = jetSR1Info[0][0]
-           allquantities.jet1_eta_Wcr1    = jetSR1Info[0][1]
-           allquantities.jet1_phi_Wcr1    = jetSR1Info[0][2]
-           allquantities.jet1_csv_Wcr1    = jetSR1Info[0][3]
-           allquantities.jet2_pT_Wcr1     = jetSR1Info[1][0]
-           allquantities.jet2_eta_Wcr1    = jetSR1Info[1][1]
-           allquantities.jet2_phi_Wcr1    = jetSR1Info[1][2]
-           allquantities.jet2_csv_Wcr1    = jetSR1Info[1][3]
-           allquantities.WhadronRecoil1    = hadrecoil
-           allquantities.Wmass1            = wmass
-           allquantities.WpT1              = WpT
-           allquantities.mu1_pT_Wcr1       = Wmu1pT
-           allquantities.el1_pT_Wcr1       = Wele1pT
-           allquantities.mu1_eta_Wcr1      = Wmu1eta
-           allquantities.el1_eta_Wcr1      = Wele1eta
-           allquantities.mu1_phi_Wcr1      = Wmu1phi
-           allquantities.el1_phi_Wcr1      = Wele1phi
-           allquantities.mu1_iso_Wcr1      = Wmu1Iso
-           
+           if wCRMu:
+               allquantities.jet1_pT_Wmucr1     = jetSR1Info[0][0]
+               allquantities.jet1_eta_Wmucr1    = jetSR1Info[0][1]
+               allquantities.jet1_phi_Wmucr1    = jetSR1Info[0][2]
+               allquantities.jet1_csv_Wmucr1    = jetSR1Info[0][3]
+               allquantities.jet2_pT_Wmucr1     = jetSR1Info[1][0]
+               allquantities.jet2_eta_Wmucr1    = jetSR1Info[1][1]
+               allquantities.jet2_phi_Wmucr1    = jetSR1Info[1][2]
+               allquantities.jet2_csv_Wmucr1    = jetSR1Info[1][3]
+               allquantities.WhadronRecoil1mu    = hadrecoil
+               allquantities.Wmass1mu            = wmass
+               allquantities.WpT1mu              = WpT
+               allquantities.mu1_pT_Wmucr1       = Wmu1pT
+               allquantities.mu1_eta_Wmucr1      = Wmu1eta
+               allquantities.mu1_phi_Wmucr1      = Wmu1phi
+               allquantities.mu1_iso_Wmucr1      = Wmu1Iso
+           if wCREle:
+               allquantities.jet1_pT_Wecr1     = jetSR1Info[0][0]
+               allquantities.jet1_eta_Wecr1    = jetSR1Info[0][1]
+               allquantities.jet1_phi_Wecr1    = jetSR1Info[0][2]
+               allquantities.jet1_csv_Wecr1    = jetSR1Info[0][3]
+               allquantities.jet2_pT_Wecr1     = jetSR1Info[1][0]
+               allquantities.jet2_eta_Wecr1    = jetSR1Info[1][1]
+               allquantities.jet2_phi_Wecr1    = jetSR1Info[1][2]
+               allquantities.jet2_csv_Wecr1    = jetSR1Info[1][3]
+               allquantities.WhadronRecoil1e    = hadrecoil
+               allquantities.Wmass1e            = wmass
+               allquantities.WpT1e              = WpT
+               allquantities.el1_pT_Wecr1       = Wele1pT
+               allquantities.el1_eta_Wecr1      = Wele1eta
+               allquantities.el1_phi_Wecr1      = Wele1phi
         
         elif inSR2 and wCR:
-           allquantities.jet1_pT_Wcr2     = jetSR2Info[0][0]
-           allquantities.jet1_eta_Wcr2    = jetSR2Info[0][1]
-           allquantities.jet1_phi_Wcr2    = jetSR2Info[0][2]
-           allquantities.jet1_csv_Wcr2    = jetSR2Info[0][3]
-           allquantities.jet2_pT_Wcr2     = jetSR2Info[1][0]
-           allquantities.jet2_eta_Wcr2    = jetSR2Info[1][1]
-           allquantities.jet2_phi_Wcr2    = jetSR2Info[1][2]
-           allquantities.jet2_csv_Wcr2    = jetSR2Info[1][3]
-           allquantities.jet3_pT_Wcr2     = jetSR2Info[2][0]
-           allquantities.jet3_eta_Wcr2    = jetSR2Info[2][1]
-           allquantities.jet3_phi_Wcr2    = jetSR2Info[2][2]
-           allquantities.jet3_csv_Wcr2    = jetSR2Info[2][3]
-           allquantities.WhadronRecoil2    = hadrecoil
-           allquantities.Wmass2            = wmass
-           allquantities.WpT2              = WpT
-           allquantities.mu1_pT_Wcr2       = Wmu1pT
-           allquantities.el1_pT_Wcr2       = Wele1pT
-           allquantities.mu1_eta_Wcr2      = Wmu1eta
-           allquantities.el1_eta_Wcr2      = Wele1eta
-           allquantities.mu1_phi_Wcr2      = Wmu1phi
-           allquantities.el1_phi_Wcr2      = Wele1phi
-           allquantities.mu1_iso_Wcr2      = Wmu1Iso
+           if wCRMu:
+               allquantities.jet1_pT_Wmucr2     = jetSR2Info[0][0]
+               allquantities.jet1_eta_Wmucr2    = jetSR2Info[0][1]
+               allquantities.jet1_phi_Wmucr2    = jetSR2Info[0][2]
+               allquantities.jet1_csv_Wmucr2    = jetSR2Info[0][3]
+               allquantities.jet2_pT_Wmucr2     = jetSR2Info[1][0]
+               allquantities.jet2_eta_Wmucr2    = jetSR2Info[1][1]
+               allquantities.jet2_phi_Wmucr2    = jetSR2Info[1][2]
+               allquantities.jet2_csv_Wmucr2    = jetSR2Info[1][3]
+               allquantities.jet3_pT_Wmucr2     = jetSR2Info[2][0]
+               allquantities.jet3_eta_Wmucr2    = jetSR2Info[2][1]
+               allquantities.jet3_phi_Wmucr2    = jetSR2Info[2][2]
+               allquantities.jet3_csv_Wmucr2    = jetSR2Info[2][3]
+               allquantities.WhadronRecoil2mu    = hadrecoil
+               allquantities.Wmass2mu            = wmass
+               allquantities.WpT2mu              = WpT
+               allquantities.mu1_pT_Wmucr2       = Wmu1pT
+               allquantities.mu1_eta_Wmucr2      = Wmu1eta
+               allquantities.mu1_phi_Wmucr2      = Wmu1phi
+               allquantities.mu1_iso_Wmucr2      = Wmu1Iso
+           if wCREle:
+               allquantities.jet1_pT_Wecr2     = jetSR2Info[0][0]
+               allquantities.jet1_eta_Wecr2    = jetSR2Info[0][1]
+               allquantities.jet1_phi_Wecr2    = jetSR2Info[0][2]
+               allquantities.jet1_csv_Wecr2    = jetSR2Info[0][3]
+               allquantities.jet2_pT_Wecr2     = jetSR2Info[1][0]
+               allquantities.jet2_eta_Wecr2    = jetSR2Info[1][1]
+               allquantities.jet2_phi_Wecr2    = jetSR2Info[1][2]
+               allquantities.jet2_csv_Wecr2    = jetSR2Info[1][3]
+               allquantities.jet3_pT_Wecr2     = jetSR2Info[2][0]
+               allquantities.jet3_eta_Wecr2    = jetSR2Info[2][1]
+               allquantities.jet3_phi_Wecr2    = jetSR2Info[2][2]
+               allquantities.jet3_csv_Wecr2    = jetSR2Info[2][3]
+               allquantities.WhadronRecoil2e    = hadrecoil
+               allquantities.Wmass2e            = wmass
+               allquantities.WpT2e              = WpT
+               allquantities.el1_pT_Wecr2       = Wele1pT
+               allquantities.el1_eta_Wecr2      = Wele1eta
+               allquantities.el1_phi_Wecr2      = Wele1phi
         
         ##For TopCR region
         if inSR1 and TopCR:
