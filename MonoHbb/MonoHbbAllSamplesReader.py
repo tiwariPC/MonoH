@@ -9,6 +9,6 @@ for ifile in f:
     filename =  ifile.rstrip()
     print "\n=======================\nSubmitting",filename,"\n=======================\n"
     #os.system('python MonoHBranchReader.py -i '+filename+' -a')
-    command='python MonoHBranchReader.py -a -i '+filename+' -D '+outdir+' &> '+outdir+'/log/'+filename.split('/')[-1].split('.')[0]+'.log &'
+    command='nohup python MonoHBranchReader.py -a -i '+filename+' -D '+outdir+' &> '+outdir+'/log/'+filename.split('/')[-1].split('.')[0]+'.log &'
     print "Executing shell command:",command
     os.system(command)
