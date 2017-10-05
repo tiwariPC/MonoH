@@ -1,3 +1,5 @@
-/eos/user/s/spmondal/bbDM/HADDtemp/pseudo_NLO_Mchi-10_Mphi-100.root
-/eos/user/s/spmondal/bbDM/HADDtemp/WW.root
-/eos/user/s/spmondal/bbDM/HADDtemp/ZJetsToNuNu_HT-100To200.root
+/eos/user/s/spmondal/bbDM/SkimmedTrees_Temp/DYJetsToLL_M-50_HT-2500toInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_MC25ns_LegacyMC_20170328.root
+/eos/user/s/spmondal/bbDM/SkimmedTrees_Temp/WJetsToLNu_HT-200To400_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_MC25ns_LegacyMC_20170328.root
+/eos/user/s/spmondal/bbDM/SkimmedTrees_Temp/pseudo_NLO_Mchi-1_Mphi-500.root
+/eos/user/s/spmondal/bbDM/SkimmedTrees_Temp/scalar_NLO_Mchi-1_Mphi-500.root
+/eos/user/s/spmondal/bbDM/SkimmedTrees_Temp/scalar_NLO_Mchi-50_Mphi-350.root

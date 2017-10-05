@@ -1,9 +1,9 @@
 import os 
 
-sourcedir = "/eos/user/s/spmondal/bbDM/data/Filelist_bkg_run2"
+sourcedir = "/eos/user/s/spmondal/bbDM/data/Filelist_bkg_run1"
 samplelist = [f for f in os.listdir(sourcedir) if not os.path.isfile(os.path.join(sourcedir, f))]
 
-outdir = "bbMETSamplesFrag_bkg_run2"
+outdir = "bbMETSamplesFrag_bkg_run1"
 
 for sample in samplelist:
 
