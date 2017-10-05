@@ -45,12 +45,6 @@ class MonoHbbQuantities:
         self.jet3_eta_sr2    = -999.
         self.jet3_phi_sr2    = -999.
         
-        self.presel_jet1_csv_sr1    = -999.
-        self.presel_jet2_csv_sr1    = -999.
-        self.presel_jet1_csv_sr2    = -999.
-        self.presel_jet2_csv_sr2    = -999.
-        self.presel_jet3_csv_sr2    = -999.
-        
         self.jet1_csv_sr1    = -999.
         self.jet2_csv_sr1    = -999.
         self.jet1_csv_sr2    = -999.
@@ -286,12 +280,6 @@ class MonoHbbQuantities:
         self.h_jet3_pT_sr2     = []
         self.h_jet3_eta_sr2    = []
         self.h_jet3_phi_sr2    = []
-        
-        self.h_presel_jet1_csv_sr1    = []
-        self.h_presel_jet2_csv_sr1    = []
-        self.h_presel_jet1_csv_sr2    = []
-        self.h_presel_jet2_csv_sr2    = []
-        self.h_presel_jet3_csv_sr2    = []
         
         self.h_jet1_csv_sr1    = []
         self.h_jet2_csv_sr1    = []
@@ -559,11 +547,6 @@ class MonoHbbQuantities:
         self.h_jet1_csv_sr2.append(TH1F('h_jet1_csv_sr2_','h_jet1_csv_sr2_',100, 0,1.05))
         self.h_jet2_csv_sr2.append(TH1F('h_jet2_csv_sr2_','h_jet2_csv_sr2_',100, 0,1.05))
         self.h_jet3_csv_sr2.append(TH1F('h_jet3_csv_sr2_','h_jet3_csv_sr2_',100, 0,1.05))
-        self.h_presel_jet1_csv_sr1.append(TH1F('h_presel_jet1_csv_sr1_','h_presel_jet1_csv_sr1_',100, 0,1.05))
-        self.h_presel_jet2_csv_sr1.append(TH1F('h_presel_jet2_csv_sr1_','h_presel_jet2_csv_sr1_',100, 0,1.05))
-        self.h_presel_jet1_csv_sr2.append(TH1F('h_presel_jet1_csv_sr2_','h_presel_jet1_csv_sr2_',100, 0,1.05))
-        self.h_presel_jet2_csv_sr2.append(TH1F('h_presel_jet2_csv_sr2_','h_presel_jet2_csv_sr2_',100, 0,1.05))
-        self.h_presel_jet3_csv_sr2.append(TH1F('h_presel_jet3_csv_sr2_','h_presel_jet3_csv_sr2_',100, 0,1.05))
         
         #for ZCR
         ## for Z --> mumu
@@ -783,15 +766,6 @@ class MonoHbbQuantities:
         self.h_met_muF.append(h_met_muF_tmp)
 
         print "Histograms defined"
-    
-    def FillPreSel(self):
-        WF = self.weight
-    
-        if self.presel_jet1_csv_sr1 is not None:    self.h_presel_jet1_csv_sr1[0]    .Fill(self.presel_jet1_csv_sr1,   WF)
-        if self.presel_jet2_csv_sr1 is not None:    self.h_presel_jet2_csv_sr1[0]    .Fill(self.presel_jet2_csv_sr1,   WF)
-        if self.presel_jet1_csv_sr2 is not None:    self.h_presel_jet1_csv_sr2[0]    .Fill(self.presel_jet1_csv_sr2,   WF)
-        if self.presel_jet2_csv_sr2 is not None:    self.h_presel_jet2_csv_sr2[0]    .Fill(self.presel_jet2_csv_sr2,   WF)
-        if self.presel_jet3_csv_sr2 is not None:    self.h_presel_jet3_csv_sr2[0]    .Fill(self.presel_jet3_csv_sr2,   WF)
         
     def FillHisto(self):
         WF = self.weight
@@ -1131,12 +1105,6 @@ class MonoHbbQuantities:
         self.h_jet1_csv_sr2[0].Write()
         self.h_jet2_csv_sr2[0].Write()
         self.h_jet3_csv_sr2[0].Write()
-        
-        self.h_presel_jet1_csv_sr1[0].Write()
-        self.h_presel_jet2_csv_sr1[0].Write()
-        self.h_presel_jet1_csv_sr2[0].Write()
-        self.h_presel_jet2_csv_sr2[0].Write()
-        self.h_presel_jet3_csv_sr2[0].Write()
         
          #for ZCR
         ##for Z -- mumu 

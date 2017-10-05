@@ -52,7 +52,7 @@ if options.farmout==None:
 else:
     isfarmout = options.farmout
 
-
+print (options.inputfile, options.outputfile )
 #print 'options = ',[options.inputfile]
 inputfilename = options.inputfile
 outputdir = options.outputdir
@@ -68,17 +68,12 @@ textfile = rootfile+".txt"
 #outputdir='bbMETSamples/'
 if outputdir!='.': os.system('mkdir -p '+outputdir)
 
-if options.outputfile is None or options.outputfile==rootfile:
-    outputfilename = "/Output_"+rootfile
-else:
-    outputfilename = "/"+outputfilename
-    
+outfilename=''  
+
 #if isfarmout:
-outfilename = outputdir + outputfilename
+outfilename = outputdir + "/Output_" + rootfile
 #else:
 #    outfilename = options.outputfile    
-
-print "Input:",options.inputfile, "; Output:", outfilename
 
 skimmedTree = TChain("outTree")
 
@@ -215,7 +210,7 @@ def AnalyzeDataSet():
         CRStatus[CRname]=0
     
     
-#    print outfilename
+    print outfilename
     allquantities = MonoHbbQuantities(outfilename)
     allquantities.defineHisto()
 
@@ -374,12 +369,6 @@ def AnalyzeDataSet():
         
         cutStatus['isinSR'] += 1        # The event qualifies to be in either of the SRs based on njet
         
-        allquantities.presel_jet1_csv_sr1 = None
-        allquantities.presel_jet2_csv_sr1 = None
-        allquantities.presel_jet1_csv_sr2 = None
-        allquantities.presel_jet2_csv_sr2 = None
-        allquantities.presel_jet3_csv_sr2 = None
-                
         ## for SR1
          # 2 jets and 1 btagged 
          
@@ -395,8 +384,6 @@ def AnalyzeDataSet():
             j1=thinjetP4[ifirstjet]
             j2=thinjetP4[isecondjet]
             
-            
-            
             if j1.Pt() < 50.0: continue
             if DeltaPhi(j1.Phi(),pfMetPhi) < 0.5: continue            
             if thinjetNhadEF[ifirstjet] > 0.8 : continue
@@ -408,13 +395,8 @@ def AnalyzeDataSet():
             if DeltaPhi(j1.Phi(),pfMetPhi) < 0.5: continue
             
             cutStatus['jet2/3'] += 1           # Jet 2 satisfies the required criteria
-            
-            #===CSVs before any selection===
-            allquantities.presel_jet1_csv_sr1=thinJetCSV[ifirstjet]
-            allquantities.presel_jet2_csv_sr1=thinJetCSV[isecondjet]
-            allquantities.FillPreSel()
-            #===            
-            
+            jet1csv = thinJetCSV[ifirstjet]
+            jet2csv = thinJetCSV[isecondjet]
             if thinJetCSV[ifirstjet] < 0.8: continue            # Lead jet has to be b-tagged
             
             cutStatus['btaggedjet'] += 1         # The b-jet criteria is fulfilled 
@@ -427,8 +409,6 @@ def AnalyzeDataSet():
             jet2phi = j2.Phi()
             jet2eta = j2.Eta()
             
-            jet1csv = thinJetCSV[ifirstjet]
-            jet2csv = thinJetCSV[isecondjet]
 
             jetSR1Info.append([jet1pt,jet1eta,jet1phi,jet1csv])
             jetSR1Info.append([jet2pt,jet2eta,jet2phi,jet2csv])
@@ -469,14 +449,10 @@ def AnalyzeDataSet():
             if DeltaPhi(j3.Phi(),pfMetPhi) < 0.5: continue
             
             cutStatus['jet2/3'] += 1           # The jets 2 and 3 satisfy the required criteria
+            jet1csv = thinJetCSV[ifirstjet]
+            jet2csv = thinJetCSV[isecondjet]
+            jet3csv = thinJetCSV[ithirdjet]
             
-            #===CSVs before any selection===
-            allquantities.presel_jet1_csv_sr2=thinJetCSV[ifirstjet]
-            allquantities.presel_jet2_csv_sr2=thinJetCSV[isecondjet]
-            allquantities.presel_jet3_csv_sr2=thinJetCSV[ithirdjet]
-            allquantities.FillPreSel()
-            #===  
-                        
             if thinJetCSV[ifirstjet] < 0.8: continue            # Lead jet has to be b-tagged
             if thinJetCSV[isecondjet] < 0.8: continue           # Second jet has to be b-tagged
             
@@ -494,9 +470,6 @@ def AnalyzeDataSet():
             jet3phi = j3.Phi()
             jet3eta = j3.Eta()
             
-            jet1csv = thinJetCSV[ifirstjet]
-            jet2csv = thinJetCSV[isecondjet]
-            jet3csv = thinJetCSV[ithirdjet]            
 
             jetSR2Info.append([jet1pt,jet1eta,jet1phi,jet1csv])
             jetSR2Info.append([jet2pt,jet2eta,jet2phi,jet2csv])
@@ -543,7 +516,7 @@ def AnalyzeDataSet():
             LepP4=eleP4
             isLoose=eleIsPassLoose
             isTight=eleIsPassTight
-            zmass=ZeeMass
+            zmass=ZeeMassMass
             hadrecoil=ZeeRecoil
         elif nMu==2 and nEle==0 and nTau==0:
             zCRMu=True
@@ -1148,15 +1121,11 @@ def AnalyzeDataSet():
     allquantities.WriteHisto((NEntries_total,NEntries_Weight,cutflowvalues,cutflownames,CRvalues,CRs))
     
     print "efficiency = ", float(npass/float(NEntries))   
-    
-    os.system('mkdir -p '+outputdir+'/efficiencyfiles/')
         
-    f = open(outputdir+'/efficiencyfiles/'+textfile, 'w')
+    f = open('efficiencyfiles/'+textfile, 'w')
     f.write(str(round(float(npass)/float(NEntries),5))+"\n\n#Cutflow Table:\n"+cutflowHeader[:-1]+"\n"+cutflowTable[:-1]+"\n\n#CR Table:\n"+CRHeader[:-1]+"\n"+CRTable[:-1])
-    print "ROOT file written to", outfilename
-    print "Log written to "+outputdir+'/efficiencyfiles/'+textfile
+    print "Written to "+'efficiencyfiles/'+textfile
     f.close()
-    print "Completed."
 
 
 
