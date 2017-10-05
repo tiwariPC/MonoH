@@ -1200,7 +1200,7 @@ class MonoHbbQuantities:
         self.h_jet3_eta_Zeecr2[0].Write()
         self.h_jet3_phi_Zeecr2[0].Write()
         self.h_ZhadronRecoil1ee[0].Write()
-        self.h_Zmass1[0]ee.Write()
+        self.h_Zmass1ee[0].Write()
         self.h_ZpT1ee[0].Write()
         self.h_ZhadronRecoil2ee[0].Write()
         self.h_Zmass2ee[0].Write()
