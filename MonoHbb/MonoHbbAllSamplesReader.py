@@ -1,7 +1,7 @@
 import os 
 
 f = open('allfiles.txt','r')
-outdir = "bbMETSamples"
+outdir = "bbMETSamples_all_lim"
 
 os.system("mkdir -p "+outdir+"/log")
 

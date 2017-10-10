@@ -1148,10 +1148,16 @@ def AnalyzeDataSet():
     
     allquantities.WriteHisto((NEntries_total,NEntries_Weight,cutflowvalues,cutflownames,CRvalues,CRs))
     
-    print "efficiency = ", float(npass/float(NEntries))   
+    if NEntries > 0:
+        eff=round(float(npass/float(NEntries)),5)
+    else:
+        eff = "NA"
+    print "efficiency =", eff  
+    
+    os.system("mkdir -p "+outputdir+'/efficiencyfiles/')
         
     f = open(outputdir+'/efficiencyfiles/'+textfile, 'w')
-    f.write(str(round(float(npass)/float(NEntries),5))+"\n\n#Cutflow Table:\n"+cutflowHeader[:-1]+"\n"+cutflowTable[:-1]+"\n\n#CR Table:\n"+CRHeader[:-1]+"\n"+CRTable[:-1])
+    f.write(str(eff)+"\n\n#Cutflow Table:\n"+cutflowHeader[:-1]+"\n"+cutflowTable[:-1]+"\n\n#CR Table:\n"+CRHeader[:-1]+"\n"+CRTable[:-1])
     print "ROOT file written to", outfilename
     print "Log written to "+outputdir+'/efficiencyfiles/'+textfile
     f.close()
