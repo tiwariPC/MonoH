@@ -351,8 +351,8 @@ def AnalyzeDataSet():
         ## PFMET Selection
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------        
-        pfmetstatus = ( pfMet > 200.0 )   #already applied in SkimTree, do we need it here as well?
-#        if pfmetstatus == False : continue         # We don't
+        pfmetstatus = ( pfMet > 200.0 )   
+#        if pfmetstatus == False : continue       
         if pfmetstatus: cutStatus['pfmet'] += 1
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
         #----------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -372,7 +372,7 @@ def AnalyzeDataSet():
         else:
             continue 
         
-        cutStatus['isinSR'] += 1        # The event qualifies to be in either of the SRs based on njet
+        if pfmetstatus: cutStatus['isinSR'] += 1        # The event qualifies to be in either of the SRs based on njet
         
         allquantities.presel_jet1_csv_sr1 = None
         allquantities.presel_jet2_csv_sr1 = None
@@ -399,12 +399,12 @@ def AnalyzeDataSet():
             if thinjetNhadEF[ifirstjet] > 0.8 : continue
             if thinjetChadEF[ifirstjet]< 0.1: continue
             
-            cutStatus['jet1'] += 1              # Lead jet satisfies required criteria
+            if pfmetstatus: cutStatus['jet1'] += 1              # Lead jet satisfies required criteria
                             
             if j2.Pt() < 30.0: continue
             if DeltaPhi(j1.Phi(),pfMetPhi) < 0.5: continue
             
-            cutStatus['jet2/3'] += 1           # Jet 2 satisfies the required criteria
+            if pfmetstatus: cutStatus['jet2/3'] += 1           # Jet 2 satisfies the required criteria
             
             #===CSVs before any selection===
             allquantities.presel_jet1_csv_sr1=thinJetCSV[ifirstjet]		
@@ -415,7 +415,7 @@ def AnalyzeDataSet():
             jet2csv = thinJetCSV[isecondjet]
             if thinJetCSV[ifirstjet] < 0.8: continue            # Lead jet has to be b-tagged
             
-            cutStatus['btaggedjet'] += 1         # The b-jet criteria is fulfilled 
+            if pfmetstatus: cutStatus['btaggedjet'] += 1         # The b-jet criteria is fulfilled 
             
             jet1pt = j1.Pt()
             jet1phi = j1.Phi()
@@ -456,7 +456,7 @@ def AnalyzeDataSet():
             if thinjetNhadEF[ifirstjet] > 0.8 : continue
             if thinjetChadEF[ifirstjet]< 0.1: continue
             
-            cutStatus['jet1'] += 1              # Lead jet satisfies required criteria
+            if pfmetstatus: cutStatus['jet1'] += 1              # Lead jet satisfies required criteria
             
             if j2.Pt() < 50.0: continue
             if DeltaPhi(j2.Phi(),pfMetPhi) < 0.5: continue            
@@ -466,7 +466,7 @@ def AnalyzeDataSet():
             if j3.Pt() < 30.0: continue
             if DeltaPhi(j3.Phi(),pfMetPhi) < 0.5: continue
             
-            cutStatus['jet2/3'] += 1           # The jets 2 and 3 satisfy the required criteria
+            if pfmetstatus: cutStatus['jet2/3'] += 1           # The jets 2 and 3 satisfy the required criteria
             
             #===CSVs before any selection===		
             allquantities.presel_jet1_csv_sr2=thinJetCSV[ifirstjet]
@@ -481,7 +481,7 @@ def AnalyzeDataSet():
             if thinJetCSV[ifirstjet] < 0.8: continue            # Lead jet has to be b-tagged
             if thinJetCSV[isecondjet] < 0.8: continue           # Second jet has to be b-tagged
             
-            cutStatus['btaggedjet'] += 1         # The b-jet criteria is fulfilled 
+            if pfmetstatus: cutStatus['btaggedjet'] += 1         # The b-jet criteria is fulfilled 
             
             jet1pt = j1.Pt()
             jet1phi = j1.Phi()
@@ -751,7 +751,7 @@ def AnalyzeDataSet():
         # ----to be added in future---------------------------------------------------------------------------------------------------------------------------------------
         
         
-        npass = npass +1
+        if pfmetstatus: npass = npass + 1
         
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -1130,7 +1130,7 @@ def AnalyzeDataSet():
     cutflowTable=""
     cutflowHeader=""
     cutflowvalues=[]    
-    cutflownames=['total','preselection','isinSR','jet1','jet2/3','btaggedjet']
+    cutflownames=['total','preselection','pfmet','isinSR','jet1','jet2/3','btaggedjet']
     for cutflowname in cutflownames:   
         cutflowvalues.append(cutStatus[cutflowname])
         cutflowTable += str(cutStatus[cutflowname])+" "
