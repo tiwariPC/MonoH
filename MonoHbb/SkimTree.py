@@ -596,7 +596,7 @@ def Phi_mpi_pi(x):
 def DeltaPhi(phi1,phi2):
    phi = Phi_mpi_pi(phi1-phi2)
    
-   return phi
+   return abs(phi)
         
 def CheckFilter(filterName, filterResult,filtercompare):
     ifilter_=0
