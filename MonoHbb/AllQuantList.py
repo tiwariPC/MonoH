@@ -31,5 +31,5 @@ def getAll():
     return allquantlist
 
 def getPresel():
-    preselquantlist=['presel_jet1_csv_sr1','presel_jet1_csv_sr1','presel_jet2_csv_sr1','presel_jet1_csv_sr2','presel_jet2_csv_sr2','presel_jet3_csv_sr2']
+    preselquantlist=['presel_jet1_csv_sr1','presel_jet2_csv_sr1','presel_jet1_csv_sr2','presel_jet2_csv_sr2','presel_jet3_csv_sr2']
     return preselquantlist
