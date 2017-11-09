@@ -189,18 +189,12 @@ def AnalyzeDataSet():
     cutStatusSR1={'preselection':NEntries}
     cutStatusSR2={'preselection':NEntries}
     CRCutFlow={'preselection':NEntries}
-    
+        
 #    cutStatus['trigger'] = 0
 #    cutStatus['filter'] = 0
-    cutStatus['pfmet'] =  0
-#    cutStatus['njetSR1']=  0
-#    cutStatus['njet1SR1'] = 0
-#    cutStatus['njet2SR1'] = 0
-#    cutStatus['njetSR2'] = 0
-#    cutStatus['njet1SR2'] = 0
-#    cutStatus['njet2SR2'] = 0
-#    cutStatus['njet2SR2'] = 0    
-    cutStatus['isinSR'] = 0
+    cutStatus['pfmet'] =  0 
+    cutStatus['njet'] = 0
+    cutStatus['lep'] = 0
     cutStatus['jet1'] = 0
     cutStatus['jet2/3'] = 0
     cutStatus['btaggedjet'] = 0
@@ -213,11 +207,13 @@ def AnalyzeDataSet():
 #    cutStatus['tauveto'] = 0
 
     cutStatusSR1['njet'] = 0
+    cutStatusSR1['lep'] = 0
     cutStatusSR1['jet1'] = 0
     cutStatusSR1['jet2'] = 0
     cutStatusSR1['btaggedjet'] = 0
     
     cutStatusSR2['njet'] = 0
+    cutStatusSR2['lep'] = 0
 #    cutStatusSR2['jet1pT'] = 0
 #    cutStatusSR2['jet1phi'] = 0
 #    cutStatusSR2['jet2pT'] = 0
@@ -229,6 +225,20 @@ def AnalyzeDataSet():
     cutStatusSR2['jet3'] = 0
     cutStatusSR2['btaggedjet1'] = 0
     cutStatusSR2['btaggedjet2'] = 0
+    
+    CRCutFlow['njet']=0
+    CRCutFlow['recoilprenjet']=0
+    CRCutFlow['recoilpostnjet']=0
+    CRCutFlow['jetcond']=0
+    CRCutFlow['nlepcond']=0
+    CRCutFlow['zJet']=0
+    CRCutFlow['zLep']=0
+    CRCutFlow['zMass']=0
+    CRCutFlow['zrecoil']=0
+#    CRCutFlow['zmumuJet']=0
+#    CRCutFlow['zmumuLep']=0
+#    CRCutFlow['zmumuMass']=0
+#    CRCutFlow['zmumurecoil']=0
     
     CRs=['ZCRSR1','ZCRSR2','WCRSR1','WCRSR2','TopCRSR1','TopCRSR2']
     
@@ -376,7 +386,10 @@ def AnalyzeDataSet():
         pfmetstatus = ( pfMet > 200.0 )   
 #        if pfmetstatus == False : continue       
         if pfmetstatus: cutStatus['pfmet'] += 1
-        # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+        #
+        
+        if ZeeRecoil>200. or ZmumuRecoil > 200. or WenuRecoil > 200. or WmunuRecoil > 200. or TOPRecoil > 200.:
+            CRCutFlow['recoilprenjet']+=1 #----------------------------------------------------------------------------------------------------------------------------------------------------------------
         
         ## Leptons Info
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -419,23 +432,20 @@ def AnalyzeDataSet():
 # --------------------------------------------------------------------------------------------------------------------------------------------------------
         #----------------------------------------------------------------------------------------------------------------------------------------------------------------         ----------------------------------------------------------------------------------------------------------------------------------------------------------------
         
+        SR1njetcond=False
+        SR2njetcond=False
         
         
-        
-        inSR1=False
-        inSR2=False
-        
-        
-        if nTHINJets == 2 and nEle+nMu+nTau==0:
-            inSR1=True
+        if nTHINJets == 2:
+            SR1njetcond=True
             if pfmetstatus: cutStatusSR1['njet'] +=1
-        elif nTHINJets == 3 and nEle+nMu+nTau==0:
-            inSR2=True
+        elif nTHINJets == 3:
+            SR2njetcond=True
             if pfmetstatus: cutStatusSR2['njet'] +=1
-        elif nEle+nMu+nTau==0 or (nTHINJets != 2 and nTHINJets != 3):
+        else:
             continue                                    # Go to CRs only if there's at least one lepton or at least one of the jet conditions is satisfied
         
-        if pfmetstatus: cutStatus['isinSR'] += 1        # The event qualifies to be in either of the SRs based on njet
+        if pfmetstatus: cutStatus['njet'] += 1        # The event qualifies to be in either of the SRs based on njet
         
         allquantities.presel_jet1_csv_sr1 = None
         allquantities.presel_jet2_csv_sr1 = None
@@ -444,14 +454,15 @@ def AnalyzeDataSet():
         allquantities.presel_jet3_csv_sr2 = None
         
         SR1jetcond=False
-        SR2jetcond=False
+        SR2jetcond=False        
+            
         
         ## for SR1
          # 2 jets and 1 btagged 
          
-        if inSR1:                  
+        if SR1njetcond:                  
             SR1jetcond=True
-            
+                        
             if thinjetP4[0].Pt()>thinjetP4[1].Pt():   # Set lead jet as j1, second jet as j2
                 ifirstjet=0
                 isecondjet=1
@@ -492,7 +503,7 @@ def AnalyzeDataSet():
                 cutStatus['btaggedjet'] += 1         # The b-jet criteria is fulfilled 
                 cutStatusSR1['btaggedjet'] +=1
                       
-            
+            if SR1jetcond:
                 jet1pt = j1.Pt()
                 jet1phi = j1.Phi()
                 jet1eta = j1.Eta()
@@ -514,7 +525,7 @@ def AnalyzeDataSet():
      ## for SR2
         # 3 jets and 2 btagged 
         
-        if inSR2:
+        if SR2njetcond:
             SR2jetcond=True
             
             alljetPT=[jet.Pt() for jet in thinjetP4]
@@ -574,6 +585,7 @@ def AnalyzeDataSet():
                 cutStatusSR2['btaggedjet2'] += 1            
                 cutStatus['btaggedjet'] += 1         # The b-jet criteria is fulfilled 
             
+            if SR2jetcond:
                 jet1pt = j1.Pt()
                 jet1phi = j1.Phi()
                 jet1eta = j1.Eta()
@@ -597,7 +609,26 @@ def AnalyzeDataSet():
                 jetSR2Info.append([jet3pt,jet3eta,jet3phi,jet3csv])
                 jetSR2Info.append(min_dPhi)
 
-        # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+        
+        if nEle+nMu+nTau==0:
+            SRlepcond=True
+        else:
+            SRlepcond=False
+            
+        if pfmetstatus and SRlepcond and SR1jetcond:
+            cutStatus['lep'] += 1
+            cutStatusSR1['lep'] += 1
+            
+        if pfmetstatus and SRlepcond and SR2jetcond:
+            cutStatus['lep'] += 1
+            cutStatusSR2['lep'] += 1
+            
+        
+        CRCutFlow['njet']+=1
+        
+        if ZeeRecoil>200. or ZmumuRecoil > 200. or WenuRecoil > 200. or WmunuRecoil > 200. or TOPRecoil > 200.:
+            CRCutFlow['recoilpostnjet']+=1
+        #----------------------------------------------------------------------------------------------------------------------------------------------------------------
         if SR1jetcond==False and SR2jetcond==False:
             continue
 
@@ -605,15 +636,54 @@ def AnalyzeDataSet():
 
         #Control Regions
         
-        if ZeeRecoil!=-1. or ZmumuRecoil!=-1. or WenuRecoil!=-1. or  WmunuRecoil!=-1. or  TOPRecoil!=-1. :
-            print nEle
-            print nMu
-            print ZeeRecoil
-            print ZmumuRecoil
-            print WenuRecoil
-            print WmunuRecoil
-            print TOPRecoil
-            print
+#        if ZeeRecoil!=-1. or ZmumuRecoil!=-1. or WenuRecoil!=-1. or  WmunuRecoil!=-1. or  TOPRecoil!=-1. :
+#            print nEle
+#            print nMu
+#            print ZeeRecoil
+#            print ZmumuRecoil
+#            print WenuRecoil
+#            print WmunuRecoil
+#            print TOPRecoil
+#            print
+        
+        
+        
+#        if ZeeRecoil>200.:
+#        
+#            zeeCR=True
+#            CRCutFlow['zrecoil']+=1
+#            
+#            if nEle!=2 or nMu!=0 or nTau!=0:zeeCR=False
+#            if zeeCR: CRCutFlow['zLep']+=1
+#            
+#            if SR1jetcond==False and SR2jetcond==False: zeeCR=False
+#            if zeeCR: CRCutFlow['zJet']+=1            
+#            
+#            if ZeeMass < 70. or ZeeMass > 110: zeeCR=False
+#            if zeeCR: CRCutFlow['zMass']+=1
+#            
+#            
+#            
+#            
+#        if ZmumuRecoil>200.:
+#        
+#            zmumuCR=True
+#            CRCutFlow['zrecoil']+=1            
+#            
+#            if nMu!=2 or nEle!=0 or nTau!=0: zmumuCR=False
+#            if zmumuCR: CRCutFlow['zLep']+=1
+#            
+#            if SR1jetcond==False and SR2jetcond==False: zmumuCR=False
+#            if zmumuCR: CRCutFlow['zJet']+=1
+#        
+#            if ZmumuMass < 70. or ZmumuMass > 110: zmumuCR=False
+#            if zmumuCR: CRCutFlow['zMass']+=1
+#        
+#        
+#        
+#        if SR1jetcond==False and SR2jetcond==False:   continue
+        
+        
         
         #=================================================================
         #  Z control region
@@ -630,6 +700,7 @@ def AnalyzeDataSet():
             isTight=myEleTightID
             zmass=ZeeMass
             hadrecoil=ZeeRecoil
+            CRCutFlow['nlepcond']+=1
         elif nMu==2 and nEle==0 and nTau==0:
             zCRMu=True
             LepP4=myMuos
@@ -637,6 +708,7 @@ def AnalyzeDataSet():
             isTight=myMuTightID
             zmass=ZmumuMass
             hadrecoil=ZmumuRecoil
+            CRCutFlow['nlepcond']+=1
         else:
             zCR=False
         
@@ -701,9 +773,9 @@ def AnalyzeDataSet():
             if hadrecoil <= 200.: zCR=False 
             
         if zCR:
-            if inSR1:
+            if SR1jetcond:
                 CRStatus['ZCRSR1']+=1
-            if inSR2:
+            if SR2jetcond:
                 CRStatus['ZCRSR2']+=1
                 
                 
@@ -761,9 +833,9 @@ def AnalyzeDataSet():
             if hadrecoil <= 200.: wCR=False 
             
         if wCR:
-            if inSR1:
+            if SR1jetcond:
                 CRStatus['WCRSR1']+=1
-            if inSR2:
+            if SR2jetcond:
                 CRStatus['WCRSR2']+=1
                 
                 
@@ -797,9 +869,9 @@ def AnalyzeDataSet():
             TOPele1phi = myEles[0].Phi()
             
         if TopCR:
-            if inSR1:
+            if SR1jetcond:
                 CRStatus['TopCRSR1']+=1
-            if inSR2:
+            if SR2jetcond:
                 CRStatus['TopCRSR2']+=1
         
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -839,7 +911,7 @@ def AnalyzeDataSet():
         # ----to be added in future---------------------------------------------------------------------------------------------------------------------------------------
         
         
-        if pfmetstatus: npass = npass + 1
+        if pfmetstatus and SRlepcond: npass = npass + 1
         
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -885,7 +957,7 @@ def AnalyzeDataSet():
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
         ## BTag Scale Factor 
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
-        if inSR1:
+        if SR1njetcond:
             ij = ifirstjet
             jj = isecondjet
             
@@ -898,7 +970,7 @@ def AnalyzeDataSet():
             sf_resolved2 = weightbtag(reader1, flav2, thinjetP4[jj].Pt(), thinjetP4[jj].Eta())
             
 #            print (sf_resolved1, sf_resolved2)
-        elif inSR2:
+        elif SR2njetcond:
             ij = ifirstjet
             jj = isecondjet
             jk = ithirdjet
@@ -915,9 +987,9 @@ def AnalyzeDataSet():
             
 #            print (sf_resolved1, sf_resolved2, sf_resolved3)
             
-        if inSR1:
+        if SR1njetcond:
             allweights = allweights * sf_resolved1[0] * sf_resolved2[0]
-        if inSR2:
+        if SR2njetcond:
             allweights = allweights * sf_resolved1[0] * sf_resolved2[0] * sf_resolved3[0]
        
         if isData: allweights = 1.0 
@@ -938,7 +1010,7 @@ def AnalyzeDataSet():
         for quant in allquantlist:
             exec("allquantities."+quant+" = None")                              # Presets all quantities to None  
                  
-        if inSR1 and pfmetstatus:            
+        if SR1jetcond and pfmetstatus and SRlepcond:            
            allquantities.jet1_pT_sr1     = jetSR1Info[0][0]
            allquantities.jet1_eta_sr1    = jetSR1Info[0][1]
            allquantities.jet1_phi_sr1    = jetSR1Info[0][2]
@@ -949,7 +1021,7 @@ def AnalyzeDataSet():
            allquantities.jet2_csv_sr1    = jetSR1Info[1][3]
            allquantities.min_dPhi_sr1    = jetSR1Info[2]
            
-        elif inSR2 and pfmetstatus:
+        elif SR2jetcond and pfmetstatus and SRlepcond:
            allquantities.jet1_pT_sr2     = jetSR2Info[0][0]
            allquantities.jet1_eta_sr2    = jetSR2Info[0][1]
            allquantities.jet1_phi_sr2    = jetSR2Info[0][2]
@@ -966,7 +1038,7 @@ def AnalyzeDataSet():
             
            
         ## to fill for ZCR
-        if inSR1 and zCR:
+        if SR1jetcond and zCR:
            if zCRMu:
                allquantities.jet1_pT_Zmumucr1     = jetSR1Info[0][0]
                allquantities.jet1_eta_Zmumucr1    = jetSR1Info[0][1]
@@ -1006,7 +1078,7 @@ def AnalyzeDataSet():
                allquantities.el1_phi_Zeecr1      = Zele1phi
                allquantities.el2_phi_Zeecr1      = Zele2phi
         
-        elif inSR2 and zCR:
+        elif SR2jetcond and zCR:
            if zCRMu:
                allquantities.jet1_pT_Zmumucr2     = jetSR2Info[0][0]
                allquantities.jet1_eta_Zmumucr2    = jetSR2Info[0][1]
@@ -1055,7 +1127,7 @@ def AnalyzeDataSet():
                allquantities.el2_phi_Zeecr2      = Zele2phi
            
         ##To fill WCR region
-        if inSR1 and wCR:
+        if SR1jetcond and wCR:
            if wCRMu:
                allquantities.jet1_pT_Wmucr1     = jetSR1Info[0][0]
                allquantities.jet1_eta_Wmucr1    = jetSR1Info[0][1]
@@ -1088,7 +1160,7 @@ def AnalyzeDataSet():
                allquantities.el1_eta_Wecr1      = Wele1eta
                allquantities.el1_phi_Wecr1      = Wele1phi
         
-        elif inSR2 and wCR:
+        elif SR2jetcond and wCR:
            if wCRMu:
                allquantities.jet1_pT_Wmucr2     = jetSR2Info[0][0]
                allquantities.jet1_eta_Wmucr2    = jetSR2Info[0][1]
@@ -1130,7 +1202,7 @@ def AnalyzeDataSet():
                allquantities.el1_phi_Wecr2      = Wele1phi
         
         ##For TopCR region
-        if inSR1 and TopCR:
+        if SR1jetcond and TopCR:
            allquantities.jet1_pT_TOPcr1     = jetSR1Info[0][0]
            allquantities.jet1_eta_TOPcr1    = jetSR1Info[0][1]
            allquantities.jet1_phi_TOPcr1    = jetSR1Info[0][2]
@@ -1148,7 +1220,7 @@ def AnalyzeDataSet():
            allquantities.el1_phi_TOPcr1      = TOPele1phi
            allquantities.mu1_iso_TOPcr1      = TOPmu1Iso
            
-        elif inSR2 and TopCR:
+        elif SR2jetcond and TopCR:
            allquantities.jet1_pT_TOPcr2     = jetSR2Info[0][0]
            allquantities.jet1_eta_TOPcr2    = jetSR2Info[0][1]
            allquantities.jet1_phi_TOPcr2    = jetSR2Info[0][2]
@@ -1194,19 +1266,19 @@ def AnalyzeDataSet():
     cutflowTable=""
     cutflowHeader=""
     cutflowvalues=[]    
-    cutflownames=['total','preselection','pfmet','isinSR','jet1','jet2/3','btaggedjet']
+    cutflownames=['total','preselection','pfmet','njet','jet1','jet2/3','btaggedjet','lep']
     for cutflowname in cutflownames:   
         cutflowvalues.append(cutStatus[cutflowname])
         cutflowTable += str(cutStatus[cutflowname])+" "
         cutflowHeader += cutflowname+" "    
     
     cutflowvaluesSR1=[]
-    cutflownamesSR1=['total','preselection','pfmet','njet','jet1','jet2','btaggedjet']
+    cutflownamesSR1=['total','preselection','pfmet','njet','jet1','jet2','btaggedjet','lep']
     for cutflowname in cutflownamesSR1:   
         cutflowvaluesSR1.append(cutStatusSR1[cutflowname])
         
     cutflowvaluesSR2=[]
-    cutflownamesSR2=['total','preselection','pfmet','njet','jet1','jet2','jet3','btaggedjet1','btaggedjet2']
+    cutflownamesSR2=['total','preselection','pfmet','njet','jet1','jet2','jet3','btaggedjet1','btaggedjet2','lep']
     for cutflowname in cutflownamesSR2:   
         cutflowvaluesSR2.append(cutStatusSR2[cutflowname])
     
@@ -1228,7 +1300,13 @@ def AnalyzeDataSet():
     print
     print "SR2:"
     print cutStatusSR2
-    print   
+    print
+    print "CRs:"
+    print CRStatus
+    print
+    print "CR Cutflow:"
+    print CRCutFlow
+    print
     
     allquantities.WriteHisto((NEntries_total,NEntries_Weight,cutflowvalues,cutflownames,cutflowvaluesSR1,cutflownamesSR1,cutflowvaluesSR2,cutflownamesSR2,CRvalues,CRs))
     
