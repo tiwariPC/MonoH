@@ -103,6 +103,10 @@ class MonoHbbQuantities:
                 bins='70'
                 low='-3.5'
                 high='3.5'
+            elif 'dPhi' in quant:
+                bins='32'
+                low='0'
+                high='3.2'
             elif 'phi' in quant:
                 bins='64'
                 low='-3.2'
@@ -111,6 +115,18 @@ class MonoHbbQuantities:
                 bins='100'
                 low='0.'
                 high='1.'
+            elif 'iso' in quant:
+                bins='50'
+                low='0.'
+                high='0.25'
+            elif 'Zmass' in quant:
+                bins='40'
+                low='70.'
+                high='110.'
+            elif 'Wmass' in quant:
+                bins='110'
+                low='50.'
+                high='160.'
             else:                   # for pT, recoil, mass, etc.
                 bins='80'
                 low='0.'
