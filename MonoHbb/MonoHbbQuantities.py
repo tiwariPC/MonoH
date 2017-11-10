@@ -8,12 +8,17 @@ class MonoHbbQuantities:
     
         allquantlist=AllQuantList.getAll()
         preselquantlist=AllQuantList.getPresel()
+        regquants=AllQuantList.getRegionQuants()
         
         for quant in allquantlist:
             exec("self."+quant+" = None")  
             exec("self.h_"+quant+" = []")  
             
         for quant in preselquantlist:
+            exec("self."+quant+" = None")  
+            exec("self.h_"+quant+" = []")
+            
+        for quant in regquants:
             exec("self."+quant+" = None")  
             exec("self.h_"+quant+" = []")
                    
@@ -67,10 +72,12 @@ class MonoHbbQuantities:
 
         self.h_total   = []
         self.h_total_weight   = []
+        self.h_npass   = []
         
     def defineHisto(self):
         self.h_total.append(TH1F('h_total','h_total',2,0,2))
         self.h_total_weight.append(TH1F('h_total_weight','h_total_weight',2,0,2))
+        self.h_npass.append(TH1F('h_npass','h_nass',2,0,2))
         
 #        self.h_cutflow=TH1F('h_cutflow_','h_cutflow_',7, 0, 7)                          # Cutflow     
 
@@ -97,6 +104,7 @@ class MonoHbbQuantities:
         
         allquantlist=AllQuantList.getAll()
         preselquantlist=AllQuantList.getPresel()
+        regquants=AllQuantList.getRegionQuants()
         
         def getBins(quant):
             if 'eta' in quant:
@@ -127,6 +135,22 @@ class MonoHbbQuantities:
                 bins='110'
                 low='50.'
                 high='160.'
+            elif 'met' in quant:
+                bins='20'
+                low='0.'
+                high='1000.'
+            elif 'chf' in quant or 'nhf' in quant:
+                bins='40'
+                low='0.'
+                high='1.'
+            elif 'njet' in quant:
+                bins='10'
+                low='0'
+                high='10'
+            elif 'ntau' in quant:
+                bins='4'
+                low='0'
+                high='4'
             else:                   # for pT, recoil, mass, etc.
                 bins='80'
                 low='0.'
@@ -141,6 +165,9 @@ class MonoHbbQuantities:
             bins,low,high=getBins(quant)         
             exec("self.h_"+quant+".append(TH1F('h_"+quant+"_','h_"+quant+"_',"+bins+","+low+","+high+"))")
         
+        for quant in regquants:
+            bins,low,high=getBins(quant)         
+            exec("self.h_"+quant+".append(TH1F('h_"+quant+"_','h_"+quant+"_',"+bins+","+low+","+high+"))")
         
         h_met_pdf_tmp = []
         for ipdf in range(2):
@@ -166,6 +193,13 @@ class MonoHbbQuantities:
         
         preselquantlist=AllQuantList.getPresel()
         for quant in preselquantlist:
+            exec("if self."+quant+" is not None: self.h_"+quant+"[0] .Fill(self."+quant+", WF)")
+    
+    def FillRegionHisto(self):
+        WF = self.weight
+        
+        regquants=AllQuantList.getRegionQuants()
+        for quant in regquants:
             exec("if self."+quant+" is not None: self.h_"+quant+"[0] .Fill(self."+quant+", WF)")
         
     def FillHisto(self):
@@ -205,7 +239,7 @@ class MonoHbbQuantities:
             exec("if self."+quant+" is not None: self.h_"+quant+"[0] .Fill(self."+quant+", WF)")
         
        
-    def WriteHisto(self, (nevts,nevts_weight,cutflowvalues,cutflownames,cutflowvaluesSR1,cutflownamesSR1,cutflowvaluesSR2,cutflownamesSR2,CRvalues,CRnames)):
+    def WriteHisto(self, (nevts,nevts_weight,npass,cutflowvalues,cutflownames,cutflowvaluesSR1,cutflownamesSR1,cutflowvaluesSR2,cutflownamesSR2,CRvalues,CRnames)):
         f = TFile(self.rootfilename,'RECREATE')
         print 
         f.cd()
@@ -214,6 +248,9 @@ class MonoHbbQuantities:
         
         self.h_total_weight[0].SetBinContent(1,nevts_weight)
         self.h_total_weight[0].Write()
+        
+        self.h_npass[0].SetBinContent(1,npass)
+        self.h_npass[0].Write()
         
         ncutflow=len(cutflowvalues)
         self.h_cutflow=TH1F('h_cutflow_','h_cutflow_',ncutflow, 0, ncutflow)                          # Cutflow         
@@ -269,10 +306,14 @@ class MonoHbbQuantities:
         
         allquantlist=AllQuantList.getAll()
         preselquantlist=AllQuantList.getPresel()
+        regquants=AllQuantList.getRegionQuants()
         
         for quant in allquantlist:
             exec("self.h_"+quant+"[0].Write()")
             
         for quant in preselquantlist:
+            exec("self.h_"+quant+"[0].Write()")
+            
+        for quant in regquants:
             exec("self.h_"+quant+"[0].Write()")
             
