@@ -391,7 +391,7 @@ def AnalyzeDataSet():
         st_genParP4.clear()
 
         st_THINnJet[0] = len(thinjetpassindex)
-        for ithinjet in range(len(thinjetpassindex)):
+        for ithinjet in thinjetpassindex:
             st_THINjetP4.push_back(thinjetP4[ithinjet])
             st_THINjetCISVV2.push_back(thinJetCSV[ithinjet])
             st_THINjetHadronFlavor.push_back(THINjetHadronFlavor[ithinjet])
@@ -399,14 +399,14 @@ def AnalyzeDataSet():
             st_THINjetCHadEF.push_back(thinjetChadEF[ithinjet])
             
         st_nEle[0] = len(myEles)
-        for iele in range(len(myEles)):
+        for iele in myEles:
             st_eleP4.push_back(eleP4[iele])
             st_eleIsPassLoose.push_back(bool(eleIsPassLoose[iele]))
             st_eleIsPassMedium.push_back(bool(eleIsPassMedium[iele]))
             st_eleIsPassTight.push_back(bool(eleIsPassTight[iele]))
             
         st_nMu[0] = len(myMuos)
-        for imu in range(len(myMuos)):
+        for imu in myMuos:
             st_muP4.push_back(muP4[imu])
             st_isLooseMuon.push_back(bool(isLooseMuon[imu]))
             st_isTightMuon.push_back(bool(isTightMuon[imu]))
@@ -417,7 +417,7 @@ def AnalyzeDataSet():
             st_muPUPt.push_back(muPUPt[imu])
             
         st_HPSTau_n[0] = len(myTaus)
-        for itau in range(len(myTaus)):
+        for itau in myTaus:
             st_HPSTau_4Momentum.push_back(tauP4[itau])
             
         
