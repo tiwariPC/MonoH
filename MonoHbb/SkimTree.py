@@ -46,6 +46,8 @@ skimmedTree.Add(sys.argv[1])
 
     
 def AnalyzeDataSet():
+    CSVMWP=0.8484
+    
     NEntries = skimmedTree.GetEntries()
     
     h_total = TH1F('h_total','h_total',2,0,2)
@@ -318,12 +320,17 @@ def AnalyzeDataSet():
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
                 
         thinjetpassindex=[]
+        nBjets=0
         for ithinjet in range(nTHINJets):
             j1 = thinjetP4[ithinjet]
             #if (j1.Pt() > 30.0)&(abs(j1.Eta())<2.4)&(bool(passThinJetLooseID[ithinjet])==True)&(bool(passThinJetPUID[ithinjet]) == True):
             if (j1.Pt() > 30.0)&(abs(j1.Eta())<2.4)&(bool(passThinJetLooseID[ithinjet])==True):
                 thinjetpassindex.append(ithinjet)
+            if thinJetCSV[ithinjet] > CSVMWP: nBjets += 1
+#        print ('njet: ',len(thinjetpassindex))
         if len(thinjetpassindex) < 1 : continue
+#        print nBjets
+        if nBjets < 1: continue
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
         ## Electron Veto
