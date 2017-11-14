@@ -53,6 +53,8 @@ def AnalyzeDataSet():
     h_total = TH1F('h_total','h_total',2,0,2)
     h_total_mcweight = TH1F('h_total_mcweight','h_total_mcweight',2,0,2)
     
+    triglist=['HLT_IsoMu20','HLT_Ele27_WPLoose_Gsf','HLT_PFMETNoMu90_PFMHTNoMu90_IDTight_v','HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v']
+    
     outfile = TFile(outfilename,'RECREATE')
     
     outTree = TTree( 'outTree', 'tree branches' )
@@ -62,8 +64,10 @@ def AnalyzeDataSet():
     st_pfMetCorrPt      = array( 'f', [ 0. ] )
     st_pfMetCorrPhi     = array( 'f', [ 0. ] )
     st_isData           = array( 'b', [ 0 ] )
-    st_HLT_IsoMu20      = array( 'b', [ 0 ] )
-    st_HLT_Ele27_WPLoose_Gsf = array( 'b', [ 0 ] )
+    for trigs in triglist:
+        exec("st_"+trigs+"  = array( 'b', [ 0 ] )")
+#    st_HLT_IsoMu20      = array( 'b', [ 0 ] )
+#    st_HLT_Ele27_WPLoose_Gsf = array( 'b', [ 0 ] )
     
     maxn = 10
     
@@ -125,8 +129,11 @@ def AnalyzeDataSet():
     outTree.Branch( 'st_pfMetCorrPt', st_pfMetCorrPt , 'st_pfMetCorrPt/F')
     outTree.Branch( 'st_pfMetCorrPhi', st_pfMetCorrPhi , 'st_pfMetCorrPhi/F')
     outTree.Branch( 'st_isData', st_isData , 'st_isData/O')
-    outTree.Branch( 'st_HLT_IsoMu20', st_HLT_IsoMu20 , 'st_HLT_IsoMu20/O')
-    outTree.Branch( 'st_HLT_Ele27_WPLoose_Gsf', st_HLT_Ele27_WPLoose_Gsf , 'st_HLT_Ele27_WPLoose_Gsf/O')
+        
+    for trigs in triglist:
+        exec("outTree.Branch( 'st_"+trigs+"', st_"+trigs+" , 'st_"+trigs+"/O')")
+#    outTree.Branch( 'st_HLT_IsoMu20', st_HLT_IsoMu20 , 'st_HLT_IsoMu20/O')
+#    outTree.Branch( 'st_HLT_Ele27_WPLoose_Gsf', st_HLT_Ele27_WPLoose_Gsf , 'st_HLT_Ele27_WPLoose_Gsf/O')
     
     outTree.Branch( 'st_THINnJet',st_THINnJet, 'st_THINnJet/L' ) 
     outTree.Branch( 'st_THINjetP4',st_THINjetP4 ) 
@@ -330,7 +337,7 @@ def AnalyzeDataSet():
 #        print ('njet: ',len(thinjetpassindex))
         if len(thinjetpassindex) < 1 : continue
 #        print nBjets
-        if nBjets < 1: continue
+#        if nBjets < 1: continue
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
         ## Electron Veto
@@ -349,9 +356,9 @@ def AnalyzeDataSet():
         myMuos = []
         for imu in range(nMu):
             if (muP4[imu].Pt()>10.) & (abs(muP4[imu].Eta()) < 2.4) & (bool(isLooseMuon[imu]) == True):
-                relPFIso = (muChHadIso[imu]+ max(0., muNeHadIso[imu] + muGamIso[imu] - 0.5*muPUPt[imu]))/muP4[imu].Pt();
-                if relPFIso<0.4 :
-                    myMuos.append(imu)
+#                relPFIso = (muChHadIso[imu]+ max(0., muNeHadIso[imu] + muGamIso[imu] - 0.5*muPUPt[imu]))/muP4[imu].Pt();
+#                if relPFIso<0.4 :
+                myMuos.append(imu)
                     
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -374,7 +381,10 @@ def AnalyzeDataSet():
         
         st_pfMetCorrPt[0]       = pfMet
         st_pfMetCorrPhi[0]      = pfMetPhi
-        st_isData[0]            = isData
+        st_isData[0]            = isData     
+        
+        st_HLT_PFMETNoMu90_PFMHTNoMu90_IDTight_v[0] = trig5
+        st_HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v[0] = trig8
         st_HLT_IsoMu20[0]       = trig13
         st_HLT_Ele27_WPLoose_Gsf[0] = trig14
 
