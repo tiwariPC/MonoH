@@ -147,14 +147,18 @@ class MonoHbbQuantities:
                 bins='10'
                 low='0'
                 high='10'
-            elif 'ntau' in quant:
-                bins='4'
+            elif 'ntau' in quant or 'nele' in quant or 'nmu' in quant:
+                bins='6'
                 low='0'
-                high='4'
-            else:                   # for pT, recoil, mass, etc.
-                bins='80'
+                high='6'
+            elif 'recoil' in quant:
+                bins='10'
                 low='0.'
-                high='800.'
+                high='1000.'
+            else:                   # for pT, mass, etc.
+                bins='100'
+                low='0.'
+                high='1000.'
             return bins,low,high
         
         for quant in allquantlist:
