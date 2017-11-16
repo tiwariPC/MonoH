@@ -269,8 +269,8 @@ def AnalyzeDataSet():
     reader1.load(calib1, 1,  "comb" )  
     reader1.load(calib1, 2,  "incl" )  
     
-    h_total = TH1F('h_total','h_total',2,0,2)
-    h_total_mcweight = TH1F('h_total_mcweight','h_total_mcweight',2,0,2)
+#    h_total = TH1F('h_total','h_total',2,0,2)
+#    h_total_mcweight = TH1F('h_total_mcweight','h_total_mcweight',2,0,2)
     
     
     
@@ -355,8 +355,14 @@ def AnalyzeDataSet():
         ZmumuRecoil                = skimmedTree.__getattr__('ZmumuRecoil')
         ZmumuMass                  = skimmedTree.__getattr__('ZmumuMass')
         TOPRecoil                  = skimmedTree.__getattr__('TOPRecoil')
-        HLT_IsoMu20                = skimmedTree.__getattr__('st_HLT_IsoMu20')
-        HLT_Ele27_WPLoose_Gsf      = skimmedTree.__getattr__('st_HLT_Ele27_WPLoose_Gsf')
+        
+        triglist=['HLT_IsoMu20','HLT_Ele27_WPLoose_Gsf']#,'HLT_PFMETNoMu90_PFMHTNoMu90_IDTight_v','HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v']
+        
+        for trig in triglist:
+            exec(trig+" = skimmedTree.__getattr__('st_"+trig+"')")
+#        HLT_IsoMu20                = skimmedTree.__getattr__('st_HLT_IsoMu20')
+#        HLT_Ele27_WPLoose_Gsf      = skimmedTree.__getattr__('st_HLT_Ele27_WPLoose_Gsf')
+        
              
         jetSR1Info           = []
         jetSR2Info           = []
@@ -472,18 +478,19 @@ def AnalyzeDataSet():
         SR2njetcond=False
         SR1jetcond=False
         SR2jetcond=False        
-            
+               
+        
+        if nEle+nMu+nTau==0:
+            SRlepcond=True
+        else:
+            SRlepcond=False
         
         ## for SR1
          # 1 or 2 jets and 1 btagged 
-         
-        if (nTHINJets == 1 or nTHINJets == 2) and nBjets==1 : 
-            SR1njetcond=True
-            if pfmetstatus: cutStatusSR1['njet+nBjet'] +=1    
-            if pfmetstatus: cutStatus['njet+nBjet'] += 1
-                         
-            SR1jetcond=True                
-            
+        
+        SRtrigstatus = True#HLT_PFMETNoMu90_PFMHTNoMu90_IDTight_v or HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v
+        
+        if (nTHINJets == 1 or nTHINJets == 2) and pfmetstatus and SRtrigstatus:
             #===CSVs before any selection===
             allquantities.presel_jet1_csv_sr1=thinJetCSV[ifirstjet]		
             if nTHINJets>1: allquantities.presel_jet2_csv_sr1=thinJetCSV[isecondjet]
@@ -491,6 +498,13 @@ def AnalyzeDataSet():
             allquantities.presel_jet1_nhf_sr1=thinjetNhadEF[ifirstjet]		
             allquantities.FillPreSel()		
             #===
+         
+        if (nTHINJets == 1 or nTHINJets == 2) and nBjets==1 and SRtrigstatus: 
+            SR1njetcond=True
+            if pfmetstatus: cutStatusSR1['njet+nBjet'] +=1    
+            if pfmetstatus: cutStatus['njet+nBjet'] += 1
+                         
+            SR1jetcond=True
             
             if j1.Pt() < 50.0: SR1jetcond=False
             if DeltaPhi(j1.Phi(),pfMetPhi) < 0.5: SR1jetcond=False           
@@ -534,18 +548,14 @@ def AnalyzeDataSet():
                 jetSR1Info.append([jet2pt,jet2eta,jet2phi,jet2csv])
                 jetSR1Info.append(min_dPhi)
                 jetSR1Info.append(pfMet)
+                jetSR1Info.append(thinjetNhadEF[ifirstjet])
+                jetSR1Info.append(thinjetChadEF[ifirstjet])
           
      
      ## for SR2
         # 3 jets and 2 btagged 
         
-        if (nTHINJets == 2 or nTHINJets == 3) and nBjets==2:
-            SR2njetcond=True
-            if pfmetstatus: cutStatusSR2['njet+nBjet'] +=1
-            if pfmetstatus: cutStatus['njet+nBjet'] += 1
-            
-            SR2jetcond=True
-            
+        if (nTHINJets == 2 or nTHINJets == 3) and pfmetstatus and SRtrigstatus:
             #===CSVs before any selection===		
             allquantities.presel_jet1_csv_sr2=thinJetCSV[ifirstjet]
             allquantities.presel_jet2_csv_sr2=thinJetCSV[isecondjet]
@@ -553,8 +563,14 @@ def AnalyzeDataSet():
             allquantities.presel_jet1_chf_sr2=thinjetChadEF[ifirstjet]
             allquantities.presel_jet1_nhf_sr2=thinjetNhadEF[ifirstjet]
             allquantities.FillPreSel()		
-            #===  
-           
+            #===
+        
+        if (nTHINJets == 2 or nTHINJets == 3) and nBjets==2 and SRtrigstatus:
+            SR2njetcond=True
+            if pfmetstatus: cutStatusSR2['njet+nBjet'] +=1
+            if pfmetstatus: cutStatus['njet+nBjet'] += 1
+            
+            SR2jetcond=True
             
             if j1.Pt() < 50.0: SR2jetcond=False
             if DeltaPhi(j1.Phi(),pfMetPhi) < 0.5: SR2jetcond=False           
@@ -609,12 +625,9 @@ def AnalyzeDataSet():
                 jetSR2Info.append([jet3pt,jet3eta,jet3phi,jet3csv])
                 jetSR2Info.append(min_dPhi)
                 jetSR2Info.append(pfMet)
+                jetSR2Info.append(thinjetNhadEF[ifirstjet])
+                jetSR2Info.append(thinjetChadEF[ifirstjet])
 
-        
-        if nEle+nMu+nTau==0:
-            SRlepcond=True
-        else:
-            SRlepcond=False
             
         if pfmetstatus and SRlepcond and SR1jetcond:
             cutStatus['lep'] += 1
@@ -636,6 +649,12 @@ def AnalyzeDataSet():
 # --------------------------------------------------------------------------------------------------------------------------------------------------------
 
         #Control Region with only category cuts
+        
+        preselquantlist=AllQuantList.getPresel()
+        
+        for quant in preselquantlist:
+            exec("allquantities."+quant+" = None")
+            
               
         regquants=AllQuantList.getRegionQuants()
         
@@ -667,7 +686,7 @@ def AnalyzeDataSet():
         ###
         
         #2e, 1 b-tagged
-        if nEle==2 and nMu==0 and nTau==2 and HLT_Ele27_WPLoose_Gsf and ZeeMass>70. and ZeeMass<110. and ZeeRecoil>200. and jetcond:
+        if nEle==2 and nMu==0 and nTau==0 and HLT_Ele27_WPLoose_Gsf and ZeeMass>70. and ZeeMass<110. and ZeeRecoil>200. and jetcond:
             
             alllepPT=[lep.Pt() for lep in myEles]
             lepindex=[i for i in range(len(myEles))]            
@@ -1205,6 +1224,9 @@ def AnalyzeDataSet():
            allquantities.jet2_csv_sr1    = jetSR1Info[1][3]
            allquantities.min_dPhi_sr1    = jetSR1Info[2]
            allquantities.met_sr1         = jetSR1Info[3]
+           allquantities.jet1_nhf_sr1    = jetSR1Info[4]
+           allquantities.jet1_chf_sr1    = jetSR1Info[5]
+           
            
         elif SR2jetcond and pfmetstatus and SRlepcond:
            allquantities.jet1_pT_sr2     = jetSR2Info[0][0]
@@ -1220,7 +1242,9 @@ def AnalyzeDataSet():
            allquantities.jet3_phi_sr2    = jetSR2Info[2][2]
            allquantities.jet3_csv_sr2    = jetSR2Info[2][3]
            allquantities.min_dPhi_sr2    = jetSR2Info[3]      
-           allquantities.met_sr2         = jetSR2Info[4]     
+           allquantities.met_sr2         = jetSR2Info[4]   
+           allquantities.jet1_nhf_sr2    = jetSR2Info[5]
+           allquantities.jet1_chf_sr2    = jetSR2Info[6]  
             
            
         ## to fill for ZCR

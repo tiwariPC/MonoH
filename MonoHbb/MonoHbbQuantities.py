@@ -144,9 +144,9 @@ class MonoHbbQuantities:
                 low='0.'
                 high='1.'
             elif 'njet' in quant:
-                bins='10'
+                bins='12'
                 low='0'
-                high='10'
+                high='12'
             elif 'ntau' in quant or 'nele' in quant or 'nmu' in quant:
                 bins='6'
                 low='0'

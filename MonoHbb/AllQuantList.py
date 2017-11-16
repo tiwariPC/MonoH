@@ -26,7 +26,7 @@ def getAll():
                  for region in ['Wecr','Wmucr','TOPcr']:          # For ZCR, only 1 mu and/or ele
                        allquantlist.append(lep+"1_"+lepprop+"_"+region+nSR)        
         
-        for quantname in ['met']:
+        for quantname in ['met','jet1_nhf','jet1_chf']:
             allquantlist.append(quantname+"_sr"+nSR)
 
     
