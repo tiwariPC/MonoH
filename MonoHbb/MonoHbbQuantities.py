@@ -120,7 +120,7 @@ class MonoHbbQuantities:
                 low='-3.2'
                 high='3.2'
             elif 'csv' in quant:
-                bins='100'
+                bins='50'
                 low='0.'
                 high='1.'
             elif 'iso' in quant:
@@ -128,7 +128,7 @@ class MonoHbbQuantities:
                 low='0.'
                 high='0.25'
             elif 'Zmass' in quant:
-                bins='80'
+                bins='60'
                 low='70.'
                 high='110.'
             elif 'Wmass' in quant:
@@ -156,7 +156,7 @@ class MonoHbbQuantities:
                 low='0.'
                 high='1000.'
             else:                   # for pT, mass, etc.
-                bins='100'
+                bins='50'
                 low='0.'
                 high='1000.'
             return bins,low,high
