@@ -385,8 +385,8 @@ def AnalyzeDataSet():
         ##number of bjets without any selection
         mybjets=[]
         for nb in range(nTHINJets):
-            if thinJetCSV[nb] < CSVMWP : continue
-            mybjets.append(nb)
+            if thinJetCSV[nb] > CSVMWP and abs(thinjetP4[nb].Eta())<2.4:
+                mybjets.append(nb)
         nBjets=len(mybjets)
 
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -468,10 +468,7 @@ def AnalyzeDataSet():
 
         # SR start   
         
-        preselquantlist=AllQuantList.getPresel()
         
-        for quant in preselquantlist:
-            exec("allquantities."+quant+" = None")
         
         
         SR1njetcond=False
@@ -490,9 +487,13 @@ def AnalyzeDataSet():
         
         SRtrigstatus = True#HLT_PFMETNoMu90_PFMHTNoMu90_IDTight_v or HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v
         
-        if (nTHINJets == 1 or nTHINJets == 2) and pfmetstatus and SRtrigstatus:
+        if (nTHINJets == 1 or nTHINJets == 2) and pfmetstatus and SRlepcond and SRtrigstatus:
             #===CSVs before any selection===
-            allquantities.presel_jet1_csv_sr1=thinJetCSV[ifirstjet]		
+            preselquantlist=AllQuantList.getPresel()        
+            for quant in preselquantlist:
+                exec("allquantities."+quant+" = None")
+                
+            allquantities.presel_jet1_csv_sr1=thinJetCSV[ifirstjet]	
             if nTHINJets>1: allquantities.presel_jet2_csv_sr1=thinJetCSV[isecondjet]
             allquantities.presel_jet1_chf_sr1=thinjetChadEF[ifirstjet]
             allquantities.presel_jet1_nhf_sr1=thinjetNhadEF[ifirstjet]		
@@ -555,8 +556,11 @@ def AnalyzeDataSet():
      ## for SR2
         # 3 jets and 2 btagged 
         
-        if (nTHINJets == 2 or nTHINJets == 3) and pfmetstatus and SRtrigstatus:
-            #===CSVs before any selection===		
+        if (nTHINJets == 2 or nTHINJets == 3) and pfmetstatus and SRlepcond and SRtrigstatus:
+            #===CSVs before any selection===	
+            preselquantlist=AllQuantList.getPresel()        
+            for quant in preselquantlist:
+                exec("allquantities."+quant+" = None")	
             allquantities.presel_jet1_csv_sr2=thinJetCSV[ifirstjet]
             allquantities.presel_jet2_csv_sr2=thinJetCSV[isecondjet]
             if nTHINJets>2: allquantities.presel_jet3_csv_sr2=thinJetCSV[ithirdjet]
@@ -665,28 +669,54 @@ def AnalyzeDataSet():
         
         ####new conds
         jetcond=True
+        SR2jet2=True
         if j1.Pt() < 50.0: jetcond=False
         if DeltaPhi(j1.Phi(),pfMetPhi) < 0.5: jetcond=False           
         if thinjetNhadEF[ifirstjet] > 0.8 : jetcond=False
         if thinjetChadEF[ifirstjet]< 0.1: jetcond=False      
-       
+#       
         if nTHINJets>=2:
             if j2.Pt() < 30.0: jetcond=False
             if DeltaPhi(j2.Phi(),pfMetPhi) < 0.5: jetcond=False
             
-            if j2.Pt() > 50.0:
-                SR2jet2=True
-            else:
-                SR2jet2=False
+#            if j2.Pt() > 50.0:
+#                SR2jet2=True
+#            else:
+#                SR2jet2=False
+
                 
-        if nTHINJets>2:            
+        if nTHINJets>=3:            
             if j3.Pt() < 30.0: jetcond=False
             if DeltaPhi(j3.Phi(),pfMetPhi) < 0.5: jetcond=False
-        
-        ###
+            
+#        for ijet in range(3,len(sortedjets)):
+#            if DeltaPhi(sortedjets[ijet].Phi(),pfMetPhi) < 0.5: jetcond=False
+
+#        SR1bjetcond=False
+#        SR2bjetcond=False
+#        
+#        if nTHINJets==1 and thinJetCSV[0]>CSVMWP: SR1bjetcond = True            
+#        
+#        if nTHINJets>=2:
+#            nbjetin2=0
+#            for ijet in [ifirstjet,isecondjet]:
+#                if thinJetCSV[ijet]>CSVMWP:
+#                    nbjetin2 += 1
+#            if nbjetin2 == 1: SR1bjetcond = True
+#            if nbjetin2 == 2: SR2bjetcond = True
+#        
+#        if nTHINJets>=3:
+#            nbjetin3=0
+#            for ijet in [ifirstjet,isecondjet,ithirdjet]:
+#                if thinJetCSV[ijet]>CSVMWP:
+#                    nbjetin3 += 1
+#            if nbjetin3 == 2: SR2bjetcond = True
+#            
+#        
+#        ###
         
         #2e, 1 b-tagged
-        if nEle==2 and nMu==0 and nTau==0 and HLT_Ele27_WPLoose_Gsf and ZeeMass>70. and ZeeMass<110. and ZeeRecoil>200. and jetcond:
+        if nEle==2 and nMu==0 and HLT_Ele27_WPLoose_Gsf and ZeeMass>70. and ZeeMass<110. and ZeeRecoil>200. and jetcond:
             
             alllepPT=[lep.Pt() for lep in myEles]
             lepindex=[i for i in range(len(myEles))]            
@@ -701,7 +731,7 @@ def AnalyzeDataSet():
             
                 ZpT = math.sqrt( (myEles[iLeadLep].Px()+myEles[iSecondLep].Px())*(myEles[iLeadLep].Px()+myEles[iSecondLep].Px()) + (myEles[iLeadLep].Py()+myEles[iSecondLep].Py())*(myEles[iLeadLep].Py()+myEles[iSecondLep].Py()) )                
                             
-                if nBjets==1:                
+                if nBjets==1: 
                     allquantities.reg_2e1b_Zmass = ZeeMass    
                     allquantities.reg_2e1b_ZpT=ZpT
                     
@@ -726,7 +756,7 @@ def AnalyzeDataSet():
                     allquantities.reg_2e1b_nmu = nMu
                     
             #2e, 2 b-tagged   
-                if nBjets==2 and SR2jet2:                
+                if nBjets==2 and SR2jet2:        #         
                     allquantities.reg_2e2b_Zmass = ZeeMass   
                     allquantities.reg_2e2b_ZpT=ZpT
                     
@@ -751,7 +781,7 @@ def AnalyzeDataSet():
                     allquantities.reg_2e2b_nmu = nMu
                 
         #2mu, 1 b-tagged  
-        if nMu==2 and nEle==0 and nTau==0 and HLT_IsoMu20 and ZmumuMass>70. and ZmumuMass<110. and ZmumuRecoil>200. and jetcond:
+        if nMu==2 and nEle==0 and HLT_IsoMu20 and ZmumuMass>70. and ZmumuMass<110. and ZmumuRecoil>200. and jetcond:
         
             alllepPT=[lep.Pt() for lep in myMuos]
             lepindex=[i for i in range(len(myMuos))]            
@@ -766,7 +796,7 @@ def AnalyzeDataSet():
                         
                 ZpT = math.sqrt( (myMuos[iLeadLep].Px()+myMuos[iSecondLep].Px())*(myMuos[iLeadLep].Px()+myMuos[iSecondLep].Px()) + (myMuos[iLeadLep].Py()+myMuos[iSecondLep].Py())*(myMuos[iLeadLep].Py()+myMuos[iSecondLep].Py()) )                
                             
-                if nBjets==1:                
+                if nBjets==1:               
                     allquantities.reg_2mu1b_Zmass = ZmumuMass    
                     allquantities.reg_2mu1b_ZpT=ZpT
                     
@@ -793,7 +823,7 @@ def AnalyzeDataSet():
                     allquantities.reg_2mu1b_nele = nEle
                     allquantities.reg_2mu1b_nmu = nMu
             #2mu, 2 b-tagged        
-                if nBjets==2 and SR2jet2:                
+                if nBjets==2 and SR2jet2:
                     allquantities.reg_2mu2b_Zmass = ZmumuMass   
                     allquantities.reg_2mu2b_ZpT=ZpT
                     
