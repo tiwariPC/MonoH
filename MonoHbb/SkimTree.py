@@ -356,9 +356,9 @@ def AnalyzeDataSet():
         myMuos = []
         for imu in range(nMu):
             if (muP4[imu].Pt()>10.) & (abs(muP4[imu].Eta()) < 2.4) & (bool(isLooseMuon[imu]) == True):
-#                relPFIso = (muChHadIso[imu]+ max(0., muNeHadIso[imu] + muGamIso[imu] - 0.5*muPUPt[imu]))/muP4[imu].Pt();
-#                if relPFIso<0.4 :
-                myMuos.append(imu)
+                relPFIso = (muChHadIso[imu]+ max(0., muNeHadIso[imu] + muGamIso[imu] - 0.5*muPUPt[imu]))/muP4[imu].Pt()
+                if relPFIso<0.25 :
+                    myMuos.append(imu)
                     
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -367,7 +367,7 @@ def AnalyzeDataSet():
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
         myTaus=[]
         for itau in range(nTau):
-            if (tauP4[itau].Pt()>18.) & (abs(tauP4[itau].Eta())<2.5) & (bool(isDecayModeFinding[itau]) == True) & (bool(passLooseTauIso[itau]) == True):
+            if (tauP4[itau].Pt()>18.) & (abs(tauP4[itau].Eta())<2.3) & (bool(isDecayModeFinding[itau]) == True) & (bool(passLooseTauIso[itau]) == True):
                 myTaus.append(itau)
         
         
