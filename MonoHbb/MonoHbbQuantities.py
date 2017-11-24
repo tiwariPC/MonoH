@@ -108,9 +108,9 @@ class MonoHbbQuantities:
         
         def getBins(quant):
             if 'eta' in quant:
-                bins='70'
-                low='-3.5'
-                high='3.5'
+                bins='30'
+                low='-3'
+                high='3'
             elif 'dPhi' in quant:
                 bins='32'
                 low='0'
