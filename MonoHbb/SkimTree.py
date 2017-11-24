@@ -44,6 +44,19 @@ skimmedTree = TChain("tree/treeMaker")
 skimmedTree.Add(sys.argv[1])
 #samplename = WhichSample(sys.argv[1])
 
+def arctan(x,y):
+    corr=0
+    if (x>0 and y>=0) or (x>0 and y<0):
+        corr=0
+    elif x<0 and y>=0:
+        corr=math.pi
+    elif x<0 and y<0:
+        corr=-math.pi
+    if x!=0.:        
+        return math.atan(y/x)+corr
+    else:
+        return math.pi/2+corr
+
     
 def AnalyzeDataSet():
     CSVMWP=0.8484
@@ -111,17 +124,22 @@ def AnalyzeDataSet():
     
     WenuRecoil = array( 'f', [ 0. ] )
     Wenumass = array( 'f', [ 0. ] )
+    WenuPhi = array( 'f', [ 0. ] )
     
     WmunuRecoil = array( 'f', [ 0. ] )
     Wmunumass = array( 'f', [ 0. ] )
+    WmunuPhi = array( 'f', [ 0. ] )
     
     ZeeRecoil = array( 'f', [ 0. ] )
     ZeeMass = array( 'f', [ 0. ] )
+    ZeePhi = array( 'f', [ 0. ] )
     
     ZmumuRecoil = array( 'f', [ 0. ] )
     ZmumuMass = array( 'f', [ 0. ] )
+    ZmumuPhi = array( 'f', [ 0. ] )
     
     TOPRecoil = array( 'f', [ 0. ] )
+    TOPPhi = array( 'f', [ 0. ] )
            
     outTree.Branch( 'st_runId', st_runId , 'st_runId/L')
     outTree.Branch( 'st_lumiSection', st_lumiSection , 'st_lumiSection/L')
@@ -171,17 +189,22 @@ def AnalyzeDataSet():
     
     outTree.Branch( 'WenuRecoil', WenuRecoil, 'WenuRecoil/F')
     outTree.Branch( 'Wenumass', Wenumass, 'Wenumass/F')
+    outTree.Branch( 'WenuPhi', WenuPhi, 'WenuPhi/F')
     
     outTree.Branch( 'WmunuRecoil', WmunuRecoil, 'WmunuRecoil/F')
     outTree.Branch( 'Wmunumass', Wmunumass, 'Wmunumass/F')
+    outTree.Branch( 'WmunuPhi', WmunuPhi, 'WmunuPhi/F')
     
     outTree.Branch( 'ZeeRecoil', ZeeRecoil, 'ZeeRecoil/F')
     outTree.Branch( 'ZeeMass', ZeeMass, 'ZeeMass/F')
+    outTree.Branch( 'ZeePhi', ZeePhi, 'ZeePhi/F')
     
     outTree.Branch( 'ZmumuRecoil', ZmumuRecoil, 'ZmumuRecoil/F')
     outTree.Branch( 'ZmumuMass', ZmumuMass, 'ZmumuMass/F')
+    outTree.Branch( 'ZmumuPhi', ZmumuPhi, 'ZmumuPhi/F')
     
     outTree.Branch( 'TOPRecoil', TOPRecoil, 'TOPRecoil/F')
+    outTree.Branch( 'TOPPhi', TOPPhi, 'TOPPhi/F')
 
     
     for ievent in range(NEntries):
@@ -452,17 +475,23 @@ def AnalyzeDataSet():
         ## Fill variables for the CRs. 
         WenuRecoil[0] = -1.0
         Wenumass[0] = -1.0
+        WenuPhi[0] = -10.
         
         WmunuRecoil[0] = -1.0
         Wmunumass[0] = -1.0
+        WmunuPhi[0] = -1.0
         
         ZeeMass[0] = -1.0
         ZeeRecoil[0] = -1.0
+        ZeePhi[0] = -10.
         
         ZmumuMass[0] = -1.0
         ZmumuRecoil[0] = -1.0
+        ZmumuPhi[0] = -10.
         
         TOPRecoil[0] = -1.0
+        TOPPhi[0] = -10.
+        
         
         ## for dielectron 
         if len(myEles) >=2:
@@ -484,6 +513,7 @@ def AnalyzeDataSet():
                         if ee_mass > 70.0 and ee_mass < 110.0 and ZeeRecoilPt > 200.:
                             ZeeRecoil[0] = ZeeRecoilPt
                             ZeeMass[0] = ee_mass
+                            ZeePhi[0] = arctan(-zeeRecoilPx,-zeeRecoilPy)
                             break
             
                            
@@ -531,6 +561,7 @@ def AnalyzeDataSet():
                         if mumu_mass > 70.0 and mumu_mass < 110.0 and ZmumuRecoilPt > 200.:
                             ZmumuRecoil[0] = ZmumuRecoilPt
                             ZmumuMass[0] = mumu_mass
+                            ZeePhi[0] = arctan(-zmumuRecoilPx,-zmumuRecoilPy)
                             break
                 
         ## hardrecoil cut for ZJETS sample
@@ -562,6 +593,7 @@ def AnalyzeDataSet():
            if WenuRecoilPt > 200.:
                WenuRecoil[0] = WenuRecoilPt
                Wenumass[0] = e_mass
+               WenuPhi[0] = arctan(-WenuRecoilPx,-WenuRecoilPy)
            
         ## hardrecoil cut for WJETS sample   
 #        if samplename == "WJETS":
@@ -581,9 +613,10 @@ def AnalyzeDataSet():
            WmunuRecoilPx = -( pfMet*math.cos(pfMetPhi) - p4_mu1.Px())
            WmunuRecoilPy = -( pfMet*math.sin(pfMetPhi) - p4_mu1.Py())
            WmunuRecoilPt = math.sqrt(WmunuRecoilPx * WmunuRecoilPx  +  WmunuRecoilPy*WmunuRecoilPy)
-           if mu_mass > 50.0 and mu_mass < 160.0 and WmunuRecoilPt > 200.:
+           if WmunuRecoilPt > 200.:
                WmunuRecoil[0] = WmunuRecoilPt
                Wmunumass[0] = mu_mass
+               WmunuPhi[0] = arctan(-WmunuRecoilPx,-WmunuRecoilPy)
            
         ## hardrecoil cut for WJETS sample
 #        if samplename == "WJETS":
@@ -622,6 +655,7 @@ def AnalyzeDataSet():
                     TOPenumunuRecoilPt =  math.sqrt(TOPenumunuRecoilPx * TOPenumunuRecoilPx  +  TOPenumunuRecoilPy*TOPenumunuRecoilPy)
                     if TOPenumunuRecoilPt > 200:
                         TOPRecoil[0] = TOPenumunuRecoilPt
+                        TOPPhi[0] = arctan(-TOPenumunuRecoilPx,-TOPenumunuRecoilPy)
                         break
            
          

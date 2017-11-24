@@ -348,13 +348,18 @@ def AnalyzeDataSet():
         
         WenuRecoil                 = skimmedTree.__getattr__('WenuRecoil')
         Wenumass                   = skimmedTree.__getattr__('Wenumass')
+        WenuPhi                    = skimmedTree.__getattr__('WenuPhi')
         WmunuRecoil                = skimmedTree.__getattr__('WmunuRecoil')
         Wmunumass                  = skimmedTree.__getattr__('Wmunumass')
+        WmunuPhi                   = skimmedTree.__getattr__('WmunuPhi')
         ZeeRecoil                  = skimmedTree.__getattr__('ZeeRecoil')
         ZeeMass                    = skimmedTree.__getattr__('ZeeMass')
+        ZeePhi                     = skimmedTree.__getattr__('ZeePhi')
         ZmumuRecoil                = skimmedTree.__getattr__('ZmumuRecoil')
         ZmumuMass                  = skimmedTree.__getattr__('ZmumuMass')
+        ZmumuPhi                   = skimmedTree.__getattr__('ZmumuPhi')
         TOPRecoil                  = skimmedTree.__getattr__('TOPRecoil')
+        TOPPhi                     = skimmedTree.__getattr__('TOPPhi')
         
         triglist=['HLT_IsoMu20','HLT_Ele27_WPLoose_Gsf']#,'HLT_PFMETNoMu90_PFMHTNoMu90_IDTight_v','HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v']
         
@@ -670,28 +675,24 @@ def AnalyzeDataSet():
         ####new conds
         jetcond=True
         SR2jet2=True
-        if j1.Pt() < 50.0: jetcond=False
-        if DeltaPhi(j1.Phi(),pfMetPhi) < 0.5: jetcond=False           
+        if j1.Pt() < 50.0: jetcond=False         
         if thinjetNhadEF[ifirstjet] > 0.8 : jetcond=False
-        if thinjetChadEF[ifirstjet]< 0.1: jetcond=False      
-#       
+        if thinjetChadEF[ifirstjet]< 0.1: jetcond=False    
+        #       
         if nTHINJets>=2:
-            if j2.Pt() < 30.0: jetcond=False
-            if DeltaPhi(j2.Phi(),pfMetPhi) < 0.5: jetcond=False
+            if j2.Pt() < 30.0: jetcond=False            
             
 #            if j2.Pt() > 50.0:
 #                SR2jet2=True
 #            else:
 #                SR2jet2=False
-
                 
         if nTHINJets>=3:            
             if j3.Pt() < 30.0: jetcond=False
-            if DeltaPhi(j3.Phi(),pfMetPhi) < 0.5: jetcond=False
-            
-#        for ijet in range(3,len(sortedjets)):
-#            if DeltaPhi(sortedjets[ijet].Phi(),pfMetPhi) < 0.5: jetcond=False
-
+        
+        
+#        ### Experimental: First 1/2/3 jets alone satisfy nBjet condition: Doesn't make any positive difference
+#        
 #        SR1bjetcond=False
 #        SR2bjetcond=False
 #        
@@ -712,11 +713,31 @@ def AnalyzeDataSet():
 #                    nbjetin3 += 1
 #            if nbjetin3 == 2: SR2bjetcond = True
 #            
+#        # -----------------    
+            
+        #Z CR specific bools
+        
+        ZdPhicond=True
+        
+        if ZeePhi>-10.:
+            if DeltaPhi(j1.Phi(),Phi_mpi_pi(math.pi+ZeePhi)) < 0.5: ZdPhicond = False      #Added +pi to ZPhi to reverse an error in SkimTree which will be fixed in next iteration.
+            if nTHINJets>=2:
+                if DeltaPhi(j2.Phi(),Phi_mpi_pi(math.pi+ZeePhi)) < 0.5: ZdPhicond=False
+            if nTHINJets>=3:
+                if DeltaPhi(j3.Phi(),Phi_mpi_pi(math.pi+ZeePhi)) < 0.5: ZdPhicond=False
+            
+        if ZmumuPhi>-10.:
+            if DeltaPhi(j1.Phi(),Phi_mpi_pi(math.pi+ZmumuPhi)) < 0.5: ZdPhicond = False      
+            if nTHINJets>=2:
+                if DeltaPhi(j2.Phi(),Phi_mpi_pi(math.pi+ZmumuPhi)) < 0.5: ZdPhicond=False
+            if nTHINJets>=3:
+                if DeltaPhi(j3.Phi(),Phi_mpi_pi(math.pi+ZmumuPhi)) < 0.5: ZdPhicond=False
+#            
 #        
 #        ###
         
         #2e, 1 b-tagged
-        if nEle==2 and nMu==0 and HLT_Ele27_WPLoose_Gsf and ZeeMass>70. and ZeeMass<110. and ZeeRecoil>200. and jetcond:
+        if nEle==2 and nMu==0 and HLT_Ele27_WPLoose_Gsf and ZeeMass>70. and ZeeMass<110. and ZeeRecoil>200. and jetcond and ZdPhicond:
             
             alllepPT=[lep.Pt() for lep in myEles]
             lepindex=[i for i in range(len(myEles))]            
@@ -731,7 +752,7 @@ def AnalyzeDataSet():
             
                 ZpT = math.sqrt( (myEles[iLeadLep].Px()+myEles[iSecondLep].Px())*(myEles[iLeadLep].Px()+myEles[iSecondLep].Px()) + (myEles[iLeadLep].Py()+myEles[iSecondLep].Py())*(myEles[iLeadLep].Py()+myEles[iSecondLep].Py()) )                
                             
-                if nBjets==1: 
+                if nBjets==1:
                     allquantities.reg_2e1b_Zmass = ZeeMass    
                     allquantities.reg_2e1b_ZpT=ZpT
                     
@@ -756,7 +777,7 @@ def AnalyzeDataSet():
                     allquantities.reg_2e1b_nmu = nMu
                     
             #2e, 2 b-tagged   
-                if nBjets==2 and SR2jet2:        #         
+                if nBjets==2 and SR2jet2:         
                     allquantities.reg_2e2b_Zmass = ZeeMass   
                     allquantities.reg_2e2b_ZpT=ZpT
                     
@@ -781,7 +802,7 @@ def AnalyzeDataSet():
                     allquantities.reg_2e2b_nmu = nMu
                 
         #2mu, 1 b-tagged  
-        if nMu==2 and nEle==0 and HLT_IsoMu20 and ZmumuMass>70. and ZmumuMass<110. and ZmumuRecoil>200. and jetcond:
+        if nMu==2 and nEle==0 and HLT_IsoMu20 and ZmumuMass>70. and ZmumuMass<110. and ZmumuRecoil>200. and jetcond and ZdPhicond:
         
             alllepPT=[lep.Pt() for lep in myMuos]
             lepindex=[i for i in range(len(myMuos))]            
@@ -796,7 +817,7 @@ def AnalyzeDataSet():
                         
                 ZpT = math.sqrt( (myMuos[iLeadLep].Px()+myMuos[iSecondLep].Px())*(myMuos[iLeadLep].Px()+myMuos[iSecondLep].Px()) + (myMuos[iLeadLep].Py()+myMuos[iSecondLep].Py())*(myMuos[iLeadLep].Py()+myMuos[iSecondLep].Py()) )                
                             
-                if nBjets==1:               
+                if  nBjets==1:         
                     allquantities.reg_2mu1b_Zmass = ZmumuMass    
                     allquantities.reg_2mu1b_ZpT=ZpT
                     
@@ -823,7 +844,7 @@ def AnalyzeDataSet():
                     allquantities.reg_2mu1b_nele = nEle
                     allquantities.reg_2mu1b_nmu = nMu
             #2mu, 2 b-tagged        
-                if nBjets==2 and SR2jet2:
+                if  nBjets==2 and SR2jet2:
                     allquantities.reg_2mu2b_Zmass = ZmumuMass   
                     allquantities.reg_2mu2b_ZpT=ZpT
                     
