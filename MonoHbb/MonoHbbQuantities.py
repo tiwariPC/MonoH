@@ -155,6 +155,10 @@ class MonoHbbQuantities:
                 bins='10'
                 low='0.'
                 high='1000.'
+            elif '_dR_' in quant:
+                bins='120'
+                low='0.'
+                high='6.'
             else:                   # for pT, mass, etc.
                 bins='50'
                 low='0.'

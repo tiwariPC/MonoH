@@ -415,6 +415,7 @@ def AnalyzeDataSet():
          # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 #        print (HLT_IsoMu20,HLT_Ele27_WPLoose_Gsf)
         
+        
         myEles=[]
         myEleLooseID=[]
         myEleTightID=[]
@@ -432,6 +433,9 @@ def AnalyzeDataSet():
         for imu in range(nMu):
             if muP4[imu].Pt()<10 : continue
             if abs(muP4[imu].Eta()) > 2.4  : continue
+            #---Muon fake id cleaner----
+            
+            ##---
             myMuos.append(muP4[imu])
             myMuLooseID.append(isLooseMuon[imu])
             myMuTightID.append(isTightMuon[imu])
@@ -444,9 +448,23 @@ def AnalyzeDataSet():
             if abs(tauP4[itau].Eta())>2.3 : continue
             myTaus.append(tauP4[itau])
         
+        
+        
         nEle=len(myEles)
         nMu=len(myMuos)
         nTau=len(myTaus)
+        
+        if nEle>0 and nMu>=2 :
+            print ievent
+            print "e:"
+            for iele in myEles:
+                print (iele.Eta(),iele.Phi())
+            print "mu:"
+            for imu in myMuos:
+                print (imu.Eta(),imu.Phi())
+            print
+            
+        
 # --------------------------------------------------------------------------------------------------------------------------------------------------------
         #----------------------------------------------------------------------------------------------------------------------------------------------------------------         ----------------------------------------------------------------------------------------------------------------------------------------------------------------
         ## Sort jets 
@@ -750,7 +768,7 @@ def AnalyzeDataSet():
             
             if myEles[iLeadLep].Pt() > 30. and myEleTightID[iLeadLep] and myEles[iSecondLep].Pt() > 10. and myEleLooseID[iSecondLep]:            
             
-                ZpT = math.sqrt( (myEles[iLeadLep].Px()+myEles[iSecondLep].Px())*(myEles[iLeadLep].Px()+myEles[iSecondLep].Px()) + (myEles[iLeadLep].Py()+myEles[iSecondLep].Py())*(myEles[iLeadLep].Py()+myEles[iSecondLep].Py()) )                
+                ZpT = math.sqrt( (myEles[iLeadLep].Px()+myEles[iSecondLep].Px())*(myEles[iLeadLep].Px()+myEles[iSecondLep].Px()) + (myEles[iLeadLep].Py()+myEles[iSecondLep].Py())*(myEles[iLeadLep].Py()+myEles[iSecondLep].Py()) )                       
                             
                 if nBjets==1:
                     allquantities.reg_2e1b_Zmass = ZeeMass    
@@ -776,6 +794,28 @@ def AnalyzeDataSet():
                     allquantities.reg_2e1b_nele = nEle
                     allquantities.reg_2e1b_nmu = nMu
                     
+                    #--- Tau cleaning---
+                    ncleanTau=0
+                    for itau in myTaus:
+                        lep1_tau_dR=math.sqrt(  (  myEles[iLeadLep].Eta()-itau.Eta() )**2  + (  DeltaPhi(myEles[iLeadLep].Phi(),itau.Phi()) )**2 )
+                        lep2_tau_dR=math.sqrt(  (  myEles[iSecondLep].Eta()-itau.Eta() )**2  + (  DeltaPhi(myEles[iSecondLep].Phi(),itau.Phi()) )**2 )
+                        allquantities.reg_2e1b_lep1_dR_tau=lep1_tau_dR
+                        allquantities.reg_2e1b_lep2_dR_tau=lep2_tau_dR
+                        allquantities.reg_2e1b_min_lep_dR_tau=min(lep1_tau_dR,lep2_tau_dR)
+#                        print ievent
+#                        print myEles[iLeadLep].Eta()
+#                        print itau.Eta()
+#                        print myEles[iLeadLep].Phi()
+#                        print itau.Phi()
+#                        print myEles[iSecondLep].Eta()
+#                        print myEles[iSecondLep].Phi()
+#                        print lep1_tau_dR
+#                        print lep2_tau_dR
+#                        print
+                        if lep1_tau_dR > 0.4 and lep2_tau_dR > 0.4: ncleanTau += 1 
+                    #---  
+                    allquantities.reg_2e1b_ntaucleaned = ncleanTau
+                    
             #2e, 2 b-tagged   
                 if nBjets==2 and SR2jet2:         
                     allquantities.reg_2e2b_Zmass = ZeeMass   
@@ -800,6 +840,18 @@ def AnalyzeDataSet():
                     allquantities.reg_2e2b_ntau = nTau
                     allquantities.reg_2e2b_nele = nEle
                     allquantities.reg_2e2b_nmu = nMu
+                    
+                    #--- Tau cleaning---
+                    ncleanTau=0
+                    for itau in myTaus:
+                        lep1_tau_dR=math.sqrt(  (  myEles[iLeadLep].Eta()-itau.Eta() )**2  + (  DeltaPhi(myEles[iLeadLep].Phi(),itau.Phi()) )**2 )
+                        lep2_tau_dR=math.sqrt(  (  myEles[iSecondLep].Eta()-itau.Eta() )**2  + (  DeltaPhi(myEles[iSecondLep].Phi(),itau.Phi()) )**2 )
+                        allquantities.reg_2e2b_lep1_dR_tau=lep1_tau_dR
+                        allquantities.reg_2e2b_lep2_dR_tau=lep2_tau_dR
+                        allquantities.reg_2e2b_min_lep_dR_tau=min(lep1_tau_dR,lep2_tau_dR)
+                        if lep1_tau_dR > 0.4 and lep2_tau_dR > 0.4: ncleanTau += 1 
+                    #---  
+                    allquantities.reg_2e2b_ntaucleaned = ncleanTau
                 
         #2mu, 1 b-tagged  
         if nMu==2 and nEle==0 and HLT_IsoMu20 and ZmumuMass>70. and ZmumuMass<110. and ZmumuRecoil>200. and jetcond and ZdPhicond:
@@ -843,6 +895,19 @@ def AnalyzeDataSet():
                     allquantities.reg_2mu1b_ntau = nTau
                     allquantities.reg_2mu1b_nele = nEle
                     allquantities.reg_2mu1b_nmu = nMu
+                    
+                    #--- Tau cleaning---
+                    ncleanTau=0
+                    for itau in myTaus:
+                        lep1_tau_dR=math.sqrt(  (  myMuos[iLeadLep].Eta()-itau.Eta() )**2  + (  DeltaPhi(myMuos[iLeadLep].Phi(),itau.Phi()) )**2 )
+                        lep2_tau_dR=math.sqrt(  (  myMuos[iSecondLep].Eta()-itau.Eta() )**2  + (  DeltaPhi(myMuos[iSecondLep].Phi(),itau.Phi()) )**2 )
+                        allquantities.reg_2mu1b_lep1_dR_tau=lep1_tau_dR
+                        allquantities.reg_2mu1b_lep2_dR_tau=lep2_tau_dR
+                        allquantities.reg_2mu1b_min_lep_dR_tau=min(lep1_tau_dR,lep2_tau_dR)
+                        if lep1_tau_dR > 0.4 and lep2_tau_dR > 0.4: ncleanTau += 1 
+                    #---  
+                    allquantities.reg_2mu1b_ntaucleaned = ncleanTau
+                    
             #2mu, 2 b-tagged        
                 if  nBjets==2 and SR2jet2:
                     allquantities.reg_2mu2b_Zmass = ZmumuMass   
@@ -870,6 +935,18 @@ def AnalyzeDataSet():
                     allquantities.reg_2mu2b_ntau = nTau
                     allquantities.reg_2mu2b_nele = nEle
                     allquantities.reg_2mu2b_nmu = nMu
+                    
+                    #--- Tau cleaning---
+                    ncleanTau=0
+                    for itau in myTaus:
+                        lep1_tau_dR=math.sqrt(  (  myMuos[iLeadLep].Eta()-itau.Eta() )**2  + (  DeltaPhi(myMuos[iLeadLep].Phi(),itau.Phi()) )**2 )
+                        lep2_tau_dR=math.sqrt(  (  myMuos[iSecondLep].Eta()-itau.Eta() )**2  + (  DeltaPhi(myMuos[iSecondLep].Phi(),itau.Phi()) )**2 )
+                        allquantities.reg_2mu2b_lep1_dR_tau=lep1_tau_dR
+                        allquantities.reg_2mu2b_lep2_dR_tau=lep2_tau_dR
+                        allquantities.reg_2mu2b_min_lep_dR_tau=min(lep1_tau_dR,lep2_tau_dR)
+                        if lep1_tau_dR > 0.4 and lep2_tau_dR > 0.4: ncleanTau += 1 
+                    #---  
+                    allquantities.reg_2mu2b_ntaucleaned = ncleanTau
         
         
         
