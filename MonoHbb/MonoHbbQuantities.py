@@ -147,12 +147,24 @@ class MonoHbbQuantities:
                 bins='12'
                 low='0'
                 high='12'
-            elif 'ntau' in quant or 'nele' in quant or 'nmu' in quant:
+            elif 'ntau' in quant or 'nele' in quant or 'nmu' in quant or 'nUnclean' in quant:
                 bins='6'
                 low='0'
                 high='6'
             elif 'recoil' in quant:
                 bins='10'
+                low='0.'
+                high='1000.'
+            elif '_dR_' in quant:
+                bins='120'
+                low='0.'
+                high='6.'
+            elif 'lep1_pT' or 'jet2_pT' in quant:                   # for pT, mass, etc.
+                bins='100'
+                low='0.'
+                high='1000.'
+            elif 'lep2_pT' in quant:                   # for pT, mass, etc.
+                bins='200'
                 low='0.'
                 high='1000.'
             else:                   # for pT, mass, etc.

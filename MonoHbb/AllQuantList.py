@@ -47,7 +47,7 @@ def getRegionQuants():
 
     regquants=[]
     regions=['2e1b','2mu1b','2e2b','2mu2b']
-    varlist=['Zmass','ZpT','hadrecoil','MET','lep1_pT','lep2_pT','lep1_iso','lep2_iso','jet1_pT','jet2_pT','jet1_eta','jet2_eta','jet1_csv','jet2_csv','njet','ntau','nele','nmu']
+    varlist=['Zmass','ZpT','hadrecoil','MET','lep1_pT','lep2_pT','lep1_iso','lep2_iso','jet1_pT','jet2_pT','jet1_eta','jet2_eta','jet1_csv','jet2_csv','njet','ntau','nele','nmu','nUncleanEle','nUncleanMu','nUncleanTau']#,'lep1_dR_tau','lep2_dR_tau','min_lep_dR_tau','ntaucleaned']
     
     for reg in regions:
         for var in varlist:
