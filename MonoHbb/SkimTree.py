@@ -93,7 +93,7 @@ def AnalyzeDataSet():
     
     st_AK4deepCSVnJet               = array( 'L', [ 0 ] ) #ROOT.std.vector('int')()
     st_AK4deepCSVjetP4              = ROOT.std.vector('TLorentzVector')()
-    st_AK4deepCSVjetdeepCSV_b       = ROOT.std.vector('float')()
+    st_AK4deepCSVjetDeepCSV_b       = ROOT.std.vector('float')()
     
     st_nEle                = array( 'L', [ 0 ] ) #ROOT.std.vector('int')()
     st_eleP4               = ROOT.std.vector('TLorentzVector')()
@@ -165,7 +165,7 @@ def AnalyzeDataSet():
     
     outTree.Branch( 'st_AK4deepCSVnJet',st_AK4deepCSVnJet, 'st_AK4deepCSVnJet/L' )
     outTree.Branch( 'st_AK4deepCSVjetP4',st_AK4deepCSVjetP4 ) 
-    outTree.Branch( 'st_AK4deepCSVjetdeepCSV_b',st_AK4deepCSVjetdeepCSV_b ) 
+    outTree.Branch( 'st_AK4deepCSVjetDeepCSV_b',st_AK4deepCSVjetDeepCSV_b ) 
     
     outTree.Branch( 'st_nEle',st_nEle , 'st_nEle/L') 
     outTree.Branch( 'st_eleP4',st_eleP4 )
@@ -442,7 +442,7 @@ def AnalyzeDataSet():
         st_THINjetCHadEF.clear()
         
         st_AK4deepCSVjetP4.clear()
-        st_AK4deepCSVjetdeepCSV_b.clear()
+        st_AK4deepCSVjetDeepCSV_b.clear()
         
         st_eleP4.clear()
         st_muP4.clear()
@@ -467,7 +467,7 @@ def AnalyzeDataSet():
         st_AK4deepCSVnJet[0] = len(thindCSVjetpassindex)
         for ithinjet in thindCSVjetpassindex:
             st_AK4deepCSVjetP4.push_back(thinJetdeepCSV[ithinjet])
-            st_AK4deepCSVjetdeepCSV_b.push_back(thinJetdeepCSV[ithinjet])
+            st_AK4deepCSVjetDeepCSV_b.push_back(thinJetdeepCSV[ithinjet])
             
         st_nEle[0] = len(myEles)
         for iele in myEles:
