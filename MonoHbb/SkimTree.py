@@ -374,12 +374,12 @@ def AnalyzeDataSet():
 
         thindCSVjetpassindex=[]
         ndBjets=0
-        for ithinjet in range(nTHINdeepCSVJets):
-            j1 = thindeepCSVjetP4[ithinjet]
+        for jthinjet in range(nTHINdeepCSVJets):
+            j1 = thindeepCSVjetP4[jthinjet]
             #if (j1.Pt() > 30.0)&(abs(j1.Eta())<2.4)&(bool(passThinJetLooseID[ithinjet])==True)&(bool(passThinJetPUID[ithinjet]) == True):
-            if (j1.Pt() > 30.0)&(abs(j1.Eta())<2.4)&(bool(passThinJetLooseID[ithinjet])==True):
-                thindCSVjetpassindex.append(ithinjet)
-            if thinJetdeepCSV[ithinjet] > DCSVMWP: ndBjets += 1
+            if (j1.Pt() > 30.0)&(abs(j1.Eta())<2.4)&(bool(passThinJetLooseID[jthinjet])==True):
+                thindCSVjetpassindex.append(jthinjet)
+            if thinJetdeepCSV[jthinjet] > DCSVMWP: ndBjets += 1
 #        print ('njet: ',len(thinjetpassindex))
         if len(thindCSVjetpassindex) < 1 : continue
 #        print nBjets
@@ -466,7 +466,7 @@ def AnalyzeDataSet():
             
         st_AK4deepCSVnJet[0] = len(thindCSVjetpassindex)
         for ithinjet in thindCSVjetpassindex:
-            st_AK4deepCSVjetP4.push_back(thinJetdeepCSV[ithinjet])
+            st_AK4deepCSVjetP4.push_back(thindeepCSVjetP4[ithinjet])
             st_AK4deepCSVjetDeepCSV_b.push_back(thinJetdeepCSV[ithinjet])
             
         st_nEle[0] = len(myEles)
