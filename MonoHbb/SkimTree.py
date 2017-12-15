@@ -91,8 +91,10 @@ def AnalyzeDataSet():
     st_THINjetNHadEF                = ROOT.std.vector('float')()
     st_THINjetCHadEF                = ROOT.std.vector('float')()
     
-    st_AK4deepCSVnJet                     = array( 'L', [ 0 ] ) #ROOT.std.vector('int')()
+    st_AK4deepCSVnJet               = array( 'L', [ 0 ] ) #ROOT.std.vector('int')()
+    st_AK4deepCSVjetP4              = ROOT.std.vector('TLorentzVector')()
     st_AK4deepCSVjetdeepCSV_b       = ROOT.std.vector('float')()
+    
     st_nEle                = array( 'L', [ 0 ] ) #ROOT.std.vector('int')()
     st_eleP4               = ROOT.std.vector('TLorentzVector')()
     st_eleIsPassLoose      = ROOT.std.vector('bool')()
