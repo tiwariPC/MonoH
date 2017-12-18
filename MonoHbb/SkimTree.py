@@ -61,8 +61,8 @@ def arctan(x,y):
 def AnalyzeDataSet():
     CSVMWP=0.8484
     DCSVMWP=0.6324
-    NEntries = skimmedTree.GetEntries()
-    
+    #NEntries = skimmedTree.GetEntries()
+    NEntries = 1000
     h_total = TH1F('h_total','h_total',2,0,2)
     h_total_mcweight = TH1F('h_total_mcweight','h_total_mcweight',2,0,2)
     
