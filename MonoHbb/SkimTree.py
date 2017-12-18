@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-from ROOT import TFile, TTree, TH1F, TH1D, TH1, TCanvas, TChain,TGraphAsymmErrors, TMath, TH2D, TLorentzVector, AddressOf, gROOT
+from ROOT import TFile, TTree, TH1F, TH1D, TH1, TCanvas, TChain,TGraphAsymmErrors, TMath, TH2D, TLorentzVector, AddressOf, gROOT, TNamed
 import ROOT as ROOT
 import os
 import sys, optparse
@@ -71,6 +71,8 @@ def AnalyzeDataSet():
     outfile = TFile(outfilename,'RECREATE')
     
     outTree = TTree( 'outTree', 'tree branches' )
+    samplepath = TNamed('samplepath', str(sys.argv[1]))
+    
     st_runId            = numpy_.zeros(1, dtype=int)
     st_lumiSection      = array( 'L', [ 0 ] )
     st_eventId          = array( 'L', [ 0 ] )
@@ -189,7 +191,7 @@ def AnalyzeDataSet():
     outTree.Branch( 'st_HPSTau_n', st_HPSTau_n, 'st_HPSTau_n/L') 
     outTree.Branch( 'st_HPSTau_4Momentum', st_HPSTau_4Momentum) 
     
-    outTree.Branch( 'st_pu_nTrueInt', st_pu_nTrueInt, 'st_pu_nTrueInt/L') 
+    outTree.Branch( 'st_pu_nTrueInt', st_pu_nTrueInt, 'st_pu_nTrueInt/F') 
     outTree.Branch( 'mcweight', mcweight, 'mcweight/F')
     outTree.Branch( 'st_nGenPar',st_nGenPar,'st_nGenPar/L' )  #nGenPar/I
     outTree.Branch( 'st_genParId',st_genParId )  #vector<int>
@@ -218,7 +220,9 @@ def AnalyzeDataSet():
 
     
     for ievent in range(NEntries):
-        if ievent%100==0: print "Processing "+str(ievent+1)+" of "+str(NEntries)+" events."
+#    print "\n*****\nWARNING: *Test run* Processing 5000 events only.\n*****\n"
+#    for ievent in range(5000):    
+        if ievent%100==0: print "Processed "+str(ievent)+" of "+str(NEntries)+" events."
         skimmedTree.GetEntry(ievent)
         ## Get all relevant branches
         run                        = skimmedTree.__getattr__('runId')
@@ -271,7 +275,11 @@ def AnalyzeDataSet():
         passLooseTauIso            = skimmedTree.__getattr__('disc_byLooseIsolationMVA3oldDMwLT')
         isData                     = skimmedTree.__getattr__('isData')
         mcWeight                   = skimmedTree.__getattr__('mcWeight')
-        pu_nTrueInt                = int(skimmedTree.__getattr__('pu_nTrueInt'))
+        pu_nTrueInt                = skimmedTree.__getattr__('pu_nTrueInt')         #int()
+        
+#        print skimmedTree.__getattr__('pu_nTrueInt')
+#        print pu_nTrueInt 
+#        print
         
         nGenPar                    = skimmedTree.__getattr__('nGenPar')
         genParId                   = skimmedTree.__getattr__('genParId')
@@ -497,6 +505,8 @@ def AnalyzeDataSet():
         
 
         st_pu_nTrueInt[0] = pu_nTrueInt
+#        print pu_nTrueInt 
+#        print st_pu_nTrueInt[0]
         st_nGenPar[0] =  nGenPar
         for igp in range(nGenPar): 
             st_genParId.push_back(genParId[igp])
@@ -711,6 +721,7 @@ def AnalyzeDataSet():
 
     h_total_mcweight.Write()
     h_total.Write()
+    samplepath.Write()
     outfile.Write()
 
 

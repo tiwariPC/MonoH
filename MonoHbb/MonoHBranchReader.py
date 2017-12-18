@@ -9,7 +9,9 @@ import AllQuantList
 
 ROOT.gROOT.SetBatch(True)
 from MonoHbbQuantities import *
-from PileUpWeights import PUWeight
+#from PileUpWeights import PUWeight
+pileup2016file = TFile('pileUPinfo2016.root')
+pileup2016histo=pileup2016file.Get('hpileUPhist')
 
 ROOT.gROOT.ProcessLine('.L BTagCalibrationStandalone.cpp+') 
 
@@ -93,15 +95,15 @@ def WhichSample(filename):
     samplename = 'all'
     if filename.find('WJets')>-1:
         samplename = 'WJETS'
-    elif filename.find('ZJets')>-1:
+    elif filename.find('ZJets')>-1 or filename.find('DYJets')>-1:
         samplename = 'ZJETS'
     elif filename.find('TT')>-1:
         samplename  = 'TT'
     else:
         samplename = 'all'
+#    print samplename
     return samplename
     
-
 
 def TheaCorrection(puppipt=200.0,  puppieta=0.0):
     puppisd_corrGEN      = TF1("puppisd_corrGEN","[0]+[1]*pow(x*[2],-[3])");
@@ -154,7 +156,7 @@ if isfarmout:
     infile = open(inputfilename)
     for ifile in infile: 
         skimmedTree.Add(ifile.rstrip())
-        samplename = WhichSample(ifile.rstrip())
+#        samplename = WhichSample(ifile.rstrip())
         ## for histograms
         f_tmp = TFile.Open(ifile.rstrip(),'READ')
         h_tmp = f_tmp.Get('h_total')
@@ -164,15 +166,21 @@ if isfarmout:
 
 if not isfarmout:
     skimmedTree.Add(inputfilename)
-    samplename = WhichSample(inputfilename)
+#    samplename = WhichSample(inputfilename)
     ## for histograms
     f_tmp = TFile.Open(inputfilename,'READ')
     h_tmp = f_tmp.Get('h_total')
-    h_tmp_weight = f_tmp.Get('h_total_mcweight')
+    h_tmp_weight = f_tmp.Get('h_total_mcweight')    
     h_t.Add(h_tmp)
     h_t_weight.Add(h_tmp_weight)
 
 debug = False 
+
+samplepath = str(f_tmp.Get('samplepath').GetTitle())
+print "Original file: " + samplepath
+samplename = WhichSample(samplepath)
+#print samplename
+#print
 
 def AnalyzeDataSet():
     ## Input rootfile name
@@ -1290,18 +1298,26 @@ def AnalyzeDataSet():
         ## Pileup weight
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
-        allpuweights = PUWeight()
-        len_puweight = len(allpuweights)
+#        allpuweights = PUWeight()
+#        len_puweight = len(allpuweights)
         puweight = 0.0
         if isData: puweight = 1.0 
         if not isData:
-            if pu_nTrueInt  <= len_puweight: puweight = allpuweights[pu_nTrueInt-1]
-            if pu_nTrueInt  > len_puweight : puweight = 0.0 
+#            if pu_nTrueInt  <= len_puweight: puweight = allpuweights[pu_nTrueInt-1]
+#            if pu_nTrueInt  > len_puweight : puweight = 0.0 
+            puweight = pileup2016histo.GetBinContent(pu_nTrueInt)
+#            print pu_nTrueInt
+            
         #print (len_puweight, pu_nTrueInt, puweight)
         
        
-        #allweights = puweight * mcweight * genpTReweighting
-        allweights = mcweight * genpTReweighting 
+        allweights = puweight * mcweight * genpTReweighting
+#        print puweight
+#        print mcWeight
+#        print mcweight
+#        print genpTReweighting
+#        print allweights
+#        print
                 
 # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
         ## BTag Scale Factor 
