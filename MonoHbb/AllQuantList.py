@@ -2,7 +2,7 @@ def getAll():
     allquantlist=[]
             
     for region in ['sr','Zmumucr','Zeecr','Wmucr','Wecr','TOPcr']:                               # Jets: Makes all combinations of region, jet number, etc.
-        for jetprop in ['pT','eta','phi','csv']:
+        for jetprop in ['pT','eta','phi','csv','deepcsv']:
             for jetnum in [1,2]:
                 allquantlist.append('jet'+str(jetnum)+"_"+jetprop+"_"+region+"1")
                 
@@ -35,7 +35,7 @@ def getAll():
     return allquantlist
 
 def getPresel():
-    preselquantlist=['presel_jet1_csv_sr1','presel_jet2_csv_sr1','presel_jet1_csv_sr2','presel_jet2_csv_sr2','presel_jet3_csv_sr2']
+    preselquantlist=['presel_jet1_csv_sr1','presel_jet2_csv_sr1','presel_jet1_csv_sr2','presel_jet2_csv_sr2','presel_jet3_csv_sr2','presel_jet1_deepcsv_sr1','presel_jet2_deepcsv_sr1','presel_jet1_deepcsv_sr2','presel_jet2_deepcsv_sr2','presel_jet3_deepcsv_sr2']
     preselquantlist.append('presel_jet1_chf_sr1')
     preselquantlist.append('presel_jet1_chf_sr2')
     preselquantlist.append('presel_jet1_nhf_sr1')
@@ -47,7 +47,7 @@ def getRegionQuants():
 
     regquants=[]
     regions=['2e1b','2mu1b','2e2b','2mu2b']
-    varlist=['Zmass','ZpT','hadrecoil','MET','lep1_pT','lep2_pT','lep1_iso','lep2_iso','jet1_pT','jet2_pT','jet1_eta','jet2_eta','jet1_csv','jet2_csv','njet','ntau','nele','nmu','nUncleanEle','nUncleanMu','nUncleanTau']#,'lep1_dR_tau','lep2_dR_tau','min_lep_dR_tau','ntaucleaned']
+    varlist=['Zmass','ZpT','hadrecoil','MET','lep1_pT','lep2_pT','lep1_iso','lep2_iso','jet1_pT','jet2_pT','jet1_eta','jet2_eta','jet1_csv','jet2_csv','jet1_deepcsv','jet2_deepcsv','njet','ntau','nele','nmu','nUncleanEle','nUncleanMu','nUncleanTau']#,'lep1_dR_tau','lep2_dR_tau','min_lep_dR_tau','ntaucleaned']
     
     for reg in regions:
         for var in varlist:

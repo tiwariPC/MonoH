@@ -39,6 +39,8 @@ parser.add_option("-F", "--farmout", action="store_true",  dest="farmout")
 parser.add_option("-t", "--table", action="store_true",  dest="table")
 parser.add_option("-P", "--OtherPlots", action="store_true",  dest="OtherPlots")
 
+parser.add_option("-csv", "--CSV",action="store_true",  dest="CSV")
+parser.add_option("-deepcsv", "--DeepCSV",action="store_true",  dest="DeepCSV")
 ########################################################################################################################
 ########################## cut values########################################################################
 ########################################################################################################################
@@ -325,6 +327,10 @@ def AnalyzeDataSet():
         thinjetNhadEF              = skimmedTree.__getattr__('st_THINjetNHadEF')
         thinjetChadEF              = skimmedTree.__getattr__('st_THINjetCHadEF')
         
+        nTHINdeepCSVJets           = skimmedTree.__getattr__('AK4deepCSVnJet')
+        thindeepCSVjetP4           = skimmedTree.__getattr__('AK4deepCSVjetP4')
+        thinJetdeepCSV             = skimmedTree.__getattr__('AK4deepCSVjetDeepCSV_b')
+        
         nEle                       = skimmedTree.__getattr__('st_nEle')
         eleP4                      = skimmedTree.__getattr__('st_eleP4')
         eleIsPassLoose             = skimmedTree.__getattr__('st_eleIsPassLoose')
@@ -396,13 +402,20 @@ def AnalyzeDataSet():
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
         #
         CSVMWP=0.8484
-        
-        ##number of bjets without any selection
-        mybjets=[]
-        for nb in range(nTHINJets):
-            if thinJetCSV[nb] > CSVMWP and abs(thinjetP4[nb].Eta())<2.4:
-                mybjets.append(nb)
-        nBjets=len(mybjets)
+        deepCSVMWP=0.6324
+        if options.CSV:
+            ##number of bjets without any selection
+            mybjets=[]
+            for nb in range(nTHINJets):
+                if thinJetCSV[nb] > CSVMWP and abs(thinjetP4[nb].Eta())<2.4:
+                    mybjets.append(nb)
+            nBjets=len(mybjets)
+        if options.DeepCSV:
+            mybjets=[]
+            for nb in range(nTHINdeepCSVJets):
+                if thinJetdeepCSV[nb] > deepCSVMWP and abs(thindeepCSVjetP4[nb].Eta())<2.4:
+                    mybjets.append(nb)
+            nBjets=len(mybjets)
 
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -504,22 +517,41 @@ def AnalyzeDataSet():
 # --------------------------------------------------------------------------------------------------------------------------------------------------------
         #----------------------------------------------------------------------------------------------------------------------------------------------------------------         ----------------------------------------------------------------------------------------------------------------------------------------------------------------
         ## Sort jets 
-        if nTHINJets==0: continue
-        
-        alljetPT=[jet.Pt() for jet in thinjetP4]
-        jetindex=[i for i in range(len(alljetPT))]
-        
-                    
-        sortedjets=[jet for pt,jet in sorted(zip(alljetPT,thinjetP4), reverse=True)]      # This gives a list of jets with their pTs in descending order
-        sortedindex=[jetindex for pt,jetindex in sorted(zip(alljetPT,jetindex), reverse=True)]     # Indices of jets in thinjetP4 in decscending order of jetPT
-        
-        j1=sortedjets[0]
-        if nTHINJets>1: j2=sortedjets[1]
-        if nTHINJets>2: j3=sortedjets[2]
-        
-        ifirstjet=sortedindex[0]
-        if nTHINJets>1: isecondjet=sortedindex[1]
-        if nTHINJets>2: ithirdjet=sortedindex[2]
+        if options.CSV:
+            if nTHINJets==0: continue
+            
+            alljetPT=[jet.Pt() for jet in thinjetP4]
+            jetindex=[i for i in range(len(alljetPT))]
+            
+                        
+            sortedjets=[jet for pt,jet in sorted(zip(alljetPT,thinjetP4), reverse=True)]      # This gives a list of jets with their pTs in descending order
+            sortedindex=[jetindex for pt,jetindex in sorted(zip(alljetPT,jetindex), reverse=True)]     # Indices of jets in thinjetP4 in decscending order of jetPT
+            
+            j1=sortedjets[0]
+            if nTHINJets>1: j2=sortedjets[1]
+            if nTHINJets>2: j3=sortedjets[2]
+            
+            ifirstjet=sortedindex[0]
+            if nTHINJets>1: isecondjet=sortedindex[1]
+            if nTHINJets>2: ithirdjet=sortedindex[2]
+            
+        if options.DeepCSV:
+            if nTHINdeepCSVJets==0: continue
+            
+            alljetPT=[jet.Pt() for jet in thindeepCSVjetP4]
+            jetindex=[i for i in range(len(alljetPT))]
+            
+                        
+            sortedjets=[jet for pt,jet in sorted(zip(alljetPT,thindeepCSVjetP4), reverse=True)]      # This gives a list of jets with their pTs in descending order
+            sortedindex=[jetindex for pt,jetindex in sorted(zip(alljetPT,jetindex), reverse=True)]     # Indices of jets in thinjetP4 in decscending order of jetPT
+            
+            j1=sortedjets[0]
+            if nTHINdeepCSVJets>1: j2=sortedjets[1]
+            if nTHINdeepCSVJets>2: j3=sortedjets[2]
+            
+            ifirstjet=sortedindex[0]
+            if nTHINdeepCSVJets>1: isecondjet=sortedindex[1]
+            if nTHINdeepCSVJets>2: ithirdjet=sortedindex[2]
         
         
         ## 
@@ -529,178 +561,347 @@ def AnalyzeDataSet():
         
         
         
-        
-        SR1njetcond=False
-        SR2njetcond=False
-        SR1jetcond=False
-        SR2jetcond=False        
-               
-        
-        if nEle+nMu+nTau==0:
-            SRlepcond=True
-        else:
-            SRlepcond=False
-        
-        ## for SR1
-         # 1 or 2 jets and 1 btagged 
-        
-        SRtrigstatus = True#HLT_PFMETNoMu90_PFMHTNoMu90_IDTight_v or HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v
-        
-        if (nTHINJets == 1 or nTHINJets == 2) and pfmetstatus and SRlepcond and SRtrigstatus:
-            #===CSVs before any selection===
-            preselquantlist=AllQuantList.getPresel()        
-            for quant in preselquantlist:
-                exec("allquantities."+quant+" = None")
+        if options.CSV:
+            SR1njetcond=False
+            SR2njetcond=False
+            SR1jetcond=False
+            SR2jetcond=False        
+                   
+            
+            if nEle+nMu+nTau==0:
+                SRlepcond=True
+            else:
+                SRlepcond=False
+            
+            ## for SR1
+             # 1 or 2 jets and 1 btagged 
+            
+            SRtrigstatus = True#HLT_PFMETNoMu90_PFMHTNoMu90_IDTight_v or HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v
+            
+            if (nTHINJets == 1 or nTHINJets == 2) and pfmetstatus and SRlepcond and SRtrigstatus:
+                #===CSVs before any selection===
+                preselquantlist=AllQuantList.getPresel()        
+                for quant in preselquantlist:
+                    exec("allquantities."+quant+" = None")
+                    
+                allquantities.presel_jet1_csv_sr1=thinJetCSV[ifirstjet]	
+                if nTHINJets>1: allquantities.presel_jet2_csv_sr1=thinJetCSV[isecondjet]
+                allquantities.presel_jet1_chf_sr1=thinjetChadEF[ifirstjet]
+                allquantities.presel_jet1_nhf_sr1=thinjetNhadEF[ifirstjet]		
+                allquantities.FillPreSel()		
+                #===
+             
+            if (nTHINJets == 1 or nTHINJets == 2) and nBjets==1 and SRtrigstatus: 
+                SR1njetcond=True
+                if pfmetstatus: cutStatusSR1['njet+nBjet'] +=1    
+                if pfmetstatus: cutStatus['njet+nBjet'] += 1
+                             
+                SR1jetcond=True
                 
-            allquantities.presel_jet1_csv_sr1=thinJetCSV[ifirstjet]	
-            if nTHINJets>1: allquantities.presel_jet2_csv_sr1=thinJetCSV[isecondjet]
-            allquantities.presel_jet1_chf_sr1=thinjetChadEF[ifirstjet]
-            allquantities.presel_jet1_nhf_sr1=thinjetNhadEF[ifirstjet]		
-            allquantities.FillPreSel()		
-            #===
+                if j1.Pt() < 50.0: SR1jetcond=False
+                if DeltaPhi(j1.Phi(),pfMetPhi) < 0.5: SR1jetcond=False           
+                if thinjetNhadEF[ifirstjet] > 0.8 : SR1jetcond=False
+                if thinjetChadEF[ifirstjet]< 0.1: SR1jetcond=False
+                
+                if SR1jetcond and pfmetstatus:
+                    cutStatus['jet1'] += 1              # Lead jet satisfies required criteria
+                    cutStatusSR1['jet1'] +=1
+                
+                if nTHINJets>1:                
+                    if j2.Pt() < 30.0: SR1jetcond=False
+                    if DeltaPhi(j2.Phi(),pfMetPhi) < 0.5: SR1jetcond=False
+                
+                if SR1jetcond and pfmetstatus:
+                    cutStatus['jet2/3'] += 1           # Jet 2 satisfies the required criteria
+                    cutStatusSR1['jet2'] +=1     
+
+                          
+                if SR1jetcond:
+                    jet1pt = j1.Pt()
+                    jet1phi = j1.Phi()
+                    jet1eta = j1.Eta()
+                    
+                    if nTHINJets>1:
+                        jet2pt = j2.Pt()
+                        jet2phi = j2.Phi()
+                        jet2eta = j2.Eta() 
+                        jet2csv = thinJetCSV[isecondjet]
+                        min_dPhi=min(DeltaPhi(j1.Phi(),pfMetPhi),DeltaPhi(j2.Phi(),pfMetPhi)) 
+                    else:
+                        jet2pt = None
+                        jet2phi = None
+                        jet2eta = None
+                        jet2csv = None    
+                        min_dPhi=DeltaPhi(j1.Phi(),pfMetPhi)                         
+                    
+                    jet1csv = thinJetCSV[ifirstjet]              
+
+                    jetSR1Info.append([jet1pt,jet1eta,jet1phi,jet1csv])
+                    jetSR1Info.append([jet2pt,jet2eta,jet2phi,jet2csv])
+                    jetSR1Info.append(min_dPhi)
+                    jetSR1Info.append(pfMet)
+                    jetSR1Info.append(thinjetNhadEF[ifirstjet])
+                    jetSR1Info.append(thinjetChadEF[ifirstjet])
+              
          
-        if (nTHINJets == 1 or nTHINJets == 2) and nBjets==1 and SRtrigstatus: 
-            SR1njetcond=True
-            if pfmetstatus: cutStatusSR1['njet+nBjet'] +=1    
-            if pfmetstatus: cutStatus['njet+nBjet'] += 1
-                         
-            SR1jetcond=True
+         ## for SR2
+            # 3 jets and 2 btagged 
             
-            if j1.Pt() < 50.0: SR1jetcond=False
-            if DeltaPhi(j1.Phi(),pfMetPhi) < 0.5: SR1jetcond=False           
-            if thinjetNhadEF[ifirstjet] > 0.8 : SR1jetcond=False
-            if thinjetChadEF[ifirstjet]< 0.1: SR1jetcond=False
+            if (nTHINJets == 2 or nTHINJets == 3) and pfmetstatus and SRlepcond and SRtrigstatus:
+                #===CSVs before any selection===	
+                preselquantlist=AllQuantList.getPresel()        
+                for quant in preselquantlist:
+                    exec("allquantities."+quant+" = None")	
+                allquantities.presel_jet1_csv_sr2=thinJetCSV[ifirstjet]
+                allquantities.presel_jet2_csv_sr2=thinJetCSV[isecondjet]
+                if nTHINJets>2: allquantities.presel_jet3_csv_sr2=thinJetCSV[ithirdjet]
+                allquantities.presel_jet1_chf_sr2=thinjetChadEF[ifirstjet]
+                allquantities.presel_jet1_nhf_sr2=thinjetNhadEF[ifirstjet]
+                allquantities.FillPreSel()		
+                #===
             
-            if SR1jetcond and pfmetstatus:
-                cutStatus['jet1'] += 1              # Lead jet satisfies required criteria
-                cutStatusSR1['jet1'] +=1
-            
-            if nTHINJets>1:                
-                if j2.Pt() < 30.0: SR1jetcond=False
-                if DeltaPhi(j2.Phi(),pfMetPhi) < 0.5: SR1jetcond=False
-            
-            if SR1jetcond and pfmetstatus:
-                cutStatus['jet2/3'] += 1           # Jet 2 satisfies the required criteria
-                cutStatusSR1['jet2'] +=1     
-
-                      
-            if SR1jetcond:
-                jet1pt = j1.Pt()
-                jet1phi = j1.Phi()
-                jet1eta = j1.Eta()
+            if (nTHINJets == 2 or nTHINJets == 3) and nBjets==2 and SRtrigstatus:
+                SR2njetcond=True
+                if pfmetstatus: cutStatusSR2['njet+nBjet'] +=1
+                if pfmetstatus: cutStatus['njet+nBjet'] += 1
                 
-                if nTHINJets>1:
-                    jet2pt = j2.Pt()
-                    jet2phi = j2.Phi()
-                    jet2eta = j2.Eta() 
-                    jet2csv = thinJetCSV[isecondjet]
-                    min_dPhi=min(DeltaPhi(j1.Phi(),pfMetPhi),DeltaPhi(j2.Phi(),pfMetPhi)) 
-                else:
-                    jet2pt = None
-                    jet2phi = None
-                    jet2eta = None
-                    jet2csv = None    
-                    min_dPhi=DeltaPhi(j1.Phi(),pfMetPhi)                         
+                SR2jetcond=True
                 
-                jet1csv = thinJetCSV[ifirstjet]              
-
-                jetSR1Info.append([jet1pt,jet1eta,jet1phi,jet1csv])
-                jetSR1Info.append([jet2pt,jet2eta,jet2phi,jet2csv])
-                jetSR1Info.append(min_dPhi)
-                jetSR1Info.append(pfMet)
-                jetSR1Info.append(thinjetNhadEF[ifirstjet])
-                jetSR1Info.append(thinjetChadEF[ifirstjet])
-          
-     
-     ## for SR2
-        # 3 jets and 2 btagged 
-        
-        if (nTHINJets == 2 or nTHINJets == 3) and pfmetstatus and SRlepcond and SRtrigstatus:
-            #===CSVs before any selection===	
-            preselquantlist=AllQuantList.getPresel()        
-            for quant in preselquantlist:
-                exec("allquantities."+quant+" = None")	
-            allquantities.presel_jet1_csv_sr2=thinJetCSV[ifirstjet]
-            allquantities.presel_jet2_csv_sr2=thinJetCSV[isecondjet]
-            if nTHINJets>2: allquantities.presel_jet3_csv_sr2=thinJetCSV[ithirdjet]
-            allquantities.presel_jet1_chf_sr2=thinjetChadEF[ifirstjet]
-            allquantities.presel_jet1_nhf_sr2=thinjetNhadEF[ifirstjet]
-            allquantities.FillPreSel()		
-            #===
-        
-        if (nTHINJets == 2 or nTHINJets == 3) and nBjets==2 and SRtrigstatus:
-            SR2njetcond=True
-            if pfmetstatus: cutStatusSR2['njet+nBjet'] +=1
-            if pfmetstatus: cutStatus['njet+nBjet'] += 1
-            
-            SR2jetcond=True
-            
-            if j1.Pt() < 50.0: SR2jetcond=False
-            if DeltaPhi(j1.Phi(),pfMetPhi) < 0.5: SR2jetcond=False           
-            if thinjetNhadEF[ifirstjet] > 0.8 : SR2jetcond=False
-            if thinjetChadEF[ifirstjet]< 0.1: SR2jetcond=False
-            
-            if SR2jetcond and pfmetstatus:
-                cutStatus['jet1'] += 1              # Lead jet satisfies required criteria            
-                cutStatusSR2['jet1'] += 1
-            
-            if j2.Pt() < 50.0: SR2jetcond=False
-            if DeltaPhi(j2.Phi(),pfMetPhi) < 0.5: SR2jetcond=False
-            
-            if SR2jetcond and pfmetstatus:
-                cutStatusSR2['jet2'] += 1
-            
-            if nTHINJets>2: 
-                if j3.Pt() < 30.0: SR2jetcond=False
-                if DeltaPhi(j3.Phi(),pfMetPhi) < 0.5: SR2jetcond=False
-            
-            if SR2jetcond and pfmetstatus:
-                cutStatusSR2['jet3'] += 1
-                cutStatus['jet2/3'] += 1           # The jets 2 and 3 satisfy the required criteria
-            
-            if SR2jetcond:
-                jet1pt = j1.Pt()
-                jet1phi = j1.Phi()
-                jet1eta = j1.Eta()
+                if j1.Pt() < 50.0: SR2jetcond=False
+                if DeltaPhi(j1.Phi(),pfMetPhi) < 0.5: SR2jetcond=False           
+                if thinjetNhadEF[ifirstjet] > 0.8 : SR2jetcond=False
+                if thinjetChadEF[ifirstjet]< 0.1: SR2jetcond=False
                 
-                jet2pt = j2.Pt()
-                jet2phi = j2.Phi()
-                jet2eta = j2.Eta()
+                if SR2jetcond and pfmetstatus:
+                    cutStatus['jet1'] += 1              # Lead jet satisfies required criteria            
+                    cutStatusSR2['jet1'] += 1
+                
+                if j2.Pt() < 50.0: SR2jetcond=False
+                if DeltaPhi(j2.Phi(),pfMetPhi) < 0.5: SR2jetcond=False
+                
+                if SR2jetcond and pfmetstatus:
+                    cutStatusSR2['jet2'] += 1
                 
                 if nTHINJets>2: 
-                    jet3pt = j3.Pt()
-                    jet3phi = j3.Phi()
-                    jet3eta = j3.Eta()
-                    jet3csv = thinJetCSV[ithirdjet]
-                    min_dPhi=min(DeltaPhi(j1.Phi(),pfMetPhi),DeltaPhi(j2.Phi(),pfMetPhi),DeltaPhi(j3.Phi(),pfMetPhi))
-                else:
-                    jet3pt = None
-                    jet3phi = None
-                    jet3eta = None
-                    jet3csv = None
-                    min_dPhi=min(DeltaPhi(j1.Phi(),pfMetPhi),DeltaPhi(j2.Phi(),pfMetPhi))
+                    if j3.Pt() < 30.0: SR2jetcond=False
+                    if DeltaPhi(j3.Phi(),pfMetPhi) < 0.5: SR2jetcond=False
                 
-                jet1csv = thinJetCSV[ifirstjet]
-                jet2csv = thinJetCSV[isecondjet]
+                if SR2jetcond and pfmetstatus:
+                    cutStatusSR2['jet3'] += 1
+                    cutStatus['jet2/3'] += 1           # The jets 2 and 3 satisfy the required criteria
+                
+                if SR2jetcond:
+                    jet1pt = j1.Pt()
+                    jet1phi = j1.Phi()
+                    jet1eta = j1.Eta()
+                    
+                    jet2pt = j2.Pt()
+                    jet2phi = j2.Phi()
+                    jet2eta = j2.Eta()
+                    
+                    if nTHINJets>2: 
+                        jet3pt = j3.Pt()
+                        jet3phi = j3.Phi()
+                        jet3eta = j3.Eta()
+                        jet3csv = thinJetCSV[ithirdjet]
+                        min_dPhi=min(DeltaPhi(j1.Phi(),pfMetPhi),DeltaPhi(j2.Phi(),pfMetPhi),DeltaPhi(j3.Phi(),pfMetPhi))
+                    else:
+                        jet3pt = None
+                        jet3phi = None
+                        jet3eta = None
+                        jet3csv = None
+                        min_dPhi=min(DeltaPhi(j1.Phi(),pfMetPhi),DeltaPhi(j2.Phi(),pfMetPhi))
+                    
+                    jet1csv = thinJetCSV[ifirstjet]
+                    jet2csv = thinJetCSV[isecondjet]
 
-                jetSR2Info.append([jet1pt,jet1eta,jet1phi,jet1csv])
-                jetSR2Info.append([jet2pt,jet2eta,jet2phi,jet2csv])
-                jetSR2Info.append([jet3pt,jet3eta,jet3phi,jet3csv])
-                jetSR2Info.append(min_dPhi)
-                jetSR2Info.append(pfMet)
-                jetSR2Info.append(thinjetNhadEF[ifirstjet])
-                jetSR2Info.append(thinjetChadEF[ifirstjet])
+                    jetSR2Info.append([jet1pt,jet1eta,jet1phi,jet1csv])
+                    jetSR2Info.append([jet2pt,jet2eta,jet2phi,jet2csv])
+                    jetSR2Info.append([jet3pt,jet3eta,jet3phi,jet3csv])
+                    jetSR2Info.append(min_dPhi)
+                    jetSR2Info.append(pfMet)
+                    jetSR2Info.append(thinjetNhadEF[ifirstjet])
+                    jetSR2Info.append(thinjetChadEF[ifirstjet])
 
+                
+            if pfmetstatus and SRlepcond and SR1jetcond:
+                cutStatus['lep'] += 1
+                cutStatusSR1['lep'] += 1
+                
+            if pfmetstatus and SRlepcond and SR2jetcond:
+                cutStatus['lep'] += 1
+                cutStatusSR2['lep'] += 1
             
-        if pfmetstatus and SRlepcond and SR1jetcond:
-            cutStatus['lep'] += 1
-            cutStatusSR1['lep'] += 1
+        if options.DeepCSV:
+            SR1njetcond=False
+            SR2njetcond=False
+            SR1jetcond=False
+            SR2jetcond=False        
+                   
             
-        if pfmetstatus and SRlepcond and SR2jetcond:
-            cutStatus['lep'] += 1
-            cutStatusSR2['lep'] += 1
+            if nEle+nMu+nTau==0:
+                SRlepcond=True
+            else:
+                SRlepcond=False
             
-        
+            ## for SR1
+             # 1 or 2 jets and 1 btagged 
+            
+            SRtrigstatus = True#HLT_PFMETNoMu90_PFMHTNoMu90_IDTight_v or HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v
+            
+            if (nTHINdeepCSVJets == 1 or nTHINdeepCSVJets == 2) and pfmetstatus and SRlepcond and SRtrigstatus:
+                #===CSVs before any selection===
+                preselquantlist=AllQuantList.getPresel()        
+                for quant in preselquantlist:
+                    exec("allquantities."+quant+" = None")
+                    
+                allquantities.presel_jet1_deepcsv_sr1=thinJetdeepCSV[ifirstjet]	
+                if nTHINdeepCSVJets>1: allquantities.presel_jet2_deepcsv_sr1=thinJetdeepCSV[isecondjet]
+                allquantities.presel_jet1_chf_sr1=thinjetChadEF[ifirstjet]
+                allquantities.presel_jet1_nhf_sr1=thinjetNhadEF[ifirstjet]		
+                allquantities.FillPreSel()		
+                #===
+             
+            if (nTHINdeepCSVJets == 1 or nTHINdeepCSVJets == 2) and nBjets==1 and SRtrigstatus: 
+                SR1njetcond=True
+                if pfmetstatus: cutStatusSR1['njet+nBjet'] +=1    
+                if pfmetstatus: cutStatus['njet+nBjet'] += 1
+                             
+                SR1jetcond=True
+                
+                if j1.Pt() < 50.0: SR1jetcond=False
+                if DeltaPhi(j1.Phi(),pfMetPhi) < 0.5: SR1jetcond=False           
+                if thinjetNhadEF[ifirstjet] > 0.8 : SR1jetcond=False
+                if thinjetChadEF[ifirstjet]< 0.1: SR1jetcond=False
+                
+                if SR1jetcond and pfmetstatus:
+                    cutStatus['jet1'] += 1              # Lead jet satisfies required criteria
+                    cutStatusSR1['jet1'] +=1
+                
+                if nTHINdeepCSVJets>1:                
+                    if j2.Pt() < 30.0: SR1jetcond=False
+                    if DeltaPhi(j2.Phi(),pfMetPhi) < 0.5: SR1jetcond=False
+                
+                if SR1jetcond and pfmetstatus:
+                    cutStatus['jet2/3'] += 1           # Jet 2 satisfies the required criteria
+                    cutStatusSR1['jet2'] +=1     
+
+                          
+                if SR1jetcond:
+                    jet1pt = j1.Pt()
+                    jet1phi = j1.Phi()
+                    jet1eta = j1.Eta()
+                    
+                    if nTHINdeepCSVJets>1:
+                        jet2pt = j2.Pt()
+                        jet2phi = j2.Phi()
+                        jet2eta = j2.Eta() 
+                        jet2deepcsv = thinJetdeepCSV[isecondjet]
+                        min_dPhi=min(DeltaPhi(j1.Phi(),pfMetPhi),DeltaPhi(j2.Phi(),pfMetPhi)) 
+                    else:
+                        jet2pt = None
+                        jet2phi = None
+                        jet2eta = None
+                        jet2deepcsv = None    
+                        min_dPhi=DeltaPhi(j1.Phi(),pfMetPhi)                         
+                    
+                    jet1deepcsv = thinJetdeepCSV[ifirstjet]              
+
+                    jetSR1Info.append([jet1pt,jet1eta,jet1phi,jet1deepcsv])
+                    jetSR1Info.append([jet2pt,jet2eta,jet2phi,jet2deepcsv])
+                    jetSR1Info.append(min_dPhi)
+                    jetSR1Info.append(pfMet)
+                    jetSR1Info.append(thinjetNhadEF[ifirstjet])
+                    jetSR1Info.append(thinjetChadEF[ifirstjet])
+              
+         
+         ## for SR2
+            # 3 jets and 2 btagged 
+            
+            if (nTHINdeepCSVJets == 2 or nTHINdeepCSVJets == 3) and pfmetstatus and SRlepcond and SRtrigstatus:
+                #===CSVs before any selection===	
+                preselquantlist=AllQuantList.getPresel()        
+                for quant in preselquantlist:
+                    exec("allquantities."+quant+" = None")	
+                allquantities.presel_jet1_deepcsv_sr2=thinJetdeepCSV[ifirstjet]
+                allquantities.presel_jet2_deepcsv_sr2=thinJetdeepCSV[isecondjet]
+                if nTHINdeepCSVJets>2: allquantities.presel_jet3_deepcsv_sr2=thinJetdeepCSV[ithirdjet]
+                allquantities.presel_jet1_chf_sr2=thinjetChadEF[ifirstjet]
+                allquantities.presel_jet1_nhf_sr2=thinjetNhadEF[ifirstjet]
+                allquantities.FillPreSel()		
+                #===
+            
+            if (nTHINdeepCSVJets == 2 or nTHINdeepCSVJets == 3) and nBjets==2 and SRtrigstatus:
+                SR2njetcond=True
+                if pfmetstatus: cutStatusSR2['njet+nBjet'] +=1
+                if pfmetstatus: cutStatus['njet+nBjet'] += 1
+                
+                SR2jetcond=True
+                
+                if j1.Pt() < 50.0: SR2jetcond=False
+                if DeltaPhi(j1.Phi(),pfMetPhi) < 0.5: SR2jetcond=False           
+                if thinjetNhadEF[ifirstjet] > 0.8 : SR2jetcond=False
+                if thinjetChadEF[ifirstjet]< 0.1: SR2jetcond=False
+                
+                if SR2jetcond and pfmetstatus:
+                    cutStatus['jet1'] += 1              # Lead jet satisfies required criteria            
+                    cutStatusSR2['jet1'] += 1
+                
+                if j2.Pt() < 50.0: SR2jetcond=False
+                if DeltaPhi(j2.Phi(),pfMetPhi) < 0.5: SR2jetcond=False
+                
+                if SR2jetcond and pfmetstatus:
+                    cutStatusSR2['jet2'] += 1
+                
+                if nTHINdeepCSVJets>2: 
+                    if j3.Pt() < 30.0: SR2jetcond=False
+                    if DeltaPhi(j3.Phi(),pfMetPhi) < 0.5: SR2jetcond=False
+                
+                if SR2jetcond and pfmetstatus:
+                    cutStatusSR2['jet3'] += 1
+                    cutStatus['jet2/3'] += 1           # The jets 2 and 3 satisfy the required criteria
+                
+                if SR2jetcond:
+                    jet1pt = j1.Pt()
+                    jet1phi = j1.Phi()
+                    jet1eta = j1.Eta()
+                    
+                    jet2pt = j2.Pt()
+                    jet2phi = j2.Phi()
+                    jet2eta = j2.Eta()
+                    
+                    if nTHINdeepCSVJets>2: 
+                        jet3pt = j3.Pt()
+                        jet3phi = j3.Phi()
+                        jet3eta = j3.Eta()
+                        jet3deepcsv = thinJetdeepCSV[ithirdjet]
+                        min_dPhi=min(DeltaPhi(j1.Phi(),pfMetPhi),DeltaPhi(j2.Phi(),pfMetPhi),DeltaPhi(j3.Phi(),pfMetPhi))
+                    else:
+                        jet3pt = None
+                        jet3phi = None
+                        jet3eta = None
+                        jet3csv = None
+                        min_dPhi=min(DeltaPhi(j1.Phi(),pfMetPhi),DeltaPhi(j2.Phi(),pfMetPhi))
+                    
+                    jet1deepcsv = thinJetdeepCSV[ifirstjet]
+                    jet2deepcsv = thinJetdeepCSV[isecondjet]
+
+                    jetSR2Info.append([jet1pt,jet1eta,jet1phi,jet1deepcsv])
+                    jetSR2Info.append([jet2pt,jet2eta,jet2phi,jet2deepcsv])
+                    jetSR2Info.append([jet3pt,jet3eta,jet3phi,jet3deepcsv])
+                    jetSR2Info.append(min_dPhi)
+                    jetSR2Info.append(pfMet)
+                    jetSR2Info.append(thinjetNhadEF[ifirstjet])
+                    jetSR2Info.append(thinjetChadEF[ifirstjet])
+
+                
+            if pfmetstatus and SRlepcond and SR1jetcond:
+                cutStatus['lep'] += 1
+                cutStatusSR1['lep'] += 1
+                
+            if pfmetstatus and SRlepcond and SR2jetcond:
+                cutStatus['lep'] += 1
+                cutStatusSR2['lep'] += 1
 #        CRCutFlow['njet+nBjet']+=1
         
 #        if ZeeRecoil>200. or ZmumuRecoil > 200. or WenuRecoil > 200. or WmunuRecoil > 200. or TOPRecoil > 200.:
@@ -733,17 +934,30 @@ def AnalyzeDataSet():
         if thinjetNhadEF[ifirstjet] > 0.8 : jetcond=False
         if thinjetChadEF[ifirstjet]< 0.1: jetcond=False    
         #       
-        if nTHINJets>=2:
-            if j2.Pt() < 30.0: jetcond=False            
-            
-#            if j2.Pt() > 50.0:
-#                SR2jet2=True
-#            else:
-#                SR2jet2=False
+        if options.CSV:
+            if nTHINJets>=2:
+                if j2.Pt() < 30.0: jetcond=False            
                 
-        if nTHINJets>=3:            
-            if j3.Pt() < 30.0: jetcond=False
-        
+    #            if j2.Pt() > 50.0:
+    #                SR2jet2=True
+    #            else:
+    #                SR2jet2=False
+                    
+            if nTHINJets>=3:            
+                if j3.Pt() < 30.0: jetcond=False
+                
+        if options.DeepCSV:
+            if nTHINdeepCSVJets>=2:
+                if j2.Pt() < 30.0: jetcond=False            
+                
+    #            if j2.Pt() > 50.0:
+    #                SR2jet2=True
+    #            else:
+    #                SR2jet2=False
+                    
+            if nTHINdeepCSVJets>=3:
+                if j3.Pt() < 30.0: jetcond=False
+
         if jetcond: CRCutFlow['jetcond']+=1
 #        ### Experimental: First 1/2/3 jets alone satisfy nBjet condition: Doesn't make any positive difference
 #        
@@ -775,17 +989,28 @@ def AnalyzeDataSet():
         
         if ZeePhi>-10.:
             if DeltaPhi(j1.Phi(),Phi_mpi_pi(math.pi+ZeePhi)) < 0.5: ZdPhicond = False      #Added +pi to ZPhi to reverse an error in SkimTree which will be fixed in next iteration.
-            if nTHINJets>=2:
-                if DeltaPhi(j2.Phi(),Phi_mpi_pi(math.pi+ZeePhi)) < 0.5: ZdPhicond=False
-            if nTHINJets>=3:
-                if DeltaPhi(j3.Phi(),Phi_mpi_pi(math.pi+ZeePhi)) < 0.5: ZdPhicond=False
-            
+            if options.CSV:
+                if nTHINJets>=2:
+                    if DeltaPhi(j2.Phi(),Phi_mpi_pi(math.pi+ZeePhi)) < 0.5: ZdPhicond=False
+                if nTHINJets>=3:
+                    if DeltaPhi(j3.Phi(),Phi_mpi_pi(math.pi+ZeePhi)) < 0.5: ZdPhicond=False
+            if options.DeepCSV:
+                if nTHINdeepCSVJets>=2:
+                    if DeltaPhi(j2.Phi(),Phi_mpi_pi(math.pi+ZeePhi)) < 0.5: ZdPhicond=False
+                if nTHINdeepCSVJets>=3:
+                    if DeltaPhi(j3.Phi(),Phi_mpi_pi(math.pi+ZeePhi)) < 0.5: ZdPhicond=False
         if ZmumuPhi>-10.:
             if DeltaPhi(j1.Phi(),Phi_mpi_pi(math.pi+ZmumuPhi)) < 0.5: ZdPhicond = False      
-            if nTHINJets>=2:
-                if DeltaPhi(j2.Phi(),Phi_mpi_pi(math.pi+ZmumuPhi)) < 0.5: ZdPhicond=False
-            if nTHINJets>=3:
-                if DeltaPhi(j3.Phi(),Phi_mpi_pi(math.pi+ZmumuPhi)) < 0.5: ZdPhicond=False
+            if options.CSV:
+                if nTHINJets>=2:
+                    if DeltaPhi(j2.Phi(),Phi_mpi_pi(math.pi+ZmumuPhi)) < 0.5: ZdPhicond=False
+                if nTHINJets>=3:
+                    if DeltaPhi(j3.Phi(),Phi_mpi_pi(math.pi+ZmumuPhi)) < 0.5: ZdPhicond=False
+            if options.DeepCSV:
+                if nTHINdeepCSVJets>=2:
+                    if DeltaPhi(j2.Phi(),Phi_mpi_pi(math.pi+ZmumuPhi)) < 0.5: ZdPhicond=False
+                if nTHINdeepCSVJets>=3:
+                    if DeltaPhi(j3.Phi(),Phi_mpi_pi(math.pi+ZmumuPhi)) < 0.5: ZdPhicond=False
 #            
 #        
 #        ###
@@ -818,16 +1043,28 @@ def AnalyzeDataSet():
                     allquantities.reg_2e1b_lep1_pT=myEles[iLeadLep].Pt()
                     allquantities.reg_2e1b_lep2_pT=myEles[iSecondLep].Pt()
                     
-                    allquantities.reg_2e1b_jet1_pT=j1.Pt()
-                    if nTHINJets>1: allquantities.reg_2e1b_jet2_pT=j2.Pt()
+                    if options.CSV:
+                        allquantities.reg_2e1b_jet1_pT=j1.Pt()
+                        if nTHINJets>1: allquantities.reg_2e1b_jet2_pT=j2.Pt()
+                        
+                        allquantities.reg_2e1b_jet1_eta=j1.Eta()
+                        if nTHINJets>1: allquantities.reg_2e1b_jet2_eta=j2.Eta()
                     
-                    allquantities.reg_2e1b_jet1_eta=j1.Eta()
-                    if nTHINJets>1: allquantities.reg_2e1b_jet2_eta=j2.Eta()
-                
-                    allquantities.reg_2e1b_jet1_csv = thinJetCSV[ifirstjet]
-                    if nTHINJets>1: allquantities.reg_2e1b_jet2_csv = thinJetCSV[isecondjet]
+                        allquantities.reg_2e1b_jet1_csv = thinJetCSV[ifirstjet]
+                        if nTHINJets>1: allquantities.reg_2e1b_jet2_csv = thinJetCSV[isecondjet]
+                        allquantities.reg_2e1b_njet = nTHINJets
+                        
+                    if options.DeepCSV:
+                        allquantities.reg_2e1b_jet1_pT=j1.Pt()
+                        if nTHINdeepCSVJets>1: allquantities.reg_2e1b_jet2_pT=j2.Pt()
+                        
+                        allquantities.reg_2e1b_jet1_eta=j1.Eta()
+                        if nTHINdeepCSVJets>1: allquantities.reg_2e1b_jet2_eta=j2.Eta()
+                        
+                        allquantities.reg_2e1b_jet1_deepcsv = thinJetdeepCSV[ifirstjet]
+                        if nTHINdeepCSVJets>1: allquantities.reg_2e1b_jet2_deepcsv = thinJetdeepCSV[isecondjet]
+                        allquantities.reg_2e1b_njet = nTHINdeepCSVJets
                     
-                    allquantities.reg_2e1b_njet = nTHINJets
                     allquantities.reg_2e1b_ntau = nTau
                     allquantities.reg_2e1b_nele = nEle
                     allquantities.reg_2e1b_nmu = nMu
@@ -868,16 +1105,30 @@ def AnalyzeDataSet():
                     allquantities.reg_2e2b_lep1_pT=myEles[iLeadLep].Pt()
                     allquantities.reg_2e2b_lep2_pT=myEles[iSecondLep].Pt()
                     
-                    allquantities.reg_2e2b_jet1_pT=j1.Pt()
-                    if nTHINJets>1: allquantities.reg_2e2b_jet2_pT=j2.Pt()
+                    if options.CSV:
+                        allquantities.reg_2e2b_jet1_pT=j1.Pt()
+                        if nTHINJets>1: allquantities.reg_2e2b_jet2_pT=j2.Pt()
+                        
+                        allquantities.reg_2e2b_jet1_eta=j1.Eta()
+                        if nTHINJets>1: allquantities.reg_2e2b_jet2_eta=j2.Eta()
                     
-                    allquantities.reg_2e2b_jet1_eta=j1.Eta()
-                    if nTHINJets>1: allquantities.reg_2e2b_jet2_eta=j2.Eta()
-                
-                    allquantities.reg_2e2b_jet1_csv = thinJetCSV[ifirstjet]
-                    if nTHINJets>1: allquantities.reg_2e2b_jet2_csv = thinJetCSV[isecondjet]
+                        allquantities.reg_2e2b_jet1_csv = thinJetCSV[ifirstjet]
+                        if nTHINJets>1: allquantities.reg_2e2b_jet2_csv = thinJetCSV[isecondjet]
+                        
+                        allquantities.reg_2e2b_njet = nTHINJets
                     
-                    allquantities.reg_2e2b_njet = nTHINJets
+                    if options.DeepCSV:
+                        allquantities.reg_2e2b_jet1_pT=j1.Pt()
+                        if nTHINdeepCSVJets>1: allquantities.reg_2e2b_jet2_pT=j2.Pt()
+                        
+                        allquantities.reg_2e2b_jet1_eta=j1.Eta()
+                        if nTHINdeepCSVJets>1: allquantities.reg_2e2b_jet2_eta=j2.Eta()
+                    
+                        allquantities.reg_2e2b_jet1_deepcsv = thinJetdeepCSV[ifirstjet]
+                        if nTHINdeepCSVJets>1: allquantities.reg_2e2b_jet2_deepcsv = thinJetdeepCSV[isecondjet]
+                        
+                        allquantities.reg_2e2b_njet = nTHINdeepCSVJets
+                    
                     allquantities.reg_2e2b_ntau = nTau
                     allquantities.reg_2e2b_nele = nEle
                     allquantities.reg_2e2b_nmu = nMu
@@ -926,16 +1177,30 @@ def AnalyzeDataSet():
                     allquantities.reg_2mu1b_lep1_iso=myMuIso[iLeadLep]
                     allquantities.reg_2mu1b_lep2_iso=myMuIso[iSecondLep]
                     
-                    allquantities.reg_2mu1b_jet1_pT=j1.Pt()
-                    if nTHINJets>1: allquantities.reg_2mu1b_jet2_pT=j2.Pt()
+                    if options.CSV:
+                        allquantities.reg_2mu1b_jet1_pT=j1.Pt()
+                        if nTHINJets>1: allquantities.reg_2mu1b_jet2_pT=j2.Pt()
+                        
+                        allquantities.reg_2mu1b_jet1_eta=j1.Eta()
+                        if nTHINJets>1: allquantities.reg_2mu1b_jet2_eta=j2.Eta()
                     
-                    allquantities.reg_2mu1b_jet1_eta=j1.Eta()
-                    if nTHINJets>1: allquantities.reg_2mu1b_jet2_eta=j2.Eta()
-                
-                    allquantities.reg_2mu1b_jet1_csv = thinJetCSV[ifirstjet]
-                    if nTHINJets>1: allquantities.reg_2mu1b_jet2_csv = thinJetCSV[isecondjet]
+                        allquantities.reg_2mu1b_jet1_csv = thinJetCSV[ifirstjet]
+                        if nTHINJets>1: allquantities.reg_2mu1b_jet2_csv = thinJetCSV[isecondjet]
+                        
+                        allquantities.reg_2mu1b_njet = nTHINJets
                     
-                    allquantities.reg_2mu1b_njet = nTHINJets
+                    if options.DeepCSV:
+                        allquantities.reg_2mu1b_jet1_pT=j1.Pt()
+                        if nTHINdeepCSVJets>1: allquantities.reg_2mu1b_jet2_pT=j2.Pt()
+                        
+                        allquantities.reg_2mu1b_jet1_eta=j1.Eta()
+                        if nTHINdeepCSVJets>1: allquantities.reg_2mu1b_jet2_eta=j2.Eta()
+                    
+                        allquantities.reg_2mu1b_jet1_deepcsv = thinJetdeepCSV[ifirstjet]
+                        if nTHINdeepCSVJets>1: allquantities.reg_2mu1b_jet2_deepcsv = thinJetdeepCSV[isecondjet]
+                        
+                        allquantities.reg_2mu1b_njet = nTHINdeepCSVJets
+                    
                     allquantities.reg_2mu1b_ntau = nTau
                     allquantities.reg_2mu1b_nele = nEle
                     allquantities.reg_2mu1b_nmu = nMu
@@ -969,16 +1234,30 @@ def AnalyzeDataSet():
                     allquantities.reg_2mu2b_lep1_iso=myMuIso[iLeadLep]
                     allquantities.reg_2mu2b_lep2_iso=myMuIso[iSecondLep]
                     
-                    allquantities.reg_2mu2b_jet1_pT=j1.Pt()
-                    if nTHINJets>1: allquantities.reg_2mu2b_jet2_pT=j2.Pt()
+                    if options.CSV:
+                        allquantities.reg_2mu2b_jet1_pT=j1.Pt()
+                        if nTHINJets>1: allquantities.reg_2mu2b_jet2_pT=j2.Pt()
+                        
+                        allquantities.reg_2mu2b_jet1_eta=j1.Eta()
+                        if nTHINJets>1: allquantities.reg_2mu2b_jet2_eta=j2.Eta()
                     
-                    allquantities.reg_2mu2b_jet1_eta=j1.Eta()
-                    if nTHINJets>1: allquantities.reg_2mu2b_jet2_eta=j2.Eta()
-                
-                    allquantities.reg_2mu2b_jet1_csv = thinJetCSV[ifirstjet]
-                    if nTHINJets>1: allquantities.reg_2mu2b_jet2_csv = thinJetCSV[isecondjet]
+                        allquantities.reg_2mu2b_jet1_csv = thinJetCSV[ifirstjet]
+                        if nTHINJets>1: allquantities.reg_2mu2b_jet2_csv = thinJetCSV[isecondjet]
+                        
+                        allquantities.reg_2mu2b_njet = nTHINJets
+                        
+                    if options.DeepCSV:
+                        allquantities.reg_2mu2b_jet1_pT=j1.Pt()
+                        if nTHINdeepCSVJets>1: allquantities.reg_2mu2b_jet2_pT=j2.Pt()
+                        
+                        allquantities.reg_2mu2b_jet1_eta=j1.Eta()
+                        if nTHINdeepCSVJets>1: allquantities.reg_2mu2b_jet2_eta=j2.Eta()
                     
-                    allquantities.reg_2mu2b_njet = nTHINJets
+                        allquantities.reg_2mu2b_jet1_deepcsv = thinJetdeepCSV[ifirstjet]
+                        if nTHINdeepCSVJets>1: allquantities.reg_2mu2b_jet2_deepcsv = thinJetdeepCSV[isecondjet]
+                        
+                        allquantities.reg_2mu2b_njet = nTHINdeepCSVJets
+                        
                     allquantities.reg_2mu2b_ntau = nTau
                     allquantities.reg_2mu2b_nele = nEle
                     allquantities.reg_2mu2b_nmu = nMu
@@ -1321,46 +1600,86 @@ def AnalyzeDataSet():
                 
 # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
         ## BTag Scale Factor 
-        
-        if SR1njetcond:
-            ij = ifirstjet
-            if nTHINJets>1: jj = isecondjet
-            
-            flav1 = jetflav(THINjetHadronFlavor[ij])
-            if nTHINJets>1: flav2 = jetflav(THINjetHadronFlavor[jj])
+        if options.CSV:
+            if SR1njetcond:
+                ij = ifirstjet
+                if nTHINJets>1: jj = isecondjet
+                
+                flav1 = jetflav(THINjetHadronFlavor[ij])
+                if nTHINJets>1: flav2 = jetflav(THINjetHadronFlavor[jj])
 
-#            print ("ij, flav, pt, eta, ",ij, flav1, thinjetP4[ij].Pt(), thinjetP4[ij].Eta())
-            reader1.eval_auto_bounds('central', 0, 1.2, 50.)
-            sf_resolved1 = weightbtag(reader1, flav1, thinjetP4[ij].Pt(), thinjetP4[ij].Eta())
-            if nTHINJets>1: sf_resolved2 = weightbtag(reader1, flav2, thinjetP4[jj].Pt(), thinjetP4[jj].Eta())
-            
-#            print (sf_resolved1, sf_resolved2)
-        elif SR2njetcond:
-            ij = ifirstjet
-            jj = isecondjet
-            if nTHINJets>2: jk = ithirdjet
-         
-            flav1 = jetflav(THINjetHadronFlavor[ij])
-            flav2 = jetflav(THINjetHadronFlavor[jj])
-            if nTHINJets>2: flav3 = jetflav(THINjetHadronFlavor[jj])
+    #            print ("ij, flav, pt, eta, ",ij, flav1, thinjetP4[ij].Pt(), thinjetP4[ij].Eta())
+                reader1.eval_auto_bounds('central', 0, 1.2, 50.)
+                sf_resolved1 = weightbtag(reader1, flav1, thinjetP4[ij].Pt(), thinjetP4[ij].Eta())
+                if nTHINJets>1: sf_resolved2 = weightbtag(reader1, flav2, thinjetP4[jj].Pt(), thinjetP4[jj].Eta())
+                
+    #            print (sf_resolved1, sf_resolved2)
+            elif SR2njetcond:
+                ij = ifirstjet
+                jj = isecondjet
+                if nTHINJets>2: jk = ithirdjet
+             
+                flav1 = jetflav(THINjetHadronFlavor[ij])
+                flav2 = jetflav(THINjetHadronFlavor[jj])
+                if nTHINJets>2: flav3 = jetflav(THINjetHadronFlavor[jj])
 
-#            print ("ij, flav, pt, eta, ",ij, flav1, thinjetP4[ij].Pt(), thinjetP4[ij].Eta())
-            reader1.eval_auto_bounds('central', 0, 1.2, 50.)
-            sf_resolved1 = weightbtag(reader1, flav1, thinjetP4[ij].Pt(), thinjetP4[ij].Eta())
-            sf_resolved2 = weightbtag(reader1, flav2, thinjetP4[jj].Pt(), thinjetP4[jj].Eta())
-            if nTHINJets>2: sf_resolved3 = weightbtag(reader1, flav3, thinjetP4[jk].Pt(), thinjetP4[jk].Eta())
-            
-#            print (sf_resolved1, sf_resolved2, sf_resolved3)
-            
-        if SR1njetcond:
-            allweights = allweights * sf_resolved1[0]
-            if nTHINJets>1: 
-                allweights = allweights * sf_resolved2[0]
-        if SR2njetcond:
-            allweights = allweights * sf_resolved1[0] * sf_resolved2[0]
-            if nTHINJets>2: 
-                allweights = allweights * sf_resolved3[0]
-       
+    #            print ("ij, flav, pt, eta, ",ij, flav1, thinjetP4[ij].Pt(), thinjetP4[ij].Eta())
+                reader1.eval_auto_bounds('central', 0, 1.2, 50.)
+                sf_resolved1 = weightbtag(reader1, flav1, thinjetP4[ij].Pt(), thinjetP4[ij].Eta())
+                sf_resolved2 = weightbtag(reader1, flav2, thinjetP4[jj].Pt(), thinjetP4[jj].Eta())
+                if nTHINJets>2: sf_resolved3 = weightbtag(reader1, flav3, thinjetP4[jk].Pt(), thinjetP4[jk].Eta())
+                
+    #            print (sf_resolved1, sf_resolved2, sf_resolved3)
+                
+            if SR1njetcond:
+                allweights = allweights * sf_resolved1[0]
+                if nTHINJets>1: 
+                    allweights = allweights * sf_resolved2[0]
+            if SR2njetcond:
+                allweights = allweights * sf_resolved1[0] * sf_resolved2[0]
+                if nTHINJets>2: 
+                    allweights = allweights * sf_resolved3[0]
+
+        if options.DeepCSV:
+            if SR1njetcond:
+                ij = ifirstjet
+                if nTHINdeepCSVJets>1: jj = isecondjet
+                
+                flav1 = jetflav(THINjetHadronFlavor[ij])
+                if nTHINdeepCSVJets>1: flav2 = jetflav(THINjetHadronFlavor[jj])
+
+    #            print ("ij, flav, pt, eta, ",ij, flav1, thinjetP4[ij].Pt(), thinjetP4[ij].Eta())
+                reader1.eval_auto_bounds('central', 0, 1.2, 50.)
+                sf_resolved1 = weightbtag(reader1, flav1, thindeepCSVjetP4[ij].Pt(), thindeepCSVjetP4[ij].Eta())
+                if nTHINdeepCSVJets>1: sf_resolved2 = weightbtag(reader1, flav2, thindeepCSVjetP4[jj].Pt(), thindeepCSVjetP4[jj].Eta())
+                
+    #            print (sf_resolved1, sf_resolved2)
+            elif SR2njetcond:
+                ij = ifirstjet
+                jj = isecondjet
+                if nTHINdeepCSVJets>2: jk = ithirdjet
+             
+                flav1 = jetflav(THINjetHadronFlavor[ij])
+                flav2 = jetflav(THINjetHadronFlavor[jj])
+                if nTHINdeepCSVJets>2: flav3 = jetflav(THINjetHadronFlavor[jj])
+
+    #            print ("ij, flav, pt, eta, ",ij, flav1, thinjetP4[ij].Pt(), thinjetP4[ij].Eta())
+                reader1.eval_auto_bounds('central', 0, 1.2, 50.)
+                sf_resolved1 = weightbtag(reader1, flav1, thindeepCSVjetP4[ij].Pt(), thindeepCSVjetP4[ij].Eta())
+                sf_resolved2 = weightbtag(reader1, flav2, thindeepCSVjetP4[jj].Pt(), thindeepCSVjetP4[jj].Eta())
+                if nTHINJets>2: sf_resolved3 = weightbtag(reader1, flav3, thindeepCSVjetP4[jk].Pt(), thindeepCSVjetP4[jk].Eta())
+                
+    #            print (sf_resolved1, sf_resolved2, sf_resolved3)
+                
+            if SR1njetcond:
+                allweights = allweights * sf_resolved1[0]
+                if nTHINdeepCSVJets>1: 
+                    allweights = allweights * sf_resolved2[0]
+            if SR2njetcond:
+                allweights = allweights * sf_resolved1[0] * sf_resolved2[0]
+                if nTHINdeepCSVJets>2: 
+                    allweights = allweights * sf_resolved3[0]
+
         if isData: allweights = 1.0 
         
         
@@ -1388,11 +1707,17 @@ def AnalyzeDataSet():
            allquantities.jet1_pT_sr1     = jetSR1Info[0][0]
            allquantities.jet1_eta_sr1    = jetSR1Info[0][1]
            allquantities.jet1_phi_sr1    = jetSR1Info[0][2]
-           allquantities.jet1_csv_sr1    = jetSR1Info[0][3]
+           if options.CSV:
+               allquantities.jet1_csv_sr1    = jetSR1Info[0][3]
+           if options.DeepCSV:
+               allquantities.jet1_deepcsv_sr1    = jetSR1Info[0][3]
            allquantities.jet2_pT_sr1     = jetSR1Info[1][0]
            allquantities.jet2_eta_sr1    = jetSR1Info[1][1]
            allquantities.jet2_phi_sr1    = jetSR1Info[1][2]
-           allquantities.jet2_csv_sr1    = jetSR1Info[1][3]
+           if options.CSV:
+               allquantities.jet2_csv_sr1    = jetSR1Info[1][3]
+           if options.DeepCSV:
+               allquantities.jet2_deepcsv_sr1    = jetSR1Info[1][3]
            allquantities.min_dPhi_sr1    = jetSR1Info[2]
            allquantities.met_sr1         = jetSR1Info[3]
            allquantities.jet1_nhf_sr1    = jetSR1Info[4]
@@ -1403,15 +1728,27 @@ def AnalyzeDataSet():
            allquantities.jet1_pT_sr2     = jetSR2Info[0][0]
            allquantities.jet1_eta_sr2    = jetSR2Info[0][1]
            allquantities.jet1_phi_sr2    = jetSR2Info[0][2]
-           allquantities.jet1_csv_sr2    = jetSR2Info[0][3]
+           if options.CSV:
+               allquantities.jet1_csv_sr2    = jetSR2Info[0][3]
+           if options.DeepCSV:
+               allquantities.jet1_deepcsv_sr2    = jetSR2Info[0][3]
+           
            allquantities.jet2_pT_sr2     = jetSR2Info[1][0]
            allquantities.jet2_eta_sr2    = jetSR2Info[1][1]
            allquantities.jet2_phi_sr2    = jetSR2Info[1][2]
-           allquantities.jet2_csv_sr2    = jetSR2Info[1][3]
+           if options.CSV:
+               allquantities.jet2_csv_sr2    = jetSR2Info[1][3]
+           if options.DeepCSV:
+               allquantities.jet2_deepcsv_sr2    = jetSR2Info[1][3]
+           
            allquantities.jet3_pT_sr2     = jetSR2Info[2][0]
            allquantities.jet3_eta_sr2    = jetSR2Info[2][1]
            allquantities.jet3_phi_sr2    = jetSR2Info[2][2]
-           allquantities.jet3_csv_sr2    = jetSR2Info[2][3]
+           if options.CSV:
+               allquantities.jet3_csv_sr2    = jetSR2Info[2][3]
+           if options.DeepCSV:
+               allquantities.jet3_deepcsv_sr2    = jetSR2Info[2][3]
+           
            allquantities.min_dPhi_sr2    = jetSR2Info[3]      
            allquantities.met_sr2         = jetSR2Info[4]   
            allquantities.jet1_nhf_sr2    = jetSR2Info[5]
