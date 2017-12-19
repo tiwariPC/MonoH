@@ -327,9 +327,9 @@ def AnalyzeDataSet():
         thinjetNhadEF              = skimmedTree.__getattr__('st_THINjetNHadEF')
         thinjetChadEF              = skimmedTree.__getattr__('st_THINjetCHadEF')
         
-        nTHINdeepCSVJets           = skimmedTree.__getattr__('AK4deepCSVnJet')
-        thindeepCSVjetP4           = skimmedTree.__getattr__('AK4deepCSVjetP4')
-        thinJetdeepCSV             = skimmedTree.__getattr__('AK4deepCSVjetDeepCSV_b')
+        nTHINdeepCSVJets           = skimmedTree.__getattr__('st_AK4deepCSVnJet')
+        thindeepCSVjetP4           = skimmedTree.__getattr__('st_AK4deepCSVjetP4')
+        thinJetdeepCSV             = skimmedTree.__getattr__('st_AK4deepCSVjetDeepCSV_b')
         
         nEle                       = skimmedTree.__getattr__('st_nEle')
         eleP4                      = skimmedTree.__getattr__('st_eleP4')
