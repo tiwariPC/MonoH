@@ -39,8 +39,8 @@ parser.add_option("-F", "--farmout", action="store_true",  dest="farmout")
 parser.add_option("-t", "--table", action="store_true",  dest="table")
 parser.add_option("-P", "--OtherPlots", action="store_true",  dest="OtherPlots")
 
-parser.add_option("-csv", "--CSV",action="store_true",  dest="CSV")
-parser.add_option("-deepcsv", "--DeepCSV",action="store_true",  dest="DeepCSV")
+parser.add_option("--csv", action="store_true",  dest="CSV")
+parser.add_option("--deepcsv", action="store_true",  dest="DeepCSV")
 ########################################################################################################################
 ########################## cut values########################################################################
 ########################################################################################################################
