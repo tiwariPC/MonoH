@@ -880,7 +880,7 @@ def AnalyzeDataSet():
                         jet3pt = None
                         jet3phi = None
                         jet3eta = None
-                        jet3csv = None
+                        jet3deepcsv = None
                         min_dPhi=min(DeltaPhi(j1.Phi(),pfMetPhi),DeltaPhi(j2.Phi(),pfMetPhi))
                     
                     jet1deepcsv = thinJetdeepCSV[ifirstjet]
