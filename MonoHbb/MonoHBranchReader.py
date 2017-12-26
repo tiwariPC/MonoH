@@ -528,6 +528,10 @@ def AnalyzeDataSet():
         if nTHINJets>1: isecondjet=sortedindex[1]
         if nTHINJets>2: ithirdjet=sortedindex[2]
         
+#        print alljetPT
+#        print [jet.Pt() for jet in sortedjets]
+#        print sortedindex
+#        print
         
         ## 
 # --------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -1032,21 +1036,13 @@ def AnalyzeDataSet():
                 if DeltaPhi(j3.Phi(),Phi_mpi_pi(math.pi+WmunuPhi)) < 0.5: WdPhicond=False
                 
         #1e, 1 b-tagged
-        if nEle==1 and nMu==0 and HLT_Ele27_WPLoose_Gsf and WenuRecoil>200. and jetcond and WdPhicond:      #and Wenumass>50. and Wenumass<160.
-#            CRCutFlow['nlepcond']+=1
-#            alllepPT=[lep.Pt() for lep in myEles]
-#            lepindex=[i for i in range(len(myEles))]            
-#                        
-#            sortedleps=[lep for pt,lep in sorted(zip(alllepPT,myEles), reverse=True)]      # This gives a list of leps with their pTs in descending order
-#            sortedindex=[lepind for pt,lepind in sorted(zip(alllepPT,lepindex), reverse=True)]     # Indices of leps in thinjetP4 in decscending order of jetPT
+        if nEle==1 and nMu==0 and HLT_Ele27_WPLoose_Gsf and WenuRecoil>200. and jetcond and WdPhicond:      # and Wenumass>50. and Wenumass<160.
 #            
-#            iLeadLep=sortedindex[0]
-#            iSecondLep=sortedindex[1]  
             iLeadLep=0          
             
             if myEles[iLeadLep].Pt() > 30. and myEleTightID[iLeadLep]:             
                 
-                WpT = math.sqrt( ( WenuRecoil*math.cos(math.pi+WenuPhi) + myEles[iLeadLep].Px())**2 + ( WenuRecoil*math.sin(math.pi+WenuPhi) + myEles[iLeadLep].Py())**2)
+                WpT = math.sqrt( ( pfMet*math.cos(pfMetPhi) + myEles[iLeadLep].Px())**2 + ( pfMet*math.sin(pfMetPhi) + myEles[iLeadLep].Py())**2)
                             
                 if nBjets==1:
                     allquantities.reg_1e1b_Wmass = Wenumass    
@@ -1103,12 +1099,12 @@ def AnalyzeDataSet():
                     
                 
         #1mu, 1 b-tagged  
-        if nMu==1 and nEle==0 and HLT_IsoMu20  and WmunuRecoil>200. and jetcond and WdPhicond:   #and Wmunumass>50. and Wmunumass<160.
+        if nMu==1 and nEle==0 and HLT_IsoMu20 and WmunuRecoil>200. and jetcond and WdPhicond:   #and Wmunumass>50. and Wmunumass<160. 
             iLeadLep=0
                 
-            if myMuos[iLeadLep].Pt() > 30. and myMuTightID[iLeadLep] and myMuIso[iLeadLep]<0.15:
+            if myMuos[iLeadLep].Pt() > 30. and myMuTightID[iLeadLep]:       # and myMuIso[iLeadLep]<0.15
                         
-                WpT = math.sqrt( ( WmunuRecoil*math.cos(math.pi+WmunuPhi) + myMuos[iLeadLep].Px())**2 + ( WmunuRecoil*math.sin(math.pi+WmunuPhi) + myMuos[iLeadLep].Py())**2)                
+                WpT = math.sqrt( ( pfMet*math.cos(pfMetPhi) + myMuos[iLeadLep].Px())**2 + ( pfMet*math.sin(pfMetPhi) + myMuos[iLeadLep].Py())**2)                
                             
                 if  nBjets==1:         
                     allquantities.reg_1mu1b_Wmass = Wmunumass    
@@ -1184,7 +1180,7 @@ def AnalyzeDataSet():
         #1mu, 1e, 1 b-tagged
         if nEle==1 and nMu==1 and HLT_IsoMu20 and TOPRecoil>200. and jetcond and TopdPhicond:     
         
-            if myEles[0].Pt() > 30. and myEleTightID[0] and myMuos[0].Pt() > 30. and myMuTightID[0] and myMuIso[0]<0.15:
+            if myEles[0].Pt() > 30. and myEleTightID[0] and myMuos[0].Pt() > 30. and myMuTightID[0]:        # and myMuIso[0]<0.15
             
                 if myEles[0].Pt() > myMuos[0].Pt():
                     EleLead=True

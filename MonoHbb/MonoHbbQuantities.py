@@ -132,8 +132,8 @@ class MonoHbbQuantities:
                 low='70.'
                 high='110.'
             elif 'Wmass' in quant:
-                bins='110'
-                low='50.'
+                bins='32'
+                low='0.'
                 high='160.'
             elif 'met' in quant:
                 bins='20'
