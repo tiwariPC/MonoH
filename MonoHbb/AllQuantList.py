@@ -57,7 +57,7 @@ def getRegionQuants():
             
     #W CR       
     regions=['1e1b','1mu1b','1e2b','1mu2b']
-    varlist=['Wmass','WpT','hadrecoil','MET','lep1_pT','lep1_iso','jet1_pT','jet2_pT','jet1_eta','jet2_eta','jet1_csv','jet2_csv','njet','ntau','nele','nmu','nUncleanEle','nUncleanMu','nUncleanTau']
+    varlist=['Wmass','WpT','hadrecoil','MET','lep1_pT','lep1_iso','jet1_pT','jet2_pT','jet1_eta','jet2_eta','jet1_csv','jet2_csv','jet1_deepcsv','jet2_deepcsv','njet','ntau','nele','nmu','nUncleanEle','nUncleanMu','nUncleanTau']
     
     for reg in regions:
         for var in varlist:
@@ -65,7 +65,7 @@ def getRegionQuants():
     
     #Top CR       
     regions=['1mu1e1b','1mu1e2b']
-    varlist=['hadrecoil','MET','lep1_pT','lep2_pT','lep1_iso','lep2_iso','e_pT','mu_pT','mu_iso','jet1_pT','jet2_pT','jet1_eta','jet2_eta','jet1_csv','jet2_csv','njet','ntau','nele','nmu','nUncleanEle','nUncleanMu','nUncleanTau']
+    varlist=['hadrecoil','MET','lep1_pT','lep2_pT','lep1_iso','lep2_iso','e_pT','mu_pT','mu_iso','jet1_pT','jet2_pT','jet1_eta','jet2_eta','jet1_csv','jet2_csv','jet1_deepcsv','jet2_deepcsv','njet','ntau','nele','nmu','nUncleanEle','nUncleanMu','nUncleanTau']
     
     for reg in regions:
         for var in varlist:

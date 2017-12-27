@@ -1306,18 +1306,28 @@ def AnalyzeDataSet():
         
         if WenuPhi>-10.:
             if DeltaPhi(j1.Phi(),Phi_mpi_pi(math.pi+WenuPhi)) < 0.5: WdPhicond = False      #Added +pi to ZPhi to reverse an error in SkimTree which will be fixed in next iteration.
-            if nTHINJets>=2:
-                if DeltaPhi(j2.Phi(),Phi_mpi_pi(math.pi+WenuPhi)) < 0.5: WdPhicond=False
-            if nTHINJets>=3:
-                if DeltaPhi(j3.Phi(),Phi_mpi_pi(math.pi+WenuPhi)) < 0.5: WdPhicond=False
-            
+            if options.CSV:
+                if nTHINJets>=2:
+                    if DeltaPhi(j2.Phi(),Phi_mpi_pi(math.pi+WenuPhi)) < 0.5: WdPhicond=False
+                if nTHINJets>=3:
+                    if DeltaPhi(j3.Phi(),Phi_mpi_pi(math.pi+WenuPhi)) < 0.5: WdPhicond=False
+            if options.DeepCSV:
+                if nTHINdeepCSVJets>=2:
+                    if DeltaPhi(j2.Phi(),Phi_mpi_pi(math.pi+WenuPhi)) < 0.5: WdPhicond=False
+                if nTHINdeepCSVJets>=3:
+                    if DeltaPhi(j3.Phi(),Phi_mpi_pi(math.pi+WenuPhi)) < 0.5: WdPhicond=False
         if WmunuPhi>-10.:
             if DeltaPhi(j1.Phi(),Phi_mpi_pi(math.pi+WmunuPhi)) < 0.5: WdPhicond = False      
-            if nTHINJets>=2:
-                if DeltaPhi(j2.Phi(),Phi_mpi_pi(math.pi+WmunuPhi)) < 0.5: WdPhicond=False
-            if nTHINJets>=3:
-                if DeltaPhi(j3.Phi(),Phi_mpi_pi(math.pi+WmunuPhi)) < 0.5: WdPhicond=False
-                
+            if options.CSV:
+                if nTHINJets>=2:
+                    if DeltaPhi(j2.Phi(),Phi_mpi_pi(math.pi+WmunuPhi)) < 0.5: WdPhicond=False
+                if nTHINJets>=3:
+                    if DeltaPhi(j3.Phi(),Phi_mpi_pi(math.pi+WmunuPhi)) < 0.5: WdPhicond=False
+            if options.DeepCSV:
+                if nTHINdeepCSVJets>=2:
+                    if DeltaPhi(j2.Phi(),Phi_mpi_pi(math.pi+WmunuPhi)) < 0.5: WdPhicond=False
+                if nTHINdeepCSVJets>=3:
+                    if DeltaPhi(j3.Phi(),Phi_mpi_pi(math.pi+WmunuPhi)) < 0.5: WdPhicond=False
         #1e, 1 b-tagged
         if nEle==1 and nMu==0 and HLT_Ele27_WPLoose_Gsf and WenuRecoil>200. and jetcond and WdPhicond:      # and Wenumass>50. and Wenumass<160.
 #            
@@ -1337,15 +1347,28 @@ def AnalyzeDataSet():
                     allquantities.reg_1e1b_lep1_pT=myEles[iLeadLep].Pt()
                     
                     allquantities.reg_1e1b_jet1_pT=j1.Pt()
-                    if nTHINJets>1: allquantities.reg_1e1b_jet2_pT=j2.Pt()
                     
-                    allquantities.reg_1e1b_jet1_eta=j1.Eta()
-                    if nTHINJets>1: allquantities.reg_1e1b_jet2_eta=j2.Eta()
-                
-                    allquantities.reg_1e1b_jet1_csv = thinJetCSV[ifirstjet]
-                    if nTHINJets>1: allquantities.reg_1e1b_jet2_csv = thinJetCSV[isecondjet]
+                    if options.CSV:
+                        if nTHINJets>1: allquantities.reg_1e1b_jet2_pT=j2.Pt()
+                        
+                        allquantities.reg_1e1b_jet1_eta=j1.Eta()
+                        if nTHINJets>1: allquantities.reg_1e1b_jet2_eta=j2.Eta()
                     
-                    allquantities.reg_1e1b_njet = nTHINJets
+                        allquantities.reg_1e1b_jet1_csv = thinJetCSV[ifirstjet]
+                        if nTHINJets>1: allquantities.reg_1e1b_jet2_csv = thinJetCSV[isecondjet]
+                        
+                        allquantities.reg_1e1b_njet = nTHINJets
+                    if options.DeepCSV:
+                        if nTHINdeepCSVJets>1: allquantities.reg_1e1b_jet2_pT=j2.Pt()
+                        
+                        allquantities.reg_1e1b_jet1_eta=j1.Eta()
+                        if nTHINdeepCSVJets>1: allquantities.reg_1e1b_jet2_eta=j2.Eta()
+                    
+                        allquantities.reg_1e1b_jet1_deepcsv = thinJetdeepCSV[ifirstjet]
+                        if nTHINdeepCSVJets>1: allquantities.reg_1e1b_jet2_deepcsv = thinJetdeepCSV[isecondjet]
+                        
+                        allquantities.reg_1e1b_njet = nTHINdeepCSVJets
+
                     allquantities.reg_1e1b_ntau = nTau
                     allquantities.reg_1e1b_nele = nEle
                     allquantities.reg_1e1b_nmu = nMu
@@ -1364,15 +1387,26 @@ def AnalyzeDataSet():
                     allquantities.reg_1e2b_lep1_pT=myEles[iLeadLep].Pt()
                     
                     allquantities.reg_1e2b_jet1_pT=j1.Pt()
-                    if nTHINJets>1: allquantities.reg_1e2b_jet2_pT=j2.Pt()
+                    if options.CSV:
+                        if nTHINJets>1: allquantities.reg_1e2b_jet2_pT=j2.Pt()
+                        
+                        allquantities.reg_1e2b_jet1_eta=j1.Eta()
+                        if nTHINJets>1: allquantities.reg_1e2b_jet2_eta=j2.Eta()
                     
-                    allquantities.reg_1e2b_jet1_eta=j1.Eta()
-                    if nTHINJets>1: allquantities.reg_1e2b_jet2_eta=j2.Eta()
-                
-                    allquantities.reg_1e2b_jet1_csv = thinJetCSV[ifirstjet]
-                    if nTHINJets>1: allquantities.reg_1e2b_jet2_csv = thinJetCSV[isecondjet]
+                        allquantities.reg_1e2b_jet1_csv = thinJetCSV[ifirstjet]
+                        if nTHINJets>1: allquantities.reg_1e2b_jet2_csv = thinJetCSV[isecondjet]
+                        
+                        allquantities.reg_1e2b_njet = nTHINJets
+                    if options.DeepCSV:
+                        if nTHINdeepCSVJets>1: allquantities.reg_1e2b_jet2_pT=j2.Pt()
+                        
+                        allquantities.reg_1e2b_jet1_eta=j1.Eta()
+                        if nTHINdeepCSVJets>1: allquantities.reg_1e2b_jet2_eta=j2.Eta()
                     
-                    allquantities.reg_1e2b_njet = nTHINJets
+                        allquantities.reg_1e2b_jet1_deepcsv = thinJetdeepCSV[ifirstjet]
+                        if nTHINdeepCSVJets>1: allquantities.reg_1e2b_jet2_deepcsv = thinJetdeepCSV[isecondjet]
+                        
+                        allquantities.reg_1e2b_njet = nTHINdeepCSVJets
                     allquantities.reg_1e2b_ntau = nTau
                     allquantities.reg_1e2b_nele = nEle
                     allquantities.reg_1e2b_nmu = nMu
@@ -1400,15 +1434,26 @@ def AnalyzeDataSet():
                     allquantities.reg_1mu1b_lep1_iso=myMuIso[iLeadLep]
                     
                     allquantities.reg_1mu1b_jet1_pT=j1.Pt()
-                    if nTHINJets>1: allquantities.reg_1mu1b_jet2_pT=j2.Pt()
+                    if options.CSV:
+                        if nTHINJets>1: allquantities.reg_1mu1b_jet2_pT=j2.Pt()
+                        
+                        allquantities.reg_1mu1b_jet1_eta=j1.Eta()
+                        if nTHINJets>1: allquantities.reg_1mu1b_jet2_eta=j2.Eta()
                     
-                    allquantities.reg_1mu1b_jet1_eta=j1.Eta()
-                    if nTHINJets>1: allquantities.reg_1mu1b_jet2_eta=j2.Eta()
-                
-                    allquantities.reg_1mu1b_jet1_csv = thinJetCSV[ifirstjet]
-                    if nTHINJets>1: allquantities.reg_1mu1b_jet2_csv = thinJetCSV[isecondjet]
+                        allquantities.reg_1mu1b_jet1_csv = thinJetCSV[ifirstjet]
+                        if nTHINJets>1: allquantities.reg_1mu1b_jet2_csv = thinJetCSV[isecondjet]
+                        
+                        allquantities.reg_1mu1b_njet = nTHINJets
+                    if options.DeepCSV:
+                        if nTHINdeepCSVJets>1: allquantities.reg_1mu1b_jet2_pT=j2.Pt()
+                        
+                        allquantities.reg_1mu1b_jet1_eta=j1.Eta()
+                        if nTHINdeepCSVJets>1: allquantities.reg_1mu1b_jet2_eta=j2.Eta()
                     
-                    allquantities.reg_1mu1b_njet = nTHINJets
+                        allquantities.reg_1mu1b_jet1_deepcsv = thinJetdeepCSV[ifirstjet]
+                        if nTHINdeepCSVJets>1: allquantities.reg_1mu1b_jet2_deepcsv = thinJetdeepCSV[isecondjet]
+                        
+                        allquantities.reg_1mu1b_njet = nTHINdeepCSVJets
                     allquantities.reg_1mu1b_ntau = nTau
                     allquantities.reg_1mu1b_nele = nEle
                     allquantities.reg_1mu1b_nmu = nMu
@@ -1428,15 +1473,26 @@ def AnalyzeDataSet():
                     allquantities.reg_1mu2b_lep1_iso=myMuIso[iLeadLep]
                     
                     allquantities.reg_1mu2b_jet1_pT=j1.Pt()
-                    if nTHINJets>1: allquantities.reg_1mu2b_jet2_pT=j2.Pt()
+                    if options.CSV:
+                        if nTHINJets>1: allquantities.reg_1mu2b_jet2_pT=j2.Pt()
+                        
+                        allquantities.reg_1mu2b_jet1_eta=j1.Eta()
+                        if nTHINJets>1: allquantities.reg_1mu2b_jet2_eta=j2.Eta()
                     
-                    allquantities.reg_1mu2b_jet1_eta=j1.Eta()
-                    if nTHINJets>1: allquantities.reg_1mu2b_jet2_eta=j2.Eta()
-                
-                    allquantities.reg_1mu2b_jet1_csv = thinJetCSV[ifirstjet]
-                    if nTHINJets>1: allquantities.reg_1mu2b_jet2_csv = thinJetCSV[isecondjet]
+                        allquantities.reg_1mu2b_jet1_csv = thinJetCSV[ifirstjet]
+                        if nTHINJets>1: allquantities.reg_1mu2b_jet2_csv = thinJetCSV[isecondjet]
+                        
+                        allquantities.reg_1mu2b_njet = nTHINJets
+                    if options.DeepCSV:
+                        if nTHINdeepCSVJets>1: allquantities.reg_1mu2b_jet2_pT=j2.Pt()
+                        
+                        allquantities.reg_1mu2b_jet1_eta=j1.Eta()
+                        if nTHINdeepCSVJets>1: allquantities.reg_1mu2b_jet2_eta=j2.Eta()
                     
-                    allquantities.reg_1mu2b_njet = nTHINJets
+                        allquantities.reg_1mu2b_jet1_deepcsv = thinJetdeepCSV[ifirstjet]
+                        if nTHINJets>1: allquantities.reg_1mu2b_jet2_deepcsv = thinJetdeepCSV[isecondjet]
+                        
+                        allquantities.reg_1mu2b_njet = nTHINdeepCSVJets
                     allquantities.reg_1mu2b_ntau = nTau
                     allquantities.reg_1mu2b_nele = nEle
                     allquantities.reg_1mu2b_nmu = nMu
@@ -1454,12 +1510,16 @@ def AnalyzeDataSet():
         
         if TOPPhi>-10.:
             if DeltaPhi(j1.Phi(),Phi_mpi_pi(math.pi+TOPPhi)) < 0.5: TopdPhicond = False      #Added +pi to ZPhi to reverse an error in SkimTree which will be fixed in next iteration.
-            if nTHINJets>=2:
-                if DeltaPhi(j2.Phi(),Phi_mpi_pi(math.pi+TOPPhi)) < 0.5: TopdPhicond=False
-            if nTHINJets>=3:
-                if DeltaPhi(j3.Phi(),Phi_mpi_pi(math.pi+TOPPhi)) < 0.5: TopdPhicond=False
-                
-                
+            if options.CSV:
+                if nTHINJets>=2:
+                    if DeltaPhi(j2.Phi(),Phi_mpi_pi(math.pi+TOPPhi)) < 0.5: TopdPhicond=False
+                if nTHINJets>=3:
+                    if DeltaPhi(j3.Phi(),Phi_mpi_pi(math.pi+TOPPhi)) < 0.5: TopdPhicond=False
+            if options.DeepCSV:
+                if nTHINdeepCSVJets>=2:
+                    if DeltaPhi(j2.Phi(),Phi_mpi_pi(math.pi+TOPPhi)) < 0.5: TopdPhicond=False
+                if nTHINdeepCSVJets>=3:
+                    if DeltaPhi(j3.Phi(),Phi_mpi_pi(math.pi+TOPPhi)) < 0.5: TopdPhicond=False
         #1mu, 1e, 1 b-tagged
         if nEle==1 and nMu==1 and HLT_IsoMu20 and TOPRecoil>200. and jetcond and TopdPhicond:     
         
@@ -1489,15 +1549,26 @@ def AnalyzeDataSet():
                     allquantities.reg_1mu1e1b_mu_iso=myMuIso[0]
                     
                     allquantities.reg_1mu1e1b_jet1_pT=j1.Pt()
-                    if nTHINJets>1: allquantities.reg_1mu1e1b_jet2_pT=j2.Pt()
+                    if options.CSV:
+                        if nTHINJets>1: allquantities.reg_1mu1e1b_jet2_pT=j2.Pt()
+                        
+                        allquantities.reg_1mu1e1b_jet1_eta=j1.Eta()
+                        if nTHINJets>1: allquantities.reg_1mu1e1b_jet2_eta=j2.Eta()
                     
-                    allquantities.reg_1mu1e1b_jet1_eta=j1.Eta()
-                    if nTHINJets>1: allquantities.reg_1mu1e1b_jet2_eta=j2.Eta()
-                
-                    allquantities.reg_1mu1e1b_jet1_csv = thinJetCSV[ifirstjet]
-                    if nTHINJets>1: allquantities.reg_1mu1e1b_jet2_csv = thinJetCSV[isecondjet]
+                        allquantities.reg_1mu1e1b_jet1_csv = thinJetCSV[ifirstjet]
+                        if nTHINJets>1: allquantities.reg_1mu1e1b_jet2_csv = thinJetCSV[isecondjet]
+                        
+                        allquantities.reg_1mu1e1b_njet = nTHINJets
+                    if options.DeepCSV:
+                        if nTHINdeepCSVJets>1: allquantities.reg_1mu1e1b_jet2_pT=j2.Pt()
+                        
+                        allquantities.reg_1mu1e1b_jet1_eta=j1.Eta()
+                        if nTHINdeepCSVJets>1: allquantities.reg_1mu1e1b_jet2_eta=j2.Eta()
                     
-                    allquantities.reg_1mu1e1b_njet = nTHINJets
+                        allquantities.reg_1mu1e1b_jet1_deepcsv = thinJetdeepCSV[ifirstjet]
+                        if nTHINJets>1: allquantities.reg_1mu1e1b_jet2_deepcsv = thinJetdeepCSV[isecondjet]
+                        
+                        allquantities.reg_1mu1e1b_njet = nTHINdeepCSVJets
                     allquantities.reg_1mu1e1b_ntau = nTau
                     allquantities.reg_1mu1e1b_nele = nEle
                     allquantities.reg_1mu1e1b_nmu = nMu
@@ -1525,15 +1596,26 @@ def AnalyzeDataSet():
                     allquantities.reg_1mu1e2b_mu_iso=myMuIso[0]
                     
                     allquantities.reg_1mu1e2b_jet1_pT=j1.Pt()
-                    if nTHINJets>1: allquantities.reg_1mu1e2b_jet2_pT=j2.Pt()
+                    if options.CSV:
+                        if nTHINJets>1: allquantities.reg_1mu1e2b_jet2_pT=j2.Pt()
+                        
+                        allquantities.reg_1mu1e2b_jet1_eta=j1.Eta()
+                        if nTHINJets>1: allquantities.reg_1mu1e2b_jet2_eta=j2.Eta()
                     
-                    allquantities.reg_1mu1e2b_jet1_eta=j1.Eta()
-                    if nTHINJets>1: allquantities.reg_1mu1e2b_jet2_eta=j2.Eta()
-                
-                    allquantities.reg_1mu1e2b_jet1_csv = thinJetCSV[ifirstjet]
-                    if nTHINJets>1: allquantities.reg_1mu1e2b_jet2_csv = thinJetCSV[isecondjet]
+                        allquantities.reg_1mu1e2b_jet1_csv = thinJetCSV[ifirstjet]
+                        if nTHINJets>1: allquantities.reg_1mu1e2b_jet2_csv = thinJetCSV[isecondjet]
+                        
+                        allquantities.reg_1mu1e2b_njet = nTHINJets
+                    if options.DeepCSV:
+                        if nTHINdeepCSVJets>1: allquantities.reg_1mu1e2b_jet2_pT=j2.Pt()
+                        
+                        allquantities.reg_1mu1e2b_jet1_eta=j1.Eta()
+                        if nTHINdeepCSVJets>1: allquantities.reg_1mu1e2b_jet2_eta=j2.Eta()
                     
-                    allquantities.reg_1mu1e2b_njet = nTHINJets
+                        allquantities.reg_1mu1e2b_jet1_deepcsv = thinJetdeepCSV[ifirstjet]
+                        if nTHINJets>1: allquantities.reg_1mu1e2b_jet2_deepcsv = thinJetdeepCSV[isecondjet]
+                        
+                        allquantities.reg_1mu1e2b_njet = nTHINdeepCSVJets
                     allquantities.reg_1mu1e2b_ntau = nTau
                     allquantities.reg_1mu1e2b_nele = nEle
                     allquantities.reg_1mu1e2b_nmu = nMu
