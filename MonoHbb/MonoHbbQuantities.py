@@ -132,8 +132,8 @@ class MonoHbbQuantities:
                 low='70.'
                 high='110.'
             elif 'Wmass' in quant:
-                bins='110'
-                low='50.'
+                bins='32'
+                low='0.'
                 high='160.'
             elif 'met' in quant:
                 bins='20'
@@ -159,11 +159,11 @@ class MonoHbbQuantities:
                 bins='120'
                 low='0.'
                 high='6.'
-            elif 'lep1_pT' or 'jet2_pT' in quant:                   # for pT, mass, etc.
+            elif 'lep1_pT' in quant or 'jet2_pT' in quant:                   
                 bins='100'
                 low='0.'
                 high='1000.'
-            elif 'lep2_pT' in quant:                   # for pT, mass, etc.
+            elif 'lep2_pT' in quant:           
                 bins='200'
                 low='0.'
                 high='1000.'
