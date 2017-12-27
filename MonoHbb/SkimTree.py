@@ -60,9 +60,9 @@ def arctan(x,y):
     
 def AnalyzeDataSet():
     CSVMWP=0.8484
-    
-    NEntries = skimmedTree.GetEntries()
-    
+    DCSVMWP=0.6324
+    #NEntries = skimmedTree.GetEntries()
+    NEntries = 1000
     h_total = TH1F('h_total','h_total',2,0,2)
     h_total_mcweight = TH1F('h_total_mcweight','h_total_mcweight',2,0,2)
     
@@ -86,13 +86,16 @@ def AnalyzeDataSet():
     
     maxn = 10
     
-    st_THINnJet            = array( 'L', [ 0 ] ) #ROOT.std.vector('int')()
-    st_THINjetP4           = ROOT.std.vector('TLorentzVector')()
-    st_THINjetCISVV2       = ROOT.std.vector('float')()
-    st_THINjetHadronFlavor = ROOT.std.vector('int')()
-    st_THINjetNHadEF       = ROOT.std.vector('float')()
-    st_THINjetCHadEF       = ROOT.std.vector('float')()
+    st_THINnJet                     = array( 'L', [ 0 ] ) #ROOT.std.vector('int')()
+    st_THINjetP4                    = ROOT.std.vector('TLorentzVector')()
+    st_THINjetCISVV2                = ROOT.std.vector('float')()
+    st_THINjetHadronFlavor          = ROOT.std.vector('int')()
+    st_THINjetNHadEF                = ROOT.std.vector('float')()
+    st_THINjetCHadEF                = ROOT.std.vector('float')()
     
+    st_AK4deepCSVnJet               = array( 'L', [ 0 ] ) #ROOT.std.vector('int')()
+    st_AK4deepCSVjetP4              = ROOT.std.vector('TLorentzVector')()
+    st_AK4deepCSVjetDeepCSV_b       = ROOT.std.vector('float')()
     
     st_nEle                = array( 'L', [ 0 ] ) #ROOT.std.vector('int')()
     st_eleP4               = ROOT.std.vector('TLorentzVector')()
@@ -155,12 +158,19 @@ def AnalyzeDataSet():
 #    outTree.Branch( 'st_HLT_IsoMu20', st_HLT_IsoMu20 , 'st_HLT_IsoMu20/O')
 #    outTree.Branch( 'st_HLT_Ele27_WPLoose_Gsf', st_HLT_Ele27_WPLoose_Gsf , 'st_HLT_Ele27_WPLoose_Gsf/O')
     
-    outTree.Branch( 'st_THINnJet',st_THINnJet, 'st_THINnJet/L' ) 
+    outTree.Branch( 'st_THINnJet',st_THINnJet, 'st_THINnJet/L' )
+    #outTree.Branch( 'st_THINnJet',st_AK4deepCSVnJet, 'st_AK4deepCSVnJet/L' )
     outTree.Branch( 'st_THINjetP4',st_THINjetP4 ) 
+    #outTree.Branch( 'st_THINjetP4',st_AK4deepCSVjetP4 )
     outTree.Branch( 'st_THINjetCISVV2',st_THINjetCISVV2 ) 
+    #outTree.Branch( 'st_THINjetCISVV2',st_AK4deepCSVjetDeepCSV_b ) 
     outTree.Branch( 'st_THINjetHadronFlavor',st_THINjetHadronFlavor ) 
     outTree.Branch( 'st_THINjetNHadEF',st_THINjetNHadEF )
     outTree.Branch( 'st_THINjetCHadEF',st_THINjetCHadEF )
+    
+    outTree.Branch( 'st_AK4deepCSVnJet',st_AK4deepCSVnJet, 'st_AK4deepCSVnJet/L' )
+    outTree.Branch( 'st_AK4deepCSVjetP4',st_AK4deepCSVjetP4 ) 
+    outTree.Branch( 'st_AK4deepCSVjetDeepCSV_b',st_AK4deepCSVjetDeepCSV_b ) 
     
     outTree.Branch( 'st_nEle',st_nEle , 'st_nEle/L') 
     outTree.Branch( 'st_eleP4',st_eleP4 )
@@ -237,6 +247,9 @@ def AnalyzeDataSet():
         thinjetNhadEF              = skimmedTree.__getattr__('THINjetNHadEF')
         thinjetChadEF              = skimmedTree.__getattr__('THINjetCHadEF')
         
+        nTHINdeepCSVJets           = skimmedTree.__getattr__('AK4deepCSVnJet')
+        thindeepCSVjetP4           = skimmedTree.__getattr__('AK4deepCSVjetP4')
+        thinJetdeepCSV             = skimmedTree.__getattr__('AK4deepCSVjetDeepCSV_b')
         
         nEle                       = skimmedTree.__getattr__('nEle')
         eleP4                      = skimmedTree.__getattr__('eleP4')
@@ -369,6 +382,19 @@ def AnalyzeDataSet():
         if len(thinjetpassindex) < 1 : continue
 #        print nBjets
 #        if nBjets < 1: continue
+
+        thindCSVjetpassindex=[]
+        ndBjets=0
+        for jthinjet in range(nTHINdeepCSVJets):
+            j1 = thindeepCSVjetP4[jthinjet]
+            #if (j1.Pt() > 30.0)&(abs(j1.Eta())<2.4)&(bool(passThinJetLooseID[ithinjet])==True)&(bool(passThinJetPUID[ithinjet]) == True):
+            if (j1.Pt() > 30.0)&(abs(j1.Eta())<2.4)&(bool(passThinJetLooseID[jthinjet])==True):
+                thindCSVjetpassindex.append(jthinjet)
+            if thinJetdeepCSV[jthinjet] > DCSVMWP: ndBjets += 1
+#        print ('njet: ',len(thinjetpassindex))
+        if len(thindCSVjetpassindex) < 1 : continue
+#        print nBjets
+#        if nBjets < 1: continue
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
         ## Electron Veto
@@ -426,6 +452,9 @@ def AnalyzeDataSet():
         st_THINjetNHadEF.clear()
         st_THINjetCHadEF.clear()
         
+        st_AK4deepCSVjetP4.clear()
+        st_AK4deepCSVjetDeepCSV_b.clear()
+        
         st_eleP4.clear()
         st_muP4.clear()
         st_muChHadIso.clear()
@@ -445,6 +474,11 @@ def AnalyzeDataSet():
             st_THINjetHadronFlavor.push_back(THINjetHadronFlavor[ithinjet])
             st_THINjetNHadEF.push_back(thinjetNhadEF[ithinjet])
             st_THINjetCHadEF.push_back(thinjetChadEF[ithinjet])
+            
+        st_AK4deepCSVnJet[0] = len(thindCSVjetpassindex)
+        for ithinjet in thindCSVjetpassindex:
+            st_AK4deepCSVjetP4.push_back(thindeepCSVjetP4[ithinjet])
+            st_AK4deepCSVjetDeepCSV_b.push_back(thinJetdeepCSV[ithinjet])
             
         st_nEle[0] = len(myEles)
         for iele in myEles:
