@@ -945,26 +945,32 @@ def AnalyzeDataSet():
         if thinjetNhadEF[ifirstjet] > 0.8 : jetcond=False
         if thinjetChadEF[ifirstjet]< 0.1: jetcond=False    
         #       
-        if nTHINJets>=2:
-            if j2.Pt() < 30.0: jetcond=False            
-            
-            if j2.Pt() > 50.0:
-                SR2jet2=True
-            else:
-                SR2jet2=False
+        if options.CSV:
+            if nTHINJets>=2:
+                if j2.Pt() < 30.0: jetcond=False            
                 
-    #            if j2.Pt() > 50.0:
-    #                SR2jet2=True
-    #            else:
-    #                SR2jet2=False
+                if j2.Pt() > 50.0:
+                    SR2jet2=True
+                else:
+                    SR2jet2=False
                     
-            if nTHINJets>=3:            
-                if j3.Pt() < 30.0: jetcond=False
+        #            if j2.Pt() > 50.0:
+        #                SR2jet2=True
+        #            else:
+        #                SR2jet2=False
+                        
+                if nTHINJets>=3:            
+                    if j3.Pt() < 30.0: jetcond=False
                 
         if options.DeepCSV:
             if nTHINdeepCSVJets>=2:
                 if j2.Pt() < 30.0: jetcond=False            
                 
+                if j2.Pt() > 50.0:
+                    SR2jet2=True
+                else:
+                    SR2jet2=False
+                    
     #            if j2.Pt() > 50.0:
     #                SR2jet2=True
     #            else:
