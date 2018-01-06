@@ -380,7 +380,7 @@ def AnalyzeDataSet():
                 thinjetpassindex.append(ithinjet)
             if thinJetCSV[ithinjet] > CSVMWP: nBjets += 1
 #        print ('njet: ',len(thinjetpassindex))
-        if len(thinjetpassindex) < 1 : continue
+#        if len(thinjetpassindex) < 1 : continue
 #        print nBjets
 #        if nBjets < 1: continue
 
@@ -393,9 +393,11 @@ def AnalyzeDataSet():
                 thindCSVjetpassindex.append(jthinjet)
             if thinJetdeepCSV[jthinjet] > DCSVMWP: ndBjets += 1
 #        print ('njet: ',len(thinjetpassindex))
-        if len(thindCSVjetpassindex) < 1 : continue
+#        if len(thindCSVjetpassindex) < 1 : continue
 #        print nBjets
 #        if nBjets < 1: continue
+
+        if len(thinjetpassindex) < 1 and len(thindCSVjetpassindex) < 1 : continue
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
         ## Electron Veto
