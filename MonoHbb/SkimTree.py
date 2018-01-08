@@ -22,7 +22,6 @@ ROOT.gROOT.LoadMacro("Loader.h+")
 #        samplename = 'all'
 #    return samplename   
     
-    
 ## When not running on farmout
 #inputfilename= 'FileList.txt' uncomment it for providing list of file
 outfilename= 'SkimmedTree.root'
@@ -92,10 +91,11 @@ def AnalyzeDataSet():
     st_THINjetHadronFlavor          = ROOT.std.vector('int')()
     st_THINjetNHadEF                = ROOT.std.vector('float')()
     st_THINjetCHadEF                = ROOT.std.vector('float')()
-    
+
     st_AK4deepCSVnJet               = array( 'L', [ 0 ] ) #ROOT.std.vector('int')()
     st_AK4deepCSVjetP4              = ROOT.std.vector('TLorentzVector')()
     st_AK4deepCSVjetDeepCSV_b       = ROOT.std.vector('float')()
+    
     
     st_nEle                = array( 'L', [ 0 ] ) #ROOT.std.vector('int')()
     st_eleP4               = ROOT.std.vector('TLorentzVector')()
@@ -168,9 +168,10 @@ def AnalyzeDataSet():
     outTree.Branch( 'st_THINjetNHadEF',st_THINjetNHadEF )
     outTree.Branch( 'st_THINjetCHadEF',st_THINjetCHadEF )
     
+    
     outTree.Branch( 'st_AK4deepCSVnJet',st_AK4deepCSVnJet, 'st_AK4deepCSVnJet/L' )
     outTree.Branch( 'st_AK4deepCSVjetP4',st_AK4deepCSVjetP4 ) 
-    outTree.Branch( 'st_AK4deepCSVjetDeepCSV_b',st_AK4deepCSVjetDeepCSV_b ) 
+    outTree.Branch( 'st_AK4deepCSVjetDeepCSV_b',st_AK4deepCSVjetDeepCSV_b )    
     
     outTree.Branch( 'st_nEle',st_nEle , 'st_nEle/L') 
     outTree.Branch( 'st_eleP4',st_eleP4 )
@@ -248,9 +249,12 @@ def AnalyzeDataSet():
         thinjetNhadEF              = skimmedTree.__getattr__('THINjetNHadEF')
         thinjetChadEF              = skimmedTree.__getattr__('THINjetCHadEF')
         
-        nTHINdeepCSVJets           = skimmedTree.__getattr__('AK4deepCSVnJet')
-        thindeepCSVjetP4           = skimmedTree.__getattr__('AK4deepCSVjetP4')
-        thinJetdeepCSV             = skimmedTree.__getattr__('AK4deepCSVjetDeepCSV_b')
+        try:
+            nTHINdeepCSVJets           = skimmedTree.__getattr__('AK4deepCSVnJet')
+            thindeepCSVjetP4           = skimmedTree.__getattr__('AK4deepCSVjetP4')
+            thinJetdeepCSV             = skimmedTree.__getattr__('AK4deepCSVjetDeepCSV_b')
+        except:
+            if ievent==0: print "\n**********WARNING: Looks like the ntuple is from an older version as DeepCSV jet collection is missing. DeepCSV information will NOT be stored.**********\n"
         
         nEle                       = skimmedTree.__getattr__('nEle')
         eleP4                      = skimmedTree.__getattr__('eleP4')
@@ -325,9 +329,27 @@ def AnalyzeDataSet():
         trig11 = CheckFilter(trigName, trigResult, 'HLT_IsoTkMu24_v') #added from tt+DM all hadronic analysis
         trig12 = CheckFilter(trigName, trigResult, 'HLT_Ele27_WPTight_Gsf') #added from Siew Yan slides
         trig13 = CheckFilter(trigName, trigResult, 'HLT_IsoMu20')   #Added from AN CR
-        trig14 = CheckFilter(trigName, trigResult, 'HLT_Ele27_WPLoose_Gsf')   #Added from AN CR
+        trig14 = CheckFilter(trigName, trigResult, 'HLT_Ele27_WPLoose_Gsf')   #Added from AN CR        
         
-        
+#        print list(trigName)
+#        print [bool(i) for i in list(trigResult)]       
+
+#        print ievent
+#        for itrig in range(len(list(trigResult))):
+#            if bool(list(trigResult)[itrig]): print list(trigName)[itrig]
+
+#        if 'HLT_IsoMu20' in list(trigName):
+#            print 'HLT_IsoMu20'
+#        if 'HLT_Ele27_WPLoose_Gsf' in list(trigName):
+#            print 'HLT_Ele27_WPLoose_Gsf'
+
+
+#        for itr in list(trigName):
+#            if itr.find('IsoMu')!=-1: print itr
+##            if itr.find('HLT_Ele27_WPLoose_Gsf')!=-1: print itr
+###        print (trig13,trig14)
+#        print
+               
         if not isData:
             trigstatus  = False # triggers are not required for MC
         if isData:
@@ -335,6 +357,8 @@ def AnalyzeDataSet():
         if not isData:
            if trigstatus == True : continue
             
+            
+#        print (isData,trigstatus)
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
         ## Filter selection
@@ -386,18 +410,24 @@ def AnalyzeDataSet():
 
         thindCSVjetpassindex=[]
         ndBjets=0
-        for jthinjet in range(nTHINdeepCSVJets):
-            j1 = thindeepCSVjetP4[jthinjet]
-            #if (j1.Pt() > 30.0)&(abs(j1.Eta())<2.4)&(bool(passThinJetLooseID[ithinjet])==True)&(bool(passThinJetPUID[ithinjet]) == True):
-            if (j1.Pt() > 30.0)&(abs(j1.Eta())<2.4)&(bool(passThinJetLooseID[jthinjet])==True):
-                thindCSVjetpassindex.append(jthinjet)
-            if thinJetdeepCSV[jthinjet] > DCSVMWP: ndBjets += 1
+        
+        try:
+            for jthinjet in range(nTHINdeepCSVJets):
+                j1 = thindeepCSVjetP4[jthinjet]
+                #if (j1.Pt() > 30.0)&(abs(j1.Eta())<2.4)&(bool(passThinJetLooseID[ithinjet])==True)&(bool(passThinJetPUID[ithinjet]) == True):
+                if (j1.Pt() > 30.0)&(abs(j1.Eta())<2.4)&(bool(passThinJetLooseID[jthinjet])==True):
+                    thindCSVjetpassindex.append(jthinjet)
+                if thinJetdeepCSV[jthinjet] > DCSVMWP: ndBjets += 1
+            if len(thinjetpassindex) < 1 and len(thindCSVjetpassindex) < 1 : continue
+            
+        except: 
+            if len(thinjetpassindex) < 1: continue
 #        print ('njet: ',len(thinjetpassindex))
 #        if len(thindCSVjetpassindex) < 1 : continue
 #        print nBjets
 #        if nBjets < 1: continue
 
-        if len(thinjetpassindex) < 1 and len(thindCSVjetpassindex) < 1 : continue
+           
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
         ## Electron Veto
@@ -477,11 +507,14 @@ def AnalyzeDataSet():
             st_THINjetHadronFlavor.push_back(THINjetHadronFlavor[ithinjet])
             st_THINjetNHadEF.push_back(thinjetNhadEF[ithinjet])
             st_THINjetCHadEF.push_back(thinjetChadEF[ithinjet])
-            
-        st_AK4deepCSVnJet[0] = len(thindCSVjetpassindex)
-        for ithinjet in thindCSVjetpassindex:
-            st_AK4deepCSVjetP4.push_back(thindeepCSVjetP4[ithinjet])
-            st_AK4deepCSVjetDeepCSV_b.push_back(thinJetdeepCSV[ithinjet])
+        
+        try:    
+            st_AK4deepCSVnJet[0] = len(thindCSVjetpassindex)
+            for ithinjet in thindCSVjetpassindex:
+                st_AK4deepCSVjetP4.push_back(thindeepCSVjetP4[ithinjet])
+                st_AK4deepCSVjetDeepCSV_b.push_back(thinJetdeepCSV[ithinjet])
+        except:
+            pass
             
         st_nEle[0] = len(myEles)
         for iele in myEles:
