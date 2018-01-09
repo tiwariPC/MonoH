@@ -114,6 +114,8 @@ def AnalyzeDataSet():
     st_muPUPt              = ROOT.std.vector('float')()
     st_muCharge            = ROOT.std.vector('int')()
     
+    st_trigResult          = ROOT.std.vector('bool')()
+    st_trigName            = ROOT.std.vector('string')()
     
     st_HPSTau_n= array( 'L', [ 0 ] ) #ROOT.std.vector('int')()
     st_HPSTau_4Momentum= ROOT.std.vector('TLorentzVector')()
@@ -189,6 +191,9 @@ def AnalyzeDataSet():
     outTree.Branch( 'st_muGamIso', st_muGamIso)#, 'st_muGamIso/F')
     outTree.Branch( 'st_muPUPt', st_muPUPt)#, 'st_muPUPt/F')
     
+    outTree.Branch( 'st_trigName', st_trigName)
+    outTree.Branch( 'st_trigResult', st_trigResult)
+    
     outTree.Branch( 'st_HPSTau_n', st_HPSTau_n, 'st_HPSTau_n/L') 
     outTree.Branch( 'st_HPSTau_4Momentum', st_HPSTau_4Momentum) 
     
@@ -254,7 +259,7 @@ def AnalyzeDataSet():
             thindeepCSVjetP4           = skimmedTree.__getattr__('AK4deepCSVjetP4')
             thinJetdeepCSV             = skimmedTree.__getattr__('AK4deepCSVjetDeepCSV_b')
         except:
-            if ievent==0: print "\n**********WARNING: Looks like the ntuple is from an older version as DeepCSV jet collection is missing. DeepCSV information will NOT be stored.**********\n"
+            if ievent==0: print "\n**********WARNING: Looks like the ntuple is from an older version, as DeepCSV jet collection is missing. DeepCSV information will NOT be stored.**********\n"
         
         nEle                       = skimmedTree.__getattr__('nEle')
         eleP4                      = skimmedTree.__getattr__('eleP4')
@@ -328,7 +333,8 @@ def AnalyzeDataSet():
         trig10 = CheckFilter(trigName, trigResult, 'HLT_IsoMu24_v') #added from tt+DM all hadronic analysis
         trig11 = CheckFilter(trigName, trigResult, 'HLT_IsoTkMu24_v') #added from tt+DM all hadronic analysis
         trig12 = CheckFilter(trigName, trigResult, 'HLT_Ele27_WPTight_Gsf') #added from Siew Yan slides
-        trig13 = CheckFilter(trigName, trigResult, 'HLT_IsoMu20')   #Added from AN CR
+#        trig13 = CheckFilter(trigName, trigResult, 'HLT_IsoMu20')   #Added from AN CR
+        trig13 = CheckFilter(trigName, trigResult, 'HLT_IsoMu24')   #Instead of IsoMu20 which is absent era E onwards. Same as trig10.
         trig14 = CheckFilter(trigName, trigResult, 'HLT_Ele27_WPLoose_Gsf')   #Added from AN CR        
         
 #        print list(trigName)
@@ -343,20 +349,26 @@ def AnalyzeDataSet():
 #        if 'HLT_Ele27_WPLoose_Gsf' in list(trigName):
 #            print 'HLT_Ele27_WPLoose_Gsf'
 
-
+#        print list(trigName)
 #        for itr in list(trigName):
 #            if itr.find('IsoMu')!=-1: print itr
 ##            if itr.find('HLT_Ele27_WPLoose_Gsf')!=-1: print itr
 ###        print (trig13,trig14)
 #        print
                
-        if not isData:
-            trigstatus  = False # triggers are not required for MC
-        if isData:
-            trigstatus =  trig1 | trig2 | trig3 | trig4 | trig5 | trig6 | trig7 | trig8 | trig9 | trig10 | trig11 | trig12  #to include data with above triggers
-        if not isData:
-           if trigstatus == True : continue
-            
+#        if not isData:
+#            trigstatus  = False # triggers are not required for MC
+#        if isData:
+#            trigstatus =  trig1 | trig2 | trig3 | trig4 | trig5 | trig6 | trig7 | trig8 | trig9 | trig10 | trig11 | trig12  #to include data with above triggers
+#        if not isData:
+#           if trigstatus == True : continue
+        trigstatus =  trig1 | trig2 | trig3 | trig4 | trig5 | trig6 | trig7 | trig8 | trig9 | trig10 | trig11 | trig12 | trig13 | trig14
+        
+        if not trigstatus: continue    #Currently doing this for both MC and data
+        
+        for itrig in range(len(list(trigName))):
+            st_trigName.push_back(list(trigName)[itrig])
+            st_trigResult.push_back(bool(list(trigResult)[itrig]))
             
 #        print (isData,trigstatus)
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
