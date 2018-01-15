@@ -117,7 +117,12 @@ def WhichSample(filename):
         samplename = 'all'
 #    print samplename
     return samplename
-    
+
+def IsoMu20isUnPrescaled(filename):    
+    if filename.find('2016D')>-1 or filename.find('2016E')>-1 or filename.find('2016F')>-1 or filename.find('2016G')>-1 or filename.find('2016H')>-1:
+        return False
+    else:
+        return True
 
 def TheaCorrection(puppipt=200.0,  puppieta=0.0):
     puppisd_corrGEN      = TF1("puppisd_corrGEN","[0]+[1]*pow(x*[2],-[3])");
@@ -200,6 +205,8 @@ except:
     
 samplename = WhichSample(samplepath)
 print "Dataset classified as: " + samplename
+UnPrescaledIsoMu20 = IsoMu20isUnPrescaled(samplepath)
+#print UnPrescaledIsoMu20
 #print samplename
 #print
 
@@ -213,6 +220,9 @@ def AnalyzeDataSet():
     NEntries = skimmedTree.GetEntries()
     print 'NEntries = '+str(NEntries)
     npass = 0
+    
+    triglist=['HLT_PFMET170_','HLT_PFMET170_NoiseCleaned','HLT_PFMET170_JetIdCleaned_v','HLT_PFMET170_HBHECleaned_v','HLT_PFMETNoMu90_PFMHTNoMu90_IDTight_v','HLT_PFMETNoMu100_PFMHTNoMu100_IDTight_v','HLT_PFMETNoMu110_PFMHTNoMu110_IDTight_v','HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v','HLT_PFMET110_PFMHT110_','HLT_IsoMu24_v','HLT_IsoTkMu24_v','HLT_Ele27_WPTight_Gsf','HLT_IsoMu20','HLT_Ele27_WPLoose_Gsf']    
+        
     #print [rootfilename, NEntries]
     cutStatus={'preselection':NEntries}
     cutStatusSR1={'preselection':NEntries}
@@ -396,37 +406,40 @@ def AnalyzeDataSet():
         TOPRecoil                  = skimmedTree.__getattr__('TOPRecoil')
         TOPPhi                     = skimmedTree.__getattr__('TOPPhi')
         
-        trigName                   = skimmedTree.__getattr__('st_trigName')
-        trigResult                 = skimmedTree.__getattr__('st_trigResult')
+#        trigName                   = skimmedTree.__getattr__('st_trigName')
+#        trigResult                 = skimmedTree.__getattr__('st_trigResult')
         
 #        triglist=['HLT_IsoMu24','HLT_Ele27_WPLoose_Gsf']#,'HLT_PFMETNoMu90_PFMHTNoMu90_IDTight_v','HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v']
-#        
-#        for trig in triglist:
-#            exec(trig+" = skimmedTree.__getattr__('st_"+trig+"')")
+        
+        for trig in triglist:
+            exec(trig+" = skimmedTree.__getattr__('st_"+trig+"')")
+            print trig
+            exec("print "+trig)
+        print
 #        HLT_IsoMu24                = skimmedTree.__getattr__('st_HLT_IsoMu20')     #Depreciated
 #        HLT_Ele27_WPLoose_Gsf      = skimmedTree.__getattr__('st_HLT_Ele27_WPLoose_Gsf')
         
         
-        trig1 = CheckFilter(trigName, trigResult, 'HLT_PFMET170_') # added from  monojet
-        trig2 = CheckFilter(trigName, trigResult, 'HLT_PFMET170_NoiseCleaned')
-        trig3 = CheckFilter(trigName, trigResult, 'HLT_PFMET170_JetIdCleaned_v')
-        trig4 = CheckFilter(trigName, trigResult, 'HLT_PFMET170_HBHECleaned_v')
-        trig5 = CheckFilter(trigName, trigResult, 'HLT_PFMETNoMu90_PFMHTNoMu90_IDTight_v')
-        trig6 = CheckFilter(trigName, trigResult, 'HLT_PFMETNoMu100_PFMHTNoMu100_IDTight_v') #added from  tt+DM all hadronic analysis
-        trig7 = CheckFilter(trigName, trigResult, 'HLT_PFMETNoMu110_PFMHTNoMu110_IDTight_v')
-        trig8 = CheckFilter(trigName, trigResult, 'HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v')
-        trig9 = CheckFilter(trigName, trigResult, 'HLT_PFMET110_PFMHT110_')
-        trig10 = CheckFilter(trigName, trigResult, 'HLT_IsoMu24_v') #added from tt+DM all hadronic analysis
-        trig11 = CheckFilter(trigName, trigResult, 'HLT_IsoTkMu24_v') #added from tt+DM all hadronic analysis
-        trig12 = CheckFilter(trigName, trigResult, 'HLT_Ele27_WPTight_Gsf') #added from Siew Yan slides
-#        trig13 = CheckFilter(trigName, trigResult, 'HLT_IsoMu20')   #Added from AN CR
-        trig13 = CheckFilter(trigName, trigResult, 'HLT_IsoMu24')   #Instead of IsoMu20 which is absent era E onwards. Same as trig10.
-        trig14 = CheckFilter(trigName, trigResult, 'HLT_Ele27_WPLoose_Gsf')   #Added from AN CR   
+#        trig1 = CheckFilter(trigName, trigResult, 'HLT_PFMET170_') # added from  monojet
+#        trig2 = CheckFilter(trigName, trigResult, 'HLT_PFMET170_NoiseCleaned')
+#        trig3 = CheckFilter(trigName, trigResult, 'HLT_PFMET170_JetIdCleaned_v')
+#        trig4 = CheckFilter(trigName, trigResult, 'HLT_PFMET170_HBHECleaned_v')
+#        trig5 = CheckFilter(trigName, trigResult, 'HLT_PFMETNoMu90_PFMHTNoMu90_IDTight_v')
+#        trig6 = CheckFilter(trigName, trigResult, 'HLT_PFMETNoMu100_PFMHTNoMu100_IDTight_v') #added from  tt+DM all hadronic analysis
+#        trig7 = CheckFilter(trigName, trigResult, 'HLT_PFMETNoMu110_PFMHTNoMu110_IDTight_v')
+#        trig8 = CheckFilter(trigName, trigResult, 'HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v')
+#        trig9 = CheckFilter(trigName, trigResult, 'HLT_PFMET110_PFMHT110_')
+#        trig10 = CheckFilter(trigName, trigResult, 'HLT_IsoMu24_v') #added from tt+DM all hadronic analysis
+#        trig11 = CheckFilter(trigName, trigResult, 'HLT_IsoTkMu24_v') #added from tt+DM all hadronic analysis
+#        trig12 = CheckFilter(trigName, trigResult, 'HLT_Ele27_WPTight_Gsf') #added from Siew Yan slides
+##        trig13 = CheckFilter(trigName, trigResult, 'HLT_IsoMu20')   #Added from AN CR
+#        trig13 = CheckFilter(trigName, trigResult, 'HLT_IsoMu20')    #Added from AN CR 2015
+#        trig14 = CheckFilter(trigName, trigResult, 'HLT_Ele27_WPLoose_Gsf')   #Added from AN CR           
         
-        print trig14
-        
-        HLT_IsoMu24=trig10
-        HLT_Ele27_WPLoose_Gsf=trig14
+#        HLT_IsoMu24=trig10
+#        HLT_IsoMu20=trig13
+#        HLT_Ele27_WPLoose_Gsf=trig14
+
              
         jetSR1Info           = []
         jetSR2Info           = []
@@ -1079,7 +1092,7 @@ def AnalyzeDataSet():
         if ZdPhicond: CRCutFlow['ZdPhi']+=1
         
         #2e, 1 b-tagged
-        if nEle==2 and nMu==0 and HLT_Ele27_WPLoose_Gsf and ZeeMass>70. and ZeeMass<110. and ZeeRecoil>200. and jetcond and ZdPhicond:
+        if nEle==2 and nMu==0 and (HLT_Ele27_WPLoose_Gsf or HLT_Ele27_WPTight_Gsf) and ZeeMass>70. and ZeeMass<110. and ZeeRecoil>200. and jetcond and ZdPhicond:
             CRCutFlow['nlepcond']+=1
             alllepPT=[lep.Pt() for lep in myEles]
             lepindex=[i for i in range(len(myEles))]            
@@ -1210,7 +1223,7 @@ def AnalyzeDataSet():
 #                    allquantities.reg_2e2b_ntaucleaned = ncleanTau
                 
         #2mu, 1 b-tagged  
-        if nMu==2 and nEle==0 and HLT_IsoMu24 and ZmumuMass>70. and ZmumuMass<110. and ZmumuRecoil>200. and jetcond and ZdPhicond:
+        if nMu==2 and nEle==0 and ((UnPrescaledIsoMu20 and HLT_IsoMu20) or HLT_IsoMu24_v) and ZmumuMass>70. and ZmumuMass<110. and ZmumuRecoil>200. and jetcond and ZdPhicond:
             CRCutFlow['nlepcond']+=1
             alllepPT=[lep.Pt() for lep in myMuos]
             lepindex=[i for i in range(len(myMuos))]            
@@ -1371,7 +1384,7 @@ def AnalyzeDataSet():
                 if nTHINdeepCSVJets>=3:
                     if DeltaPhi(j3.Phi(),Phi_mpi_pi(math.pi+WmunuPhi)) < 0.5: WdPhicond=False
         #1e, 1 b-tagged
-        if nEle==1 and nMu==0 and HLT_Ele27_WPLoose_Gsf and WenuRecoil>200. and jetcond and WdPhicond:      # and Wenumass>50. and Wenumass<160.
+        if nEle==1 and nMu==0 and (HLT_Ele27_WPLoose_Gsf or HLT_Ele27_WPTight_Gsf) and WenuRecoil>200. and jetcond and WdPhicond:      # and Wenumass>50. and Wenumass<160.
 #            
             iLeadLep=0          
             
@@ -1458,7 +1471,7 @@ def AnalyzeDataSet():
                     
                 
         #1mu, 1 b-tagged  
-        if nMu==1 and nEle==0 and HLT_IsoMu24 and WmunuRecoil>200. and jetcond and WdPhicond:   #and Wmunumass>50. and Wmunumass<160. 
+        if nMu==1 and nEle==0 and ((UnPrescaledIsoMu20 and HLT_IsoMu20) or HLT_IsoMu24_v) and WmunuRecoil>200. and jetcond and WdPhicond:   #and Wmunumass>50. and Wmunumass<160. 
             iLeadLep=0
                 
             if myMuos[iLeadLep].Pt() > 30. and myMuTightID[iLeadLep]:       # and myMuIso[iLeadLep]<0.15
@@ -1563,7 +1576,7 @@ def AnalyzeDataSet():
                 if nTHINdeepCSVJets>=3:
                     if DeltaPhi(j3.Phi(),Phi_mpi_pi(math.pi+TOPPhi)) < 0.5: TopdPhicond=False
         #1mu, 1e, 1 b-tagged
-        if nEle==1 and nMu==1 and HLT_IsoMu24 and TOPRecoil>200. and jetcond and TopdPhicond:     
+        if nEle==1 and nMu==1 and ((UnPrescaledIsoMu20 and HLT_IsoMu20) or HLT_IsoMu24_v) and TOPRecoil>200. and jetcond and TopdPhicond:     
         
             if myEles[0].Pt() > 30. and myEleTightID[0] and myMuos[0].Pt() > 30. and myMuTightID[0]:        # and myMuIso[0]<0.15
             
