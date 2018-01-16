@@ -335,6 +335,9 @@ def AnalyzeDataSet():
 #        trig13 = CheckFilter(trigName, trigResult, 'HLT_IsoMu20')  #Added from AN CR 2015
 #        trig14 = CheckFilter(trigName, trigResult, 'HLT_Ele27_WPLoose_Gsf')   #Added from AN CR       
         
+#        for i in trigName:
+#            if ievent==0 and i.find('PFMETNoMu')>-1:
+#                print i
         
         for itrig in range(len(triglist)):
             exec(triglist[itrig]+" = CheckFilter(trigName, trigResult, " + "'" + triglist[itrig] + "')")        #Runs the above commented-off code dynamically

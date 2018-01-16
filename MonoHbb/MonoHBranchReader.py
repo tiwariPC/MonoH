@@ -413,9 +413,7 @@ def AnalyzeDataSet():
         
         for trig in triglist:
             exec(trig+" = skimmedTree.__getattr__('st_"+trig+"')")
-            print trig
-            exec("print "+trig)
-        print
+
 #        HLT_IsoMu24                = skimmedTree.__getattr__('st_HLT_IsoMu20')     #Depreciated
 #        HLT_Ele27_WPLoose_Gsf      = skimmedTree.__getattr__('st_HLT_Ele27_WPLoose_Gsf')
         
@@ -619,7 +617,15 @@ def AnalyzeDataSet():
 
         # SR start   
         
-        
+        ###
+        #********
+        #Part of data is blinded
+        #********
+        if ievent%20==0:
+            keepevent=True
+        else:
+            keepevent=False
+        #********************              REMEMBER TO UNBLIND AT SOME POINT!
         
         if options.CSV:
             SR1njetcond=False
@@ -636,9 +642,9 @@ def AnalyzeDataSet():
             ## for SR1
              # 1 or 2 jets and 1 btagged 
             
-            SRtrigstatus = True#HLT_PFMETNoMu90_PFMHTNoMu90_IDTight_v or HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v
+            SRtrigstatus = HLT_PFMETNoMu90_PFMHTNoMu90_IDTight_v or HLT_PFMETNoMu100_PFMHTNoMu100_IDTight_v or HLT_PFMETNoMu110_PFMHTNoMu110_IDTight_v or HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v 
             
-            if (nTHINJets == 1 or nTHINJets == 2) and pfmetstatus and SRlepcond and SRtrigstatus:
+            if (nTHINJets == 1 or nTHINJets == 2) and pfmetstatus and SRlepcond and SRtrigstatus and keepevent:
                 #===CSVs before any selection===
                 preselquantlist=AllQuantList.getPresel()        
                 for quant in preselquantlist:
@@ -707,7 +713,7 @@ def AnalyzeDataSet():
          ## for SR2
             # 3 jets and 2 btagged 
             
-            if (nTHINJets == 2 or nTHINJets == 3) and pfmetstatus and SRlepcond and SRtrigstatus:
+            if (nTHINJets == 2 or nTHINJets == 3) and pfmetstatus and SRlepcond and SRtrigstatus and keepevent:
                 #===CSVs before any selection===	
                 preselquantlist=AllQuantList.getPresel()        
                 for quant in preselquantlist:
