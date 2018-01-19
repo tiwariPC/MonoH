@@ -1229,7 +1229,7 @@ def AnalyzeDataSet():
 #                    allquantities.reg_2e2b_ntaucleaned = ncleanTau
                 
         #2mu, 1 b-tagged  
-        if nMu==2 and nEle==0 and ((UnPrescaledIsoMu20 and HLT_IsoMu20) or HLT_IsoMu24_v) and ZmumuMass>70. and ZmumuMass<110. and ZmumuRecoil>200. and jetcond and ZdPhicond:
+        if nMu==2 and nEle==0 and ((UnPrescaledIsoMu20 and HLT_IsoMu20) or HLT_IsoMu24_v or HLT_IsoTkMu24_v) and ZmumuMass>70. and ZmumuMass<110. and ZmumuRecoil>200. and jetcond and ZdPhicond:
             CRCutFlow['nlepcond']+=1
             alllepPT=[lep.Pt() for lep in myMuos]
             lepindex=[i for i in range(len(myMuos))]            
@@ -1390,7 +1390,7 @@ def AnalyzeDataSet():
                 if nTHINdeepCSVJets>=3:
                     if DeltaPhi(j3.Phi(),Phi_mpi_pi(math.pi+WmunuPhi)) < 0.5: WdPhicond=False
         #1e, 1 b-tagged
-        if nEle==1 and nMu==0 and (HLT_Ele27_WPLoose_Gsf or HLT_Ele27_WPTight_Gsf) and WenuRecoil>200. and jetcond and WdPhicond:      # and Wenumass>50. and Wenumass<160.
+        if nEle==1 and nMu==0 and (HLT_Ele27_WPLoose_Gsf or HLT_Ele27_WPTight_Gsf) and WenuRecoil>200. and jetcond and WdPhicond and Wenumass>50. and Wenumass<160.:
 #            
             iLeadLep=0          
             
@@ -1477,7 +1477,7 @@ def AnalyzeDataSet():
                     
                 
         #1mu, 1 b-tagged  
-        if nMu==1 and nEle==0 and ((UnPrescaledIsoMu20 and HLT_IsoMu20) or HLT_IsoMu24_v) and WmunuRecoil>200. and jetcond and WdPhicond:   #and Wmunumass>50. and Wmunumass<160. 
+        if nMu==1 and nEle==0 and ((UnPrescaledIsoMu20 and HLT_IsoMu20) or HLT_IsoMu24_v or HLT_IsoTkMu24_v) and WmunuRecoil>200. and jetcond and WdPhicond and Wmunumass>50. and Wmunumass<160.:
             iLeadLep=0
                 
             if myMuos[iLeadLep].Pt() > 30. and myMuTightID[iLeadLep]:       # and myMuIso[iLeadLep]<0.15
@@ -1582,7 +1582,7 @@ def AnalyzeDataSet():
                 if nTHINdeepCSVJets>=3:
                     if DeltaPhi(j3.Phi(),Phi_mpi_pi(math.pi+TOPPhi)) < 0.5: TopdPhicond=False
         #1mu, 1e, 1 b-tagged
-        if nEle==1 and nMu==1 and ((UnPrescaledIsoMu20 and HLT_IsoMu20) or HLT_IsoMu24_v) and TOPRecoil>200. and jetcond and TopdPhicond:     
+        if nEle==1 and nMu==1 and ((UnPrescaledIsoMu20 and HLT_IsoMu20) or HLT_IsoMu24_v or HLT_IsoTkMu24_v) and TOPRecoil>200. and jetcond and TopdPhicond:     
         
             if myEles[0].Pt() > 30. and myEleTightID[0] and myMuos[0].Pt() > 30. and myMuTightID[0]:        # and myMuIso[0]<0.15
             
