@@ -290,7 +290,10 @@ def AnalyzeDataSet():
     othersys.push_back('down')
     othersys.push_back('up')
     ## ThinJets
-    calib1 = ROOT.BTagCalibrationStandalone('csvv2', 'CSVv2_ichep.csv')
+    if options.CSV:
+        calib1 = ROOT.BTagCalibrationStandalone('csvv2', 'CSVv2_Moriond17_B_H.csv')
+    if options.DeepCSV:
+        calib1 = ROOT.BTagCalibrationStandalone('csvv2', 'DeepCSV_Moriond17_B_H.csv')
     reader1 = ROOT.BTagCalibrationStandaloneReader( 0, "central", othersys)    
     reader1.load(calib1, 0,  "comb" )  
     reader1.load(calib1, 1,  "comb" )  
