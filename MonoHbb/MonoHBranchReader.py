@@ -395,9 +395,9 @@ def AnalyzeDataSet():
         TOPRecoil                  = skimmedTree.__getattr__('TOPRecoil')
         TOPPhi                     = skimmedTree.__getattr__('TOPPhi')
         
-        THINdeepCSVjetHadronFlavor = []
-        thindeepCSVjetNhadEF = []
-        thindeepCSVjetChadEF = []
+        THINdeepCSVjetHadronFlavor = skimmedTree.__getattr__('st_THINjetHadronFlavor')
+        thindeepCSVjetNhadEF = skimmedTree.__getattr__('st_THINjetNHadEF')
+        thindeepCSVjetChadEF = skimmedTree.__getattr__('st_THINjetCHadEF')
         
         triglist=['HLT_IsoMu20','HLT_Ele27_WPLoose_Gsf']#,'HLT_PFMETNoMu90_PFMHTNoMu90_IDTight_v','HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v']
         
