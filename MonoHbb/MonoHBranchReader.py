@@ -57,6 +57,14 @@ if options.farmout==None:
 else:
     isfarmout = options.farmout
 
+if options.CSV==None:
+    options.CSV = False
+
+if options.DeepCSV==None:
+    options.DeepCSV = False
+    
+if options.CSV: print "Using CSVv2 as b-tag discriminator."    
+if options.DeepCSV: print "Using DeepCSV as b-tag discriminator."
 
 #print 'options = ',[options.inputfile]
 inputfilename = options.inputfile

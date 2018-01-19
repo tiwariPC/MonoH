@@ -61,8 +61,8 @@ def arctan(x,y):
 def AnalyzeDataSet():
     CSVMWP=0.8484
     DCSVMWP=0.6324
-    #NEntries = skimmedTree.GetEntries()
-    NEntries = 1000
+    NEntries = skimmedTree.GetEntries()
+#    NEntries = 1000
     h_total = TH1F('h_total','h_total',2,0,2)
     h_total_mcweight = TH1F('h_total_mcweight','h_total_mcweight',2,0,2)
     
@@ -220,8 +220,9 @@ def AnalyzeDataSet():
 
     
     for ievent in range(NEntries):
-#    print "\n*****\nWARNING: *Test run* Processing 5000 events only.\n*****\n"
-#    for ievent in range(5000):    
+    
+#    print "\n*****\nWARNING: *Test run* Processing 200 events only.\n*****\n"
+#    for ievent in range(200):    
         if ievent%100==0: print "Processed "+str(ievent)+" of "+str(NEntries)+" events."
         skimmedTree.GetEntry(ievent)
         ## Get all relevant branches
@@ -379,7 +380,7 @@ def AnalyzeDataSet():
                 thinjetpassindex.append(ithinjet)
             if thinJetCSV[ithinjet] > CSVMWP: nBjets += 1
 #        print ('njet: ',len(thinjetpassindex))
-        if len(thinjetpassindex) < 1 : continue
+#        if len(thinjetpassindex) < 1 : continue
 #        print nBjets
 #        if nBjets < 1: continue
 
@@ -392,9 +393,11 @@ def AnalyzeDataSet():
                 thindCSVjetpassindex.append(jthinjet)
             if thinJetdeepCSV[jthinjet] > DCSVMWP: ndBjets += 1
 #        print ('njet: ',len(thinjetpassindex))
-        if len(thindCSVjetpassindex) < 1 : continue
+#        if len(thindCSVjetpassindex) < 1 : continue
 #        print nBjets
 #        if nBjets < 1: continue
+
+        if len(thinjetpassindex) < 1 and len(thindCSVjetpassindex) < 1 : continue
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
         ## Electron Veto
