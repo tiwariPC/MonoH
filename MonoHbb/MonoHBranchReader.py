@@ -426,7 +426,7 @@ def AnalyzeDataSet():
         
         for nc in range(nTHINJets):
             for nd in range(nTHINdeepCSVJets):
-                if thindeepCSVjetP4[nd].Pt()-thinJetCSVP4[nc].Pt()<0.01:
+                if thindeepCSVjetP4[nd].Pt()-thinJetP4[nc].Pt()<0.01:
                     THINdeepCSVjetHadronFlavor[nd] = THINjetHadronFlavor[nc]
                     thindeepCSVjetNhadEF[nd] = thinjetNhadEF[nc]
                     thindeepCSVjetChadEF[nd] = thinjetChadEF[nc]
