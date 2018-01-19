@@ -2394,6 +2394,7 @@ def AnalyzeDataSet():
     print
     
     CRcutflowvaluesSet=[]
+    CRcutnames=['preselection']+CRcutnames
     for CRreg in regionnames:
         CFvalues=[]
         for cutname in CRcutnames:
