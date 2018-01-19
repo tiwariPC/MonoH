@@ -384,6 +384,10 @@ def AnalyzeDataSet():
         TOPRecoil                  = skimmedTree.__getattr__('TOPRecoil')
         TOPPhi                     = skimmedTree.__getattr__('TOPPhi')
         
+        THINdeepCSVjetHadronFlavor = []
+        thindeepCSVjetNhadEF = []
+        thindeepCSVjetChadEF = []
+        
         triglist=['HLT_IsoMu20','HLT_Ele27_WPLoose_Gsf']#,'HLT_PFMETNoMu90_PFMHTNoMu90_IDTight_v','HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v']
         
         for trig in triglist:
@@ -408,6 +412,14 @@ def AnalyzeDataSet():
         
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
         #
+        
+        for nc in range(nTHINJets):
+            for nd in range(nTHINdeepCSVJets):
+                if thindeepCSVjetP4(nd)-thinJetCSV(nc)<0.01:
+                    THINdeepCSVjetHadronFlavor[nd] = THINjetHadronFlavor[nc]
+                    thindeepCSVjetNhadEF[nd] = thinjetNhadEF[nc]
+                    thindeepCSVjetChadEF[nd] = thinjetChadEF[nc]
+                    
         CSVMWP=0.8484
         deepCSVMWP=0.6324
         if options.CSV:
@@ -768,8 +780,8 @@ def AnalyzeDataSet():
                     
                 allquantities.presel_jet1_deepcsv_sr1=thinJetdeepCSV[ifirstjet]	
                 if nTHINdeepCSVJets>1: allquantities.presel_jet2_deepcsv_sr1=thinJetdeepCSV[isecondjet]
-                allquantities.presel_jet1_chf_sr1=thinjetChadEF[ifirstjet]
-                allquantities.presel_jet1_nhf_sr1=thinjetNhadEF[ifirstjet]		
+                allquantities.presel_jet1_chf_sr1=thindeepCSVjetChadEF[ifirstjet]
+                allquantities.presel_jet1_nhf_sr1=thindeepCSVjetNhadEF[ifirstjet]		
                 allquantities.FillPreSel()		
                 #===
              
@@ -782,8 +794,8 @@ def AnalyzeDataSet():
                 
                 if j1.Pt() < 50.0: SR1jetcond=False
                 if DeltaPhi(j1.Phi(),pfMetPhi) < 0.5: SR1jetcond=False           
-                if thinjetNhadEF[ifirstjet] > 0.8 : SR1jetcond=False
-                if thinjetChadEF[ifirstjet]< 0.1: SR1jetcond=False
+                if thindeepCSVjetNhadEF[ifirstjet] > 0.8 : SR1jetcond=False
+                if thindeepCSVjetChadEF[ifirstjet]< 0.1: SR1jetcond=False
                 
                 if SR1jetcond and pfmetstatus:
                     cutStatus['jet1'] += 1              # Lead jet satisfies required criteria
@@ -822,8 +834,8 @@ def AnalyzeDataSet():
                     jetSR1Info.append([jet2pt,jet2eta,jet2phi,jet2deepcsv])
                     jetSR1Info.append(min_dPhi)
                     jetSR1Info.append(pfMet)
-                    jetSR1Info.append(thinjetNhadEF[ifirstjet])
-                    jetSR1Info.append(thinjetChadEF[ifirstjet])
+                    jetSR1Info.append(thindeepCSVjetNhadEF[ifirstjet])
+                    jetSR1Info.append(thindeepCSVjetChadEF[ifirstjet])
               
          
          ## for SR2
@@ -837,8 +849,8 @@ def AnalyzeDataSet():
                 allquantities.presel_jet1_deepcsv_sr2=thinJetdeepCSV[ifirstjet]
                 allquantities.presel_jet2_deepcsv_sr2=thinJetdeepCSV[isecondjet]
                 if nTHINdeepCSVJets>2: allquantities.presel_jet3_deepcsv_sr2=thinJetdeepCSV[ithirdjet]
-                allquantities.presel_jet1_chf_sr2=thinjetChadEF[ifirstjet]
-                allquantities.presel_jet1_nhf_sr2=thinjetNhadEF[ifirstjet]
+                allquantities.presel_jet1_chf_sr2=thindeepCSVjetChadEF[ifirstjet]
+                allquantities.presel_jet1_nhf_sr2=thindeepCSVjetNhadEF[ifirstjet]
                 allquantities.FillPreSel()		
                 #===
             
@@ -851,8 +863,8 @@ def AnalyzeDataSet():
                 
                 if j1.Pt() < 50.0: SR2jetcond=False
                 if DeltaPhi(j1.Phi(),pfMetPhi) < 0.5: SR2jetcond=False           
-                if thinjetNhadEF[ifirstjet] > 0.8 : SR2jetcond=False
-                if thinjetChadEF[ifirstjet]< 0.1: SR2jetcond=False
+                if thindeepCSVjetNhadEF[ifirstjet] > 0.8 : SR2jetcond=False
+                if thindeepCSVjetChadEF[ifirstjet]< 0.1: SR2jetcond=False
                 
                 if SR2jetcond and pfmetstatus:
                     cutStatus['jet1'] += 1              # Lead jet satisfies required criteria            
@@ -902,8 +914,8 @@ def AnalyzeDataSet():
                     jetSR2Info.append([jet3pt,jet3eta,jet3phi,jet3deepcsv])
                     jetSR2Info.append(min_dPhi)
                     jetSR2Info.append(pfMet)
-                    jetSR2Info.append(thinjetNhadEF[ifirstjet])
-                    jetSR2Info.append(thinjetChadEF[ifirstjet])
+                    jetSR2Info.append(thindeepCSVjetNhadEF[ifirstjet])
+                    jetSR2Info.append(thindeepCSVjetChadEF[ifirstjet])
 
                 
             if pfmetstatus and SRlepcond and SR1jetcond:
@@ -941,9 +953,13 @@ def AnalyzeDataSet():
         ####new conds
         jetcond=True
         SR2jet2=True
-        if j1.Pt() < 50.0: jetcond=False         
-        if thinjetNhadEF[ifirstjet] > 0.8 : jetcond=False
-        if thinjetChadEF[ifirstjet]< 0.1: jetcond=False    
+        if j1.Pt() < 50.0: jetcond=False
+        if options.CSV:
+            if thinjetNhadEF[ifirstjet] > 0.8 : jetcond=False
+            if thinjetChadEF[ifirstjet]< 0.1: jetcond=False
+        if options.DeepCSV:
+            if thindeepCSVjetNhadEF[ifirstjet] > 0.8 : jetcond=False
+            if thindeepCSVjetChadEF[ifirstjet]< 0.1: jetcond=False
         #       
         if options.CSV:
             if nTHINJets>=2:
@@ -2001,8 +2017,8 @@ def AnalyzeDataSet():
                 ij = ifirstjet
                 if nTHINdeepCSVJets>1: jj = isecondjet
                 
-                flav1 = jetflav(THINjetHadronFlavor[ij])
-                if nTHINdeepCSVJets>1: flav2 = jetflav(THINjetHadronFlavor[jj])
+                flav1 = jetflav(THINdeepCSVjetHadronFlavor[ij])
+                if nTHINdeepCSVJets>1: flav2 = jetflav(THINdeepCSVjetHadronFlavor[jj])
 
     #            print ("ij, flav, pt, eta, ",ij, flav1, thinjetP4[ij].Pt(), thinjetP4[ij].Eta())
                 reader1.eval_auto_bounds('central', 0, 1.2, 50.)
@@ -2015,9 +2031,9 @@ def AnalyzeDataSet():
                 jj = isecondjet
                 if nTHINdeepCSVJets>2: jk = ithirdjet
              
-                flav1 = jetflav(THINjetHadronFlavor[ij])
-                flav2 = jetflav(THINjetHadronFlavor[jj])
-                if nTHINdeepCSVJets>2: flav3 = jetflav(THINjetHadronFlavor[jj])
+                flav1 = jetflav(THINdeepCSVjetHadronFlavor[ij])
+                flav2 = jetflav(THINdeepCSVjetHadronFlavor[jj])
+                if nTHINdeepCSVJets>2: flav3 = jetflav(THINdeepCSVjetHadronFlavor[jj])
 
     #            print ("ij, flav, pt, eta, ",ij, flav1, thinjetP4[ij].Pt(), thinjetP4[ij].Eta())
                 reader1.eval_auto_bounds('central', 0, 1.2, 50.)
