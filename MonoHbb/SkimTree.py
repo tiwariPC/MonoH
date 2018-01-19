@@ -22,7 +22,6 @@ ROOT.gROOT.LoadMacro("Loader.h+")
 #        samplename = 'all'
 #    return samplename   
     
-    
 ## When not running on farmout
 #inputfilename= 'FileList.txt' uncomment it for providing list of file
 outfilename= 'SkimmedTree.root'
@@ -66,8 +65,7 @@ def AnalyzeDataSet():
     h_total = TH1F('h_total','h_total',2,0,2)
     h_total_mcweight = TH1F('h_total_mcweight','h_total_mcweight',2,0,2)
     
-    triglist=['HLT_IsoMu20','HLT_Ele27_WPLoose_Gsf','HLT_PFMETNoMu90_PFMHTNoMu90_IDTight_v','HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v']
-    
+    triglist=['HLT_PFMET170_','HLT_PFMET170_NoiseCleaned','HLT_PFMET170_JetIdCleaned_v','HLT_PFMET170_HBHECleaned_v','HLT_PFMETNoMu90_PFMHTNoMu90_IDTight_v','HLT_PFMETNoMu100_PFMHTNoMu100_IDTight_v','HLT_PFMETNoMu110_PFMHTNoMu110_IDTight_v','HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v','HLT_PFMET110_PFMHT110_','HLT_IsoMu24_v','HLT_IsoTkMu24_v','HLT_Ele27_WPTight_Gsf','HLT_IsoMu20','HLT_Ele27_WPLoose_Gsf']    
     outfile = TFile(outfilename,'RECREATE')
     
     outTree = TTree( 'outTree', 'tree branches' )
@@ -92,10 +90,11 @@ def AnalyzeDataSet():
     st_THINjetHadronFlavor          = ROOT.std.vector('int')()
     st_THINjetNHadEF                = ROOT.std.vector('float')()
     st_THINjetCHadEF                = ROOT.std.vector('float')()
-    
+
     st_AK4deepCSVnJet               = array( 'L', [ 0 ] ) #ROOT.std.vector('int')()
     st_AK4deepCSVjetP4              = ROOT.std.vector('TLorentzVector')()
     st_AK4deepCSVjetDeepCSV_b       = ROOT.std.vector('float')()
+    
     
     st_nEle                = array( 'L', [ 0 ] ) #ROOT.std.vector('int')()
     st_eleP4               = ROOT.std.vector('TLorentzVector')()
@@ -114,6 +113,8 @@ def AnalyzeDataSet():
     st_muPUPt              = ROOT.std.vector('float')()
     st_muCharge            = ROOT.std.vector('int')()
     
+#    st_trigResult          = ROOT.std.vector('bool')()
+#    st_trigName            = ROOT.std.vector('string')()
     
     st_HPSTau_n= array( 'L', [ 0 ] ) #ROOT.std.vector('int')()
     st_HPSTau_4Momentum= ROOT.std.vector('TLorentzVector')()
@@ -168,9 +169,10 @@ def AnalyzeDataSet():
     outTree.Branch( 'st_THINjetNHadEF',st_THINjetNHadEF )
     outTree.Branch( 'st_THINjetCHadEF',st_THINjetCHadEF )
     
+    
     outTree.Branch( 'st_AK4deepCSVnJet',st_AK4deepCSVnJet, 'st_AK4deepCSVnJet/L' )
     outTree.Branch( 'st_AK4deepCSVjetP4',st_AK4deepCSVjetP4 ) 
-    outTree.Branch( 'st_AK4deepCSVjetDeepCSV_b',st_AK4deepCSVjetDeepCSV_b ) 
+    outTree.Branch( 'st_AK4deepCSVjetDeepCSV_b',st_AK4deepCSVjetDeepCSV_b )    
     
     outTree.Branch( 'st_nEle',st_nEle , 'st_nEle/L') 
     outTree.Branch( 'st_eleP4',st_eleP4 )
@@ -187,6 +189,9 @@ def AnalyzeDataSet():
     outTree.Branch( 'st_muNeHadIso', st_muNeHadIso)#, 'st_muNeHadIso/F')
     outTree.Branch( 'st_muGamIso', st_muGamIso)#, 'st_muGamIso/F')
     outTree.Branch( 'st_muPUPt', st_muPUPt)#, 'st_muPUPt/F')
+    
+#    outTree.Branch( 'st_trigName', st_trigName)
+#    outTree.Branch( 'st_trigResult', st_trigResult)
     
     outTree.Branch( 'st_HPSTau_n', st_HPSTau_n, 'st_HPSTau_n/L') 
     outTree.Branch( 'st_HPSTau_4Momentum', st_HPSTau_4Momentum) 
@@ -248,9 +253,12 @@ def AnalyzeDataSet():
         thinjetNhadEF              = skimmedTree.__getattr__('THINjetNHadEF')
         thinjetChadEF              = skimmedTree.__getattr__('THINjetCHadEF')
         
-        nTHINdeepCSVJets           = skimmedTree.__getattr__('AK4deepCSVnJet')
-        thindeepCSVjetP4           = skimmedTree.__getattr__('AK4deepCSVjetP4')
-        thinJetdeepCSV             = skimmedTree.__getattr__('AK4deepCSVjetDeepCSV_b')
+        try:
+            nTHINdeepCSVJets           = skimmedTree.__getattr__('AK4deepCSVnJet')
+            thindeepCSVjetP4           = skimmedTree.__getattr__('AK4deepCSVjetP4')
+            thinJetdeepCSV             = skimmedTree.__getattr__('AK4deepCSVjetDeepCSV_b')
+        except:
+            if ievent==0: print "\n**********WARNING: Looks like the ntuple is from an older version, as DeepCSV jet collection is missing. DeepCSV information will NOT be stored.**********\n"
         
         nEle                       = skimmedTree.__getattr__('nEle')
         eleP4                      = skimmedTree.__getattr__('eleP4')
@@ -311,30 +319,47 @@ def AnalyzeDataSet():
         ## Trigger selection
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
-        itrig_=0; trig1 = False; trig2 = False; trig3 = False; trig4 = False; trig5 = False; trig6 = False; trig7 = False; trig8 = False; trig9 = False; trig10 = False; trig11 = False; trig12 = False;
-        trig1 = CheckFilter(trigName, trigResult, 'HLT_PFMET170_') # added from  monojet
-        trig2 = CheckFilter(trigName, trigResult, 'HLT_PFMET170_NoiseCleaned')
-        trig3 = CheckFilter(trigName, trigResult, 'HLT_PFMET170_JetIdCleaned_v')
-        trig4 = CheckFilter(trigName, trigResult, 'HLT_PFMET170_HBHECleaned_v')
-        trig5 = CheckFilter(trigName, trigResult, 'HLT_PFMETNoMu90_PFMHTNoMu90_IDTight_v')
-        trig6 = CheckFilter(trigName, trigResult, 'HLT_PFMETNoMu100_PFMHTNoMu100_IDTight_v') #added from  tt+DM all hadronic analysis
-        trig7 = CheckFilter(trigName, trigResult, 'HLT_PFMETNoMu110_PFMHTNoMu110_IDTight_v')
-        trig8 = CheckFilter(trigName, trigResult, 'HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v')
-        trig9 = CheckFilter(trigName, trigResult, 'HLT_PFMET110_PFMHT110_')
-        trig10 = CheckFilter(trigName, trigResult, 'HLT_IsoMu24_v') #added from tt+DM all hadronic analysis
-        trig11 = CheckFilter(trigName, trigResult, 'HLT_IsoTkMu24_v') #added from tt+DM all hadronic analysis
-        trig12 = CheckFilter(trigName, trigResult, 'HLT_Ele27_WPTight_Gsf') #added from Siew Yan slides
-        trig13 = CheckFilter(trigName, trigResult, 'HLT_IsoMu20')   #Added from AN CR
-        trig14 = CheckFilter(trigName, trigResult, 'HLT_Ele27_WPLoose_Gsf')   #Added from AN CR
+#        itrig_=0; trig1 = False; trig2 = False; trig3 = False; trig4 = False; trig5 = False; trig6 = False; trig7 = False; trig8 = False; trig9 = False; trig10 = False; trig11 = False; trig12 = False;
+#        trig1 = CheckFilter(trigName, trigResult, 'HLT_PFMET170_') # added from  monojet
+#        trig2 = CheckFilter(trigName, trigResult, 'HLT_PFMET170_NoiseCleaned')
+#        trig3 = CheckFilter(trigName, trigResult, 'HLT_PFMET170_JetIdCleaned_v')
+#        trig4 = CheckFilter(trigName, trigResult, 'HLT_PFMET170_HBHECleaned_v')
+#        trig5 = CheckFilter(trigName, trigResult, 'HLT_PFMETNoMu90_PFMHTNoMu90_IDTight_v')
+#        trig6 = CheckFilter(trigName, trigResult, 'HLT_PFMETNoMu100_PFMHTNoMu100_IDTight_v') #added from  tt+DM all hadronic analysis
+#        trig7 = CheckFilter(trigName, trigResult, 'HLT_PFMETNoMu110_PFMHTNoMu110_IDTight_v')
+#        trig8 = CheckFilter(trigName, trigResult, 'HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v')
+#        trig9 = CheckFilter(trigName, trigResult, 'HLT_PFMET110_PFMHT110_')
+#        trig10 = CheckFilter(trigName, trigResult, 'HLT_IsoMu24_v') #added from tt+DM all hadronic analysis
+#        trig11 = CheckFilter(trigName, trigResult, 'HLT_IsoTkMu24_v') #added from tt+DM all hadronic analysis
+#        trig12 = CheckFilter(trigName, trigResult, 'HLT_Ele27_WPTight_Gsf') #added from Siew Yan slides
+#        trig13 = CheckFilter(trigName, trigResult, 'HLT_IsoMu20')  #Added from AN CR 2015
+#        trig14 = CheckFilter(trigName, trigResult, 'HLT_Ele27_WPLoose_Gsf')   #Added from AN CR       
         
+#        for i in trigName:
+#            if ievent==0 and i.find('PFMETNoMu')>-1:
+#                print i
         
-        if not isData:
-            trigstatus  = False # triggers are not required for MC
-        if isData:
-            trigstatus =  trig1 | trig2 | trig3 | trig4 | trig5 | trig6 | trig7 | trig8 | trig9 | trig10 | trig11 | trig12  #to include data with above triggers
-        if not isData:
-           if trigstatus == True : continue
+        for itrig in range(len(triglist)):
+            exec(triglist[itrig]+" = CheckFilter(trigName, trigResult, " + "'" + triglist[itrig] + "')")        #Runs the above commented-off code dynamically
+            exec("trig"+str(itrig+1)+"="+triglist[itrig])                                                       #Saves them as trig1, trig2, etc.
+            exec("st_"+triglist[itrig]+"[0]="+triglist[itrig])                                                  #Adds to SkimmedTree output
             
+#        if not isData:
+#            trigstatus  = False # triggers are not required for MC
+#        if isData:
+#            trigstatus =  trig1 | trig2 | trig3 | trig4 | trig5 | trig6 | trig7 | trig8 | trig9 | trig10 | trig11 | trig12  #to include data with above triggers
+#        if not isData:
+#           if trigstatus == True : continue
+
+        trigstatus =  trig1 | trig2 | trig3 | trig4 | trig5 | trig6 | trig7 | trig8 | trig9 | trig10 | trig11 | trig12 | trig13 | trig14
+
+        if not trigstatus: continue    #Currently doing this for both MC and data
+#        
+#        for itrig in range(len(list(trigName))):
+#            st_trigName.push_back(list(trigName)[itrig])
+#            st_trigResult.push_back(bool(list(trigResult)[itrig]))
+            
+#        print (isData,trigstatus)
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
         ## Filter selection
@@ -386,18 +411,24 @@ def AnalyzeDataSet():
 
         thindCSVjetpassindex=[]
         ndBjets=0
-        for jthinjet in range(nTHINdeepCSVJets):
-            j1 = thindeepCSVjetP4[jthinjet]
-            #if (j1.Pt() > 30.0)&(abs(j1.Eta())<2.4)&(bool(passThinJetLooseID[ithinjet])==True)&(bool(passThinJetPUID[ithinjet]) == True):
-            if (j1.Pt() > 30.0)&(abs(j1.Eta())<2.4)&(bool(passThinJetLooseID[jthinjet])==True):
-                thindCSVjetpassindex.append(jthinjet)
-            if thinJetdeepCSV[jthinjet] > DCSVMWP: ndBjets += 1
+        
+        try:
+            for jthinjet in range(nTHINdeepCSVJets):
+                j1 = thindeepCSVjetP4[jthinjet]
+                #if (j1.Pt() > 30.0)&(abs(j1.Eta())<2.4)&(bool(passThinJetLooseID[ithinjet])==True)&(bool(passThinJetPUID[ithinjet]) == True):
+                if (j1.Pt() > 30.0)&(abs(j1.Eta())<2.4)&(bool(passThinJetLooseID[jthinjet])==True):
+                    thindCSVjetpassindex.append(jthinjet)
+                if thinJetdeepCSV[jthinjet] > DCSVMWP: ndBjets += 1
+            if len(thinjetpassindex) < 1 and len(thindCSVjetpassindex) < 1 : continue
+            
+        except: 
+            if len(thinjetpassindex) < 1: continue
 #        print ('njet: ',len(thinjetpassindex))
 #        if len(thindCSVjetpassindex) < 1 : continue
 #        print nBjets
 #        if nBjets < 1: continue
 
-        if len(thinjetpassindex) < 1 and len(thindCSVjetpassindex) < 1 : continue
+           
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
         # ----------------------------------------------------------------------------------------------------------------------------------------------------------------
         ## Electron Veto
@@ -441,13 +472,7 @@ def AnalyzeDataSet():
         
         st_pfMetCorrPt[0]       = pfMet
         st_pfMetCorrPhi[0]      = pfMetPhi
-        st_isData[0]            = isData     
-        
-        st_HLT_PFMETNoMu90_PFMHTNoMu90_IDTight_v[0] = trig5
-        st_HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v[0] = trig8
-        st_HLT_IsoMu20[0]       = trig13
-        st_HLT_Ele27_WPLoose_Gsf[0] = trig14
-
+        st_isData[0]            = isData    
         
         st_THINjetP4.clear()
         st_THINjetCISVV2.clear()
@@ -477,11 +502,14 @@ def AnalyzeDataSet():
             st_THINjetHadronFlavor.push_back(THINjetHadronFlavor[ithinjet])
             st_THINjetNHadEF.push_back(thinjetNhadEF[ithinjet])
             st_THINjetCHadEF.push_back(thinjetChadEF[ithinjet])
-            
-        st_AK4deepCSVnJet[0] = len(thindCSVjetpassindex)
-        for ithinjet in thindCSVjetpassindex:
-            st_AK4deepCSVjetP4.push_back(thindeepCSVjetP4[ithinjet])
-            st_AK4deepCSVjetDeepCSV_b.push_back(thinJetdeepCSV[ithinjet])
+        
+        try:    
+            st_AK4deepCSVnJet[0] = len(thindCSVjetpassindex)
+            for ithinjet in thindCSVjetpassindex:
+                st_AK4deepCSVjetP4.push_back(thindeepCSVjetP4[ithinjet])
+                st_AK4deepCSVjetDeepCSV_b.push_back(thinJetdeepCSV[ithinjet])
+        except:
+            pass
             
         st_nEle[0] = len(myEles)
         for iele in myEles:
