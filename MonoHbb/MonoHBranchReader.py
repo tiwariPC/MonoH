@@ -2050,7 +2050,7 @@ def AnalyzeDataSet():
                 reader1.eval_auto_bounds('central', 0, 1.2, 50.)
                 sf_resolved1 = weightbtag(reader1, flav1, thindeepCSVjetP4[ij].Pt(), thindeepCSVjetP4[ij].Eta())
                 sf_resolved2 = weightbtag(reader1, flav2, thindeepCSVjetP4[jj].Pt(), thindeepCSVjetP4[jj].Eta())
-                if nTHINJets>2: sf_resolved3 = weightbtag(reader1, flav3, thindeepCSVjetP4[jk].Pt(), thindeepCSVjetP4[jk].Eta())
+                if nTHINdeepCSVJets>2: sf_resolved3 = weightbtag(reader1, flav3, thindeepCSVjetP4[jk].Pt(), thindeepCSVjetP4[jk].Eta())
                 
     #            print (sf_resolved1, sf_resolved2, sf_resolved3)
                 
