@@ -397,10 +397,16 @@ def AnalyzeDataSet():
         thindeepCSVjetNhadEF = skimmedTree.__getattr__('st_THINjetNHadEF')
         thindeepCSVjetChadEF = skimmedTree.__getattr__('st_THINjetCHadEF')
         
-#        triglist=['HLT_IsoMu20','HLT_Ele27_WPLoose_Gsf']#,'HLT_PFMETNoMu90_PFMHTNoMu90_IDTight_v','HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v']
-        
         for trig in triglist:
             exec(trig+" = skimmedTree.__getattr__('st_"+trig+"')")
+        
+        try:
+            MET_trig=skimmedTree.__getattr__('st_MET_trig')
+            SE_trig=skimmedTree.__getattr__('st_SE_trig')
+        except:
+            MET_trig=True
+            SE_trig=True
+            if ievent==0: print "No MET_trig and SE_trig info available, the SkimmedTree seems to be from an old version. Proceeding with True for both."
 
 #        HLT_IsoMu24                = skimmedTree.__getattr__('st_HLT_IsoMu20')     #Depreciated
 #        HLT_Ele27_WPLoose_Gsf      = skimmedTree.__getattr__('st_HLT_Ele27_WPLoose_Gsf')
@@ -425,6 +431,20 @@ def AnalyzeDataSet():
 #        HLT_IsoMu24=trig10
 #        HLT_IsoMu20=trig13
 #        HLT_Ele27_WPLoose_Gsf=trig14
+        
+#        print MET_trig, SE_trig
+        
+        
+        #**************************** REMEMBER TO CHANGE DEPENDING ON THE DATASET YOU ARE USING ********************************
+        #==========================================================================
+        #
+        
+#        if not MET_trig: continue                  # For signal and mu regions with MET dataset
+        if not SE_trig: continue                    # For electron regions with SE dataset
+        
+        
+        #============================ CAUTION =====================================
+        #**************************************************************************
 
              
         jetSR1Info           = []
@@ -2238,7 +2258,7 @@ def AnalyzeDataSet():
                 reader1.eval_auto_bounds('central', 0, 1.2, 50.)
                 sf_resolved1 = weightbtag(reader1, flav1, thindeepCSVjetP4[ij].Pt(), thindeepCSVjetP4[ij].Eta())
                 sf_resolved2 = weightbtag(reader1, flav2, thindeepCSVjetP4[jj].Pt(), thindeepCSVjetP4[jj].Eta())
-                if nTHINJets>2: sf_resolved3 = weightbtag(reader1, flav3, thindeepCSVjetP4[jk].Pt(), thindeepCSVjetP4[jk].Eta())
+                if nTHINdeepCSVJets>2: sf_resolved3 = weightbtag(reader1, flav3, thindeepCSVjetP4[jk].Pt(), thindeepCSVjetP4[jk].Eta())
                 
     #            print (sf_resolved1, sf_resolved2, sf_resolved3)
                 
@@ -2338,9 +2358,14 @@ def AnalyzeDataSet():
     #print cutStatus    
     NEntries_Weight = h_t_weight.Integral()
     NEntries_total  = h_t.Integral()
-#    cutStatus['total'] = int(NEntries_total)
-#    cutStatusSR1['total'] = int(NEntries_total)
-#    cutStatusSR2['total'] = int(NEntries_total)
+    cutStatus['total'] = int(NEntries_total)
+    cutStatusSR1['total'] = int(NEntries_total)
+    cutStatusSR2['total'] = int(NEntries_total)
+    
+    for CRreg in regionnames:
+        exec("CR"+CRreg+"CutFlow['total']=int(NEntries_total)")
+    
+    
     cutStatusSR1['pfmet'] = cutStatus['pfmet']
     cutStatusSR2['pfmet'] = cutStatus['pfmet']
     print "Total events =", int(NEntries_total)
@@ -2351,19 +2376,19 @@ def AnalyzeDataSet():
     cutflowTable=""
     cutflowHeader=""
     cutflowvalues=[]    
-    cutflownames=['preselection','pfmet','njet+nBjet','jet1','jet2/3','lep']
+    cutflownames=['total','preselection','pfmet','njet+nBjet','jet1','jet2/3','lep']
     for cutflowname in cutflownames:   
         cutflowvalues.append(cutStatus[cutflowname])
         cutflowTable += str(cutStatus[cutflowname])+" "
         cutflowHeader += cutflowname+" "    
     
     cutflowvaluesSR1=[]
-    cutflownamesSR1=['preselection','pfmet','njet+nBjet','jet1','jet2','lep']
+    cutflownamesSR1=['total','preselection','pfmet','njet+nBjet','jet1','jet2','lep']
     for cutflowname in cutflownamesSR1:   
         cutflowvaluesSR1.append(cutStatusSR1[cutflowname])
         
     cutflowvaluesSR2=[]
-    cutflownamesSR2=['preselection','pfmet','njet+nBjet','jet1','jet2','jet3','lep']
+    cutflownamesSR2=['total','preselection','pfmet','njet+nBjet','jet1','jet2','jet3','lep']
     for cutflowname in cutflownamesSR2:   
         cutflowvaluesSR2.append(cutStatusSR2[cutflowname])
     
@@ -2394,7 +2419,7 @@ def AnalyzeDataSet():
     print
     
     CRcutflowvaluesSet=[]
-    CRcutnames=['preselection']+CRcutnames
+    CRcutnames=['total','preselection']+CRcutnames
     for CRreg in regionnames:
         CFvalues=[]
         for cutname in CRcutnames:

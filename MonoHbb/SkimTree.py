@@ -65,7 +65,29 @@ def AnalyzeDataSet():
     h_total = TH1F('h_total','h_total',2,0,2)
     h_total_mcweight = TH1F('h_total_mcweight','h_total_mcweight',2,0,2)
     
-    triglist=['HLT_PFMET170_','HLT_PFMET170_NoiseCleaned','HLT_PFMET170_JetIdCleaned_v','HLT_PFMET170_HBHECleaned_v','HLT_PFMETNoMu90_PFMHTNoMu90_IDTight_v','HLT_PFMETNoMu100_PFMHTNoMu100_IDTight_v','HLT_PFMETNoMu110_PFMHTNoMu110_IDTight_v','HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v','HLT_PFMET110_PFMHT110_','HLT_IsoMu24_v','HLT_IsoTkMu24_v','HLT_Ele27_WPTight_Gsf','HLT_IsoMu20','HLT_Ele27_WPLoose_Gsf']    
+    triglist=['HLT_PFMET170_','HLT_PFMET170_NoiseCleaned','HLT_PFMET170_JetIdCleaned_v','HLT_PFMET170_HBHECleaned_v',
+        'HLT_PFMETNoMu90_PFMHTNoMu90_IDTight_v','HLT_PFMETNoMu100_PFMHTNoMu100_IDTight_v','HLT_PFMETNoMu110_PFMHTNoMu110_IDTight_v',
+        'HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v','HLT_PFMET110_PFMHT110_','HLT_IsoMu24_v','HLT_IsoTkMu24_v','HLT_Ele27_WPTight_Gsf',
+        'HLT_IsoMu20','HLT_Ele27_WPLoose_Gsf']    
+    
+    METtrigs=['HLT_CaloMHTNoPU90_PFMET90_PFMHT90_IDTight_BTagCSV_p067_v7','HLT_CaloMHTNoPU90_PFMET90_PFMHT90_IDTight_v','HLT_DoubleMu3_PFMET50_v',
+        'HLT_MET200_v','HLT_MET250_v','HLT_MET300_v','HLT_MET600_v','HLT_MET700_v','HLT_MET75_IsoTrk50_v','HLT_MET90_IsoTrk50_v',
+        'HLT_MonoCentralPFJet80_PFMETNoMu110_PFMHTNoMu110_IDTight_v','HLT_MonoCentralPFJet80_PFMETNoMu120_PFMHTNoMu120_IDTight_v',
+        'HLT_Mu6_PFHT200_PFMET100_v','HLT_PFMET110_PFMHT110_IDTight_v','HLT_PFMET120_PFMHT120_IDTight_v','HLT_PFMET170_HBHE_BeamHaloCleaned_v',
+        'HLT_PFMET170_HBHECleaned_v','HLT_PFMET170_NotCleaned_v','HLT_PFMET300_v','HLT_PFMET400_v','HLT_PFMET500_v','HLT_PFMET600_v',
+        'HLT_PFMETNoMu110_PFMHTNoMu110_IDTight_v','HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v','HLT_PFMETTypeOne190_HBHE_BeamHaloCleaned_v']
+        
+    SingleElectrontrigs=['HLT_Ele105_CaloIdVT_GsfTrkIdT_v','HLT_Ele115_CaloIdVT_GsfTrkIdT_v','HLT_Ele145_CaloIdVT_GsfTrkIdT_v',
+        'HLT_Ele15_IsoVVVL_PFHT400_PFMET50_v','HLT_Ele15_IsoVVVL_PFHT400_v','HLT_Ele15_IsoVVVL_PFHT600_v','HLT_Ele200_CaloIdVT_GsfTrkIdT_v',
+        'HLT_Ele20_eta2p1_WPLoose_Gsf_LooseIsoPFTau28_v','HLT_Ele22_eta2p1_WPLoose_Gsf_LooseIsoPFTau29_v','HLT_Ele24_eta2p1_WPLoose_Gsf_LooseIsoPFTau30_v',
+        'HLT_Ele250_CaloIdVT_GsfTrkIdT_v','HLT_Ele25_WPTight_Gsf_v','HLT_Ele25_eta2p1_WPTight_Gsf_v','HLT_Ele27_WPTight_Gsf_L1JetTauSeeded_v',
+        'HLT_Ele27_WPLoose_Gsf_WHbbBoost_v','HLT_Ele27_WPTight_Gsf_v','HLT_Ele27_eta2p1_WPLoose_Gsf_HT200_v','HLT_Ele27_eta2p1_WPTight_Gsf_v',
+        'HLT_Ele27_eta2p1_WPLoose_Gsf_v','HLT_Ele300_CaloIdVT_GsfTrkIdT_v','HLT_Ele30_WPTight_Gsf_v','HLT_Ele30_eta2p1_WPTight_Gsf_v',
+        'HLT_Ele32_WPTight_Gsf_v','HLT_Ele32_eta2p1_WPTight_Gsf_v','HLT_Ele36_eta2p1_WPLoose_Gsf_LooseIsoPFTau20_SingleL1_v',
+        'HLT_Ele45_CaloIdVT_GsfTrkIdT_PFJet200_PFJet50_v','HLT_Ele50_CaloIdVT_GsfTrkIdT_PFJet165_v','HLT_Ele50_IsoVVVL_PFHT400_v']
+    
+    
+    
     outfile = TFile(outfilename,'RECREATE')
     
     outTree = TTree( 'outTree', 'tree branches' )
@@ -81,6 +103,8 @@ def AnalyzeDataSet():
         exec("st_"+trigs+"  = array( 'b', [ 0 ] )")
 #    st_HLT_IsoMu20      = array( 'b', [ 0 ] )
 #    st_HLT_Ele27_WPLoose_Gsf = array( 'b', [ 0 ] )
+    st_MET_trig = array( 'b', [ 0 ] )
+    st_SE_trig  = array( 'b', [ 0 ] )
     
     maxn = 10
     
@@ -156,6 +180,10 @@ def AnalyzeDataSet():
         
     for trigs in triglist:
         exec("outTree.Branch( 'st_"+trigs+"', st_"+trigs+" , 'st_"+trigs+"/O')")
+        
+    outTree.Branch( 'st_MET_trig', st_MET_trig , 'st_MET_trig/O')
+    outTree.Branch( 'st_SE_trig', st_SE_trig , 'st_SE_trig/O')
+        
 #    outTree.Branch( 'st_HLT_IsoMu20', st_HLT_IsoMu20 , 'st_HLT_IsoMu20/O')
 #    outTree.Branch( 'st_HLT_Ele27_WPLoose_Gsf', st_HLT_Ele27_WPLoose_Gsf , 'st_HLT_Ele27_WPLoose_Gsf/O')
     
@@ -335,14 +363,17 @@ def AnalyzeDataSet():
 #        trig13 = CheckFilter(trigName, trigResult, 'HLT_IsoMu20')  #Added from AN CR 2015
 #        trig14 = CheckFilter(trigName, trigResult, 'HLT_Ele27_WPLoose_Gsf')   #Added from AN CR       
         
-#        for i in trigName:
-#            if ievent==0 and i.find('PFMETNoMu')>-1:
+#        if ievent==0:
+#            for i in sorted(trigName):
+#            # if i.find('PFMETNoMu')>-1:
 #                print i
         
         for itrig in range(len(triglist)):
             exec(triglist[itrig]+" = CheckFilter(trigName, trigResult, " + "'" + triglist[itrig] + "')")        #Runs the above commented-off code dynamically
             exec("trig"+str(itrig+1)+"="+triglist[itrig])                                                       #Saves them as trig1, trig2, etc.
             exec("st_"+triglist[itrig]+"[0]="+triglist[itrig])                                                  #Adds to SkimmedTree output
+            
+        
             
 #        if not isData:
 #            trigstatus  = False # triggers are not required for MC
@@ -354,6 +385,22 @@ def AnalyzeDataSet():
         trigstatus =  trig1 | trig2 | trig3 | trig4 | trig5 | trig6 | trig7 | trig8 | trig9 | trig10 | trig11 | trig12 | trig13 | trig14
 
         if not trigstatus: continue    #Currently doing this for both MC and data
+        
+        METtrigstatus=False
+        for itrig in METtrigs:
+            if CheckFilter(trigName, trigResult, itrig):
+                METtrigstatus=True
+                break
+        SEtrigstatus=False
+        for itrig in SingleElectrontrigs:
+            if CheckFilter(trigName, trigResult, itrig):
+                SEtrigstatus=True
+                break
+        
+#        print METtrigstatus,SEtrigstatus
+        
+        st_MET_trig[0]=METtrigstatus
+        st_SE_trig[0]=SEtrigstatus
 #        
 #        for itrig in range(len(list(trigName))):
 #            st_trigName.push_back(list(trigName)[itrig])
